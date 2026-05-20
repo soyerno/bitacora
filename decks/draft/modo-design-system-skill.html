@@ -33,7 +33,7 @@
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
   .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .slide { width: min(1280px, 100vw); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide { width: min(1600px, 96vw, calc(92vh * 16 / 9)); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
   .slide.active { display: flex; flex-direction: column; }
   .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
   .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 36px; }
