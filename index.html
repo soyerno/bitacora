@@ -38,6 +38,7 @@
 
     a { color: inherit; text-decoration: none; }
 
+    /* -- HEADER -- */
     header {
       border-bottom: 1px solid var(--border);
       padding: 32px 48px 28px;
@@ -62,9 +63,10 @@
       letter-spacing: 0.02em;
     }
 
+    /* -- MAIN -- */
     main {
       flex: 1;
-      max-width: 920px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 48px 48px;
       width: 100%;
@@ -76,9 +78,112 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* -- STATUS BADGES -- */
+    .status-badge {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .status-badge.draft { background: var(--draft-bg); color: var(--draft-fg); }
+    .status-badge.rfc { background: var(--rfc-bg); color: var(--rfc-fg); }
+    .status-badge.completo { background: var(--done-bg); color: var(--done-fg); }
+
+    /* -- FEATURED CAROUSEL -- */
+    .featured-section {
+      margin-bottom: 56px;
+    }
+
+    .featured-heading {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .featured-subtitle {
+      font-size: 14px;
+      color: var(--muted);
       margin-bottom: 24px;
     }
 
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .featured-card {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      background: #fff;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .featured-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    .featured-badge-wrap {
+      margin-bottom: 12px;
+    }
+
+    .featured-card-title {
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .featured-card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .featured-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 14px;
+      gap: 6px;
+    }
+
+    .featured-card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* -- TABS -- */
     .tabs {
       display: flex;
       gap: 8px;
@@ -115,6 +220,7 @@
     }
     .tab.active .count { background: var(--accent-light); color: var(--accent); }
 
+    /* -- DECK LIST -- */
     .deck-list { display: flex; flex-direction: column; gap: 0; }
 
     .deck-item {
@@ -141,19 +247,6 @@
       color: var(--muted);
       letter-spacing: 0.08em;
     }
-
-    .status-badge {
-      font-family: 'Quicksand', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      border-radius: 999px;
-    }
-    .status-badge.draft { background: var(--draft-bg); color: var(--draft-fg); }
-    .status-badge.rfc { background: var(--rfc-bg); color: var(--rfc-fg); }
-    .status-badge.completo { background: var(--done-bg); color: var(--done-fg); }
 
     .deck-title {
       font-family: 'Red Hat Display', sans-serif;
@@ -205,6 +298,111 @@
     }
     .deck-link:hover { background: var(--accent); color: #fff; }
 
+    /* -- SKILLS SECTION -- */
+    .skills-section {
+      border-top: 1px solid var(--border);
+      padding-top: 52px;
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+
+    .skills-heading {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .skills-intro {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .skills-intro code {
+      font-family: 'Red Hat Display', monospace;
+      font-size: 12px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .skill-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      background: #fff;
+    }
+
+    .skill-name {
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .skill-name code {
+      font-family: 'Red Hat Display', monospace;
+      font-size: 12px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .skill-name a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: rgba(0,136,89,0.3);
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    .skill-name a:hover {
+      text-decoration-color: var(--accent);
+    }
+
+    .skill-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .skills-note {
+      font-size: 13px;
+      color: var(--muted);
+      border-left: 3px solid var(--accent-light);
+      padding-left: 14px;
+      line-height: 1.6;
+    }
+
+    .skills-note code {
+      font-family: 'Red Hat Display', monospace;
+      font-size: 12px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    /* -- FOOTER -- */
     footer {
       border-top: 1px solid var(--border);
       padding: 24px 48px;
@@ -219,11 +417,18 @@
     footer a { color: var(--accent); }
     footer a:hover { text-decoration: underline; }
 
+    /* -- RESPONSIVE -- */
+    @media (max-width: 860px) {
+      .featured-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 640px) {
       header { padding: 24px 20px; flex-direction: column; gap: 4px; }
       main { padding: 32px 20px; }
       footer { padding: 20px; flex-direction: column; align-items: flex-start; }
       .deck-item { grid-template-columns: 1fr; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
       .tabs { overflow-x: auto; }
     }
   </style>
@@ -236,7 +441,72 @@
 </header>
 
 <main>
-  <p class="section-label">11 decks · 2026-05-20 · workflow draft → rfc → completo</p>
+
+  <!-- FEATURED CAROUSEL -->
+  <section class="featured-section">
+    <p class="section-label">Destacados</p>
+    <h2 class="featured-heading">Decks con decision abierta</h2>
+    <p class="featured-subtitle">Los decks con mas storytelling afilado o decision pendiente esta semana.</p>
+
+    <div class="featured-grid">
+
+      <article>
+        <a class="featured-card" href="decks/completo/nextjs-12-to-15-consolidation.html" target="_blank" rel="noopener noreferrer">
+          <div class="featured-badge-wrap"><span class="status-badge completo">Completo</span></div>
+          <div class="featured-card-title">Next 12 &rarr; 15 &middot; Stack consolidation</div>
+          <div class="featured-card-desc">7 fases, contexto tecnico completo, riesgos y cronograma para el equipo.</div>
+          <div class="featured-card-meta">
+            <span>PM + TL + Manager</span>
+            <span>2026-05-20</span>
+          </div>
+          <span class="featured-card-cta">Abrir &rarr;</span>
+        </a>
+      </article>
+
+      <article>
+        <a class="featured-card" href="decks/completo/comercios-mvp.html" target="_blank" rel="noopener noreferrer">
+          <div class="featured-badge-wrap"><span class="status-badge completo">Completo</span></div>
+          <div class="featured-card-title">/comercios MVP shipped</div>
+          <div class="featured-card-desc">Busqueda, filtros y MerchantCard en preprod. Proximos pasos visibles.</div>
+          <div class="featured-card-meta">
+            <span>PM + TL + Manager</span>
+            <span>2026-05-20</span>
+          </div>
+          <span class="featured-card-cta">Abrir &rarr;</span>
+        </a>
+      </article>
+
+      <article>
+        <a class="featured-card" href="decks/completo/modo-for-agents.html" target="_blank" rel="noopener noreferrer">
+          <div class="featured-badge-wrap"><span class="status-badge completo">Completo</span></div>
+          <div class="featured-card-title">MODO for Agents &middot; Pagos agénticos</div>
+          <div class="featured-card-desc">MODO como wallet por defecto para agentes de IA. ROI ~30x, payback &lt;1 ano.</div>
+          <div class="featured-card-meta">
+            <span>Comite mixto</span>
+            <span>2026-05-20</span>
+          </div>
+          <span class="featured-card-cta">Abrir &rarr;</span>
+        </a>
+      </article>
+
+      <article>
+        <a class="featured-card" href="decks/completo/seo-sprint0.html" target="_blank" rel="noopener noreferrer">
+          <div class="featured-badge-wrap"><span class="status-badge draft">Urgente</span></div>
+          <div class="featured-card-title">SEO Sprint 0 &middot; Staging leaks + plan 12 semanas</div>
+          <div class="featured-card-desc">5 subdominios non-prod indexados en Google. Bloqueo de seguridad activo.</div>
+          <div class="featured-card-meta">
+            <span>Comite mixto</span>
+            <span>2026-05-20</span>
+          </div>
+          <span class="featured-card-cta">Abrir &rarr;</span>
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- TABS + FULL DECK LIST -->
+  <p class="section-label">11 decks &middot; 2026-05-20 &middot; workflow draft &rarr; rfc &rarr; completo</p>
 
   <div class="tabs" role="tablist">
     <button class="tab active" data-stage="all" role="tab">Todos <span class="count">11</span></button>
@@ -254,7 +524,7 @@
           <span class="status-badge draft">Draft</span>
         </div>
         <div class="deck-title">modo-design-system &middot; skill / SDK para devs frontend</div>
-        <div class="deck-description">Skill MODO-especifico para generar paginas Next/Astro one-shot con tokens canonicos, JSON-LD obligatorio, NavFooterLayout, validacion automatica. 5 repos · 4 stacks · learning loop.</div>
+        <div class="deck-description">Skill MODO-especifico para generar paginas Next/Astro one-shot con tokens canonicos, JSON-LD obligatorio, NavFooterLayout, validacion automatica. 5 repos &middot; 4 stacks &middot; learning loop.</div>
         <div class="deck-meta">
           <span class="meta-tag">Equipo frontend + TL + PM</span>
           <span>2026-05-20</span>
@@ -367,7 +637,7 @@
           <span class="status-badge completo">Completo</span>
         </div>
         <div class="deck-title">Comercios Database &middot; De 200 ruidosos a catalogo canonico</div>
-        <div class="deck-description">Roadmap V1-V3 para construir el catalogo canonico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301.</div>
+        <div class="deck-description">Roadmap V1-V3 para construir el catalogo canonico de comercios MODO. V1 BFF materializado &rarr; V2 geo+branches &rarr; V3 UCP + agent.json + MCP + 301.</div>
         <div class="deck-meta">
           <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
@@ -425,6 +695,73 @@
     </div>
 
   </div>
+
+  <!-- SKILLS SECTION -->
+  <section class="skills-section">
+    <p class="section-label">Herramientas</p>
+    <h2 class="skills-heading">Hecho con Claude Code &middot; skills utilizados</h2>
+    <p class="skills-intro">
+      Cada deck se genera con la skill <code>modo-deck</code> como orquestadora y un conjunto de skills auxiliares que garantizan calidad de diseno, prose discipline y brand fidelity. La version final se versiona en este repo. Las decisiones de comms y voz estan ancladas en el skill <code>modo-deck</code>.
+    </p>
+
+    <div class="skills-grid">
+
+      <div class="skill-item">
+        <div class="skill-name"><code>modo-deck</code> &mdash; orquestadora</div>
+        <div class="skill-desc">Genera presentaciones HTML branded MODO con voz rioplatense, comms discipline y storytelling Pyramid Principle. Punto de entrada para todo deck en este repo.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name"><code>modo-design-system</code></div>
+        <div class="skill-desc">SDK MODO para generar paginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canonicos). Auto-invocable para paginas en cualquier repo del workspace MODO.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name">
+          <code>impeccable</code>
+          <a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">github &rarr;</a>
+        </div>
+        <div class="skill-desc">Skill de Phil Bakaus para diseno frontend production-grade. Aplica anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name">
+          <code>taste-skill</code>
+          <a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener">github &rarr;</a>
+        </div>
+        <div class="skill-desc">Skill de Leonxlnx con anti-slop frontend rules. Evita over-design y mantiene la interfaz limpia y funcional.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name">
+          <code>ui-ux-pro-max</code>
+          <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener">github &rarr;</a>
+        </div>
+        <div class="skill-desc">Skill de NextLevelBuilder con 161 paletas, 57 font pairings, 50+ estilos de UI. Referencia de composicion visual y tipografia.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name"><code>writing-clearly-and-concisely</code></div>
+        <div class="skill-desc">Strunk para prose: una claim por oracion, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir, sin padding.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name"><code>storyblok</code> &mdash; MCP server</div>
+        <div class="skill-desc">Acceso al CMS de MODO. Permite leer y escribir contenido del sitio directamente desde el agente durante la generacion del deck cuando se necesita contexto real.</div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-name"><code>chrome-devtools</code> &mdash; MCP server</div>
+        <div class="skill-desc">Para capturar screenshots reales de paginas en localhost o produccion. Garantiza que los decks con capturas de pantalla usen imagenes reales, no mocks.</div>
+      </div>
+
+    </div>
+
+    <p class="skills-note">
+      Regla operativa: cada deck se versiona en <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>. Las decisiones de comms y voz se anclan en el skill <code>modo-deck</code>. Para generar un deck nuevo: <code>/modo-deck</code> en Claude Code, contexto del deck, y el agente orquesta el resto.
+    </p>
+  </section>
+
 </main>
 
 <footer>
