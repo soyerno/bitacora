@@ -2,15 +2,23 @@
 
 Presentaciones HTML internas + catálogo de RFCs de modo-landing.
 
-- Decks generados con la skill `modo-deck` (Claude Code)
+- Decks generados con la skill privada `modo-deck` (Claude Code, mantenida en `~/.claude/skills/`)
 - Branding MODO: verde #008859, Red Hat Display + Quicksand, layout 16:9
-- Navegacion por teclado (← →, j/k, espacio, Home, End)
+- Navegación por teclado (← →, j/k, espacio, Home, End)
 - Exportables a PDF (tecla P)
 - Reacciones y comentarios por deck via Giscus (tecla `c` o botón 💬)
 
+Los decks y RFCs son **propuestas** que buscan feedback y aprobación, no anuncian implementación. Cada cierre lista los equipos que deben opinar antes de avanzar.
+
+## Live
+
+https://soyernomodo.github.io/modo-decks/
+
+El index trae búsqueda full-text, filtros por tema/área, tabs por status, sort por recencia, y theme toggle (auto / claro / oscuro) con persistencia en `localStorage`.
+
 ## Decks
 
-11 presentaciones HTML versionadas en `decks/`. Workflow: draft → rfc → completo. Ver `index.html` para el listado completo y filtros.
+11 presentaciones HTML versionadas en `decks/`. Workflow: `draft → rfc → completo` (la promoción es un `git mv` entre carpetas + update del badge en `index.html`).
 
 Destacados:
 - [Next 12 → 16 · Stack consolidation](decks/completo/nextjs-12-to-16-consolidation.html)
@@ -20,15 +28,26 @@ Destacados:
 
 ## RFCs
 
-18 documentos técnicos vivos en Google Drive, deduplicados y catalogados en `rfcs/rfcs.json` (consumible por agentes sin parsear HTML). El landing los renderiza con filtros por estado (rfc / completo / archivado).
+19 documentos técnicos vivos en Google Drive, curados y catalogados en `rfcs/rfcs.json` (consumible por agentes y por el landing sin parsear HTML). El index los renderiza con filtros por estado (`rfc / completo / archivado`).
 
-La saga "Migración modo-landing" colapsa 14 versiones en una sola entrada (la v6 más reciente), con las versiones intermedias accesibles desde el toggle "+ N versiones anteriores".
+La saga "Migración modo-landing" colapsa 14 versiones en una sola entrada (la v6 más reciente), con las intermedias accesibles desde el toggle "+ N versiones anteriores".
 
-## Live
+## Cómo agrego un deck nuevo
 
-https://soyernomodo.github.io/modo-decks/
+Con la skill `modo-deck` instalada localmente:
 
-El index trae búsqueda full-text, filtros por tema/área, tabs por status, sort por recencia, y theme toggle (auto / claro / oscuro) con persistencia en `localStorage`.
+1. Generar el HTML con Claude Code (la skill arma el deck respetando branding + Giscus snippet).
+2. Publicar al repo:
+   ```bash
+   ~/.claude/skills/modo-deck/scripts/publish-deck.sh <preview.html> <slug> <draft|rfc|completo>
+   ```
+   El script rechaza el upload si encuentra `{{PLACEHOLDER}}` sin resolver.
+3. Editar `index.html` (entry + badge) y commit + push a `main`. Pages publica en ~30s.
+
+Promover un deck entre estados:
+```bash
+~/.claude/skills/modo-deck/scripts/promote-deck.sh <slug> <from> <to>
+```
 
 ## Reacciones y comentarios (Giscus)
 
@@ -45,9 +64,9 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 
 **Cómo se cablea:**
 
-El snippet ya está en el template del skill `modo-deck` (`~/.claude/skills/modo-deck/assets/template.html`), así que cualquier deck nuevo lo incluye automáticamente. `publish-deck.sh` rechaza el upload si encuentra `{{DECK_SLUG}}` sin resolver (evita que dos decks compartan thread).
+El snippet ya está en el template de la skill `modo-deck` (no es pública — vive en `~/.claude/skills/modo-deck/assets/template.html`), así que cualquier deck generado por ahí lo incluye automáticamente. `publish-deck.sh` rechaza el upload si encuentra `{{DECK_SLUG}}` sin resolver (evita que dos decks compartan thread por accidente).
 
-Para retrofittear un deck publicado que no lo tenga (idempotente — si ya tiene Giscus, skip):
+Para retrofittear un deck ya publicado que no lo tenga (idempotente — si ya tiene Giscus, skip):
 
 ```bash
 ~/.claude/skills/modo-deck/scripts/add-giscus.py decks/<estado>/<slug>.html
@@ -59,10 +78,6 @@ Para retrofittear un deck publicado que no lo tenga (idempotente — si ya tiene
 - Pages source: `main` branch, root (CDN cachea con `max-age=600`)
 
 **Kill switch por deck:** borrar el `<aside id="deck-reactions">`, el `<script>` que lo controla, y el botón `#toggle-comments` del HTML.
-
-## Voz / comms
-
-Los decks y RFCs son propuestas que buscan feedback y aprobación, no anuncian implementación. Cada cierre lista los equipos que deben opinar antes de avanzar.
 
 ## Estructura
 
