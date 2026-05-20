@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1280, initial-scale=1" />
-<title>Storyblok build-time · Navbar / Footer en la lib</title>
+<title>Storyblok via BFF · Navbar / Footer en la lib</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -69,10 +69,10 @@
   .stat__label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
   .stat__value { color: var(--ink); }
   ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
-  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 14px 0 14px 56px; border-bottom: 1px solid var(--gray-8); }
   ol.decisions li:last-child { border-bottom: none; }
-  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em; }
-  ol.decisions h3 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 16px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 17px; font-weight: 600; margin: 0 0 4px; }
   ol.decisions .ownership { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
   ul.checks { list-style: none; padding: 0; margin: 0; }
   ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 15px; line-height: 1.5; color: var(--gray-80); }
@@ -108,6 +108,10 @@
   .flow__step h4 { margin: 0; font-size: 13px; font-weight: 600; color: var(--ink); }
   .flow__step p { margin: 0; font-size: 12px; color: var(--gray-60); line-height: 1.4; }
   .flow__step .num--md { font-size: 32px; color: var(--green-default); margin-bottom: 4px; }
+  .cache-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.4fr; gap: 0; margin-top: 16px; background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; overflow: hidden; }
+  .cache-grid > div { padding: 12px 16px; border-bottom: 1px solid var(--gray-8); font-size: 13px; line-height: 1.4; }
+  .cache-grid > div.head { background: var(--gray-3); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .cache-grid > div:nth-last-child(-n+4) { border-bottom: none; }
   @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
   .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
   .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
@@ -163,12 +167,12 @@
   <section class="slide slide--cover active" data-slide>
     <div class="slide__chrome-top">
       <span class="modo-wordmark modo-wordmark--sm">MODO</span>
-      <span>storyblok · build-time · modo-landing-web-ui-lib</span>
+      <span>storyblok · bff · cache · modo-landing-web-ui-lib</span>
     </div>
     <div class="slide__body" style="justify-content: center;">
       <p class="eyebrow">Propuesta técnica · PR #38</p>
-      <h1 class="title">Storyblok directo<br /><span style="color: var(--green-default)">en la lib</span>.</h1>
-      <p class="lede">Que el Navbar y el Footer se hidraten desde Storyblok una sola vez, en el build de la lib. Los consumers (modo-landing, promos-hub) reciben el snapshot embebido vía PR automático.</p>
+      <h1 class="title">Storyblok via<br /><span style="color: var(--green-default)">BFF de Next + cache</span>.</h1>
+      <p class="lede">La lib no le pega a Storyblok. Le pega a una ruta de Next en modo-landing que actúa como única boca y como capa de cache. Cada release de la lib embebe el snapshot y los consumers reciben un PR automático.</p>
     </div>
     <div class="meta">
       <div class="meta__col"><h4>Audiencia</h4><p>Tech Leads + PMs MODO</p></div>
@@ -185,30 +189,30 @@
     </div>
     <div class="slide__body">
       <p class="eyebrow">La recomendación</p>
-      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 22ch;">Mergear PR #38<br /><span style="color: var(--green-default)">y activar el webhook</span> de Storyblok.</h1>
+      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 22ch;">Mergear PR #38<br /><span style="color: var(--green-default)">y armar el BFF</span> en modo-landing.</h1>
       <div class="grid-3" style="margin-top: 40px;">
         <div class="stat">
-          <span class="stat__label">Fuente de verdad</span>
+          <span class="stat__label">Boca a Storyblok</span>
           <span class="num num--md stat__value">1</span>
-          <p class="muted">Storyblok story <span class="mono">global/defaultlayout</span>. Cero JSON hardcoded sin sincronizar.</p>
+          <p class="muted">Una sola ruta: <span class="mono">modo.com.ar/api/cms/default-layout</span>. La lib y los consumers no ven Storyblok.</p>
         </div>
         <div class="stat">
-          <span class="stat__label">Costo en runtime</span>
-          <span class="num num--md stat__value">0 KB</span>
-          <p class="muted">El fetch corre en CI. <span class="mono">storyblok-js-client</span> queda como devDep, fuera del bundle.</p>
+          <span class="stat__label">TTL de cache en el BFF</span>
+          <span class="num num--md stat__value">5 min</span>
+          <p class="muted"><span class="mono">s-maxage=300</span> + SWR 24h + invalidación on-demand vía webhook.</p>
         </div>
         <div class="stat">
           <span class="stat__label">Cascade end-to-end</span>
           <span class="num num--md stat__value">~30 min</span>
-          <p class="muted">Webhook → PR snapshot → release → PR de bump en consumers.</p>
+          <p class="muted">Webhook → BFF → PR snapshot → release → PR de bump en consumers.</p>
         </div>
       </div>
-      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por qué juntas</strong>: si solo mergeamos la lib pero no activamos el webhook, el snapshot queda congelado y volvemos a tener drift. Las dos cosas componen el loop.</p>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por qué juntas</strong>: la lib sola no rinde sin el BFF, porque sino tenemos N consumers golpeando Storyblok sin control. Y el BFF sin la lib es un endpoint solitario sin caller productivo. Las dos piezas componen el loop.</p>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 22%"></i></div>
-      <span class="counter">02 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 20%"></i></div>
+      <span class="counter">02 / 10</span>
     </div>
   </section>
 
@@ -220,14 +224,14 @@
     </div>
     <div class="slide__body">
       <p class="eyebrow">Diagnóstico</p>
-      <h2 class="heading">Tres copias del mismo contenido, ninguna manda.</h2>
-      <p class="body" style="max-width: 80ch; margin-bottom: 24px;">El navbar y el footer viven en Storyblok, pero cada consumer los rehidrata a su manera. Resultado: lo que aparece en producción depende de quién buildeó por última vez.</p>
+      <h2 class="heading">Cada app le pega a Storyblok como puede.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 24px;">No hay un proxy. Cada consumer maneja su propio acceso, su propia API key, su propio adapter. Lo que termina apareciendo en producción depende de quién buildeó por última vez.</p>
       <div class="stack-today">
         <div class="stack-block">
           <h4>modo-landing</h4>
           <div class="row-item"><span class="label">Fetch en <span class="mono">getStaticProps</span></span><span class="value">14 páginas</span></div>
           <div class="row-item"><span class="label">Adapter local <span class="mono">CMSNavbar/CMSFooter</span></span><span class="value">~270 LOC</span></div>
-          <div class="row-item"><span class="label">Resolve relations</span><span class="value">3 refs</span></div>
+          <div class="row-item"><span class="label">API key de Storyblok</span><span class="value">en su env</span></div>
         </div>
         <div class="stack-block">
           <h4>promos-hub-site</h4>
@@ -239,13 +243,14 @@
           <h4>Síntoma observable</h4>
           <div class="row-item"><span class="label">El footer dice cosas distintas en modo.com.ar vs promos.modo.com.ar</span><span class="value">drift visible</span></div>
           <div class="row-item"><span class="label">Para cambiar un link, hace falta tocar 2 repos + esperar 2 deploys</span><span class="value">fricción operativa</span></div>
+          <div class="row-item"><span class="label">Si mañana sumamos un 3er consumer, replica el problema</span><span class="value">escala mal</span></div>
         </div>
       </div>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 33%"></i></div>
-      <span class="counter">03 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 30%"></i></div>
+      <span class="counter">03 / 10</span>
     </div>
   </section>
 
@@ -259,8 +264,8 @@
       <div>
         <p class="eyebrow">Pilar 01 · Single source of truth</p>
         <div class="num num--xl num--accent">3 → 1</div>
-        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">El contenido vive en Storyblok. Punto.</h2>
-        <p class="body" style="max-width: 50ch;">La lib es el único intermediario. Hidrata el story <span class="mono">global/defaultlayout</span> al build, lo embebe como JSON, lo distribuye a todos los consumers.</p>
+        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">Una historia, un endpoint, un snapshot.</h2>
+        <p class="body" style="max-width: 50ch;">El story vive en Storyblok (<span class="mono">global/defaultlayout</span>). El BFF lo sirve. La lib lo embebe. Los consumers lo consumen. Cero re-implementaciones del adapter.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">snapshot al build</span>
           <span class="chip">SectionNavbar.reference</span>
@@ -272,7 +277,7 @@
           <h4>Qué pasa con los adapters de modo-landing</h4>
           <ul class="checks">
             <li><strong>Hoy</strong>: <span class="mono">CMSNavbar</span>, <span class="mono">CMSFooter</span>, <span class="mono">CMSModal</span> mapean blok → props en modo-landing.</li>
-            <li><strong>Mañana</strong>: esa lógica vive en <span class="mono">src/cms/adapters/</span> de la lib, ya commiteada y testeada (15 tests nuevos, 100% pasando).</li>
+            <li><strong>Mañana</strong>: esa lógica vive en <span class="mono">src/cms/adapters/</span> de la lib, ya commiteada y testeada (15 tests nuevos en esta PR, 100% pasando).</li>
           </ul>
         </div>
         <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
@@ -282,24 +287,64 @@
       </div>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 44%"></i></div>
-      <span class="counter">04 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 40%"></i></div>
+      <span class="counter">04 / 10</span>
     </div>
   </section>
 
-  <!-- ============ 05 · PILAR 02 ============ -->
+  <!-- ============ 05 · PILAR 02 · BFF + CACHE ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span>05 · Pilar 02</span>
-      <span>cero red en runtime</span>
+      <span>BFF como única boca + cache</span>
     </div>
     <div class="pillar-detail" style="padding-top: 32px;">
       <div>
-        <p class="eyebrow">Pilar 02 · Bundle limpio</p>
+        <p class="eyebrow">Pilar 02 · BFF + cache</p>
+        <div class="num num--xl num--accent">5'</div>
+        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">La ruta de Next es el cache.</h2>
+        <p class="body" style="max-width: 50ch;">El BFF (<span class="mono">/api/cms/default-layout</span>) es la única boca contra Storyblok. Devuelve la respuesta cacheada 5 minutos. Cuando el editor publica, el webhook invalida la cache y la siguiente call es fresh. La lib no se entera.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">s-maxage=300</span>
+          <span class="chip">SWR 24h</span>
+          <span class="chip"><span class="mono">res.revalidate()</span></span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Endpoints del BFF (Next 12 · Pages Router)</h4>
+          <ul class="checks">
+            <li><span class="mono">GET /api/cms/default-layout</span> · auth <span class="mono">Bearer ${CMS_BFF_TOKEN}</span> · responde <span class="mono">{ body }</span> cacheado.</li>
+            <li><span class="mono">POST /api/cms/revalidate</span> · invalida cache vía <span class="mono">res.revalidate()</span>.</li>
+            <li><span class="mono">POST /api/cms/sync</span> · webhook de Storyblok: revalida cache + dispara <span class="mono">repository_dispatch</span> al repo de la lib.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Una sola API key</h4>
+          <p class="body" style="margin: 0;"><span class="mono">STORYBLOK_API_KEY</span> queda solo en modo-landing. La lib y los demás consumers usan <span class="mono">CMS_BFF_TOKEN</span> (token interno, rotable, distinto). Si se filtra, no compromete Storyblok.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 50%"></i></div>
+      <span class="counter">05 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 06 · PILAR 03 · CERO RUNTIME ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>06 · Pilar 03</span>
+      <span>cero red en runtime del consumer</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 03 · Bundle limpio</p>
         <div class="num num--xl num--accent">0 KB</div>
-        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">El consumer no habla con Storyblok.</h2>
-        <p class="body" style="max-width: 50ch;">El JSON vive en <span class="mono">dist/</span>. SSG, SSR, RSC, CSR: a todos les llega lo mismo, hidratado del bundle. Sin fetch, sin handshake, sin <span class="mono">STORYBLOK_API_KEY</span> en cada repo.</p>
+        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">El consumer no habla con nada.</h2>
+        <p class="body" style="max-width: 50ch;">El JSON vive en <span class="mono">dist/</span>. SSG, SSR, RSC, CSR: a todos les llega lo mismo, hidratado del bundle. Sin fetch, sin handshake, sin token de BFF en cada repo.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">cmsOverride opcional</span>
           <span class="chip">DeepPartial&lt;Config&gt;</span>
@@ -310,8 +355,8 @@
         <div class="pillar-detail__evidence">
           <h4>Lo que NO entra al bundle</h4>
           <ul class="checks">
-            <li><span class="mono">storyblok-js-client</span> queda en devDeps; lo usa solo el script de build.</li>
-            <li><span class="mono">tsx</span> también devDep; compila los adapters TS para el script.</li>
+            <li><span class="mono">storyblok-js-client</span> queda en devDeps (solo se usa en modo directo de fallback).</li>
+            <li>El script de build usa <span class="mono">fetch</span> nativo de Node 18+ contra el BFF.</li>
             <li>Tamaño de <span class="mono">dist/index.es.js</span>: 157 KB (sin cambios respecto a 5.6.0).</li>
           </ul>
         </div>
@@ -322,42 +367,42 @@
       </div>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 56%"></i></div>
-      <span class="counter">05 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 60%"></i></div>
+      <span class="counter">06 / 10</span>
     </div>
   </section>
 
-  <!-- ============ 06 · PILAR 03 ============ -->
+  <!-- ============ 07 · FLUJO END-TO-END ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
-      <span>06 · Pilar 03</span>
-      <span>release cascade automático</span>
+      <span>07 · Flujo end-to-end</span>
+      <span>publish a PR de consumer</span>
     </div>
     <div class="slide__body">
-      <p class="eyebrow">Pilar 03 · Distribución</p>
-      <h2 class="heading">Publicás en Storyblok. Los consumers reciben un PR.</h2>
-      <p class="body" style="max-width: 80ch;">Cinco pasos automáticos, ningún humano interviene salvo para mergear el PR de snapshot y el de bump.</p>
+      <p class="eyebrow">Distribución</p>
+      <h2 class="heading">Publicás en Storyblok. Cada consumer recibe un PR.</h2>
+      <p class="body" style="max-width: 80ch;">Cinco saltos automáticos. Humano interviene solo para mergear PR de snapshot y PR de bump.</p>
       <div class="flow">
         <div class="flow__step">
           <span class="num num--md">01</span>
           <h4>Storyblok publish</h4>
-          <p>Editor mergea una story. Dispara webhook hacia GitHub.</p>
+          <p>Editor publica una story. Webhook va al BFF, no a GitHub.</p>
         </div>
         <div class="flow__step">
           <span class="num num--md">02</span>
-          <h4><span class="mono">cms-sync.yml</span></h4>
-          <p>Corre <span class="mono">pnpm sync:storyblok</span>. Si hay diff, abre PR en la lib.</p>
+          <h4>BFF <span class="mono">/api/cms/sync</span></h4>
+          <p>Invalida cache + dispara <span class="mono">repository_dispatch</span> a la lib.</p>
         </div>
         <div class="flow__step">
           <span class="num num--md">03</span>
-          <h4>Reviewer mergea</h4>
-          <p>Visual diff a la vista. Aprobás o pedís cambio. Sin auto-merge.</p>
+          <h4><span class="mono">cms-sync.yml</span></h4>
+          <p>Corre <span class="mono">pnpm sync:storyblok</span> contra el BFF (cache fresh). Si hay diff, abre PR.</p>
         </div>
         <div class="flow__step">
           <span class="num num--md">04</span>
           <h4><span class="mono">release.yml</span></h4>
-          <p>semantic-release publica <span class="mono">vX.Y.Z</span> en GitHub Packages.</p>
+          <p>Mergeado el PR, semantic-release publica <span class="mono">vX.Y.Z</span>.</p>
         </div>
         <div class="flow__step">
           <span class="num num--md">05</span>
@@ -365,30 +410,30 @@
           <p><span class="mono">bump-modo-landing</span> + <span class="mono">bump-promos-hub-site</span> abren PRs en consumers.</p>
         </div>
       </div>
-      <p class="muted" style="margin-top: 24px;"><span class="sigil"></span>Total típico end-to-end: 15 a 40 minutos desde publicación en Storyblok hasta PR listo para mergear en cada consumer.</p>
+      <p class="muted" style="margin-top: 24px;"><span class="sigil"></span>Total típico end-to-end: 15 a 40 minutos. Si el webhook falla, el TTL de 5 min en el BFF garantiza que el snapshot se atrase como máximo 5 min de la realidad.</p>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 67%"></i></div>
-      <span class="counter">06 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 70%"></i></div>
+      <span class="counter">07 / 10</span>
     </div>
   </section>
 
-  <!-- ============ 07 · PLAN ============ -->
+  <!-- ============ 08 · PLAN ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
-      <span>07 · El plan</span>
+      <span>08 · El plan</span>
       <span>fases incrementales, opt-in</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">Roadmap</p>
-      <h2 class="heading">Tres fases, ninguna bloquea a la otra.</h2>
+      <h2 class="heading">Tres fases. La fundación viaja en dos PRs.</h2>
       <div class="timeline">
         <div class="phase">
           <span class="phase__num">01</span>
-          <span class="phase__weeks">Esta PR · ahora</span>
-          <h3 class="phase__title">Foundation</h3>
-          <p class="phase__body">Adapters, tipos, script, workflows, prop <span class="mono">cmsOverride</span> en Navbar/Footer. Cero impacto en consumers.</p>
+          <span class="phase__weeks">Esta PR + PR en modo-landing</span>
+          <h3 class="phase__title">Foundation · BFF + lib</h3>
+          <p class="phase__body">1a · BFF en modo-landing (3 endpoints + secrets + webhook). 1b · adapters + script + workflows en la lib. Ninguna toca consumers.</p>
         </div>
         <div class="phase">
           <span class="phase__num">02</span>
@@ -403,65 +448,70 @@
           <p class="phase__body">Página piloto + 14 páginas que llaman <span class="mono">getNavFooterData</span>. Eliminamos el adapter local.</p>
         </div>
         <div class="phase__total">
-          <span class="phase__weeks">Foundation</span>
-          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">PR #38</span>
-          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">CI verde</span>
-          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">5 / 5 checks (sonar informativo)</span>
+          <span class="phase__weeks">Esta PR</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">#38</span>
+          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">CI 6/6 ✓</span>
+          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Sonar QG: OK · 446 tests</span>
         </div>
       </div>
       <div class="grid-2" style="margin-top: 24px; gap: 20px;">
         <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
           <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Lo que sí ya está</h4>
-          <p class="body" style="margin: 0; font-size: 13px; color: var(--green-dark);">442/442 tests, typecheck/lint/build verde, OpenSpec <span class="mono">--strict</span> validado, doc operativa.</p>
+          <p class="body" style="margin: 0; font-size: 13px; color: var(--green-dark);">446/446 tests, typecheck/lint/build verde, OpenSpec <span class="mono">--strict</span> validado, script con modo BFF + fallback directo.</p>
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
           <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Lo que NO entra a esta PR</h4>
-          <p class="body" style="margin: 0; font-size: 13px;">Sidebar/DownloadModal snapshot, migración de páginas modo-landing, wrappers <span class="mono">&lt;CMSx /&gt;</span>.</p>
+          <p class="body" style="margin: 0; font-size: 13px;">Las rutas del BFF en modo-landing (PR aparte). Sidebar/DownloadModal snapshot. Migración de páginas modo-landing.</p>
         </div>
       </div>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 78%"></i></div>
-      <span class="counter">07 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 80%"></i></div>
+      <span class="counter">08 / 10</span>
     </div>
   </section>
 
-  <!-- ============ 08 · DECISIONES ============ -->
+  <!-- ============ 09 · DECISIONES ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
-      <span>08 · Decisiones</span>
+      <span>09 · Decisiones</span>
       <span>qué necesito antes de avanzar</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">Decisiones</p>
-      <h2 class="heading">Tres cosas para arrancar el loop.</h2>
-      <ol class="decisions" style="margin-top: 32px;">
+      <h2 class="heading">Cuatro cosas para arrancar el loop.</h2>
+      <ol class="decisions" style="margin-top: 24px;">
         <li>
-          <h3>Aprobar el merge de PR #38</h3>
-          <p class="body" style="margin: 4px 0 0;">Foundation: adapters + script + workflows + <span class="mono">cmsOverride</span>. Sin breaking changes. CI verde.</p>
+          <h3>Aprobar el merge de PR #38 (lib)</h3>
+          <p class="body" style="margin: 4px 0 0;">Foundation: adapters + script con modo BFF + workflows + <span class="mono">cmsOverride</span>. Sin breaking changes. CI 6/6 verde.</p>
           <p class="ownership">Owner · TL del frontend platform</p>
         </li>
         <li>
-          <h3>Setear secret <span class="mono">STORYBLOK_API_KEY</span> en el repo de la lib</h3>
-          <p class="body" style="margin: 4px 0 0;">Read-only, scope Published. Sin esto el primer sync real no corre. Coordino con SRE para la rotación de PAT.</p>
-          <p class="ownership">Owner · TL + Manager (coordinación SRE)</p>
+          <h3>Aprobar el PR del BFF en modo-landing</h3>
+          <p class="body" style="margin: 4px 0 0;">3 endpoints: <span class="mono">/api/cms/default-layout</span>, <span class="mono">/revalidate</span>, <span class="mono">/sync</span>. Coordino con el dueño de modo-landing antes de abrirlo.</p>
+          <p class="ownership">Owner · TL modo-landing</p>
+        </li>
+        <li>
+          <h3>Setear secrets en ambos repos</h3>
+          <p class="body" style="margin: 4px 0 0;">modo-landing: <span class="mono">CMS_BFF_TOKEN</span>, <span class="mono">CMS_REVALIDATE_SECRET</span>, <span class="mono">CMS_WEBHOOK_SECRET</span>, <span class="mono">CMS_GITHUB_DISPATCH_PAT</span>. Lib: <span class="mono">CMS_PROXY_URL</span>, <span class="mono">CMS_PROXY_TOKEN</span>.</p>
+          <p class="ownership">Owner · TL + SRE (rotación de PATs)</p>
         </li>
         <li>
           <h3>Configurar webhook "Story Published" en Storyblok</h3>
-          <p class="body" style="margin: 4px 0 0;">Apunta a <span class="mono">repos/playsistemico/modo-landing-web-ui-lib/dispatches</span>. Quiero validar con quien hoy administra el espacio de Storyblok antes de tocar la config.</p>
+          <p class="body" style="margin: 4px 0 0;">Apunta a <span class="mono">https://modo.com.ar/api/cms/sync</span> con header secret. Validar con quien administra el espacio antes de tocar.</p>
           <p class="ownership">Owner · PM + admin de Storyblok (content ops)</p>
         </li>
       </ol>
     </div>
     <div class="slide__chrome-bottom">
-      <span>storyblok · build-time</span>
-      <div class="progress"><i style="--p: 89%"></i></div>
-      <span class="counter">08 / 09</span>
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 90%"></i></div>
+      <span class="counter">09 / 10</span>
     </div>
   </section>
 
-  <!-- ============ 09 · CIERRE ============ -->
+  <!-- ============ 10 · CIERRE ============ -->
   <section class="slide slide--cover" data-slide>
     <div class="slide__chrome-top">
       <span class="modo-wordmark modo-wordmark--sm">MODO</span>
@@ -470,13 +520,13 @@
     <div class="slide__body" style="justify-content: center;">
       <p class="eyebrow">Cierre</p>
       <h1 class="title">¿Arrancamos<br /><span style="color: var(--green-default)">el loop</span>?</h1>
-      <p class="lede">Antes de mergear y configurar el webhook, busco feedback de TL platform y del admin de Storyblok. Si hay apetito, el próximo paso es agendar una review de 30 min, no abrir tickets.</p>
+      <p class="lede">Antes de mergear las dos PRs y configurar el webhook, busco feedback del TL platform, del TL de modo-landing y del admin de Storyblok. Si hay apetito, el próximo paso es agendar una review de 30 min, no abrir tickets.</p>
       <div class="card" style="margin-top: 32px; max-width: 720px;">
         <h3 class="subheading">Material de soporte</h3>
         <ul class="checks">
-          <li><strong>PR</strong>: <span class="mono">playsistemico/modo-landing-web-ui-lib#38</span></li>
-          <li><strong>Plan canónico</strong>: <span class="mono">openspec/changes/add-storyblok-cms-integration/</span></li>
-          <li><strong>Doc operativa</strong>: <span class="mono">docs/CMS_INTEGRATION.md</span></li>
+          <li><strong>PR lib</strong>: <span class="mono">playsistemico/modo-landing-web-ui-lib#38</span></li>
+          <li><strong>Plan canónico</strong>: <span class="mono">openspec/changes/add-storyblok-cms-integration/</span> (proposal · design · tasks · spec)</li>
+          <li><strong>Doc operativa</strong>: <span class="mono">docs/CMS_INTEGRATION.md</span> (diagrama + endpoints + secrets)</li>
           <li><strong>Workflows</strong>: <span class="mono">.github/workflows/cms-sync.yml</span> · <span class="mono">bump-modo-landing.yml</span></li>
         </ul>
       </div>
@@ -494,7 +544,7 @@
   <button id="prev" aria-label="Anterior" title="← / k">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
   </button>
-  <span class="counter" id="counter">01 / 09</span>
+  <span class="counter" id="counter">01 / 10</span>
   <button id="next" aria-label="Siguiente" title="→ / j / espacio">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
   </button>
