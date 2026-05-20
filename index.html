@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Presentaciones · modo-landing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #FAFAF7;
+      --ink: #1A1A1A;
+      --muted: #6B6B6B;
+      --border: #E2E2DC;
+      --accent: #008859;
+      --accent-light: #E6F4EE;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 16px;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 32px 48px 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+    }
+
+    .wordmark {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 40px;
+      letter-spacing: -0.06em;
+      line-height: 1;
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      width: 100%;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    /* ── DECK LIST ── */
+    .deck-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .deck-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 16px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .deck-item:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .deck-number {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .deck-title {
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .deck-description {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      max-width: 560px;
+    }
+
+    .deck-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .deck-meta span::before {
+      content: '';
+    }
+
+    .meta-tag {
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .deck-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      margin-top: 4px;
+      padding: 8px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .deck-link:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--accent);
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 24px 20px; flex-direction: column; gap: 4px; }
+      main { padding: 40px 20px; }
+      footer { padding: 20px; flex-direction: column; align-items: flex-start; }
+      .deck-item { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="wordmark">MODO</span>
+  <span class="header-subtitle">Presentaciones · modo-landing</span>
+</header>
+
+<main>
+  <p class="section-label">3 decks · 2026-05-20</p>
+
+  <div class="deck-list">
+
+    <div class="deck-item">
+      <div>
+        <div class="deck-number">01</div>
+        <div class="deck-title">Next 12 &rarr; 15 &middot; Stack consolidation</div>
+        <div class="deck-description">Propuesta de migracion del stack de modo-landing (Next.js 12) a Next.js 15 en 7 fases. Contexto tecnico, riesgos, cronograma y equipos involucrados.</div>
+        <div class="deck-meta">
+          <span class="meta-tag">PM + TL + Manager</span>
+          <span>2026-05-20</span>
+        </div>
+      </div>
+      <a class="deck-link" href="decks/nextjs-12-to-15-consolidation.html">abrir &rarr;</a>
+    </div>
+
+    <div class="deck-item">
+      <div>
+        <div class="deck-number">02</div>
+        <div class="deck-title">/comercios MVP shipped</div>
+        <div class="deck-description">Resultados del MVP de la pagina de comercios para modo.com.ar: busqueda, filtros, MerchantCard con paridad visual a PromoHub, ISR, y proximos pasos.</div>
+        <div class="deck-meta">
+          <span class="meta-tag">PM + TL + Manager</span>
+          <span>2026-05-20</span>
+        </div>
+      </div>
+      <a class="deck-link" href="decks/comercios-mvp.html">abrir &rarr;</a>
+    </div>
+
+    <div class="deck-item">
+      <div>
+        <div class="deck-number">03</div>
+        <div class="deck-title">Sumar ChatGPT App + Claude Skill al modal "Usa MODO"</div>
+        <div class="deck-description">Propuesta de integracion de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisicion via el modal existente. Incluye demo del flujo agenticoo end-to-end.</div>
+        <div class="deck-meta">
+          <span class="meta-tag">PM + TL + Manager</span>
+          <span>2026-05-20</span>
+        </div>
+      </div>
+      <a class="deck-link" href="decks/marketplaces.html">abrir &rarr;</a>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <span>
+    <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>
+  </span>
+  <span>Generado con la skill <code>modo-deck</code> en Claude Code</span>
+</footer>
+
+</body>
+</html>
