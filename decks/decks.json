@@ -14,8 +14,25 @@
       "audience": "Equipo frontend + TL + PM",
       "date": "2026-05-20",
       "slides": 15,
-      "topics": ["frontend", "plataforma"],
+      "topics": [
+        "frontend",
+        "plataforma"
+      ],
       "featured": true
+    },
+    {
+      "id": "skills-catalog",
+      "title": "Catálogo de skills disponibles · segmentado por categoría",
+      "desc": "Foto del set actual de ~190 skills en Claude Code segmentada en 9 categorías. Propone consolidar el uso a un core diario de ~15 skills + política para marketplaces externos.",
+      "href": "decks/draft/skills-catalog.html",
+      "status": "draft",
+      "audience": "TL + Manager",
+      "date": "2026-05-20",
+      "slides": 14,
+      "topics": [
+        "plataforma",
+        "agents"
+      ]
     },
     {
       "id": "nextjs-12-to-16-consolidation",
@@ -26,7 +43,10 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 14,
-      "topics": ["frontend", "plataforma"],
+      "topics": [
+        "frontend",
+        "plataforma"
+      ],
       "featured": true
     },
     {
@@ -38,7 +58,10 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 17,
-      "topics": ["comercios", "frontend"]
+      "topics": [
+        "comercios",
+        "frontend"
+      ]
     },
     {
       "id": "marketplaces",
@@ -49,7 +72,9 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 6,
-      "topics": ["agents"]
+      "topics": [
+        "agents"
+      ]
     },
     {
       "id": "storyblok-cms-build-time",
@@ -60,7 +85,10 @@
       "audience": "Tech Leads + PMs",
       "date": "2026-05-20",
       "slides": 10,
-      "topics": ["frontend", "plataforma"]
+      "topics": [
+        "frontend",
+        "plataforma"
+      ]
     },
     {
       "id": "modo-for-agents",
@@ -71,7 +99,9 @@
       "audience": "Comité mixto",
       "date": "2026-05-20",
       "slides": 14,
-      "topics": ["agents"],
+      "topics": [
+        "agents"
+      ],
       "featured": true
     },
     {
@@ -83,7 +113,9 @@
       "audience": "Comité mixto",
       "date": "2026-05-20",
       "slides": 13,
-      "topics": ["seo"],
+      "topics": [
+        "seo"
+      ],
       "urgent": true,
       "featured": true
     },
@@ -96,7 +128,9 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 13,
-      "topics": ["comercios"]
+      "topics": [
+        "comercios"
+      ]
     },
     {
       "id": "seo-geo-maduracion",
@@ -107,7 +141,10 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 13,
-      "topics": ["seo", "retro"]
+      "topics": [
+        "seo",
+        "retro"
+      ]
     },
     {
       "id": "faq-ayuda-maduracion",
@@ -118,7 +155,10 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 11,
-      "topics": ["seo", "retro"]
+      "topics": [
+        "seo",
+        "retro"
+      ]
     },
     {
       "id": "cicd-dx-maduracion",
@@ -129,7 +169,10 @@
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
       "slides": 11,
-      "topics": ["plataforma", "retro"]
+      "topics": [
+        "plataforma",
+        "retro"
+      ]
     }
   ]
 }
