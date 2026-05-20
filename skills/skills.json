@@ -9,8 +9,8 @@
       "name": "modo-deck",
       "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
       "filename": "modo-deck.zip",
-      "sha256_prefix": "593d2c0927c94ed8",
-      "size_kb": 57.6,
+      "sha256_prefix": "8d9357bdf34b5ff4",
+      "size_kb": 58.0,
       "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
     },
     {

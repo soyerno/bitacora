@@ -57,7 +57,7 @@
       "status": "completo",
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
-      "slides": 14,
+      "slides": 15,
       "topics": [
         "frontend",
         "plataforma"
@@ -86,7 +86,7 @@
       "status": "completo",
       "audience": "PM + TL + Manager",
       "date": "2026-05-20",
-      "slides": 6,
+      "slides": 9,
       "topics": [
         "agents"
       ]
