@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<title>FAQ + Centro de Ayuda · Maduración Q1-Q2 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859; --green-dark: #00471B; --green-10: #DCF5E7; --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738; --yellow-soft: #FFE69B; --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8; --gray-8: #ECECEC; --gray-20: #D0D0D0; --gray-60: #777777;
+    --dark-gray: #717171; --gray-80: #333333; --ink: #121212; --paper: #FFFFFF; --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06); --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1280px, 100vw); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 36px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 22px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(36px, 4.4vw, 64px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(28px, 3vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 22px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 16px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 13px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(80px, 9vw, 140px); line-height: 0.95; }
+  .num--lg { font-size: clamp(48px, 5vw, 72px); line-height: 1; }
+  .num--md { font-size: clamp(32px, 3.4vw, 48px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; display: block; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 12px; font-weight: 500; letter-spacing: 0.02em; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.compare th, table.compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20); }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 15px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 14px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 12px; }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(48px, 6vw, 80px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.4; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 01 · COVER -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>faq + ayuda · maduración 2026</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Maduración Q1-Q2 2026</p>
+      <h1 class="title">FAQ + Centro de Ayuda<br /><span style="color: var(--green-default)">de hash anchor a producto</span>.</h1>
+      <p class="lede">Cómo transformamos una página estática con anclas de hash en un centro de ayuda completo: SSR, rutas individuales, Salesforce Knowledge, subcategorías y FAQPage JSON-LD.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>Comité mixto · PM, TL, Manager</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Tech Lead</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>20 mayo 2026</p></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 02 · TL;DR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>02 · TL;DR</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">El resumen</p>
+      <h2 class="heading">De una pagina con anchors<br /><span style="color: var(--green-default)">a un centro de ayuda completo</span>.</h2>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat">
+          <span class="stat__label">Commits mergeados</span>
+          <span class="num num--md stat__value">12+</span>
+          <p class="muted">Entre marzo y mayo 2026, todos en main</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Fuente de datos</span>
+          <span class="num num--md stat__value">SF</span>
+          <p class="muted">Integrado con Salesforce Knowledge para contenido real en tiempo real</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Rutas individuales</span>
+          <span class="num num--md stat__value">SSR</span>
+          <p class="muted">Cada pregunta tiene URL propia indexable, antes solo existian hash anchors</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por que importa</strong>: un centro de ayuda con SSR y rutas individuales reduce la carga de soporte, mejora la defleccion, y permite que Google indexe cada respuesta de forma independiente. Antes, todo vivia en una URL sin SSR.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 9%"></i></div>
+      <span class="counter">02 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 03 · PUNTO DE PARTIDA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>03 · Punto de partida</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Antes de marzo 2026</p>
+      <h2 class="heading">Una pagina estatica con anchors,<br /><span style="color: var(--green-default)">sin SSR y sin Salesforce</span>.</h2>
+      <div class="stack-today" style="margin-top: 24px;">
+        <div class="stack-block">
+          <h4>Problemas tecnicos</h4>
+          <div class="row-item"><span class="label">Rutas individuales por FAQ</span><span class="value"><span class="dot dot--bad"></span> no existian</span></div>
+          <div class="row-item"><span class="label">SSR en /ayuda</span><span class="value"><span class="dot dot--bad"></span> ausente (client-only)</span></div>
+          <div class="row-item"><span class="label">FAQPage JSON-LD</span><span class="value"><span class="dot dot--bad"></span> ninguno</span></div>
+          <div class="row-item"><span class="label">Subcategorias</span><span class="value"><span class="dot dot--bad"></span> no existian</span></div>
+          <div class="row-item"><span class="label">Imagenes en FAQs</span><span class="value"><span class="dot dot--warn"></span> rotas (req auth)</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Impacto en producto</h4>
+          <div class="row-item"><span class="label">Indexacion por pregunta</span><span class="value"><span class="dot dot--bad"></span> imposible con anchors</span></div>
+          <div class="row-item"><span class="label">Contenido actualizado</span><span class="value"><span class="dot dot--warn"></span> hardcodeado en repo</span></div>
+          <div class="row-item"><span class="label">Accesibilidad</span><span class="value"><span class="dot dot--warn"></span> sidebar scroll roto</span></div>
+          <div class="row-item"><span class="label">Preguntas relacionadas</span><span class="value"><span class="dot dot--warn"></span> sin summary</span></div>
+          <div class="row-item"><span class="label">Busqueda FAQ</span><span class="value"><span class="dot dot--warn"></span"> FaqSearchBar con bug useRef</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 18%"></i></div>
+      <span class="counter">03 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 04 · HITO 1 MARZO-ABRIL -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>04 · Hito 1 · Marzo 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Marzo 2026 · el arranque</p>
+      <h2 class="heading">Tiramos la integracion con Salesforce Knowledge<br /><span style="color: var(--green-default)">en un solo PR</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">26 mar · <span class="mono">d7ea94f98</span></span>
+          <h3 class="subheading">FAQs con Salesforce Knowledge</h3>
+          <ul class="checks">
+            <li>Primer integracion de la pagina FAQ con Experience Cloud de Salesforce</li>
+            <li>Contenido viene del CRM, no del repo. El equipo de soporte puede actualizar sin tocar codigo</li>
+            <li>Base para SSR y rutas individuales que vendrian despues</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">20 mar · <span class="mono">6c0a54fad</span></span>
+          <h3 class="subheading">Blog: paginacion y breadcrumb</h3>
+          <ul class="checks">
+            <li>Paginacion de posts en /blog, breadcrumb navigation</li>
+            <li>Trabajo paralelo que despejo el path para el FAQ SSR</li>
+            <li>Layout alignment fix en blog</li>
+          </ul>
+          <p class="muted" style="margin-top: 12px;">El blog y el FAQ maduran en paralelo: los mismos patrones de SSR y breadcrumb se reusan en ambos.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>Decision clave</strong>: integrar Salesforce Experience Cloud en lugar de hardcodear el contenido. Esto desacoplo el equipo de soporte del ciclo de deploy.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 27%"></i></div>
+      <span class="counter">04 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 05 · HITO 2 ABRIL EARLY -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>05 · Hito 2 · Abril 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Abril 2026 · SSR + rutas individuales</p>
+      <h2 class="heading">SSR completo, rutas por FAQ<br /><span style="color: var(--green-default)">y rediseno UX con accesibilidad</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">16 abr · <span class="mono">e43d12346</span></span>
+          <h3 class="subheading">FAQ SSR completo + rutas individuales</h3>
+          <ul class="checks">
+            <li>Cada pregunta tiene su propia URL: <span class="mono">/ayuda/preguntas-frecuentes/slug</span></li>
+            <li>SSR habilitado: bots y buscadores ven el contenido completo</li>
+            <li>Mejoras SEO por ruta</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">17 abr · <span class="mono">77b6ee5f0</span></span>
+          <h3 class="subheading">Rediseno UX: accesibilidad y busqueda</h3>
+          <ul class="checks">
+            <li>FAQ refactorizado con componentes accesibles</li>
+            <li>Busqueda mejorada (FaqSearchBar con useRef correcto)</li>
+            <li>Fix sidebar scroll en mobile</li>
+          </ul>
+          <p class="muted" style="margin-top: 12px;">El rediseno fue incremental: cada PR apilaba sobre el anterior sin regresar.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 36%"></i></div>
+      <span class="counter">05 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 06 · HITO 3 ABRIL FINAL -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>06 · Hito 3 · Abril final</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Abril 2026 · subcategorias + fixes</p>
+      <h2 class="heading">Subcategorias Salesforce, FAQPage JSON-LD<br /><span style="color: var(--green-default)">y fix de imagenes en Experience Cloud</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">20 abr · <span class="mono">62345ec0e</span></span>
+          <h3 class="subheading">Subcategorias + FAQPage JSON-LD</h3>
+          <ul class="checks">
+            <li>Rediseno con subcategorias dinamicas desde Salesforce</li>
+            <li>FAQPage JSON-LD: cada pregunta respuesta en schema valido para rich results</li>
+            <li>SEO y accesibilidad como primera clase</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">27-29 abr · serie de fixes</span>
+          <h3 class="subheading">Polish y correcciones</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">9a86dc42a</span></strong>: summary en preguntas relacionadas (antes vacio)</li>
+            <li><strong><span class="mono">1f792e86f</span></strong>: useRef sin argumento en FaqSearchBar</li>
+            <li><strong><span class="mono">f59b7f2de</span></strong>: imagenes de FAQs via Experience Cloud Site publico (fix auth)</li>
+            <li><strong><span class="mono">b46e4d5d7</span></strong>: eliminar copiar enlace del accordion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 45%"></i></div>
+      <span class="counter">06 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 07 · HITO 4 MAYO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>07 · Hito 4 · Mayo 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Mayo 2026 · consolidacion final</p>
+      <h2 class="heading">PageSeo SSR-safe y metadata<br /><span style="color: var(--green-default)">actualizada en /blog y /ayuda</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">27 abr / 5 may</span>
+          <h3 class="subheading">PageSeo + metadata</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">af0af49d7</span></strong>: SSR-safe SEO slot PageSeo + migracion /ayuda/preguntas-frecuentes al nuevo sistema</li>
+            <li>Metadata renderiza en server: Google y otros bots ven el contenido sin ejecutar JS</li>
+            <li>Patron reusable para futuras paginas</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">8 may · <span class="mono">bbffb06e3</span></span>
+          <h3 class="subheading">Metadata SEO actualizada</h3>
+          <ul class="checks">
+            <li>title, description y og: tags actualizados en /blog y /ayuda/preguntas-frecuentes</li>
+            <li>Alineado con auditoria GSC realizada en mayo</li>
+            <li>CSP fix para dominios de Salesforce (connect-src)</li>
+          </ul>
+          <p class="muted" style="margin-top: 12px;">Este fue el ultimo PR del ciclo: dejo el FAQ en estado "production-ready" completo.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 54%"></i></div>
+      <span class="counter">07 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 08 · ANTES vs AHORA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>08 · Antes vs ahora</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Comparativa</p>
+      <h2 class="heading">Lo que cambio en el FAQ<br /><span style="color: var(--green-default)">entre enero y mayo 2026</span>.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead>
+          <tr><th style="width: 32%;">Aspecto</th><th>Antes (enero)</th><th>Ahora (mayo)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>URL por pregunta</td><td class="was">Hash anchor (#seccion)</td><td class="now">Ruta individual con SSR</td></tr>
+          <tr><td>Fuente de contenido</td><td class="was">Hardcodeado en repo</td><td class="now">Salesforce Knowledge (CRM)</td></tr>
+          <tr><td>SSR</td><td class="was">Client-only, bots veian vacio</td><td class="now">SSR completo con PageSeo</td></tr>
+          <tr><td>Subcategorias</td><td class="was">No existian</td><td class="now">Dinamicas desde Salesforce</td></tr>
+          <tr><td>Schema JSON-LD</td><td class="was">Ninguno</td><td class="now">FAQPage por pregunta</td></tr>
+          <tr><td>Imagenes</td><td class="was">Rotas (requerian auth)</td><td class="now">Via Experience Cloud publico</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 63%"></i></div>
+      <span class="counter">08 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 09 · VALOR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>09 · Valor aportado</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Impacto</p>
+      <h2 class="heading">Tres impactos concretos.</h2>
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card">
+          <span class="card__index">Defleccion de soporte</span>
+          <p class="body" style="margin: 8px 0 0;">El equipo de Salesforce puede actualizar respuestas sin tocar el repo ni generar un PR. La latencia entre "cambio de politica" y "usuario lo ve" paso de dias a minutos.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">SEO indexacion</span>
+          <p class="body" style="margin: 8px 0 0;">Cada pregunta tiene URL propia con SSR. Google puede indexar respuestas individuales. FAQPage JSON-LD habilita rich results en SERPs (fragmentos de preguntas). Metricas en ~60 dias.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Experiencia de usuario</span>
+          <p class="body" style="margin: 8px 0 0;">Subcategorias, busqueda funcional, imagenes que cargan, preguntas relacionadas con summary. El FAQ ahora se parece a un producto, no a un documento estatico.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--gray-3); border-radius: 14px; max-width: none;">
+        <strong>Honestidad</strong>: no tenemos metricas de defleccion antes/despues todavia. El equipo de Customer Support tiene los numeros de tickets. Propongo cruzar esa data con el equipo de CX para el proximo ciclo.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 72%"></i></div>
+      <span class="counter">09 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 · DECISIONES -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>10 · Decisiones</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Lo que necesitamos</p>
+      <h2 class="heading">Dos decisiones para la Fase 2.</h2>
+      <ol class="decisions" style="margin-top: 32px;">
+        <li>
+          <h3>Metricas de defleccion con CX</h3>
+          <p class="body" style="margin: 4px 0 0;">Para saber si el FAQ nuevo realmente deflecta tickets, necesitamos cruzar datos con el equipo de Customer Support: cuantos tickets tuvieron los temas que ahora estan en Salesforce. Propongo agendar esa reunion antes de comprometer Fase 2.</p>
+          <p class="ownership">Owner: PM + CX Lead · Agendar en 2 semanas</p>
+        </li>
+        <li>
+          <h3>Ownership del contenido de Salesforce</h3>
+          <p class="body" style="margin: 4px 0 0;">El desacoplamiento funciona solo si el equipo de soporte actualiza Salesforce proactivamente. Necesito confirmar que hay un responsable definido y con tiempo asignado para mantener el contenido.</p>
+          <p class="ownership">Owner: CX Lead + PM · Decision de ownership</p>
+        </li>
+        <li>
+          <h3>Busqueda semantica en FAQ</h3>
+          <p class="body" style="margin: 4px 0 0;">El FaqSearchBar actual es busqueda de texto plano. Hay una oportunidad de integrar busqueda semantica con el mismo modelo de Salesforce. Necesito alineacion con el TL de CX para evaluar el costo.</p>
+          <p class="ownership">Owner: TL + PM · Evaluar en proximo sprint</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>faq + ayuda · maduración 2026</span>
+      <div class="progress"><i style="--p: 90%"></i></div>
+      <span class="counter">10 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 · CIERRE -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>faq + ayuda · maduración 2026</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Cierre</p>
+      <h1 class="title">Tenemos la base tecnica.<br /><span style="color: var(--green-default)">Falta alinear ownership</span>.</h1>
+      <p class="lede">El FAQ esta en produccion con SSR, Salesforce y FAQPage JSON-LD. La Fase 2 depende de que CX asuma el ownership del contenido y de cruzar metricas de defleccion.</p>
+      <div class="card" style="margin-top: 32px; max-width: 640px;">
+        <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px;">Equipos que deben opinar antes de avanzar</h4>
+        <ul class="checks">
+          <li>Customer Experience / Support (ownership de contenido Salesforce)</li>
+          <li>PM (metricas de defleccion y prioridad Fase 2)</li>
+          <li>SEO externo (validar FAQPage strategy con la auditoria GSC)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Tickets clave</h4><p>EXA-1297, 1376, 1396, 1401, 1407</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Tech Lead</p></div>
+      <div class="meta__col"><h4>Contacto</h4><p>hernan.desouza@modo.com.ar</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 11</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) current = hash - 1;
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+  go(current);
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    if (e.key === 'p' || e.key === 'P') window.print();
+  });
+})();
+</script>
+</body>
+</html>
