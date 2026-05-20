@@ -9,16 +9,16 @@
       "name": "modo-deck",
       "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
       "filename": "modo-deck.zip",
-      "sha256_prefix": "8d9357bdf34b5ff4",
-      "size_kb": 58.0,
+      "sha256_prefix": "ab974a4139e924b7",
+      "size_kb": 90.7,
       "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
     },
     {
       "name": "modo-design-system",
       "description": "SDK/skill MODO-específico para generar páginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canónicos). Auto-invocar cuando el usuario pid",
       "filename": "modo-design-system.zip",
-      "sha256_prefix": "1bd1f035d232e409",
-      "size_kb": 46.2,
+      "sha256_prefix": "74bde57f7e377c7e",
+      "size_kb": 46.8,
       "install_hint": "unzip modo-design-system.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-design-system.skill ~/.claude/skills/modo-design-system"
     },
     {
@@ -68,6 +68,14 @@
       "sha256_prefix": "54a090ab3ef0f748",
       "size_kb": 5.4,
       "install_hint": "unzip agente-cx-whatsapp.zip -d ~/.claude/skills/ && mv ~/.claude/skills/agente-cx-whatsapp.skill ~/.claude/skills/agente-cx-whatsapp"
+    },
+    {
+      "name": "lectura-bionica",
+      "description": "Lectura biónica + lectura asistida para TDAH/dislexia aplicada a la salida de Claude y a archivos arbitrarios. Bold de la primera mitad de cada palabra ≥3 letras para crear un ancla visual que reduce ",
+      "filename": "lectura-bionica.zip",
+      "sha256_prefix": "324256f650455e92",
+      "size_kb": 7.8,
+      "install_hint": "unzip lectura-bionica.zip -d ~/.claude/skills/ && mv ~/.claude/skills/lectura-bionica.skill ~/.claude/skills/lectura-bionica"
     }
   ]
 }
