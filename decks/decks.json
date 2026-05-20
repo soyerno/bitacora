@@ -6,6 +6,21 @@
   },
   "decks": [
     {
+      "id": "accesibilidad-anclajes-mareos",
+      "title": "Modo sereno · anclajes, reduced motion, acelerómetro y navbar A11y",
+      "desc": "Segunda capa del programa de accesibilidad MODO. Punto de anclaje visual + reducción de movimiento + acelerómetro auto-detect en TypeScript + navbar con switch de lectura biónica y dropdown A11y que absorbe dark mode. Incluye demo interactivo con botones que activan las features en vivo. 16 slides, ~3 semanas, sin BE nuevo.",
+      "href": "decks/draft/accesibilidad-anclajes-mareos.html",
+      "status": "draft",
+      "audience": "Comité PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 16,
+      "topics": [
+        "accesibilidad",
+        "frontend"
+      ],
+      "featured": true
+    },
+    {
       "id": "accesibilidad-lectura-asistida-tdah",
       "title": "Lectura asistida en MODO · accesibilidad para TDAH y dislexia",
       "desc": "Propuesta de MVP para sumar dos modos opt-in en Configuración → Personalización: lectura biónica (bold sobre primera mitad de cada palabra) y lectura extendida (control de densidad tipográfica). 4 semanas, sin BE nuevo, target WCAG 2.2 AA en pantallas de texto largo.",
