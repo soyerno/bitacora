@@ -367,7 +367,7 @@
   .pillar-detail {
     display: grid;
     grid-template-columns: 1fr 1.1fr;
-    gap: 56px;
+    gap: 48px;
     height: 100%;
     align-items: center;
   }
@@ -375,17 +375,26 @@
     background: var(--paper);
     border: 1px solid var(--border-soft);
     border-radius: 14px;
-    padding: 24px;
+    padding: 18px 20px;
   }
   .pillar-detail__evidence h4 {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--green-default);
-    margin: 0 0 12px;
+    margin: 0 0 8px;
   }
-  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+  .pillar-detail__evidence ul.checks li {
+    padding: 4px 0 4px 24px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .pillar-detail__evidence ul.checks li::before {
+    top: 10px;
+    width: 10px; height: 10px;
+  }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 10px; }
 
   /* Phase timeline */
   .timeline {
@@ -635,6 +644,7 @@
 </style>
 <script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
 <link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
 </head>
 <body>
 <nav class="deck-crumb" aria-label="Breadcrumb">
@@ -709,7 +719,7 @@
 
     <div class="slide__body">
       <p class="eyebrow">La recomendación · estimación asistida por IA</p>
-      <h1 class="title" style="font-size: clamp(42px, 4.8vw, 70px); max-width: 24ch;">Subir Next a 15 para destrabar <span style="color: var(--green-default)">SSR sin romper la UX</span>. De paso, limpiamos 2 deudas más.</h1>
+      <h1 class="title" style="font-size: clamp(42px, 4.8vw, 70px); max-width: 24ch;">Subir Next a 16 para destrabar <span style="color: var(--green-default)">SSR sin romper la UX</span>. De paso, limpiamos 2 deudas más.</h1>
 
       <div class="grid-3" style="margin-top: 32px;">
         <div class="stat">
@@ -730,7 +740,7 @@
       </div>
 
       <p class="body" style="margin-top: 32px; max-width: 80ch;">
-        <strong>Por qué juntas</strong>: la necesidad real arrancó por GEO (necesitamos SSR para que los buscadores IA nos vean). Al ir a hacerlo, descubrimos que rompe la UX humana en Next 12. El upgrade a 15 lo resuelve. Y ya que tocamos el motor a fondo, vale aprovechar para limpiar las otras 2 deudas que vienen arrastrándose.
+        <strong>Por qué juntas</strong>: la necesidad real arrancó por GEO (necesitamos SSR para que los buscadores IA nos vean). Al ir a hacerlo, descubrimos que rompe la UX humana en Next 12. El upgrade a 16 lo resuelve. Y ya que tocamos el motor a fondo, vale aprovechar para limpiar las otras 2 deudas que vienen arrastrándose.
       </p>
     </div>
 
@@ -768,11 +778,11 @@
 
         <div class="card" style="background: var(--gray-3); border-color: transparent;">
           <span class="card__index" style="color: var(--gray-60);">Lo que tenemos hoy</span>
-          <h3 class="subheading" style="font-size: 19px;">Render mixto SSR + client en Next 12.</h3>
+          <h3 class="subheading" style="font-size: 19px;">Render mayormente cliente en Next 12.</h3>
           <ul class="checks checks--neutral" style="margin-top: 8px;">
             <li>Pages Router con <span class="mono">getServerSideProps</span> / <span class="mono">getStaticProps</span> en algunas rutas.</li>
-            <li>Bastante contenido se monta en cliente después de hydration.</li>
-            <li>Rutas como <span class="mono">/aprende-con-modo</span> y <span class="mono">/blog</span> entregan body vacío al crawler.</li>
+            <li>Prácticamente <strong>solo <span class="mono">/blog/[slug]</span> entrega body SSR</strong> útil al crawler.</li>
+            <li>El resto de las rutas devuelven shell vacío y arman el contenido en cliente tras hydration.</li>
           </ul>
         </div>
       </div>
@@ -833,18 +843,18 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 5: PILAR 01 · NEXT 15 ====== -->
+  <!-- ====== SLIDE 5: PILAR 01 · NEXT 16 ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span>05 · Pilar 01</span>
       <span>Framework</span>
     </div>
 
-    <div class="pillar-detail" style="padding-top: 32px;">
+    <div class="pillar-detail">
       <div>
         <p class="eyebrow">Pilar 01 · Framework</p>
         <div class="num num--xl num--accent">12 → 16</div>
-        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Subir Next.js a la versión actual,<br />en Pages Router.</h2>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Subir Next.js a la versión actual,<br />en Pages Router.</h2>
         <p class="body" style="max-width: 50ch;">Salto incremental con codemods oficiales (<span class="mono">12 → 13 → 14 → 15 → 16</span>). Pages Router intacto. <strong>El codemod soporta saltar directo a 16</strong> (<span class="mono">@next/codemod upgrade latest</span>), pero hacerlo incremental nos deja validar build entre cada step y aislar fallos. Para un repo de este tamaño la chain es la práctica segura.</p>
         <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">~2 días con IA</span>
@@ -864,14 +874,14 @@
             <li><strong>Base para Fase 2</strong>: App Router y RSC quedan como opción cuando los necesitemos.</li>
           </ul>
         </div>
-        <div class="pillar-detail__evidence" style="background: #FFF1C8; border-color: transparent;">
-          <h4 style="color: #5C3F00;">Lo que el upgrade arrastra · scope ampliado en Next 16</h4>
-          <ul class="checks" style="margin-top: 4px;">
-            <li><strong>React 19.2</strong> ya no es opcional. Next 16 lo requiere, sube en el mismo PR.</li>
-            <li><strong>Turbopack es default</strong>. Si hay custom webpack config, migrar o usar flag <span class="mono">--webpack</span>.</li>
-            <li><strong><span class="mono">next lint</span> eliminado</strong>. Codemod migra a ESLint CLI directo.</li>
-            <li><strong><span class="mono">middleware.ts</span> → <span class="mono">proxy.ts</span></strong>. Codemod renombra archivos y funciones.</li>
-            <li><strong>Node 20.9+ obligatorio</strong> (ya estamos en 22.22, OK). AMP eliminado (no usamos, OK).</li>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que arrastra el upgrade a 16</h4>
+          <ul class="checks checks--neutral" style="margin-top: 4px;">
+            <li><strong>React 19.2</strong> ya no es opcional, sube en el mismo PR.</li>
+            <li><strong>Turbopack default</strong>. Custom webpack: migrar o flag <span class="mono">--webpack</span>.</li>
+            <li><strong><span class="mono">next lint</span> eliminado</strong>, codemod migra a ESLint CLI.</li>
+            <li><strong><span class="mono">middleware.ts</span> → <span class="mono">proxy.ts</span></strong> (codemod automático).</li>
+            <li><strong>Node 20.9+</strong> (ya estamos en 22.22). AMP eliminado (no usamos).</li>
           </ul>
         </div>
       </div>
@@ -891,11 +901,11 @@
       <span>UI library</span>
     </div>
 
-    <div class="pillar-detail" style="padding-top: 32px;">
+    <div class="pillar-detail">
       <div>
         <p class="eyebrow">Pilar 02 · UI library</p>
         <div class="num num--xl num--accent">0</div>
-        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Consumidores externos de<br /><span class="mono" style="font-size: 0.7em">modo-ui-lib-web</span>.</h2>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Consumidores externos de<br /><span class="mono" style="font-size: 0.7em">modo-ui-lib-web</span>.</h2>
         <p class="body" style="max-width: 50ch;">La lib se publica en GitHub Packages, requiere auth con PAT, tiene su propio CI, sus propios version bumps. Y la consume <strong>un solo proyecto</strong>: este.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">~3 días con IA</span>
@@ -940,11 +950,11 @@
       <span>Styling</span>
     </div>
 
-    <div class="pillar-detail" style="padding-top: 32px;">
+    <div class="pillar-detail">
       <div>
         <p class="eyebrow">Pilar 03 · Styling</p>
         <div class="num num--xl num--accent">4 → 1</div>
-        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Sistemas de styling.</h2>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Sistemas de styling.</h2>
         <p class="body" style="max-width: 50ch;">Hoy conviven <span class="mono">styled-components</span>, <span class="mono">@emotion</span>, CSS modules y Tailwind. Tailwind ya es el primario. Deprecamos los otros tres.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">~1.5 a 2 semanas con IA</span>
@@ -964,9 +974,9 @@
             <li>Borrar archivos <span class="mono">*.module.css</span> conforme se migran.</li>
           </ul>
         </div>
-        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
-          <h4 style="color: var(--green-dark);">Qué ganamos</h4>
-          <ul class="checks">
+        <div class="pillar-detail__evidence">
+          <h4>Qué ganamos</h4>
+          <ul class="checks checks--neutral">
             <li>Bundle más chico (3 runtimes menos).</li>
             <li>1 forma de stylar para nuevos devs.</li>
             <li>Base lista para Tailwind 4 cuando llegue (Fase 4).</li>
@@ -999,7 +1009,7 @@
           <span class="phase__num">01</span>
           <span class="phase__weeks">Semana 1 · días 1–2</span>
           <h3 class="phase__title">Next 12 → 16</h3>
-          <p class="phase__body">Codemods <span class="mono">12→13→14→15</span>, fix breaking changes con Claude Code, smoke en QA, PR a main. ~1.5 días.</p>
+          <p class="phase__body">Codemods <span class="mono">12→13→14→15→16</span>, fix breaking changes con Claude Code, smoke en QA, PR a main. ~1.5 días.</p>
         </div>
 
         <div class="phase">
@@ -1175,7 +1185,7 @@
         <tbody>
           <tr>
             <td><strong>01 · Next 16</strong><br /><span class="muted" style="font-size:12px">~1.5 días con IA</span></td>
-            <td>Codemods <span class="mono">12→13→14→15</span>. Claude Code resuelve breaking changes residuales en <span class="mono">next/image</span>, <span class="mono">next/link</span>, <span class="mono">next.config.js</span>.</td>
+            <td>Codemods <span class="mono">12→13→14→15→16</span>. Claude Code resuelve breaking changes residuales en <span class="mono">next/image</span>, <span class="mono">next/link</span>, <span class="mono">next.config.js</span>.</td>
             <td><span class="dot dot--warn"></span> <span class="mono">modo-ui-lib-web</span> incompat → pin a Next 14.</td>
             <td><span class="mono">git revert</span> + Helm rollback. &lt;10 min.</td>
           </tr>
@@ -1473,5 +1483,6 @@
 </script>
 
 <script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
 </body>
 </html>
