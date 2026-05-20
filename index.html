@@ -388,6 +388,36 @@
       margin-bottom: 16px;
     }
 
+    .tool-category { margin-bottom: 36px; }
+
+    .tool-category-name {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      padding-top: 8px;
+    }
+
+    .tool-meta-tag {
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted);
+      background: var(--border);
+      padding: 1px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.02em;
+    }
+
+    .tool-meta-tag.mcp { background: var(--rfc-bg); color: var(--rfc-fg); }
+    .tool-meta-tag.plugin { background: var(--accent-light); color: var(--accent); }
+    .tool-meta-tag.external { background: var(--draft-bg); color: var(--draft-fg); }
+
     .skills-heading {
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
@@ -784,16 +814,34 @@
   <section class="rfcs-section" aria-label="Catálogo de RFCs">
     <p class="section-label">Catálogo</p>
     <h2 class="featured-heading">RFCs &middot; Documentos técnicos</h2>
-    <p class="featured-subtitle">18 RFCs vivos en Drive. Este index los ordena por fecha, los deduplica por concepto (la saga &laquo;Migración modo-landing&raquo; colapsa 14 versiones en una sola entrada) y enlaza la versión más reciente de cada uno.</p>
+    <p class="featured-subtitle">19 RFCs vivos en Drive y en este repo. El index los ordena por fecha, los deduplica por concepto (la saga &laquo;Migración modo-landing&raquo; colapsa 14 versiones en una sola entrada) y enlaza la versión más reciente de cada uno.</p>
 
     <div class="tabs" role="tablist" data-scope="rfcs">
-      <button class="tab active" data-rfc-stage="all" role="tab">Todos <span class="count">18</span></button>
+      <button class="tab active" data-rfc-stage="all" role="tab">Todos <span class="count">19</span></button>
+      <button class="tab" data-rfc-stage="draft" role="tab">Draft <span class="count">1</span></button>
       <button class="tab" data-rfc-stage="rfc" role="tab">RFC <span class="count">10</span></button>
       <button class="tab" data-rfc-stage="completo" role="tab">Completo <span class="count">6</span></button>
       <button class="tab" data-rfc-stage="archivado" role="tab">Archivado <span class="count">2</span></button>
     </div>
 
     <div class="rfc-list">
+
+      <div class="rfc-item" data-rfc-stage="draft">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R19</span>
+            <span class="status-badge draft">Draft</span>
+          </div>
+          <div class="deck-title">Auto-sync de rfcs.json desde Google Drive</div>
+          <div class="deck-description">Skill <code>/modo-rfc-sync</code> que lee Drive, deduplica versiones de la saga modo-landing, genera summaries vía Haiku y regenera el catálogo. Saca el mantenimiento manual de encima.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">tooling</span>
+            <span class="meta-tag drive-tag">Repo</span>
+            <span>2026-05-20</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://github.com/SoyErnoModo/modo-decks/blob/main/rfcs/RFC-modo-rfc-sync-skill.md">abrir RFC &#8599;</a>
+      </div>
 
       <div class="rfc-item" data-rfc-stage="completo">
         <div>
@@ -1127,69 +1175,375 @@
     </p>
   </section>
 
-  <!-- SKILLS SECTION -->
-  <section class="skills-section">
-    <p class="section-label">Herramientas</p>
-    <h2 class="skills-heading">Hecho con Claude Code &middot; skills utilizados</h2>
+  <!-- TOOLS CATALOG SECTION -->
+  <section class="skills-section" aria-label="Catálogo de herramientas">
+    <p class="section-label">Catálogo</p>
+    <h2 class="skills-heading">Herramientas &middot; mi stack en Claude Code</h2>
     <p class="skills-intro">
-      Cada deck se genera con la skill <code>modo-deck</code> como orquestadora y un conjunto de skills auxiliares que garantizan calidad de diseno, prose discipline y brand fidelity. La version final se versiona en este repo. Las decisiones de comms y voz estan ancladas en el skill <code>modo-deck</code>.
+      Skills, MCPs y plugins que uso día a día en Claude Code para sostener el trabajo de TL en MODO. Agrupados por uso real, no por orden alfabético. Cada uno se invoca por slash o auto-trigger según corresponda. Markers: <span class="tool-meta-tag mcp">MCP</span> servidor MCP &middot; <span class="tool-meta-tag plugin">plugin</span> plugin Claude Code &middot; <span class="tool-meta-tag external">github</span> skill comunitario externo.
     </p>
 
-    <div class="skills-grid">
+    <!-- CATEGORY 1: MODO -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">MODO &middot; skills y MCPs propios</h3>
+      <div class="skills-grid">
 
-      <div class="skill-item">
-        <div class="skill-name"><code>modo-deck</code> &mdash; orquestadora</div>
-        <div class="skill-desc">Genera presentaciones HTML branded MODO con voz rioplatense, comms discipline y storytelling Pyramid Principle. Punto de entrada para todo deck en este repo.</div>
-      </div>
-
-      <div class="skill-item">
-        <div class="skill-name"><code>modo-design-system</code></div>
-        <div class="skill-desc">SDK MODO para generar paginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canonicos). Auto-invocable para paginas en cualquier repo del workspace MODO.</div>
-      </div>
-
-      <div class="skill-item">
-        <div class="skill-name">
-          <code>impeccable</code>
-          <a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener">github &rarr;</a>
+        <div class="skill-item">
+          <div class="skill-name"><code>modo-deck</code></div>
+          <div class="skill-desc">Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.</div>
         </div>
-        <div class="skill-desc">Skill de Phil Bakaus para diseno frontend production-grade. Aplica anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.</div>
-      </div>
 
-      <div class="skill-item">
-        <div class="skill-name">
-          <code>taste-skill</code>
-          <a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener">github &rarr;</a>
+        <div class="skill-item">
+          <div class="skill-name"><code>modo-design-system</code></div>
+          <div class="skill-desc">SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.</div>
         </div>
-        <div class="skill-desc">Skill de Leonxlnx con anti-slop frontend rules. Evita over-design y mantiene la interfaz limpia y funcional.</div>
-      </div>
 
-      <div class="skill-item">
-        <div class="skill-name">
-          <code>ui-ux-pro-max</code>
-          <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener">github &rarr;</a>
+        <div class="skill-item">
+          <div class="skill-name"><code>modo-tech-architect</code></div>
+          <div class="skill-desc">PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.</div>
         </div>
-        <div class="skill-desc">Skill de NextLevelBuilder con 161 paletas, 57 font pairings, 50+ estilos de UI. Referencia de composicion visual y tipografia.</div>
-      </div>
 
-      <div class="skill-item">
-        <div class="skill-name"><code>writing-clearly-and-concisely</code></div>
-        <div class="skill-desc">Strunk para prose: una claim por oracion, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir, sin padding.</div>
-      </div>
+        <div class="skill-item">
+          <div class="skill-name"><code>modo-code-review-checklist</code></div>
+          <div class="skill-desc">Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.</div>
+        </div>
 
-      <div class="skill-item">
-        <div class="skill-name"><code>storyblok</code> &mdash; MCP server</div>
-        <div class="skill-desc">Acceso al CMS de MODO. Permite leer y escribir contenido del sitio directamente desde el agente durante la generacion del deck cuando se necesita contexto real.</div>
-      </div>
+        <div class="skill-item">
+          <div class="skill-name"><code>modo-promos</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo <code>mcp__modo-promos__*</code>.</div>
+        </div>
 
-      <div class="skill-item">
-        <div class="skill-name"><code>chrome-devtools</code> &mdash; MCP server</div>
-        <div class="skill-desc">Para capturar screenshots reales de paginas en localhost o produccion. Garantiza que los decks con capturas de pantalla usen imagenes reales, no mocks.</div>
-      </div>
+        <div class="skill-item">
+          <div class="skill-name"><code>consultar-promos-modo</code></div>
+          <div class="skill-desc">Capa NL sobre <code>modo-promos</code>. Mapea preguntas humanas ("¿qué descuentos hay hoy en supermercados?") a las tools correctas del MCP.</div>
+        </div>
 
+        <div class="skill-item">
+          <div class="skill-name"><code>simular-compra-agentica</code></div>
+          <div class="skill-desc">Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>agente-cx-whatsapp</code></div>
+          <div class="skill-desc">Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo "levantar el agente cx".</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 2: AI workflow + memoria -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">AI &middot; workflow + memoria + agentes</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>ruflo</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Memoria persistente (sql.js + HNSW + ONNX), swarm coordinator, autopilot y federation cross-installation. Backend único de memoria user-level.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>claude-api</code></div>
+          <div class="skill-desc">Build/debug apps con Claude API + Anthropic SDK. Maneja prompt caching, tool use, batch, files, citations y migración entre versiones de modelo.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>mcp-builder</code></div>
+          <div class="skill-desc">Diseñar, construir y testear MCP servers custom con tools, resources y prompts para extender capabilities de agentes.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>skill-creator</code></div>
+          <div class="skill-desc">Crear skills nuevos (o actualizar existentes) que extienden Claude con conocimiento especializado, workflows o integraciones.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>sdd-*</code> &middot; explore / propose / design / tasks / apply / verify / archive</div>
+          <div class="skill-desc">Spec-Driven Development en MODO. Obligatorio para cambios en <code>/comercios</code> y features no-triviales: spec antes de código, verify después.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>brainstorming</code></div>
+          <div class="skill-desc">Explorar intent + requirements + design ANTES de implementar. Bloquea cualquier feature/componente/behavior nuevo hasta tener intent claro.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>doc-coauthoring</code></div>
+          <div class="skill-desc">Workflow estructurado para escribir docs, proposals, technical specs y decision docs. Transfer de contexto + iteración + verificación con readers.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>caveman</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 3: Frontend diseño + UX -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">Frontend &middot; diseño y UX</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>impeccable</code><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div>
+          <div class="skill-desc">Skill de Phil Bakaus para frontend production-grade. Anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>taste-skill</code><a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div>
+          <div class="skill-desc">Anti-slop frontend rules de Leonxlnx. Evita over-design y mantiene interfaces limpias y funcionales.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>ui-ux-pro-max</code><a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div>
+          <div class="skill-desc">161 paletas, 57 font pairings, 50+ estilos de UI (NextLevelBuilder). Referencia para composición visual y tipografía.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>frontend-design</code></div>
+          <div class="skill-desc">Diseño visual + interacción para web. Cobertura amplia: layouts, hierarchy, motion, micro-interactions.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>web-design-guidelines</code></div>
+          <div class="skill-desc">Review de UI contra Web Interface Guidelines. Trigger en frases tipo "review my UI", "check accessibility", "audit design".</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>react-doctor</code></div>
+          <div class="skill-desc">Catch React issues early después de cambios. Se invoca al revisar código, terminar features o fixear bugs en proyectos React.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 4: Frontend code quality + migraciones -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">Frontend &middot; code quality + migraciones</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>next-best-practices</code></div>
+          <div class="skill-desc">Next.js file conventions, RSC boundaries, data patterns, async APIs, metadata, route handlers, image/font optimization.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:react-best-practices</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Guidelines de Vercel Engineering para perf React/Next: rendering strategies, bundle, caching, data fetching.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>typescript-strict-mode</code></div>
+          <div class="skill-desc">Migrar codebases existentes a strict mode sin romper la app. Pattern incremental con feature flags.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>sonar-best-practices</code></div>
+          <div class="skill-desc">Reglas SonarQube/SonarCloud para JS/TS/React. Auto-invoca al escribir JS/TS o crear componentes React.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>tailwind-3-to-4-migration</code></div>
+          <div class="skill-desc">Tailwind v3 → v4 con CSS-first config. Después de consolidar styled-components.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>styled-components-to-tailwind</code></div>
+          <div class="skill-desc">Consolidar 3 sistemas (Styled Components 5.2 + Emotion 11 + Tailwind 3) en Tailwind-only. Migración componente por componente.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>nextjs-12-to-15-migration</code></div>
+          <div class="skill-desc">Guía step-by-step Next.js 12 → 15 con coexistencia Pages Router. Breaking changes + estrategia gradual hacia App Router.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>bundle-size-optimization</code></div>
+          <div class="skill-desc">Análisis y refactor para bajar bundle size. Tree-shaking checks, dynamic imports, dependencies audit.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 5: Code review + security -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">Code review + security</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>guardia</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Full parallel sub-agent review: SonarCloud, tests, React Doctor, security, CI/CD, bundle size. Trigger <code>/guardia &lt;pr&gt;</code>.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>pr-quality-review</code></div>
+          <div class="skill-desc">Review rápido de metadata + code quality + SonarCloud + arch + SEO + a11y. Output Slack-ready.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>code-review-excellence</code></div>
+          <div class="skill-desc">Code review guidance multi-stack: React, Vue, Angular, Svelte, Rust, TS, Java, Python, Go, NestJS. Catch bugs + improve quality.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>frontend-security-checklist</code></div>
+          <div class="skill-desc">Checklist OWASP-aligned para frontend. XSS, CSRF, secrets, auth flows, dependencias inseguras.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>github-actions-security</code></div>
+          <div class="skill-desc">Securing GitHub Actions workflows: pin actions, secrets scope, OIDC, supply chain attacks.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>csp-hardening</code></div>
+          <div class="skill-desc">Content Security Policy hardening. Audit headers actuales y plan de migración a strict CSP sin romper third-parties.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 6: MCPs productividad -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">MCPs &middot; productividad y workspace</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Atlassian</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Jira issues + Confluence pages. Crear/editar issues COENXT/EXA, leer wiki, transicionar status, comentar.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Google Drive</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Search files + read content. La fuente que construyó el catálogo de RFCs en esta misma página.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Gmail</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Threads, labels, drafts, search. Para comms internas que no caen en Slack.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Google Calendar</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Events, scheduling, suggest_time. Útil para coordinar revisiones de RFC con stakeholders.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Slack</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Read channels + send messages + canvas. Pegar resultados de <code>pr-quality-review</code> directo al canal.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Amplitude</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Product analytics + experiments. Charts, cohorts, dashboards, session replays, A/B tests.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>Storyblok</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">CMS de MODO hosted en mcp.labs.storyblok.com. Leer y escribir contenido del sitio desde el agente.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>chrome-devtools</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Browser automation, screenshots, Lighthouse audits, network inspection, console messages. Wrappeado con caveman para ahorrar tokens.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>gscServer</code><span class="tool-meta-tag mcp">MCP</span></div>
+          <div class="skill-desc">Google Search Console. Performance, indexing issues, sitemap status, advanced search analytics, batch URL inspection.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 7: Vercel -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">Vercel &middot; deploy y plataforma</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:deploy</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Deploy a Vercel (preview o prod). Default preview, pass "prod" para production.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:nextjs</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Next.js patterns optimizados para Vercel: ISR, edge runtime, image optimization.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:ai-sdk</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Vercel AI SDK patterns para apps con LLMs streaming + tool use.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:vercel-functions</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Edge + serverless functions. Cuándo usar cada runtime, cómo configurar regiones y caching.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:env</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Environment variables management: scopes (dev/preview/prod), secrets, runtime vs build-time.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>vercel:vercel-firewall</code><span class="tool-meta-tag plugin">plugin</span></div>
+          <div class="skill-desc">Firewall config para bloquear bots, rate limiting, geo restrictions, custom rules.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CATEGORY 8: Design + comms + output -->
+    <div class="tool-category">
+      <h3 class="tool-category-name">Design + comms + output</h3>
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-name"><code>design</code></div>
+          <div class="skill-desc">Brand identity, design tokens, logo generation (55 styles, Gemini), CIP (50 deliverables), HTML presentations, banners, icons, social photos.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>slides</code></div>
+          <div class="skill-desc">HTML presentations con Chart.js, design tokens, layouts responsive y copywriting formulas. Base de los decks de este repo.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>banner-design</code></div>
+          <div class="skill-desc">Banners para social media, ads, web heroes y print. Múltiples direcciones de arte con AI-generated visuals.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>writing-clearly-and-concisely</code></div>
+          <div class="skill-desc">Strunk para prose: una claim por oración, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>internal-comms</code></div>
+          <div class="skill-desc">Status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, project updates. Formato que el management ya espera.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>brand</code></div>
+          <div class="skill-desc">Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Anchor para todo material externo.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>theme-factory</code></div>
+          <div class="skill-desc">Aplicar themes pre-set (10 colores/fonts) a artifacts: slides, docs, reportings, landings HTML. Generar themes on-the-fly también.</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-name"><code>pdf</code> &middot; <code>docx</code> &middot; <code>pptx</code> &middot; <code>xlsx</code></div>
+          <div class="skill-desc">Toolkits de manipulación de formatos. PDF (extract + forms), DOCX (tracked changes), PPTX (layouts), XLSX (formulas + viz).</div>
+        </div>
+
+      </div>
     </div>
 
     <p class="skills-note">
-      Regla operativa: cada deck se versiona en <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>. Las decisiones de comms y voz se anclan en el skill <code>modo-deck</code>. Para generar un deck nuevo: <code>/modo-deck</code> en Claude Code, contexto del deck, y el agente orquesta el resto.
+      Regla operativa: cada deck/RFC se versiona en <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>. Las decisiones de comms y voz se anclan en el skill <code>modo-deck</code>. Para sumar herramientas al catálogo: editar <code>index.html</code> &mdash; o esperar al skill <code>/modo-rfc-sync</code> (ver <a href="#" onclick="document.querySelector('[data-rfc-stage=\'draft\']').scrollIntoView({behavior:'smooth'}); return false;">R19 en este index</a>).
     </p>
   </section>
 

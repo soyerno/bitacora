@@ -7,6 +7,17 @@
   },
   "rfcs": [
     {
+      "number": "R19",
+      "slug": "modo-rfc-sync-skill",
+      "title": "Auto-sync de rfcs.json desde Google Drive",
+      "summary": "Skill /modo-rfc-sync que lee Drive, deduplica versiones de la saga modo-landing, genera summaries vía Haiku y regenera el catálogo. Saca el mantenimiento manual de encima.",
+      "status": "draft",
+      "tags": ["tooling", "ai"],
+      "area": "tooling",
+      "date": "2026-05-20",
+      "repo_url": "https://github.com/SoyErnoModo/modo-decks/blob/main/rfcs/RFC-modo-rfc-sync-skill.md"
+    },
+    {
       "number": "R01",
       "slug": "modo-for-agents",
       "title": "MODO for Agents · Pagos agénticos",
