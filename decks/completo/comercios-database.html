@@ -190,12 +190,13 @@
     <div class="slide__body" style="justify-content: center;">
       <p class="eyebrow">Fase 2 · /comercios · Q2-Q4 2026</p>
       <h1 class="title">De 200 merchants<br /><span style="color: var(--green-default)">ruidosos a catalogo</span> canonico.</h1>
-      <p class="lede">El MVP de /comercios ya esta shipped y tiene 51k impresiones/mes en GSC. Falta el motor: el dataset. Propongo las tres versiones para cerrarlo.</p>
+      <p class="lede">El MVP de /comercios esta en preprod (51k impresiones/mes en la ruta actual de GSC). Falta el motor: el dataset. Propongo las tres versiones para cerrarlo.</p>
+      <p class="muted" style="margin-top: 16px; padding: 10px 14px; background: var(--gray-3); border-radius: 8px; max-width: 70ch;"><span class="sigil"></span><strong>Asume MVP releasado a prod</strong> (decisiones del deck <em>comercios-mvp</em> resueltas: release POC + 301 legacy /comercios → /modo-en-tu-comercio + migracion scope EXA → COENXT).</p>
     </div>
     <div class="meta">
       <div class="meta__col"><h4>Audiencia</h4><p>Comite mixto · PM · TL · Manager</p></div>
       <div class="meta__col"><h4>Autor</h4><p>Hernan De Souza · COENXT board</p></div>
-      <div class="meta__col"><h4>Fecha</h4><p>2026-05-20 · branch feat/comercios-mvp-2026-05-15</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>2026-05-20 · base: branch feat/comercios-mvp-2026-05-15 (MVP)</p></div>
     </div>
   </section>
 
@@ -210,9 +211,9 @@
       <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 22ch;">Construir el<br /><span style="color: var(--green-default)">catalogo en 3 versiones</span> trimestrales.</h1>
       <div class="grid-3" style="margin-top: 40px;">
         <div class="stat">
-          <span class="stat__label">GSC impresiones /comercios</span>
+          <span class="stat__label">GSC impresiones /comercios (legacy)</span>
           <span class="num num--md stat__value">51k</span>
-          <p class="muted">/28 dias · CTR 0.72% · posicion media 2.5 · el SERP nos encuentra pero no convertimos</p>
+          <p class="muted">/28 dias · CTR 0.72% · posicion media 2.5 · medido sobre la ruta legacy actual · baseline para validar el lift post-release del MVP</p>
         </div>
         <div class="stat">
           <span class="stat__label">Gap actual</span>
@@ -247,7 +248,7 @@
       <div class="stack-today">
         <div class="stack-block">
           <h4>Sintomas observados en GSC (28 dias)</h4>
-          <div class="row-item"><span class="label">/comercios · 51k impresiones</span><span class="value"><span class="dot dot--warn"></span> CTR 0.72% · solo 10 merchants curados</span></div>
+          <div class="row-item"><span class="label">/comercios · 51k impresiones (legacy)</span><span class="value"><span class="dot dot--warn"></span> CTR 0.72% · ~10 curados + ~190 ruidosos via regex composer</span></div>
           <div class="row-item"><span class="label">/promos/changomas-mar26</span><span class="value"><span class="dot dot--bad"></span> 28k impresiones · URL estacional muere por mes</span></div>
           <div class="row-item"><span class="label">Queries "modo coto" (215 clicks)</span><span class="value"><span class="dot dot--bad"></span> Sin URL canonica viva en /comercios/coto</span></div>
           <div class="row-item"><span class="label">Entidades en mock.ts</span><span class="value"><span class="dot dot--bad"></span> "Bolivia" · "Csi" · "Audio" · "Navbar"</span></div>
@@ -293,7 +294,7 @@
           <span class="card__index">Equity desperdigada</span>
           <h3 class="subheading">/promos/changomas-mar26 muere cada mes</h3>
           <ul class="checks">
-            <li>28k impresiones en una URL estacional que se 404 el mes siguiente.</li>
+            <li>Query <strong>"changomas"</strong> genera ~73k impresiones/mes en GSC. La URL especifica <strong>/promos/changomas-mar26</strong> captura 28k de esas impresiones y se 404 el mes siguiente.</li>
             <li>Si ese equity fuera a /comercios/changomas, seria una URL que crece con el tiempo.</li>
             <li>Plan 301: /promos/[slug]-[mes] → /comercios/[slug] recuperaria ~3000 clicks/mes acumulados.</li>
           </ul>
@@ -464,8 +465,8 @@
         <div class="phase__total">
           <span class="phase__weeks">Total estimado</span>
           <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~35d</span>
-          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">dev en 3 trims</span>
-          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Sin coordinacion critica excepto stores-api access en V1.</span>
+          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">dev · ~7 sem calendar</span>
+          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Distribuido Q2-Q4 por coordinacion externa (stores-api owner V1, validacion SEO V2, promos-hub-site V3). No por capacity.</span>
         </div>
       </div>
       <div class="grid-2" style="margin-top: 24px; gap: 20px;">
@@ -513,6 +514,7 @@
           <ul class="checks checks--neutral">
             <li>Crear stores-api ni cambiar su modelo de datos (readonly consumer)</li>
             <li>Admin UI para merchants (es un proyecto separado)</li>
+            <li>Hubs por banco /comercios/banco/[banco] × 25 (queda como gap del MVP · proyecto separado post-V2 cuando ya hay banks normalizados)</li>
             <li>Integracion con Google Business Profile (post-V3 si hay traccion)</li>
             <li>Ratings o resenas de usuarios (requiere moderacion · out of scope)</li>
             <li>Paginas /comercios en promos-hub-site (ese proyecto tiene su propio roadmap)</li>
@@ -589,22 +591,27 @@
     </div>
     <div class="slide__body">
       <p class="eyebrow">Antes de arrancar</p>
-      <h2 class="heading">Tres decisiones para que V1 arranque en Q2.</h2>
-      <ol class="decisions" style="margin-top: 32px;">
-        <li>
-          <h3>Gestionar acceso a stores-api desde modo-landing</h3>
-          <p class="body" style="margin: 4px 0 0;">El token de acceso a stores-api desde modo-landing tiene que crearse y rotarse en SOPS. Necesito que el backend owner de stores-api esté en el loop antes de arrancar V1.F0 (audit de contratos de la API).</p>
-          <p class="ownership">Owner: TL · backend stores-api owner · Infra/SOPS</p>
+      <h2 class="heading" style="font-size: clamp(24px, 2.6vw, 36px); margin-bottom: 8px;">Cuatro decisiones para que V1 arranque en Q2.</h2>
+      <ol class="decisions" style="margin-top: 8px;">
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 16px;">Prerrequisito heredado del MVP: release POC + 301 legacy</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 13px; line-height: 1.45;">V1 monta sobre el chasis del MVP. Hasta que /comercios POC no esté en prod (con 301 legacy a /modo-en-tu-comercio resuelto), no hay sobre qué materializar el BFF. Decisión que vive en el deck <em>comercios-mvp</em>, bloqueante de V1.F0.</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: PM + TL del MVP · Deadline sugerido: 2026-05-23</p>
         </li>
-        <li>
-          <h3>Priorizar V1 en el backlog Q2 del COENXT board</h3>
-          <p class="body" style="margin: 4px 0 0;">El backlog COENXT ya tiene los tickets pre-creados (ver doc 09-jira-backlog.md). Necesito que el PM los priorice contra el resto del backlog para poder arrancar el sprint de ~11 dias.</p>
-          <p class="ownership">Owner: PM · COENXT board</p>
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 16px;">Owner técnico full-time Fase 2 + apoyo backend (PIDP-1847)</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 13px; line-height: 1.45;">~35 días dev Q2-Q4 necesitan un developer dedicado en modo-landing. El auth contra stores-api depende del ticket en migración PIDP-1847 (backend). Sin owner asignado, el proyecto queda en limbo aunque el backlog esté priorizado.</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: TL + Manager · Action: capacity check sprint actual</p>
         </li>
-        <li>
-          <h3>Confirmar coordinacion con promos-hub-site para V3 (301 plan)</h3>
-          <p class="body" style="margin: 4px 0 0;">El 301 plan de /promos/ → /comercios/ es una decision compartida con el equipo de promos-hub-site. No es urgente (es V3 · Q4), pero es mejor plantearlo ahora que cuando tengamos los 301 listos para mergear.</p>
-          <p class="ownership">Owner: PM modo-landing · PM promos-hub-site</p>
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 16px;">Acceso a stores-api desde modo-landing</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 13px; line-height: 1.45;">Token de acceso a stores-api debe crearse y rotarse en SOPS. El backend owner de stores-api tiene que estar en el loop antes de V1.F0 (audit de contratos). Trackeable contra PIDP-1847.</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: TL · backend stores-api owner · Infra/SOPS</p>
+        </li>
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 16px;">Priorizar V1 backlog Q2 + planificar V3 con promos-hub-site</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 13px; line-height: 1.45;">Tickets V1 pre-creados en doc 09-jira-backlog.md (COENXT board 4716). PM prioriza para arrancar el sprint de ~11 días. El 301 plan V3 lo coordina PM modo-landing con PM promos-hub-site (no urgente, mejor anclar ahora).</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: PM COENXT · PM promos-hub-site</p>
         </li>
       </ol>
     </div>
@@ -638,7 +645,7 @@
     <div class="meta">
       <div class="meta__col"><h4>Docs</h4><p>modo-landing/docs/comercios-database/ · 9 docs + schemas + seeds</p></div>
       <div class="meta__col"><h4>Board</h4><p>COENXT · play-sistemico.atlassian.net · sprint backlog pre-cargado</p></div>
-      <div class="meta__col"><h4>Branch</h4><p>feat/comercios-mvp-2026-05-15 · base del proyecto</p></div>
+      <div class="meta__col"><h4>Branch</h4><p>base MVP: feat/comercios-mvp-2026-05-15 · V1/V2/V3 abren branches propias (feat/comercios-db-v1, etc.) al arrancar</p></div>
     </div>
   </section>
 
