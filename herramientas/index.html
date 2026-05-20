@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Herramientas · MODO presentaciones</title>
+  <title>Herramientas · Erno × MODO</title>
   <meta name="description" content="Mi stack en Claude Code: skills, MCPs y plugins agrupados por uso real." />
   <meta name="theme-color" content="#008859" />
   <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
@@ -27,9 +27,10 @@
 <a class="skip-link" href="#tools-main">Saltar al contenido</a>
 
 <header>
+  <div class="container">
   <div class="brand">
-    <span class="wordmark"><a href="../">MODO</a></span>
-    <span class="brand-subtitle">Presentaciones · modo-landing</span>
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
   </div>
   <nav class="nav" aria-label="Navegación principal">
     <a href="../">Home</a>
@@ -43,11 +44,11 @@
     <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
     <span class="label" id="theme-label">auto</span>
   </button>
-</header>
+  </div></header>
 
 <main id="tools-main">
   <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="../">MODO presentaciones</a>
+    <a href="../">Erno × MODO</a>
     <span class="sep" aria-hidden="true">/</span>
     <span aria-current="page">Herramientas</span>
   </nav>
@@ -74,14 +75,14 @@
     <div class="tool-category" data-category>
       <h3 class="tool-category-name">MODO · skills y MCPs propios</h3>
       <div class="tools-grid">
-        <div class="tool-item" data-tool><div class="tool-name"><code>modo-deck</code></div><div class="tool-desc">Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>modo-design-system</code></div><div class="tool-desc">SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>modo-tech-architect</code></div><div class="tool-desc">PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>modo-code-review-checklist</code></div><div class="tool-desc">Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>modo-promos</code><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo <code>mcp__modo-promos__*</code>.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>consultar-promos-modo</code></div><div class="tool-desc">Capa NL sobre <code>modo-promos</code>. Mapea preguntas humanas ("¿qué descuentos hay hoy en supermercados?") a las tools correctas del MCP.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>simular-compra-agentica</code></div><div class="tool-desc">Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>agente-cx-whatsapp</code></div><div class="tool-desc">Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo "levantar el agente cx".</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-deck</code><a class="download-badge" href="../skills/modo-deck.zip" title="Descargar modo-deck.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-design-system</code><a class="download-badge" href="../skills/modo-design-system.zip" title="Descargar modo-design-system.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-tech-architect</code><a class="download-badge" href="../skills/modo-tech-architect.zip" title="Descargar modo-tech-architect.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-code-review-checklist</code><a class="download-badge" href="../skills/modo-code-review-checklist.zip" title="Descargar modo-code-review-checklist.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-promos</code><a class="download-badge" href="../skills/modo-promos.zip" title="Descargar modo-promos.skill como ZIP" download>↓ .skill</a><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo <code>mcp__modo-promos__*</code>.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>consultar-promos-modo</code><a class="download-badge" href="../skills/consultar-promos-modo.zip" title="Descargar consultar-promos-modo.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Capa NL sobre <code>modo-promos</code>. Mapea preguntas humanas ("¿qué descuentos hay hoy en supermercados?") a las tools correctas del MCP.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>simular-compra-agentica</code><a class="download-badge" href="../skills/simular-compra-agentica.zip" title="Descargar simular-compra-agentica.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>agente-cx-whatsapp</code><a class="download-badge" href="../skills/agente-cx-whatsapp.zip" title="Descargar agente-cx-whatsapp.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo "levantar el agente cx".</div></div>
       </div>
     </div>
 
@@ -95,7 +96,7 @@
         <div class="tool-item" data-tool><div class="tool-name"><code>sdd-*</code> · explore / propose / design / tasks / apply / verify / archive</div><div class="tool-desc">Spec-Driven Development en MODO. Obligatorio para cambios en <code>/comercios</code> y features no-triviales: spec antes de código, verify después.</div></div>
         <div class="tool-item" data-tool><div class="tool-name"><code>brainstorming</code></div><div class="tool-desc">Explorar intent + requirements + design ANTES de implementar. Bloquea cualquier feature/componente/behavior nuevo hasta tener intent claro.</div></div>
         <div class="tool-item" data-tool><div class="tool-name"><code>doc-coauthoring</code></div><div class="tool-desc">Workflow estructurado para escribir docs, proposals, technical specs y decision docs. Transfer de contexto + iteración + verificación con readers.</div></div>
-        <div class="tool-item" data-tool><div class="tool-name"><code>caveman</code><span class="tool-meta-tag plugin">plugin</span></div><div class="tool-desc">Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>caveman</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.</div></div>
       </div>
     </div>
 
@@ -181,13 +182,14 @@
   </div>
 
   <p class="skills-note">
-    Para sumar herramientas al catálogo: editar <code>herramientas/index.html</code>. Eventualmente este catálogo va a salir de <code>tools.json</code> generado por el skill <code>/modo-rfc-sync</code> (ver R19 en <a href="../rfcs/" class="meta-link">RFCs</a>).
+    Las skills con badge <span class="download-badge">↓ .skill</span> son custom y se publican como ZIPs en <a href="../skills/" class="meta-link">/skills/</a> (manifest <a href="../skills/skills.json" class="meta-link" target="_blank" rel="noopener">skills.json</a>). El skill <code>/erno-modo-sync-all</code> regenera el bundle todos los días a las 18:00. Para sumar herramientas: editar <code>herramientas/index.html</code>. Eventualmente este catálogo va a salir de <code>tools.json</code> generado por el skill <code>/modo-rfc-sync</code> (ver R19 en <a href="../rfcs/" class="meta-link">RFCs</a>).
   </p>
 </main>
 
 <footer>
+  <div class="container">
   <div>
-    Generados con <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
   </div>
   <div class="workflow-legend">
     <strong>Workflow:</strong>
@@ -197,7 +199,7 @@
     <span class="workflow-arrow">→</span>
     <span class="status-badge completo">Completo</span>
   </div>
-</footer>
+  </div></footer>
 
 <script>
 (function () {

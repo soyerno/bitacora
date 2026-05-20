@@ -117,7 +117,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 /* HEADER + NAV */
 header {
   border-bottom: 1px solid var(--border);
-  padding: 24px 48px 20px;
+}
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 48px;
+  width: 100%;
+}
+header > .container {
+  padding-top: 24px;
+  padding-bottom: 20px;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -132,12 +141,25 @@ header {
 .wordmark {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
-  color: var(--accent);
-  font-size: 32px;
-  letter-spacing: -0.06em;
+  font-size: 30px;
+  letter-spacing: -0.05em;
   line-height: 1;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
 }
-.wordmark a { color: inherit; }
+.wordmark .wm-x {
+  font-weight: 500;
+  color: var(--muted);
+  font-size: 22px;
+  letter-spacing: 0;
+  position: relative;
+  top: -1px;
+}
+.wordmark .wm-modo { color: var(--accent); }
+.wordmark:hover .wm-modo { opacity: 0.85; }
+.wordmark a { color: inherit; display: inline-flex; align-items: baseline; gap: 7px; }
 .brand-subtitle {
   font-size: 13px;
   color: var(--muted);
@@ -734,6 +756,24 @@ main {
 }
 .tool-name a { color: var(--muted); font-size: 11px; }
 .tool-name a:hover { color: var(--accent); }
+.tool-name .download-badge {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 1px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+}
+.tool-name .download-badge:hover {
+  background: var(--accent);
+  color: #fff;
+}
 .skills-note {
   font-size: 13px;
   color: var(--muted);
@@ -746,12 +786,15 @@ main {
 /* FOOTER */
 footer {
   border-top: 1px solid var(--border);
-  padding: 24px 48px;
+  font-size: 12px;
+  color: var(--muted);
+}
+footer > .container {
+  padding-top: 24px;
+  padding-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
-  color: var(--muted);
   gap: 16px;
   flex-wrap: wrap;
 }
@@ -760,24 +803,110 @@ footer a:hover { text-decoration: underline; }
 .workflow-legend { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .workflow-arrow { color: var(--border); }
 
+/* GITHUB AUTHOR WIDGET (home) */
+.gh-widget {
+  margin: 24px 0 48px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.gh-widget__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: block;
+}
+.gh-widget__body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.gh-widget__name {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.gh-widget__handle {
+  font-size: 12px;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(0,136,89,0.3);
+  font-variant-numeric: tabular-nums;
+}
+.gh-widget__handle:hover { text-decoration-color: var(--accent); }
+.gh-widget__bio {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: 4px;
+}
+.gh-widget__stats {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.gh-widget__stats .dot { color: var(--border); }
+.gh-widget__chart-wrap {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 16px;
+}
+.gh-widget__chart-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.gh-widget__chart {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+:root[data-theme="dark"] .gh-widget__chart,
+:root[data-theme="auto"] .gh-widget__chart {
+  /* The chart SVG is light-bg by default. In dark mode, soften it slightly. */
+  filter: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .gh-widget__chart { mix-blend-mode: screen; opacity: 0.92; }
+}
+:root[data-theme="dark"] .gh-widget__chart { mix-blend-mode: screen; opacity: 0.92; }
+
 /* RESPONSIVE */
 @media (max-width: 860px) {
   .featured-grid, .explore-grid { grid-template-columns: repeat(2, 1fr); }
   main { padding: 36px 28px; }
-  header { padding: 20px 28px; grid-template-columns: 1fr; row-gap: 12px; }
+  .container { padding-left: 28px; padding-right: 28px; }
+  header > .container { padding-top: 20px; padding-bottom: 16px; grid-template-columns: 1fr; row-gap: 12px; }
   .nav { justify-self: stretch; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .theme-toggle { justify-self: end; }
 }
 
 @media (max-width: 640px) {
-  header { padding: 18px 20px; }
-  .wordmark { font-size: 28px; }
+  .container { padding-left: 20px; padding-right: 20px; }
+  header > .container { padding-top: 18px; padding-bottom: 14px; }
+  .wordmark { font-size: 26px; }
+  .wordmark .wm-x { font-size: 18px; }
   main { padding: 28px 20px; }
-  footer { padding: 20px; flex-direction: column; align-items: flex-start; }
+  footer > .container { padding-top: 20px; padding-bottom: 20px; flex-direction: column; align-items: flex-start; }
   .item-row { grid-template-columns: 1fr; }
   .featured-grid, .explore-grid { grid-template-columns: 1fr; }
   .tools-grid { grid-template-columns: 1fr; }
   .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .filter-bar { grid-template-columns: 1fr; }
+  .gh-widget { grid-template-columns: 1fr; gap: 14px; padding: 18px; }
+  .gh-widget__avatar { width: 56px; height: 56px; }
   .page-heading { font-size: 26px; }
 }

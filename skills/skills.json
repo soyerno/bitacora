@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "generated": "2026-05-20",
+    "updated_by": "erno-modo-sync-all (manual bootstrap)",
+    "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets. Sync diario al cron de las 18:00."
+  },
+  "skills": [
+    {
+      "name": "modo-deck",
+      "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
+      "filename": "modo-deck.zip",
+      "sha256_prefix": "9d0ca29f53a1ad29",
+      "size_kb": 56.3,
+      "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
+    },
+    {
+      "name": "modo-design-system",
+      "description": "SDK/skill MODO-específico para generar páginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canónicos). Auto-invocar cuando el usuario pid",
+      "filename": "modo-design-system.zip",
+      "sha256_prefix": "1bd1f035d232e409",
+      "size_kb": 46.2,
+      "install_hint": "unzip modo-design-system.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-design-system.skill ~/.claude/skills/modo-design-system"
+    },
+    {
+      "name": "modo-tech-architect",
+      "description": ">",
+      "filename": "modo-tech-architect.zip",
+      "sha256_prefix": "152fe42fd72c8777",
+      "size_kb": 29.0,
+      "install_hint": "unzip modo-tech-architect.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-tech-architect.skill ~/.claude/skills/modo-tech-architect"
+    },
+    {
+      "name": "modo-code-review-checklist",
+      "description": "Comprehensive code review checklist tailored to modo-landing patterns and standards. Auto-invoke on all code changes and PR reviews to ensure quality, security, and architectural consistency.",
+      "filename": "modo-code-review-checklist.zip",
+      "sha256_prefix": "ff845e8c299a8d19",
+      "size_kb": 1.6,
+      "install_hint": "unzip modo-code-review-checklist.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-code-review-checklist.skill ~/.claude/skills/modo-code-review-checklist"
+    },
+    {
+      "name": "modo-promos",
+      "description": "Consultar promociones, bancos y comercios adheridos de MODO via el MCP `modo-promos-mcp`. Auto-invocar cuando el usuario pregunte por promos vigentes, slots, slugs, detalle de una promo, bancos asocia",
+      "filename": "modo-promos.zip",
+      "sha256_prefix": "bd96b50fe60ca6b6",
+      "size_kb": 2.2,
+      "install_hint": "unzip modo-promos.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-promos.skill ~/.claude/skills/modo-promos"
+    },
+    {
+      "name": "consultar-promos-modo",
+      "description": "Responder consultas sobre promociones, comercios adheridos y bancos asociados de MODO usando el MCP `modo-promos`. Auto-invocar cuando el usuario haga preguntas tipo \"¿qué promos hay?\", \"¿cuáles son l",
+      "filename": "consultar-promos-modo.zip",
+      "sha256_prefix": "57a1264b0fb8c600",
+      "size_kb": 7.3,
+      "install_hint": "unzip consultar-promos-modo.zip -d ~/.claude/skills/ && mv ~/.claude/skills/consultar-promos-modo.skill ~/.claude/skills/consultar-promos-modo"
+    },
+    {
+      "name": "simular-compra-agentica",
+      "description": "Simular o ejecutar una compra agéntica end-to-end usando el POC `modo-checkout-skill` (server :3737 + UI Claude + SDK Container mock + demos HTML). Auto-invocar cuando el usuario pida correr/probar/de",
+      "filename": "simular-compra-agentica.zip",
+      "sha256_prefix": "8aa16d1a91d6f5ca",
+      "size_kb": 5.8,
+      "install_hint": "unzip simular-compra-agentica.zip -d ~/.claude/skills/ && mv ~/.claude/skills/simular-compra-agentica.skill ~/.claude/skills/simular-compra-agentica"
+    },
+    {
+      "name": "agente-cx-whatsapp",
+      "description": "Operar el agente CX/Promos de MODO por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Auto-invocar cuando el usuario pida levantar, configurar, debuggear, registrar webhook, ver ",
+      "filename": "agente-cx-whatsapp.zip",
+      "sha256_prefix": "54a090ab3ef0f748",
+      "size_kb": 5.4,
+      "install_hint": "unzip agente-cx-whatsapp.zip -d ~/.claude/skills/ && mv ~/.claude/skills/agente-cx-whatsapp.skill ~/.claude/skills/agente-cx-whatsapp"
+    }
+  ]
+}

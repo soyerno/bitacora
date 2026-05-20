@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presentaciones · MODO · modo-landing</title>
-  <meta name="description" content="Decks internos + catálogo de RFCs + stack de herramientas en Claude Code, todo en un lugar." />
+  <title>Erno × MODO</title>
+  <meta name="description" content="Decks, RFCs y stack de herramientas que aporto a modo-landing. Workflow Draft → RFC → Completo." />
   <meta name="theme-color" content="#008859" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="MODO · Presentaciones modo-landing" />
-  <meta property="og:description" content="Decks + RFCs + Herramientas. Workflow Draft → RFC → Completo." />
-  <meta property="og:url" content="https://soyernomodo.github.io/modo-decks/" />
+  <meta property="og:title" content="Erno × MODO" />
+  <meta property="og:description" content="Decks, RFCs y stack de herramientas que aporto a modo-landing. Workflow Draft → RFC → Completo." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/" />
   <meta property="og:locale" content="es_AR" />
   <meta name="twitter:card" content="summary" />
   <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
@@ -33,9 +33,10 @@
 <a class="skip-link" href="#featured">Saltar al contenido</a>
 
 <header>
+  <div class="container">
   <div class="brand">
-    <span class="wordmark"><a href="./">MODO</a></span>
-    <span class="brand-subtitle">Presentaciones · modo-landing</span>
+    <a class="wordmark" href="./" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
   </div>
   <nav class="nav" aria-label="Navegación principal">
     <a href="./" aria-current="page">Home</a>
@@ -49,7 +50,7 @@
     <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
     <span class="label" id="theme-label">auto</span>
   </button>
-</header>
+  </div></header>
 
 <main>
   <section class="featured-section" aria-labelledby="featured-h" id="featured">
@@ -59,6 +60,25 @@
     <div class="featured-grid" id="featured-grid">
       <div class="state-box">Cargando…</div>
     </div>
+  </section>
+
+  <section aria-labelledby="about-h">
+    <p class="section-label" id="about-h">Quién escribe</p>
+    <article class="gh-widget">
+      <a href="https://github.com/SoyErnoModo" target="_blank" rel="noopener noreferrer" aria-label="GitHub de SoyErnoModo">
+        <img class="gh-widget__avatar" src="https://github.com/SoyErnoModo.png" alt="Avatar de Hernán De Souza (@SoyErnoModo)" loading="lazy" width="64" height="64" />
+      </a>
+      <div class="gh-widget__body">
+        <div class="gh-widget__name">Hernán De Souza</div>
+        <a class="gh-widget__handle" href="https://github.com/SoyErnoModo" target="_blank" rel="noopener noreferrer">@SoyErnoModo · GitHub</a>
+        <div class="gh-widget__bio">Tech Lead en MODO · modo-landing. Frontend, SEO/GEO, pagos agénticos y herramientas para Claude Code.</div>
+        <div class="gh-widget__stats" id="gh-stats">cargando perfil…</div>
+      </div>
+      <div class="gh-widget__chart-wrap">
+        <div class="gh-widget__chart-label">Contribuciones último año</div>
+        <img class="gh-widget__chart" src="https://ghchart.rshah.org/008859/SoyErnoModo" alt="Contribuciones públicas en GitHub del último año" loading="lazy" />
+      </div>
+    </article>
   </section>
 
   <section aria-labelledby="explore-h">
@@ -98,8 +118,9 @@
 </main>
 
 <footer>
+  <div class="container">
   <div>
-    Generados con <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
   </div>
   <div class="workflow-legend">
     <strong>Workflow:</strong>
@@ -109,7 +130,7 @@
     <span class="workflow-arrow">→</span>
     <span class="status-badge completo">Completo</span>
   </div>
-</footer>
+  </div></footer>
 
 <script>
 (function () {
@@ -163,6 +184,26 @@
     if ($navDecks) $navDecks.textContent = decks.length || '·';
     if ($navRfcs) $navRfcs.textContent = rfcs.length || '·';
   });
+
+  /* GitHub profile stats (rate-limited unauthenticated; fail soft). */
+  fetch('https://api.github.com/users/SoyErnoModo', { cache: 'force-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (u) {
+      var stats = document.getElementById('gh-stats');
+      if (!stats) return;
+      if (!u) { stats.textContent = 'github.com/SoyErnoModo'; return; }
+      var pieces = [];
+      if (typeof u.public_repos === 'number') pieces.push(u.public_repos + ' repos públicos');
+      if (typeof u.followers === 'number') pieces.push(u.followers + ' followers');
+      if (typeof u.following === 'number') pieces.push('siguiendo ' + u.following);
+      stats.innerHTML = pieces.map(function (p, i) {
+        return (i === 0 ? '' : '<span class="dot">·</span> ') + p;
+      }).join(' ');
+    })
+    .catch(function () {
+      var stats = document.getElementById('gh-stats');
+      if (stats) stats.textContent = 'github.com/SoyErnoModo';
+    });
 })();
 </script>
 
