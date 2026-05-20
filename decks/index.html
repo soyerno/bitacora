@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decks · MODO presentaciones</title>
+  <meta name="description" content="Catálogo de decks HTML versionados en este repo. Búsqueda, tabs por status y chips por tema." />
+  <meta name="theme-color" content="#008859" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/collection.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#deck-list">Saltar al listado</a>
+
+<header>
+  <div class="brand">
+    <span class="wordmark"><a href="../">MODO</a></span>
+    <span class="brand-subtitle">Presentaciones · modo-landing</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="./" aria-current="page">Decks</a>
+    <a href="../rfcs/">RFCs</a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+</header>
+
+<main>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">MODO presentaciones</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Decks</span>
+  </nav>
+  <p class="section-label">Colección 1</p>
+  <h1 class="page-heading">Decks</h1>
+  <p class="page-sub">Presentaciones HTML versionadas en este repo. Workflow Draft → RFC → Completo. Cada deck es una propuesta que busca feedback antes de avanzar.</p>
+
+  <section data-collection="decks" aria-labelledby="decks-h">
+    <h2 class="sr-only" id="decks-h" style="position:absolute;left:-9999px">Catálogo de decks</h2>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+        </svg>
+        <input class="search-input" type="search" data-search aria-label="Buscar decks" placeholder="Buscar por título, descripción o audiencia…" />
+      </div>
+      <select class="sort-select" data-sort aria-label="Ordenar decks">
+        <option value="recent">Más recientes</option>
+        <option value="title">A → Z</option>
+        <option value="slides">Más cortos</option>
+      </select>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Filtrar decks por estado" data-tabs></div>
+    <div class="chips" role="group" aria-label="Filtrar decks por tema" data-chips></div>
+
+    <div class="result-meta">
+      <span data-result-count aria-live="polite" aria-atomic="true">—</span>
+      <button type="button" data-clear hidden>Limpiar filtros</button>
+    </div>
+
+    <div class="item-list" id="deck-list" data-list></div>
+    <div class="state-box" data-empty hidden>
+      <strong>No hay decks con esos filtros.</strong>
+      Probá quitar el filtro de tema, cambiar el estado o limpiar la búsqueda.
+    </div>
+    <div class="state-box" id="decks-loading">
+      <strong>Cargando decks…</strong>
+      Leyendo <code>decks/decks.json</code>.
+    </div>
+    <div class="state-box" id="decks-error" hidden>
+      <strong>No se pudo cargar el catálogo de decks.</strong>
+      Abrí <a href="decks.json" target="_blank" rel="noopener" class="meta-link">decks.json</a> directamente.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow:</strong>
+    <span class="status-badge draft">Draft</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">RFC</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Completo</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var DECK_TOPIC_LABELS = {
+    frontend: 'Frontend',
+    seo: 'SEO',
+    comercios: 'Comercios',
+    agents: 'Agents',
+    plataforma: 'Plataforma',
+    retro: 'Retrospectiva'
+  };
+
+  /* Paths in decks.json are stored canonical-from-repo-root (e.g. "decks/completo/foo.html").
+   * From this page (/decks/) we need to strip the leading "decks/" or prepend ../ — strip
+   * is cleaner since paths always start with "decks/". */
+  function rebase(p) { return p.indexOf('decks/') === 0 ? p.slice('decks/'.length) : p; }
+
+  var $loading = document.getElementById('decks-loading');
+  var $error = document.getElementById('decks-error');
+
+  fetch('decks.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (payload) {
+      $loading.hidden = true;
+      var decks = (payload.decks || []).map(function (d) {
+        return Object.assign({}, d, { href: rebase(d.href) });
+      });
+
+      MODO.createCollection({
+        name: 'decks',
+        items: decks,
+        stages: ['draft', 'rfc', 'completo'],
+        labels: DECK_TOPIC_LABELS,
+        getTopics: function (d) { return d.topics || []; },
+        noun: 'decks',
+        searchHaystack: function (d) {
+          return d.title + ' ' + d.desc + ' ' + d.audience + ' ' + (d.topics || []).join(' ');
+        },
+        sortFn: function (mode) {
+          return function (a, b) {
+            if (mode === 'title') return a.title.localeCompare(b.title, 'es');
+            if (mode === 'slides') return a.slides - b.slides;
+            if (a.featured !== b.featured) return a.featured ? -1 : 1;
+            var d = b.date.localeCompare(a.date);
+            if (d !== 0) return d;
+            return a.title.localeCompare(b.title, 'es');
+          };
+        },
+        itemTpl: function (d) {
+          var statusLabel = MODO.STATUS_LABELS[d.status] || d.status;
+          return (
+            '<div class="item-row">' +
+              '<div>' +
+                '<div class="item-header">' +
+                  '<span class="status-badge ' + d.status + '">' + statusLabel + '</span>' +
+                  (d.urgent ? '<span class="status-badge urgent">Urgente</span>' : '') +
+                '</div>' +
+                '<div class="item-title">' + MODO.escapeHTML(d.title) + '</div>' +
+                '<div class="item-desc">' + MODO.escapeHTML(d.desc) + '</div>' +
+                '<div class="item-meta">' +
+                  '<span class="meta-tag">' + MODO.escapeHTML(d.audience) + '</span>' +
+                  '<span>' + d.slides + ' slides</span>' +
+                  '<span class="meta-dot">·</span>' +
+                  '<span>' + (d.topics || []).map(function (t) { return MODO.escapeHTML(DECK_TOPIC_LABELS[t] || t); }).join(', ') + '</span>' +
+                '</div>' +
+              '</div>' +
+              '<a class="open-link" target="_blank" rel="noopener noreferrer" href="' + MODO.escapeHTML(d.href) + '">abrir →</a>' +
+            '</div>'
+          );
+        }
+      });
+    })
+    .catch(function (err) {
+      console.error('Failed to load decks.json', err);
+      $loading.hidden = true;
+      $error.hidden = false;
+    });
+})();
+</script>
+
+</body>
+</html>

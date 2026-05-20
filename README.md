@@ -1,10 +1,10 @@
 # modo-decks
 
-Presentaciones HTML internas + catálogo de RFCs de modo-landing.
+Presentaciones HTML internas, catálogo de RFCs y stack de herramientas de modo-landing.
 
 - Decks generados con la skill privada `modo-deck` (Claude Code, mantenida en `~/.claude/skills/`)
 - Branding MODO: verde #008859, Red Hat Display + Quicksand, layout 16:9
-- Navegación por teclado (← →, j/k, espacio, Home, End)
+- Navegación por teclado dentro de cada deck (← →, j/k, espacio, Home, End)
 - Exportables a PDF (tecla P)
 - Reacciones y comentarios por deck via Giscus (tecla `c` o botón 💬)
 
@@ -14,13 +14,21 @@ Los decks y RFCs son **propuestas** que buscan feedback y aprobación, no anunci
 
 https://soyernomodo.github.io/modo-decks/
 
-El index trae búsqueda full-text, filtros por tema/área, tabs por status, sort por recencia, y theme toggle (auto / claro / oscuro) con persistencia en `localStorage`.
+4 páginas con nav y breadcrumbs compartidos:
+
+- `/` — home con destacados de la semana y accesos a cada colección
+- `/decks/` — catálogo de decks: búsqueda + tabs por status + chips por tema + sort
+- `/rfcs/` — catálogo de RFCs: tabs por status + chips por área + saga de versiones colapsada
+- `/herramientas/` — stack en Claude Code: 59 tools agrupadas en 8 categorías + búsqueda
+
+Theme toggle (auto / claro / oscuro) persiste en `localStorage`. Desde cualquier deck individual hay un pill verde top-left ("← MODO presentaciones / Decks") que vuelve al sitio.
 
 ## Decks
 
-11 presentaciones HTML versionadas en `decks/`. Workflow: `draft → rfc → completo` (la promoción es un `git mv` entre carpetas + update del badge en `index.html`).
+11 presentaciones HTML versionadas en `decks/`. Workflow: `draft → rfc → completo` (la promoción es un `git mv` entre carpetas + update del badge en `decks/decks.json`). Catálogo en `decks/decks.json`, consumible por agentes.
 
 Destacados:
+
 - [Next 12 → 16 · Stack consolidation](decks/completo/nextjs-12-to-16-consolidation.html)
 - [/comercios MVP shipped](decks/completo/comercios-mvp.html)
 - [MODO for Agents · Pagos agénticos](decks/completo/modo-for-agents.html)
@@ -28,7 +36,7 @@ Destacados:
 
 ## RFCs
 
-19 documentos técnicos vivos en Google Drive, curados y catalogados en `rfcs/rfcs.json` (consumible por agentes y por el landing sin parsear HTML). El index los renderiza con filtros por estado (`rfc / completo / archivado`).
+19 documentos técnicos vivos en Google Drive y GitHub, curados y catalogados en `rfcs/rfcs.json` (consumible por agentes y por el landing sin parsear HTML). El catálogo en `/rfcs/` los renderiza con filtros por estado (`draft / rfc / completo / archivado`).
 
 La saga "Migración modo-landing" colapsa 14 versiones en una sola entrada (la v6 más reciente), con las intermedias accesibles desde el toggle "+ N versiones anteriores".
 
@@ -36,13 +44,13 @@ La saga "Migración modo-landing" colapsa 14 versiones en una sola entrada (la v
 
 Con la skill `modo-deck` instalada localmente:
 
-1. Generar el HTML con Claude Code (la skill arma el deck respetando branding + Giscus snippet).
+1. Generar el HTML con Claude Code (la skill arma el deck respetando branding + Giscus snippet + back-link pill).
 2. Publicar al repo:
    ```bash
    ~/.claude/skills/modo-deck/scripts/publish-deck.sh <preview.html> <slug> <draft|rfc|completo>
    ```
    El script rechaza el upload si encuentra `{{PLACEHOLDER}}` sin resolver.
-3. Editar `index.html` (entry + badge) y commit + push a `main`. Pages publica en ~30s.
+3. Editar `decks/decks.json` (sumar la entrada) y commit + push a `main`. Pages publica en ~30s.
 
 Promover un deck entre estados:
 ```bash
@@ -83,12 +91,27 @@ Para retrofittear un deck ya publicado que no lo tenga (idempotente — si ya ti
 
 ```
 .
-├── index.html          # Landing con decks + catálogo de RFCs
+├── index.html               # Home (slim): destacados + nav a colecciones
+├── assets/
+│   ├── styles.css           # Tokens + componentes compartidos
+│   ├── common.js            # Theme toggle + helpers compartidos
+│   └── collection.js        # Controller search/filter/sort (decks + RFCs)
 ├── decks/
-│   ├── draft/          # Decks en construcción
-│   ├── rfc/            # Decks circulando para feedback
-│   └── completo/       # Decks shipped
+│   ├── index.html           # Catálogo de decks
+│   ├── decks.json           # Data source del catálogo (consumible por agentes)
+│   ├── draft/               # Decks en construcción
+│   ├── rfc/                 # Decks circulando para feedback
+│   └── completo/            # Decks shipped (cada uno con pill back-to-site)
 ├── rfcs/
-│   └── rfcs.json       # Catálogo curado de RFCs (data source del index.html)
+│   ├── index.html           # Catálogo de RFCs
+│   └── rfcs.json            # Data source curado del catálogo
+├── herramientas/
+│   └── index.html           # Stack en Claude Code
 └── README.md
 ```
+
+## Cómo sumar contenido
+
+- **Deck nuevo**: ver "Cómo agrego un deck nuevo" arriba. Después sumá entrada a `decks/decks.json`.
+- **RFC nuevo**: agregar entrada a `rfcs/rfcs.json` (campos: `number`, `slug`, `title`, `summary`, `status`, `area`, `date`, `drive_url` o `repo_url`).
+- **Herramienta nueva**: editar `herramientas/index.html`, sumar un `<div class="tool-item" data-tool>...</div>` en la categoría correspondiente.

@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "generated": "2026-05-20",
+    "source": "decks/draft/, decks/rfc/, decks/completo/",
+    "notes": "Catálogo curado de los decks HTML versionados en este repo. Featured y urgent se reflejan en la home."
+  },
+  "decks": [
+    {
+      "id": "modo-design-system-skill",
+      "title": "modo-design-system · skill/SDK para devs frontend",
+      "desc": "Skill MODO-específico para generar páginas Next/Astro one-shot con tokens canónicos, JSON-LD obligatorio, NavFooterLayout, validación automática. 5 repos · 4 stacks · learning loop.",
+      "href": "decks/draft/modo-design-system-skill.html",
+      "status": "draft",
+      "audience": "Equipo frontend + TL + PM",
+      "date": "2026-05-20",
+      "slides": 15,
+      "topics": ["frontend", "plataforma"],
+      "featured": true
+    },
+    {
+      "id": "nextjs-12-to-16-consolidation",
+      "title": "Next 12 → 16 · Stack consolidation",
+      "desc": "Migración del stack de modo-landing (Next.js 12) a Next.js 16 en 7 fases. Contexto técnico, riesgos, cronograma y equipos involucrados.",
+      "href": "decks/completo/nextjs-12-to-16-consolidation.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 14,
+      "topics": ["frontend", "plataforma"],
+      "featured": true
+    },
+    {
+      "id": "comercios-mvp",
+      "title": "/comercios MVP shipped",
+      "desc": "Resultados del MVP de comercios para modo.com.ar: búsqueda, filtros, MerchantCard con paridad visual a PromoHub, ISR, y próximos pasos.",
+      "href": "decks/completo/comercios-mvp.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 17,
+      "topics": ["comercios", "frontend"]
+    },
+    {
+      "id": "marketplaces",
+      "title": "Sumar ChatGPT App + Claude Skill al modal 'Usa MODO'",
+      "desc": "Integración de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisición vía el modal existente. Incluye demo del flujo agéntico end-to-end.",
+      "href": "decks/completo/marketplaces.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 6,
+      "topics": ["agents"]
+    },
+    {
+      "id": "storyblok-cms-build-time",
+      "title": "Storyblok build-time · Navbar/Footer + BFF",
+      "desc": "Lib consume Navbar/Footer desde Storyblok vía BFF en modo-landing (default-layout, revalidate, sync). Cache TTL 5min + SWR 24h, una sola API key. Snapshot embebido, release cascade automático.",
+      "href": "decks/completo/storyblok-cms-build-time.html",
+      "status": "completo",
+      "audience": "Tech Leads + PMs",
+      "date": "2026-05-20",
+      "slides": 10,
+      "topics": ["frontend", "plataforma"]
+    },
+    {
+      "id": "modo-for-agents",
+      "title": "MODO for Agents · Pagos agénticos",
+      "desc": "POC del hackathon de pagos agénticos: discovery + Intent Mandate + checkout + Cart Mandate + SPT + SDK deeplink + biometric + capture, end-to-end.",
+      "href": "decks/completo/modo-for-agents.html",
+      "status": "completo",
+      "audience": "Comité mixto",
+      "date": "2026-05-20",
+      "slides": 14,
+      "topics": ["agents"],
+      "featured": true
+    },
+    {
+      "id": "seo-sprint0",
+      "title": "SEO Sprint 0 · Staging leaks + plan 12 semanas",
+      "desc": "5 subdominios non-prod indexados en Google. Bloqueo de seguridad activo. Canibalización subdominios legacy y /aprende-con-modo crawled-not-indexed. Plan 12 semanas.",
+      "href": "decks/completo/seo-sprint0.html",
+      "status": "completo",
+      "audience": "Comité mixto",
+      "date": "2026-05-20",
+      "slides": 13,
+      "topics": ["seo"],
+      "urgent": true,
+      "featured": true
+    },
+    {
+      "id": "comercios-database",
+      "title": "Comercios Database · De 200 ruidosos a catálogo canónico",
+      "desc": "Roadmap V1-V3 para construir el catálogo canónico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301.",
+      "href": "decks/completo/comercios-database.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 13,
+      "topics": ["comercios"]
+    },
+    {
+      "id": "seo-geo-maduracion",
+      "title": "SEO + GEO Architecture · Maduración Q1-Q2 2026",
+      "desc": "Retrospectiva enero-mayo 2026 del trabajo de SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, 37 BankOrCreditUnion, AI crawlers.",
+      "href": "decks/completo/seo-geo-maduracion.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 13,
+      "topics": ["seo", "retro"]
+    },
+    {
+      "id": "faq-ayuda-maduracion",
+      "title": "FAQ + Centro de Ayuda · Maduración Q1-Q2 2026",
+      "desc": "Retrospectiva enero-mayo 2026 del rework de FAQ + centro de ayuda. Topics, FAQPage JSON-LD, search in-page, indexabilidad en AI overviews.",
+      "href": "decks/completo/faq-ayuda-maduracion.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 11,
+      "topics": ["seo", "retro"]
+    },
+    {
+      "id": "cicd-dx-maduracion",
+      "title": "CI/CD + DX Hardening · Maduración Q1-Q2 2026",
+      "desc": "Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times.",
+      "href": "decks/completo/cicd-dx-maduracion.html",
+      "status": "completo",
+      "audience": "PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 11,
+      "topics": ["plataforma", "retro"]
+    }
+  ]
+}

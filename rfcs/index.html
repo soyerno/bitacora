@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RFCs · MODO presentaciones</title>
+  <meta name="description" content="Catálogo curado de RFCs de modo-landing en Drive y GitHub. Búsqueda, tabs por status, chips por área." />
+  <meta name="theme-color" content="#008859" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/collection.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#rfc-list">Saltar al listado</a>
+
+<header>
+  <div class="brand">
+    <span class="wordmark"><a href="../">MODO</a></span>
+    <span class="brand-subtitle">Presentaciones · modo-landing</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks</a>
+    <a href="./" aria-current="page">RFCs</a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+</header>
+
+<main>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">MODO presentaciones</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">RFCs</span>
+  </nav>
+  <p class="section-label">Colección 2</p>
+  <h1 class="page-heading">RFCs</h1>
+  <p class="page-sub">Catálogo curado de documentos vivos en Drive y GitHub. Datos crudos en <a href="rfcs.json" target="_blank" rel="noopener" class="meta-link">rfcs.json</a> para que un agente pueda consumirlos sin parsear el HTML.</p>
+
+  <section data-collection="rfcs" aria-labelledby="rfcs-h">
+    <h2 class="sr-only" id="rfcs-h" style="position:absolute;left:-9999px">Catálogo de RFCs</h2>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+        </svg>
+        <input class="search-input" type="search" data-search aria-label="Buscar RFCs" placeholder="Buscar por título, summary o área…" />
+      </div>
+      <select class="sort-select" data-sort aria-label="Ordenar RFCs">
+        <option value="recent">Más recientes</option>
+        <option value="oldest">Más antiguos</option>
+        <option value="title">A → Z</option>
+      </select>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Filtrar RFCs por estado" data-tabs></div>
+    <div class="chips" role="group" aria-label="Filtrar RFCs por área" data-chips></div>
+
+    <div class="result-meta">
+      <span data-result-count aria-live="polite" aria-atomic="true">—</span>
+      <button type="button" data-clear hidden>Limpiar filtros</button>
+    </div>
+
+    <div class="item-list" id="rfc-list" data-list></div>
+    <div class="state-box" data-empty hidden>
+      <strong>No hay RFCs con esos filtros.</strong>
+      Probá quitar el filtro de área, cambiar el estado o limpiar la búsqueda.
+    </div>
+    <div class="state-box" id="rfcs-loading">
+      <strong>Cargando RFCs…</strong>
+      Leyendo <code>rfcs/rfcs.json</code>.
+    </div>
+    <div class="state-box" id="rfcs-error" hidden>
+      <strong>No se pudo cargar el catálogo de RFCs.</strong>
+      Abrí <a href="rfcs.json" target="_blank" rel="noopener" class="meta-link">rfcs.json</a> directamente.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow:</strong>
+    <span class="status-badge draft">Draft</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">RFC</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Completo</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var RFC_AREA_LABELS = {
+    'ai-agents': 'Agents',
+    frontend: 'Frontend',
+    'geo-seo': 'SEO/GEO',
+    tooling: 'Tooling',
+    sre: 'SRE',
+    product: 'Producto',
+    infra: 'Infra'
+  };
+
+  /* From /rfcs/ we need to prepend ../ to the canonical "decks/..." cross-link. */
+  function rebaseDeck(p) { return '../' + p; }
+
+  var $loading = document.getElementById('rfcs-loading');
+  var $error = document.getElementById('rfcs-error');
+
+  fetch('rfcs.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (payload) {
+      $loading.hidden = true;
+      var rfcs = (payload.rfcs || []).map(function (r) {
+        return Object.assign({}, r, {
+          status: r.status || 'rfc',
+          area: r.area || 'other'
+        });
+      });
+
+      MODO.createCollection({
+        name: 'rfcs',
+        items: rfcs,
+        stages: ['draft', 'rfc', 'completo', 'archivado'],
+        labels: RFC_AREA_LABELS,
+        getTopics: function (r) { return [r.area]; },
+        noun: 'RFCs',
+        searchHaystack: function (r) {
+          return r.title + ' ' + r.summary + ' ' + r.area + ' ' + (r.tags || []).join(' ');
+        },
+        sortFn: function (mode) {
+          return function (a, b) {
+            if (mode === 'title') return a.title.localeCompare(b.title, 'es');
+            if (mode === 'oldest') return a.date.localeCompare(b.date);
+            return b.date.localeCompare(a.date);
+          };
+        },
+        itemTpl: function (r) {
+          var statusLabel = MODO.STATUS_LABELS[r.status] || r.status;
+          var versionsId = 'versions-' + (r.slug || r.number);
+          var versionsBtn = '';
+          var versionsPanel = '';
+          if (Array.isArray(r.versions) && r.versions.length > 0) {
+            var pluralLabel = r.versions.length === 1 ? 'versión anterior' : 'versiones anteriores';
+            versionsBtn = '<span class="meta-dot">·</span><button class="versions-toggle" type="button" data-target="' + versionsId + '" data-open="false">+ ' + r.versions.length + ' ' + pluralLabel + '</button>';
+            versionsPanel = '<div class="versions-panel" id="' + versionsId + '"><ul>' +
+              r.versions.map(function (v) {
+                return '<li>' + MODO.escapeHTML(v.date || '') + ' · ' + MODO.escapeHTML(v.label || '') + ' · <a href="' + MODO.escapeHTML(v.url) + '" target="_blank" rel="noopener noreferrer">Drive ↗</a></li>';
+              }).join('') +
+              '</ul></div>';
+          }
+          var deckLink = r.deck ? '<span class="meta-dot">·</span><a class="meta-link" href="' + MODO.escapeHTML(rebaseDeck(r.deck)) + '" target="_blank" rel="noopener noreferrer">ver deck</a>' : '';
+          var url = r.repo_url || r.drive_url || '';
+          var sourceLabel = r.repo_url ? 'GitHub' : 'Drive';
+          var ctaLabel = r.repo_url ? 'ver en GitHub ↗' : 'abrir en Drive ↗';
+
+          return (
+            '<div class="item-row">' +
+              '<div>' +
+                '<div class="item-header">' +
+                  '<span class="status-badge ' + r.status + '">' + statusLabel + '</span>' +
+                '</div>' +
+                '<div class="item-title">' + MODO.escapeHTML(r.title) + '</div>' +
+                '<div class="item-desc">' + MODO.escapeHTML(r.summary) + '</div>' +
+                '<div class="item-meta">' +
+                  '<span class="meta-tag">' + MODO.escapeHTML(RFC_AREA_LABELS[r.area] || r.area) + '</span>' +
+                  '<span class="meta-tag muted">' + sourceLabel + '</span>' +
+                  '<span>' + MODO.escapeHTML(r.date) + '</span>' +
+                  deckLink +
+                  versionsBtn +
+                '</div>' +
+                versionsPanel +
+              '</div>' +
+              '<a class="open-link" target="_blank" rel="noopener noreferrer" href="' + MODO.escapeHTML(url) + '">' + ctaLabel + '</a>' +
+            '</div>'
+          );
+        }
+      });
+    })
+    .catch(function (err) {
+      console.error('Failed to load rfcs.json', err);
+      $loading.hidden = true;
+      $error.hidden = false;
+    });
+})();
+</script>
+
+</body>
+</html>
