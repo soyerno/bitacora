@@ -1,0 +1,224 @@
+{
+  "_meta": {
+    "generated": "2026-05-20",
+    "source": "Google Drive (hernan.desouza@modo.com.ar)",
+    "deduped": true,
+    "notes": "Saga 'Migración modo-landing' colapsada a la versión v6 más reciente (2026-05-13). Versiones intermedias listadas en 'versions' como anclas históricas."
+  },
+  "rfcs": [
+    {
+      "number": "R01",
+      "slug": "modo-for-agents",
+      "title": "MODO for Agents · Pagos agénticos",
+      "summary": "MODO como wallet por defecto para agentes IA. POC end-to-end: discovery, Intent Mandate, checkout, Cart Mandate, SPT, SDK deeplink, biometric, capture.",
+      "status": "completo",
+      "tags": ["ai", "payments"],
+      "area": "ai-agents",
+      "date": "2026-05-18",
+      "drive_url": "https://drive.google.com/file/d/1Zf5j44sI1Wt9UV1qIFhkqad-cEOzjVj2/view",
+      "deck": "decks/completo/modo-for-agents.html"
+    },
+    {
+      "number": "R02",
+      "slug": "migracion-modo-landing",
+      "title": "Migración modo-landing (Next 12 → 15/16)",
+      "summary": "Plan 7 fases para llevar modo-landing de Next.js 12 a Next.js 16. Contexto técnico, riesgos, cronograma y equipos involucrados. Versión activa: v6.",
+      "status": "rfc",
+      "tags": ["migration", "frontend"],
+      "area": "frontend",
+      "date": "2026-05-13",
+      "drive_url": "https://docs.google.com/document/d/1bI3n69nkDXj6zPsJcu8Nm4TlnIPvsS3uDOvRa28bOOc/edit",
+      "deck": "decks/completo/nextjs-12-to-16-consolidation.html",
+      "versions": [
+        { "label": "v6 (2026-05-07)", "url": "https://docs.google.com/document/d/19zX1kX3QrszERSY_QPV_yaW4EY9yU5HNFzJILy3ODsY/edit", "date": "2026-05-07" },
+        { "label": "v5 (2026-05-06)", "url": "https://docs.google.com/document/d/1f13iazsqAP4FLIP9c5UaETfcMkDsuQKG8kASC-YF82s/edit", "date": "2026-05-06" },
+        { "label": "v5 clean (sin refs PR)", "url": "https://docs.google.com/document/d/1bDhdZjxwNKMXXiyXzFAza5vN0Nyv5tyKbmwXDC1RRkM/edit", "date": "2026-05-06" },
+        { "label": "v4 (2026-05-06)", "url": "https://docs.google.com/document/d/1_vZVqH3pfiXdHV9xK57e2IidkU_ycjg9H50Z2s5dcsM/edit", "date": "2026-05-06" },
+        { "label": "v3 (2026-05-06)", "url": "https://docs.google.com/document/d/1nw18pXTjeOPwbNjiTKk89ezHL7voOY7WNehHuc7tS_c/edit", "date": "2026-05-06" },
+        { "label": "v1 (2026-05-06)", "url": "https://docs.google.com/document/d/1UIrXOlt1XBQmYGz7VwUZztUNpWyB-H11INj3Alku8JA/edit", "date": "2026-05-06" },
+        { "label": "Modularizada por stakeholder (v2)", "url": "https://drive.google.com/file/d/1pbv8JUggudKsCLeRf3Squ4XEa8oy_n1i/view", "date": "2026-05-05" },
+        { "label": "Original (2026-05-05)", "url": "https://docs.google.com/document/d/1sgs26ahjBtrapz8Z9vhiY_5KdLwGhgLKXbuFGyGAeHE/edit", "date": "2026-05-06" }
+      ]
+    },
+    {
+      "number": "R03",
+      "slug": "seo-geo-content-plan",
+      "title": "Plan de Contenido SEO + GEO MODO",
+      "summary": "Programa de contenido para cubrir el cuadrante SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, bancos y AI crawlers.",
+      "status": "completo",
+      "tags": ["seo", "geo", "content"],
+      "area": "geo-seo",
+      "date": "2026-04-13",
+      "drive_url": "https://drive.google.com/file/d/1ZVJ0hq_OoWZZuc4P11s9P5EkdeNwnmdb/view",
+      "deck": "decks/completo/seo-geo-maduracion.html"
+    },
+    {
+      "number": "R04",
+      "slug": "auth-web-personalizacion",
+      "title": "Autenticación Web y Personalización en modo.com.ar",
+      "summary": "Login web propio en modo.com.ar y capa de personalización sobre Storyblok + BFFs. Habilita CTAs personalizados y métricas por usuario.",
+      "status": "rfc",
+      "tags": ["auth", "product"],
+      "area": "frontend",
+      "date": "2026-03-03",
+      "drive_url": "https://docs.google.com/document/d/1i709DN1PHUtN01hqn8k5z7B0yngO_0FnxYZnVWSXS0E/edit"
+    },
+    {
+      "number": "R05",
+      "slug": "promos-layout-seo",
+      "title": "Centralización de Layout + SEO en /promos",
+      "summary": "Layout único para promos en modo-landing y promos-hub-site con SEO optimizado: JSON-LD, breadcrumbs, sitemap y migración de subdominios al hub central.",
+      "status": "completo",
+      "tags": ["seo", "frontend"],
+      "area": "frontend",
+      "date": "2026-02-03",
+      "drive_url": "https://docs.google.com/document/d/132fQBe0VMUeKk4avIQeJrbM92PLBoOspETXDgPRjmBo/edit"
+    },
+    {
+      "number": "R06",
+      "slug": "agent-skills-dev-workflows",
+      "title": "Agent Skills · Dev Workflows",
+      "summary": "Pipeline de skills para Claude Code que cubren el ciclo dev de modo-landing: code review, PR quality, generación de páginas, validación de tokens.",
+      "status": "rfc",
+      "tags": ["ai", "tooling"],
+      "area": "ai-agents",
+      "date": "2026-01-16",
+      "drive_url": "https://drive.google.com/file/d/1fU0exbiVZF5fWisDTCzi2z_V2pG-FxRh/view"
+    },
+    {
+      "number": "R07",
+      "slug": "iframe-vs-no-iframe",
+      "title": "Estrategias IFRAME vs SIN IFRAME",
+      "summary": "Análisis de embedding de la home de MODO en partners (con iframe vs render server-side). Concluye que SSR + tokens cortos gana en performance y SEO.",
+      "status": "archivado",
+      "tags": ["architecture"],
+      "area": "frontend",
+      "date": "2025-12-22",
+      "drive_url": "https://drive.google.com/file/d/1ht5nOnRm4bfI1aPQb-XNponeBK69lCCo/view"
+    },
+    {
+      "number": "R08",
+      "slug": "modelo-operativo-ai-first",
+      "title": "Modelo Operativo AI-First (OpenSpec + MCP)",
+      "summary": "Workflow Spec-Driven Development con OpenSpec + agentes vía MCP. Cómo el equipo escribe specs antes de código y los agentes consumen contexto persistente.",
+      "status": "rfc",
+      "tags": ["ai", "tooling"],
+      "area": "ai-agents",
+      "date": "2025-11-14",
+      "drive_url": "https://drive.google.com/file/d/14MtOkJ4IYSwVP-SbRt4F0ePMn7xTzC86/view"
+    },
+    {
+      "number": "R09",
+      "slug": "docs-changelog-from-commits",
+      "title": "Automatización Docs + Changelog desde Commits",
+      "summary": "Commits convencionales como fuente de verdad para changelog y docs internas. Pipeline que cosecha mensajes y produce release notes + docs versionadas.",
+      "status": "rfc",
+      "tags": ["tooling", "comms"],
+      "area": "tooling",
+      "date": "2025-09-25",
+      "drive_url": "https://docs.google.com/document/d/1UQa-8Ru_Spoa35mJNTAAOLdrJT3A9GHmzwrPAgmjS8c/edit"
+    },
+    {
+      "number": "R10",
+      "slug": "postmortems-system",
+      "title": "Sistema de Creación y Validación de Postmortems",
+      "summary": "Template + validación automática de postmortems SRE: causa raíz, blast radius, action items con dueño y deadline. Bloquea cierre si falta evidencia.",
+      "status": "rfc",
+      "tags": ["sre"],
+      "area": "sre",
+      "date": "2025-09-23",
+      "drive_url": "https://docs.google.com/document/d/1NF3Ij9ZvV2jj1KisSnoOHBW3avWSJ8fRzldVy0rM0uU/edit",
+      "versions": [
+        { "label": "Versión previa (Validación Automatizada SRE)", "url": "https://docs.google.com/document/d/1oDUo5_xpPA87dZiQfAAVODLVbnEB-I_yY5eRa69G_xY/edit", "date": "2025-09-23" }
+      ]
+    },
+    {
+      "number": "R11",
+      "slug": "monitoreo-observabilidad-next",
+      "title": "Monitoreo + Observabilidad en apps Next",
+      "summary": "Stack de observabilidad para modo-landing y promos-hub-site: traces, métricas Core Web Vitals, alertas de runtime y dashboards por feature.",
+      "status": "rfc",
+      "tags": ["monitoring", "infra"],
+      "area": "sre",
+      "date": "2025-08-08",
+      "drive_url": "https://docs.google.com/document/d/1ji71t1YmXGZR4lPo0T1tzfXxfMRYDvU2MbBuz8pZKuk/edit"
+    },
+    {
+      "number": "R12",
+      "slug": "transfer-by-location",
+      "title": "Sugerencia de Transferencia por Ubicación",
+      "summary": "Recomendaciones de transferencia basadas en la ubicación previa del usuario en la app. Captura señales de geolocalización y propone destinos frecuentes.",
+      "status": "rfc",
+      "tags": ["product", "ml"],
+      "area": "product",
+      "date": "2025-07-08",
+      "drive_url": "https://docs.google.com/document/d/10l6Alz_aaQGQWqWK4tGVXXRYlmw0y5lCe1IFFq9Zunw/edit"
+    },
+    {
+      "number": "R13",
+      "slug": "promos-ai-integration",
+      "title": "Integración de Promociones al Hub via IA",
+      "summary": "Pipeline IA que clasifica, deduplica y enriquece promociones para el Hub. Resuelve ruido en /comercios y mejora cobertura por rubro.",
+      "status": "rfc",
+      "tags": ["ai", "promos"],
+      "area": "ai-agents",
+      "date": "2025-05-13",
+      "drive_url": "https://docs.google.com/document/d/132XJ2brNkkMaaumNAPGFXtnam6Lg2lnB-yNwVze61ZQ/edit"
+    },
+    {
+      "number": "R14",
+      "slug": "tailwind-v3-to-v4",
+      "title": "Migración Tailwind v3 → v4 con Dynamic Tokens (SDK)",
+      "summary": "Consolidación de styled-components + emotion + tailwind a tailwind-only en modo-landing. Tokens dinámicos vía SDK MODO y CSS-first configuration.",
+      "status": "rfc",
+      "tags": ["migration", "design-system"],
+      "area": "frontend",
+      "date": "2025-05-08",
+      "drive_url": "https://docs.google.com/document/d/1Ochm5xRypb6nk5RuPKpBEyobdqKWbgkM2C26VIOm-9k/edit"
+    },
+    {
+      "number": "R15",
+      "slug": "node-lts-migration",
+      "title": "Migración Node (LTS bump)",
+      "summary": "Subida del runtime de modo-landing a la última LTS de Node: cambios en CI, husky, .nvmrc, helm y compatibilidad con dependencias internas.",
+      "status": "completo",
+      "tags": ["migration", "infra"],
+      "area": "infra",
+      "date": "2025-04-30",
+      "drive_url": "https://docs.google.com/document/d/1aWM8LBsLzpJzhaQoLlVcNJcuVtEmC8Q0fSMf5h9MQVI/edit"
+    },
+    {
+      "number": "R16",
+      "slug": "portales-unificacion",
+      "title": "Unificación de Portales",
+      "summary": "Estrategia para colapsar portales legacy bajo modo.com.ar con redirects 301 y consolidación de DNS. Reemplazado por la estrategia SEO Sprint 0.",
+      "status": "archivado",
+      "tags": ["architecture", "seo"],
+      "area": "frontend",
+      "date": "2024-12-05",
+      "drive_url": "https://docs.google.com/document/d/1iByL0Kj3nNOvFpa8n6a3gaE-GoJKU5KZKjl4RoJDWFQ/edit"
+    },
+    {
+      "number": "R17",
+      "slug": "ff-app-promohub",
+      "title": "Feature Flag · App modo PromoHub",
+      "summary": "Feature flag para rollout progresivo de PromoHub en la app modo. Define cohortes, kill switch y observabilidad del rollout.",
+      "status": "completo",
+      "tags": ["tooling"],
+      "area": "frontend",
+      "date": "2024-11-27",
+      "drive_url": "https://docs.google.com/document/d/15mmIJV6et_-uLn79hZGk14Fgr7lnp5uXMCmkl3KsWos/edit"
+    },
+    {
+      "number": "R18",
+      "slug": "promo-hub-site-proposal",
+      "title": "Promo Hub Site (proposal original)",
+      "summary": "Propuesta original de PromoHub como sitio Next.js standalone con BFF dedicado. Base de lo que hoy es promos-hub-site en producción.",
+      "status": "completo",
+      "tags": ["architecture"],
+      "area": "frontend",
+      "date": "2024-10-10",
+      "drive_url": "https://docs.google.com/document/d/1IOoG6eIY0cA4lR60B7l8FT3orOpV0K3lmjt1t8bqRvw/edit"
+    }
+  ]
+}

@@ -23,6 +23,8 @@
       --rfc-fg: #0049C4;
       --done-bg: #DCF5E7;
       --done-fg: #00471B;
+      --archived-bg: #EEE9E2;
+      --archived-fg: #6B5B3B;
     }
 
     body {
@@ -94,6 +96,7 @@
     .status-badge.draft { background: var(--draft-bg); color: var(--draft-fg); }
     .status-badge.rfc { background: var(--rfc-bg); color: var(--rfc-fg); }
     .status-badge.completo { background: var(--done-bg); color: var(--done-fg); }
+    .status-badge.archivado { background: var(--archived-bg); color: var(--archived-fg); }
 
     /* -- FEATURED CAROUSEL -- */
     .featured-section {
@@ -297,6 +300,85 @@
       transition: background 0.15s, color 0.15s;
     }
     .deck-link:hover { background: var(--accent); color: #fff; }
+
+    /* -- RFC CATALOG SECTION -- */
+    .rfcs-section {
+      border-top: 1px solid var(--border);
+      padding-top: 52px;
+      margin-top: 56px;
+    }
+
+    .rfcs-section .featured-heading { margin-bottom: 6px; }
+    .rfcs-section .featured-subtitle { margin-bottom: 24px; max-width: 640px; }
+
+    .rfc-list { display: flex; flex-direction: column; gap: 0; }
+
+    .rfc-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 16px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .rfc-item:first-child { border-top: 1px solid var(--border); }
+
+    .drive-tag {
+      background: var(--border) !important;
+      color: var(--muted) !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .drive-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      margin-top: 4px;
+      padding: 8px 16px;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .drive-link:hover { background: var(--accent); color: #fff; }
+
+    .rfc-versions-toggle {
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: rgba(0,0,0,0.15);
+    }
+    .rfc-versions-toggle:hover { color: var(--accent); }
+
+    .rfc-versions {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-left: 2px solid var(--border);
+      background: #fff;
+      border-radius: 4px;
+      display: none;
+    }
+    .rfc-versions.open { display: block; }
+    .rfc-versions ul { list-style: none; margin: 0; padding: 0; }
+    .rfc-versions li {
+      font-size: 12px;
+      color: var(--muted);
+      padding: 3px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .rfc-versions li a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .rfc-versions li a:hover { text-decoration: underline; }
 
     /* -- SKILLS SECTION -- */
     .skills-section {
@@ -506,9 +588,11 @@
   </section>
 
   <!-- TABS + FULL DECK LIST -->
-  <p class="section-label">11 decks &middot; 2026-05-20 &middot; workflow draft &rarr; rfc &rarr; completo</p>
+  <p class="section-label">Colecciones</p>
+  <h2 class="featured-heading">Decks</h2>
+  <p class="featured-subtitle">11 presentaciones &middot; workflow draft &rarr; rfc &rarr; completo. Cada deck es una propuesta que busca feedback antes de avanzar.</p>
 
-  <div class="tabs" role="tablist">
+  <div class="tabs" role="tablist" data-scope="decks">
     <button class="tab active" data-stage="all" role="tab">Todos <span class="count">11</span></button>
     <button class="tab" data-stage="draft" role="tab">Draft <span class="count">1</span></button>
     <button class="tab" data-stage="rfc" role="tab">RFC <span class="count">0</span></button>
@@ -696,6 +780,353 @@
 
   </div>
 
+  <!-- RFC CATALOG SECTION -->
+  <section class="rfcs-section" aria-label="Catálogo de RFCs">
+    <p class="section-label">Catálogo</p>
+    <h2 class="featured-heading">RFCs &middot; Documentos técnicos</h2>
+    <p class="featured-subtitle">18 RFCs vivos en Drive. Este index los ordena por fecha, los deduplica por concepto (la saga &laquo;Migración modo-landing&raquo; colapsa 14 versiones en una sola entrada) y enlaza la versión más reciente de cada uno.</p>
+
+    <div class="tabs" role="tablist" data-scope="rfcs">
+      <button class="tab active" data-rfc-stage="all" role="tab">Todos <span class="count">18</span></button>
+      <button class="tab" data-rfc-stage="rfc" role="tab">RFC <span class="count">10</span></button>
+      <button class="tab" data-rfc-stage="completo" role="tab">Completo <span class="count">6</span></button>
+      <button class="tab" data-rfc-stage="archivado" role="tab">Archivado <span class="count">2</span></button>
+    </div>
+
+    <div class="rfc-list">
+
+      <div class="rfc-item" data-rfc-stage="completo">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R01</span>
+            <span class="status-badge completo">Completo</span>
+          </div>
+          <div class="deck-title">MODO for Agents &middot; Pagos agénticos</div>
+          <div class="deck-description">MODO como wallet por defecto para agentes IA. POC end-to-end: discovery, Intent Mandate, checkout, Cart Mandate, SPT, SDK deeplink, biometric, capture.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">ai-agents</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2026-05-18</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1Zf5j44sI1Wt9UV1qIFhkqad-cEOzjVj2/view">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R02</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Migración modo-landing (Next 12 &rarr; 15/16)</div>
+          <div class="deck-description">Plan 7 fases para llevar modo-landing de Next.js 12 a Next.js 16. Contexto técnico, riesgos, cronograma y equipos involucrados. Versión activa: v6.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2026-05-13</span>
+            <button class="rfc-versions-toggle" type="button" data-target="versions-r02">+ 8 versiones anteriores</button>
+          </div>
+          <div class="rfc-versions" id="versions-r02">
+            <ul>
+              <li>2026-05-07 &middot; v6 &middot; <a href="https://docs.google.com/document/d/19zX1kX3QrszERSY_QPV_yaW4EY9yU5HNFzJILy3ODsY/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-06 &middot; v5 &middot; <a href="https://docs.google.com/document/d/1f13iazsqAP4FLIP9c5UaETfcMkDsuQKG8kASC-YF82s/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-06 &middot; v5 clean (sin refs PR) &middot; <a href="https://docs.google.com/document/d/1bDhdZjxwNKMXXiyXzFAza5vN0Nyv5tyKbmwXDC1RRkM/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-06 &middot; v4 &middot; <a href="https://docs.google.com/document/d/1_vZVqH3pfiXdHV9xK57e2IidkU_ycjg9H50Z2s5dcsM/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-06 &middot; v3 &middot; <a href="https://docs.google.com/document/d/1nw18pXTjeOPwbNjiTKk89ezHL7voOY7WNehHuc7tS_c/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-06 &middot; v1 &middot; <a href="https://docs.google.com/document/d/1UIrXOlt1XBQmYGz7VwUZztUNpWyB-H11INj3Alku8JA/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-05 &middot; Modularizada por stakeholder (v2) &middot; <a href="https://drive.google.com/file/d/1pbv8JUggudKsCLeRf3Squ4XEa8oy_n1i/view" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+              <li>2026-05-05 &middot; Original &middot; <a href="https://docs.google.com/document/d/1sgs26ahjBtrapz8Z9vhiY_5KdLwGhgLKXbuFGyGAeHE/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+            </ul>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1bI3n69nkDXj6zPsJcu8Nm4TlnIPvsS3uDOvRa28bOOc/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="completo">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R03</span>
+            <span class="status-badge completo">Completo</span>
+          </div>
+          <div class="deck-title">Plan de Contenido SEO + GEO MODO</div>
+          <div class="deck-description">Programa de contenido para cubrir el cuadrante SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, bancos y AI crawlers.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">geo-seo</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2026-04-13</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ZVJ0hq_OoWZZuc4P11s9P5EkdeNwnmdb/view">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R04</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Autenticación Web y Personalización en modo.com.ar</div>
+          <div class="deck-description">Login web propio en modo.com.ar y capa de personalización sobre Storyblok + BFFs. Habilita CTAs personalizados y métricas por usuario.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2026-03-03</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1i709DN1PHUtN01hqn8k5z7B0yngO_0FnxYZnVWSXS0E/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="completo">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R05</span>
+            <span class="status-badge completo">Completo</span>
+          </div>
+          <div class="deck-title">Centralización de Layout + SEO en /promos</div>
+          <div class="deck-description">Layout único para promos en modo-landing y promos-hub-site con SEO optimizado: JSON-LD, breadcrumbs, sitemap y migración de subdominios al hub central.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2026-02-03</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/132fQBe0VMUeKk4avIQeJrbM92PLBoOspETXDgPRjmBo/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R06</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Agent Skills &middot; Dev Workflows</div>
+          <div class="deck-description">Pipeline de skills para Claude Code que cubren el ciclo dev de modo-landing: code review, PR quality, generación de páginas, validación de tokens.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">ai-agents</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2026-01-16</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1fU0exbiVZF5fWisDTCzi2z_V2pG-FxRh/view">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="archivado">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R07</span>
+            <span class="status-badge archivado">Archivado</span>
+          </div>
+          <div class="deck-title">Estrategias IFRAME vs SIN IFRAME</div>
+          <div class="deck-description">Análisis de embedding de la home de MODO en partners (con iframe vs render server-side). Concluye que SSR + tokens cortos gana en performance y SEO.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-12-22</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ht5nOnRm4bfI1aPQb-XNponeBK69lCCo/view">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R08</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Modelo Operativo AI-First (OpenSpec + MCP)</div>
+          <div class="deck-description">Workflow Spec-Driven Development con OpenSpec + agentes vía MCP. Cómo el equipo escribe specs antes de código y los agentes consumen contexto persistente.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">ai-agents</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-11-14</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/14MtOkJ4IYSwVP-SbRt4F0ePMn7xTzC86/view">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R09</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Automatización Docs + Changelog desde Commits</div>
+          <div class="deck-description">Commits convencionales como fuente de verdad para changelog y docs internas. Pipeline que cosecha mensajes y produce release notes + docs versionadas.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">tooling</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-09-25</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1UQa-8Ru_Spoa35mJNTAAOLdrJT3A9GHmzwrPAgmjS8c/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R10</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Sistema de Creación y Validación de Postmortems</div>
+          <div class="deck-description">Template + validación automática de postmortems SRE: causa raíz, blast radius, action items con dueño y deadline. Bloquea cierre si falta evidencia.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">sre</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-09-23</span>
+            <button class="rfc-versions-toggle" type="button" data-target="versions-r10">+ 1 versión anterior</button>
+          </div>
+          <div class="rfc-versions" id="versions-r10">
+            <ul>
+              <li>2025-09-23 &middot; Validación Automatizada SRE (precursor) &middot; <a href="https://docs.google.com/document/d/1oDUo5_xpPA87dZiQfAAVODLVbnEB-I_yY5eRa69G_xY/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
+            </ul>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1NF3Ij9ZvV2jj1KisSnoOHBW3avWSJ8fRzldVy0rM0uU/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R11</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Monitoreo + Observabilidad en apps Next</div>
+          <div class="deck-description">Stack de observabilidad para modo-landing y promos-hub-site: traces, métricas Core Web Vitals, alertas de runtime y dashboards por feature.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">sre</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-08-08</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1ji71t1YmXGZR4lPo0T1tzfXxfMRYDvU2MbBuz8pZKuk/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R12</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Sugerencia de Transferencia por Ubicación</div>
+          <div class="deck-description">Recomendaciones de transferencia basadas en la ubicación previa del usuario en la app. Captura señales de geolocalización y propone destinos frecuentes.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">product</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-07-08</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/10l6Alz_aaQGQWqWK4tGVXXRYlmw0y5lCe1IFFq9Zunw/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R13</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Integración de Promociones al Hub via IA</div>
+          <div class="deck-description">Pipeline IA que clasifica, deduplica y enriquece promociones para el Hub. Resuelve ruido en /comercios y mejora cobertura por rubro.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">ai-agents</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-05-13</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/132XJ2brNkkMaaumNAPGFXtnam6Lg2lnB-yNwVze61ZQ/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="rfc">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R14</span>
+            <span class="status-badge rfc">RFC</span>
+          </div>
+          <div class="deck-title">Migración Tailwind v3 &rarr; v4 con Dynamic Tokens (SDK)</div>
+          <div class="deck-description">Consolidación de styled-components + emotion + tailwind a tailwind-only en modo-landing. Tokens dinámicos vía SDK MODO y CSS-first configuration.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">design-system</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-05-08</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1Ochm5xRypb6nk5RuPKpBEyobdqKWbgkM2C26VIOm-9k/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="completo">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R15</span>
+            <span class="status-badge completo">Completo</span>
+          </div>
+          <div class="deck-title">Migración Node (LTS bump)</div>
+          <div class="deck-description">Subida del runtime de modo-landing a la última LTS de Node: cambios en CI, husky, .nvmrc, helm y compatibilidad con dependencias internas.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">infra</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2025-04-30</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1aWM8LBsLzpJzhaQoLlVcNJcuVtEmC8Q0fSMf5h9MQVI/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="archivado">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R16</span>
+            <span class="status-badge archivado">Archivado</span>
+          </div>
+          <div class="deck-title">Unificación de Portales</div>
+          <div class="deck-description">Estrategia para colapsar portales legacy bajo modo.com.ar con redirects 301 y consolidación de DNS. Reemplazado por la estrategia SEO Sprint 0.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2024-12-05</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1iByL0Kj3nNOvFpa8n6a3gaE-GoJKU5KZKjl4RoJDWFQ/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="completo">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R17</span>
+            <span class="status-badge completo">Completo</span>
+          </div>
+          <div class="deck-title">Feature Flag &middot; App modo PromoHub</div>
+          <div class="deck-description">Feature flag para rollout progresivo de PromoHub en la app modo. Define cohortes, kill switch y observabilidad del rollout.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2024-11-27</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/15mmIJV6et_-uLn79hZGk14Fgr7lnp5uXMCmkl3KsWos/edit">abrir en Drive &#8599;</a>
+      </div>
+
+      <div class="rfc-item" data-rfc-stage="completo">
+        <div>
+          <div class="deck-header">
+            <span class="deck-number">R18</span>
+            <span class="status-badge completo">Completo</span>
+          </div>
+          <div class="deck-title">Promo Hub Site (proposal original)</div>
+          <div class="deck-description">Propuesta original de PromoHub como sitio Next.js standalone con BFF dedicado. Base de lo que hoy es promos-hub-site en producción.</div>
+          <div class="deck-meta">
+            <span class="meta-tag">frontend</span>
+            <span class="meta-tag drive-tag">Drive</span>
+            <span>2024-10-10</span>
+          </div>
+        </div>
+        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1IOoG6eIY0cA4lR60B7l8FT3orOpV0K3lmjt1t8bqRvw/edit">abrir en Drive &#8599;</a>
+      </div>
+
+    </div>
+
+    <p class="skills-note" style="margin-top: 24px;">
+      Catálogo curado a partir de Google Drive (dump 2026-05-20). Datos crudos versionados en <a href="rfcs/rfcs.json" target="_blank" rel="noopener">rfcs/rfcs.json</a> para que un agente pueda consumirlos sin parsear el HTML.
+    </p>
+  </section>
+
   <!-- SKILLS SECTION -->
   <section class="skills-section">
     <p class="section-label">Herramientas</p>
@@ -775,16 +1206,34 @@
 </footer>
 
 <script>
-  const tabs = document.querySelectorAll('.tab');
-  const items = document.querySelectorAll('.deck-item');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const stage = tab.dataset.stage;
-      items.forEach(it => {
-        it.style.display = (stage === 'all' || it.dataset.stage === stage) ? '' : 'none';
+  // Scoped tab filters: each .tabs container filters its own collection
+  document.querySelectorAll('.tabs').forEach(container => {
+    const scope = container.dataset.scope || 'decks';
+    const tabs = container.querySelectorAll('.tab');
+    const itemSelector = scope === 'rfcs' ? '.rfc-item' : '.deck-item';
+    const items = document.querySelectorAll(itemSelector);
+    const attrKey = scope === 'rfcs' ? 'rfcStage' : 'stage';
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const stage = tab.dataset[attrKey];
+        items.forEach(it => {
+          it.style.display = (stage === 'all' || it.dataset[attrKey] === stage) ? '' : 'none';
+        });
       });
+    });
+  });
+
+  // Version history toggle inside RFC items
+  document.querySelectorAll('.rfc-versions-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      if (!target) return;
+      const isOpen = target.classList.toggle('open');
+      btn.textContent = isOpen
+        ? btn.textContent.replace(/^\+/, '−')
+        : btn.textContent.replace(/^−/, '+');
     });
   });
 </script>
