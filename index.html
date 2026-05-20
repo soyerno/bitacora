@@ -76,7 +76,7 @@
       </div>
       <div class="gh-widget__chart-wrap">
         <div class="gh-widget__chart-label">Contribuciones último año</div>
-        <img class="gh-widget__chart" src="https://ghchart.rshah.org/008859/SoyErnoModo" alt="Contribuciones públicas en GitHub del último año" loading="lazy" />
+        <img class="gh-widget__chart" src="assets/contributions.svg" alt="Mapa de contribuciones de @SoyErnoModo en el último año (incluye privadas)" loading="lazy" onerror="this.onerror=null;this.src='https://ghchart.rshah.org/008859/SoyErnoModo';" />
       </div>
     </article>
   </section>
@@ -185,19 +185,31 @@
     if ($navRfcs) $navRfcs.textContent = rfcs.length || '·';
   });
 
-  /* GitHub profile stats (rate-limited unauthenticated; fail soft). */
-  fetch('https://api.github.com/users/SoyErnoModo', { cache: 'force-cache' })
+  /* Stats from locally generated profile.json (refreshed by GitHub Action,
+     no rate limit). Falls back to unauth API only if the JSON is missing. */
+  fetch('assets/profile.json', { cache: 'no-cache' })
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (u) {
+    .then(function (p) {
+      if (!p) return fetch('https://api.github.com/users/SoyErnoModo', { cache: 'force-cache' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (u) {
+          if (!u) return null;
+          return { publicRepos: u.public_repos, followers: u.followers, following: u.following };
+        });
+      return p;
+    })
+    .then(function (p) {
       var stats = document.getElementById('gh-stats');
       if (!stats) return;
-      if (!u) { stats.textContent = 'github.com/SoyErnoModo'; return; }
+      if (!p) { stats.textContent = 'github.com/SoyErnoModo'; return; }
       var pieces = [];
-      if (typeof u.public_repos === 'number') pieces.push(u.public_repos + ' repos públicos');
-      if (typeof u.followers === 'number') pieces.push(u.followers + ' followers');
-      if (typeof u.following === 'number') pieces.push('siguiendo ' + u.following);
-      stats.innerHTML = pieces.map(function (p, i) {
-        return (i === 0 ? '' : '<span class="dot">·</span> ') + p;
+      if (typeof p.publicRepos === 'number') pieces.push(p.publicRepos + ' repos públicos');
+      if (typeof p.followers === 'number') pieces.push(p.followers + ' followers');
+      if (p.contributions && typeof p.contributions.total === 'number') {
+        pieces.push(p.contributions.total + ' contribuciones · ' + p.contributions.restricted + ' privadas');
+      }
+      stats.innerHTML = pieces.map(function (s, i) {
+        return (i === 0 ? '' : '<span class="dot">·</span> ') + s;
       }).join(' ');
     })
     .catch(function () {
