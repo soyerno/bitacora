@@ -17,6 +17,12 @@
       --border: #E2E2DC;
       --accent: #008859;
       --accent-light: #E6F4EE;
+      --draft-bg: #FFF1C8;
+      --draft-fg: #5C3F00;
+      --rfc-bg: #E5EDF9;
+      --rfc-fg: #0049C4;
+      --done-bg: #DCF5E7;
+      --done-fg: #00471B;
     }
 
     body {
@@ -32,7 +38,6 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ── HEADER ── */
     header {
       border-bottom: 1px solid var(--border);
       padding: 32px 48px 28px;
@@ -57,12 +62,11 @@
       letter-spacing: 0.02em;
     }
 
-    /* ── MAIN ── */
     main {
       flex: 1;
-      max-width: 860px;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 56px 48px;
+      padding: 48px 48px;
       width: 100%;
     }
 
@@ -72,27 +76,62 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
-    /* ── DECK LIST ── */
-    .deck-list {
+    .tabs {
       display: flex;
-      flex-direction: column;
-      gap: 0;
+      gap: 8px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
     }
+
+    .tab {
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab:hover { color: var(--ink); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab .count {
+      background: var(--border);
+      color: var(--muted);
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .tab.active .count { background: var(--accent-light); color: var(--accent); }
+
+    .deck-list { display: flex; flex-direction: column; gap: 0; }
 
     .deck-item {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: start;
       gap: 16px;
-      padding: 32px 0;
+      padding: 28px 0;
       border-bottom: 1px solid var(--border);
     }
+    .deck-item:first-child { border-top: 1px solid var(--border); }
 
-    .deck-item:first-child {
-      border-top: 1px solid var(--border);
+    .deck-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
     }
 
     .deck-number {
@@ -101,12 +140,24 @@
       font-size: 11px;
       color: var(--muted);
       letter-spacing: 0.08em;
-      margin-bottom: 8px;
     }
+
+    .status-badge {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .status-badge.draft { background: var(--draft-bg); color: var(--draft-fg); }
+    .status-badge.rfc { background: var(--rfc-bg); color: var(--rfc-fg); }
+    .status-badge.completo { background: var(--done-bg); color: var(--done-fg); }
 
     .deck-title {
       font-family: 'Red Hat Display', sans-serif;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 600;
       color: var(--ink);
       line-height: 1.3;
@@ -122,13 +173,11 @@
 
     .deck-meta {
       display: flex;
-      gap: 20px;
+      gap: 12px;
       font-size: 12px;
       color: var(--muted);
-    }
-
-    .deck-meta span::before {
-      content: '';
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .meta-tag {
@@ -154,13 +203,8 @@
       border-radius: 4px;
       transition: background 0.15s, color 0.15s;
     }
+    .deck-link:hover { background: var(--accent); color: #fff; }
 
-    .deck-link:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
       padding: 24px 48px;
@@ -172,20 +216,15 @@
       gap: 16px;
       flex-wrap: wrap;
     }
-
-    footer a {
-      color: var(--accent);
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
+    footer a { color: var(--accent); }
+    footer a:hover { text-decoration: underline; }
 
     @media (max-width: 640px) {
       header { padding: 24px 20px; flex-direction: column; gap: 4px; }
-      main { padding: 40px 20px; }
+      main { padding: 32px 20px; }
       footer { padding: 20px; flex-direction: column; align-items: flex-start; }
       .deck-item { grid-template-columns: 1fr; }
+      .tabs { overflow-x: auto; }
     }
   </style>
 </head>
@@ -197,13 +236,40 @@
 </header>
 
 <main>
-  <p class="section-label">7 decks · 2026-05-20</p>
+  <p class="section-label">11 decks · 2026-05-20 · workflow draft → rfc → completo</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-stage="all" role="tab">Todos <span class="count">11</span></button>
+    <button class="tab" data-stage="draft" role="tab">Draft <span class="count">1</span></button>
+    <button class="tab" data-stage="rfc" role="tab">RFC <span class="count">0</span></button>
+    <button class="tab" data-stage="completo" role="tab">Completo <span class="count">10</span></button>
+  </div>
 
   <div class="deck-list">
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="draft">
       <div>
-        <div class="deck-number">01</div>
+        <div class="deck-header">
+          <span class="deck-number">D01</span>
+          <span class="status-badge draft">Draft</span>
+        </div>
+        <div class="deck-title">modo-design-system &middot; skill / SDK para devs frontend</div>
+        <div class="deck-description">Skill MODO-especifico para generar paginas Next/Astro one-shot con tokens canonicos, JSON-LD obligatorio, NavFooterLayout, validacion automatica. 5 repos · 4 stacks · learning loop.</div>
+        <div class="deck-meta">
+          <span class="meta-tag">Equipo frontend + TL + PM</span>
+          <span>2026-05-20</span>
+          <span>15 slides</span>
+        </div>
+      </div>
+      <a class="deck-link" href="decks/draft/modo-design-system-skill.html">abrir &rarr;</a>
+    </div>
+
+    <div class="deck-item" data-stage="completo">
+      <div>
+        <div class="deck-header">
+          <span class="deck-number">C01</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
         <div class="deck-title">Next 12 &rarr; 15 &middot; Stack consolidation</div>
         <div class="deck-description">Propuesta de migracion del stack de modo-landing (Next.js 12) a Next.js 15 en 7 fases. Contexto tecnico, riesgos, cronograma y equipos involucrados.</div>
         <div class="deck-meta">
@@ -211,12 +277,15 @@
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/nextjs-12-to-15-consolidation.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/nextjs-12-to-15-consolidation.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">02</div>
+        <div class="deck-header">
+          <span class="deck-number">C02</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
         <div class="deck-title">/comercios MVP shipped</div>
         <div class="deck-description">Resultados del MVP de la pagina de comercios para modo.com.ar: busqueda, filtros, MerchantCard con paridad visual a PromoHub, ISR, y proximos pasos.</div>
         <div class="deck-meta">
@@ -224,25 +293,31 @@
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/comercios-mvp.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/comercios-mvp.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">03</div>
+        <div class="deck-header">
+          <span class="deck-number">C03</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
         <div class="deck-title">Sumar ChatGPT App + Claude Skill al modal "Usa MODO"</div>
-        <div class="deck-description">Propuesta de integracion de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisicion via el modal existente. Incluye demo del flujo agenticoo end-to-end.</div>
+        <div class="deck-description">Propuesta de integracion de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisicion via el modal existente. Incluye demo del flujo agentico end-to-end.</div>
         <div class="deck-meta">
           <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/marketplaces.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/marketplaces.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">04</div>
+        <div class="deck-header">
+          <span class="deck-number">C04</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
         <div class="deck-title">Storyblok build-time &middot; Navbar / Footer en la lib</div>
         <div class="deck-description">Hidratar Navbar y Footer desde Storyblok en el build de modo-landing-web-ui-lib. Snapshot embebido, release cascade automatico hacia modo-landing y promos-hub-site (PR #38).</div>
         <div class="deck-meta">
@@ -250,96 +325,132 @@
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/storyblok-cms-build-time.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/storyblok-cms-build-time.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">05</div>
-        <div class="deck-title">MODO for Agents &middot; Pagos agénticos</div>
-        <div class="deck-description">Propuesta para que MODO sea el wallet por defecto cuando un agente de IA compra en nombre de un usuario argentino. Resultado del hackathon 2026-05-19. Math validada: ROI ~30x, payback menor a 1 año.</div>
+        <div class="deck-header">
+          <span class="deck-number">C05</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
+        <div class="deck-title">MODO for Agents &middot; Pagos agenticos en el ecosistema MODO</div>
+        <div class="deck-description">POC del hackathon de pagos agenticos: discovery + Intent Mandate + checkout + Cart Mandate + SPT + SDK deeplink + biometric + capture, end-to-end.</div>
         <div class="deck-meta">
-          <span class="meta-tag">Comité mixto · PM + TL + Manager</span>
+          <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/modo-for-agents.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/modo-for-agents.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">06</div>
-        <div class="deck-title">SEO Sprint 0 &middot; Staging leaks urgentes + plan 12 semanas</div>
-        <div class="deck-description">5 subdominios non-prod indexados en Google (seguridad + SEO). Sprint 0 esta semana (1 día de trabajo). Plan de 12 semanas para duplicar el tráfico orgánico de modo-landing de 13k a 26k clicks/mes.</div>
+        <div class="deck-header">
+          <span class="deck-number">C06</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
+        <div class="deck-title">SEO Sprint 0 &middot; Staging leaks y plan 12 semanas</div>
+        <div class="deck-description">Staging leaks criticos (intra, develop, qa indexados en Google) + canibalizacion subdominios + /aprende-con-modo crawled-not-indexed. Plan 12 semanas modo-landing.</div>
         <div class="deck-meta">
-          <span class="meta-tag">Comité mixto · PM + TL + Manager</span>
+          <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/seo-sprint0.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/seo-sprint0.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">07</div>
-        <div class="deck-title">Comercios Database &middot; De 200 ruidosos a catálogo canónico</div>
-        <div class="deck-description">El MVP /comercios tiene 51k impresiones/mes pero solo 200 merchants derivados por regex. Propuesta en 3 versiones (V1 BFF materializado + V2 geo + V3 UCP/MCP/301) para llegar al catálogo real en 3 trimestres.</div>
+        <div class="deck-header">
+          <span class="deck-number">C07</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
+        <div class="deck-title">Comercios Database &middot; De 200 ruidosos a catalogo canonico</div>
+        <div class="deck-description">Roadmap V1-V3 para construir el catalogo canonico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301.</div>
         <div class="deck-meta">
-          <span class="meta-tag">Comité mixto · PM + TL + Manager</span>
+          <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/comercios-database.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/comercios-database.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">20</div>
-        <div class="deck-title">SEO + GEO Architecture &middot; De cero a producción</div>
-        <div class="deck-description">Cómo pasamos de un sitio sin datos estructurados a Organization, MobileApp, FAQPage, Breadcrumb, 37 BankOrCreditUnion, AI crawlers habilitados y JSON-LD configurable desde Storyblok en 11 semanas.</div>
+        <div class="deck-header">
+          <span class="deck-number">C08</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
+        <div class="deck-title">SEO + GEO Architecture &middot; Maduracion Q1-Q2 2026</div>
+        <div class="deck-description">Retrospectiva enero-mayo 2026 del trabajo de SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, 37 BankOrCreditUnion, AI crawlers.</div>
         <div class="deck-meta">
-          <span class="meta-tag">Comité mixto · PM + TL + Manager</span>
+          <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/seo-geo-maduracion.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/seo-geo-maduracion.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">21</div>
-        <div class="deck-title">FAQ + Centro de Ayuda &middot; De hash anchor a producto</div>
-        <div class="deck-description">Transformación del FAQ estático en un centro de ayuda completo: integración con Salesforce Knowledge, SSR, rutas individuales por pregunta, subcategorías dinámicas y FAQPage JSON-LD para rich results.</div>
+        <div class="deck-header">
+          <span class="deck-number">C09</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
+        <div class="deck-title">FAQ + Centro de Ayuda &middot; Maduracion Q1-Q2 2026</div>
+        <div class="deck-description">Retrospectiva enero-mayo 2026 del rework de FAQ + centro de ayuda. Topics, FAQPage JSON-LD, search in-page, indexabilidad en AI overviews.</div>
         <div class="deck-meta">
-          <span class="meta-tag">Comité mixto · PM + TL + Manager</span>
+          <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/faq-ayuda-maduracion.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/faq-ayuda-maduracion.html">abrir &rarr;</a>
     </div>
 
-    <div class="deck-item">
+    <div class="deck-item" data-stage="completo">
       <div>
-        <div class="deck-number">22</div>
-        <div class="deck-title">CI/CD + DX Hardening &middot; Del caos al pipeline confiable</div>
-        <div class="deck-description">8 guardianes automáticos en 6 semanas: Dependabot, commitlint, Playwright e2e, SonarCloud full-scope, Safe-chain supply chain validator, Node v22 LTS y un CVE crítico bloqueado antes de llegar a prod.</div>
+        <div class="deck-header">
+          <span class="deck-number">C10</span>
+          <span class="status-badge completo">Completo</span>
+        </div>
+        <div class="deck-title">CI/CD + DX Hardening &middot; Maduracion Q1-Q2 2026</div>
+        <div class="deck-description">Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times.</div>
         <div class="deck-meta">
-          <span class="meta-tag">Comité mixto · PM + TL + Manager</span>
+          <span class="meta-tag">PM + TL + Manager</span>
           <span>2026-05-20</span>
         </div>
       </div>
-      <a class="deck-link" href="decks/cicd-dx-maduracion.html">abrir &rarr;</a>
+      <a class="deck-link" href="decks/completo/cicd-dx-maduracion.html">abrir &rarr;</a>
     </div>
 
   </div>
 </main>
 
 <footer>
-  <span>
-    <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>
-  </span>
-  <span>Generado con la skill <code>modo-deck</code> en Claude Code</span>
+  <div>
+    Generados con la skill <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> &middot;
+    repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
+  </div>
+  <div>
+    <strong>Workflow</strong>: <span class="status-badge draft">Draft</span> &rarr; <span class="status-badge rfc">RFC</span> &rarr; <span class="status-badge completo">Completo</span>
+  </div>
 </footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const items = document.querySelectorAll('.deck-item');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const stage = tab.dataset.stage;
+      items.forEach(it => {
+        it.style.display = (stage === 'all' || it.dataset.stage === stage) ? '' : 'none';
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
