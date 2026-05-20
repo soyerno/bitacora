@@ -55,21 +55,21 @@
     position: absolute;
     top: 28px; left: 80px; right: 80px;
     display: flex; align-items: center; justify-content: space-between;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--gray-60);
   }
   .modo-wordmark {
     font-family: "Quicksand", sans-serif; font-weight: 700;
     color: var(--green-default); letter-spacing: -0.06em;
-    line-height: 1; display: inline-block; font-size: 36px;
+    line-height: 1; display: inline-block; font-size: 42px;
     font-variant-numeric: tabular-nums;
   }
-  .modo-wordmark--sm { font-size: 22px; letter-spacing: -0.05em; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
   .slide__chrome-bottom {
     position: absolute;
     bottom: 24px; left: 80px; right: 80px;
     display: flex; align-items: center; justify-content: space-between;
-    font-size: 11px; color: var(--gray-60);
+    font-size: 13px; color: var(--gray-60);
   }
   .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
   .slide__chrome-bottom .progress {
@@ -81,31 +81,31 @@
     width: var(--p, 0%); transition: width 360ms var(--ease);
   }
   .eyebrow {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: var(--green-default); margin: 0 0 16px;
   }
   h1.title {
     font-family: "Quicksand", "Red Hat Display", sans-serif;
-    font-size: clamp(36px, 4.4vw, 64px); font-weight: 700;
+    font-size: clamp(42px, 4.8vw, 80px); font-weight: 700;
     line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink);
   }
   h2.heading {
     font-family: "Quicksand", "Red Hat Display", sans-serif;
-    font-size: clamp(28px, 3vw, 44px); font-weight: 700;
+    font-size: clamp(33px, 3.4vw, 54px); font-weight: 700;
     line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink);
   }
-  h3.subheading { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
-  p.lede { font-size: 22px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
-  p.body { font-size: 16px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
   p.body strong { color: var(--ink); font-weight: 600; }
-  p.muted { font-size: 13px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
   .num {
     font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums;
     font-weight: 700; letter-spacing: -0.035em;
   }
-  .num--xl { font-size: clamp(80px, 9vw, 140px); line-height: 0.95; }
-  .num--lg { font-size: clamp(48px, 5vw, 72px); line-height: 1; }
-  .num--md { font-size: clamp(32px, 3.4vw, 48px); line-height: 1; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
   .num--accent { color: var(--green-default); }
   .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -116,13 +116,13 @@
   }
   .card__index {
     font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums;
-    font-weight: 700; font-size: 14px; color: var(--green-default);
+    font-weight: 700; font-size: 17px; color: var(--green-default);
     letter-spacing: 0.04em; margin-bottom: 12px; display: block;
   }
   .chip {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px; border-radius: 999px; background: var(--gray-3);
-    color: var(--gray-80); font-size: 12px; font-weight: 500; letter-spacing: 0.02em;
+    color: var(--gray-80); font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
   }
   .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
   .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
@@ -132,12 +132,12 @@
   .dot--good { background: var(--green-default); }
   .dot--warn { background: var(--yellow-rewards); }
   .stat { display: flex; flex-direction: column; gap: 4px; }
-  .stat__label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
   .stat__value { color: var(--ink); }
-  table.compare { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 17px; }
   table.compare th, table.compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-8); }
   table.compare thead th {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20);
   }
   table.compare tbody tr:last-child td { border-bottom: none; }
@@ -154,12 +154,12 @@
     content: counter(decisions, decimal-leading-zero);
     position: absolute; left: 0; top: 18px;
     font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums;
-    font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em;
+    font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em;
   }
-  ol.decisions h3 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
-  ol.decisions .ownership { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
   ul.checks { list-style: none; padding: 0; margin: 0; }
-  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 15px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 18px; line-height: 1.5; color: var(--gray-80); }
   ul.checks li::before {
     content: ""; position: absolute; left: 4px; top: 13px;
     width: 12px; height: 12px; border-radius: 999px;
@@ -177,7 +177,7 @@
     border-radius: 14px; padding: 24px;
   }
   .pillar-detail__evidence h4 {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--green-default); margin: 0 0 12px;
   }
   .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
@@ -191,35 +191,35 @@
   }
   .phase__num {
     font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums;
-    font-weight: 700; font-size: 56px; line-height: 1; color: var(--green-default);
+    font-weight: 700; font-size: 66px; line-height: 1; color: var(--green-default);
     margin-bottom: 8px; letter-spacing: -0.04em;
   }
-  .phase__weeks { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
-  .phase__title { font-size: 17px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
-  .phase__body { font-size: 13px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__weeks { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
+  .phase__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
   .phase__total {
     background: var(--green-10); border-radius: 14px; padding: 24px;
     display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 180px;
   }
   .mono {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 13px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80);
+    font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80);
   }
   .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
   .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
-  .stack-block h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
-  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 14px; }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
   .stack-block .row-item:last-child { border-bottom: none; }
   .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
-  .stack-block .row-item .value { color: var(--gray-60); font-size: 12px; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
   .slide--cover {
     background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm);
     padding: 80px;
   }
-  .slide--cover h1.title { font-size: clamp(48px, 6vw, 80px); max-width: 18ch; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
   .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
-  .slide--cover .meta__col h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
-  .slide--cover .meta__col p { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.4; }
+  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
   .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
   @media print {
     body { background: white; }
@@ -240,7 +240,7 @@
   .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
   .deck__nav .counter {
     font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums;
-    font-weight: 600; font-size: 13px; color: var(--ink); padding: 0 12px;
+    font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px;
     display: flex; align-items: center; letter-spacing: 0.04em;
   }
   .deck-reactions {
@@ -265,7 +265,7 @@
     padding: 16px 20px;
     border-bottom: 1px solid var(--gray-3);
     font-family: "Quicksand", sans-serif;
-    font-size: 14px;
+    font-size: 17px;
     color: var(--ink);
   }
   .deck-reactions__head button {
@@ -276,7 +276,7 @@
     border-radius: 999px;
     cursor: pointer;
     color: var(--gray-60);
-    font-size: 20px;
+    font-size: 24px;
     line-height: 1;
   }
   .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
@@ -297,7 +297,7 @@
   background: rgba(0, 136, 89, 0.92);
   color: #fff;
   font-family: 'Red Hat Display', system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
   border-radius: 999px;
   text-decoration: none;
@@ -374,7 +374,7 @@
     </div>
     <div class="slide__body">
       <p class="eyebrow">La recomendación</p>
-      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 22ch;">Arrancar los dos<br /><span style="color: var(--green-default)">caminos cortos</span> en Q3.</h1>
+      <h1 class="title" style="font-size: clamp(48px, 5.5vw, 82px); max-width: 22ch;">Arrancar los dos<br /><span style="color: var(--green-default)">caminos cortos</span> en Q3.</h1>
       <div class="grid-3" style="margin-top: 40px;">
         <div class="stat">
           <span class="stat__label">TAM e-commerce AR</span>
@@ -486,7 +486,7 @@
       <div>
         <p class="eyebrow">Pilar 1 · Protocolo</p>
         <div class="num num--xl num--accent">ACP</div>
-        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">Un contrato de integracion que escala a 3000+ merchants.</h2>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Un contrato de integracion que escala a 3000+ merchants.</h2>
         <p class="body" style="max-width: 50ch;">Adoptamos ACP (Stripe + OpenAI) como API de integracion con agentes. Ya es el estandar que adoptan OpenAI, Anthropic y los merchants de VTEX. Un solo endpoint MODO y cualquier agente compatible puede comprar.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">Ya implementado en POC</span>
@@ -526,7 +526,7 @@
       <div>
         <p class="eyebrow">Pilar 2 · Control del usuario</p>
         <div class="num num--xl num--accent">AP2</div>
-        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">El usuario siempre aprueba. El agente no puede gastar solo.</h2>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">El usuario siempre aprueba. El agente no puede gastar solo.</h2>
         <p class="body" style="max-width: 50ch;">Dos tipos de mandato: Intent Mandate (el agente puede buscar e iniciar hasta X) y Cart Mandate (el agente puede pagar este cart especifico). Ambos se firman con Face ID en la app MODO existente.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">Demo funcional en POC</span>
@@ -566,7 +566,7 @@
       <div>
         <p class="eyebrow">Pilar 3 · Modelo de negocio</p>
         <div class="num num--xl num--accent">30x</div>
-        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">ROI estimado en el escenario conservador.</h2>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">ROI estimado en el escenario conservador.</h2>
         <p class="body" style="max-width: 50ch;">TAM AR e-commerce 2026: USD 30B. VTEX concentra ~30% del online. Si MODO captura 30% del volumen agéntico en VTEX con take rate 0.5%, la contribucion cumulada a 3 anos es ~USD 5M.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">Payback menor a 1 ano</span>
@@ -627,18 +627,18 @@
         <div class="phase__total">
           <span class="phase__weeks">Ventana de decision</span>
           <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">6 meses</span>
-          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">Para los caminos 1 y 2</span>
-          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Camino 3 se decide en Q3 segun traccion.</span>
+          <span style="font-size: 14px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">Para los caminos 1 y 2</span>
+          <span style="font-size: 13px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Camino 3 se decide en Q3 segun traccion.</span>
         </div>
       </div>
       <div class="grid-2" style="margin-top: 24px; gap: 20px;">
         <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
-          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Lo que la POC valido</h4>
-          <p class="body" style="margin: 0; font-size: 13px; color: var(--green-dark);">El flow ACP + AP2 mandate completo es implementable sobre la infraestructura existente. 7 personas · 24 horas · demo funcional en localhost con stubs sobre payloads reales del protocolo.</p>
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Lo que la POC valido</h4>
+          <p class="body" style="margin: 0; font-size: 16px; color: var(--green-dark);">El flow ACP + AP2 mandate completo es implementable sobre la infraestructura existente. 7 personas · 24 horas · demo funcional en localhost con stubs sobre payloads reales del protocolo.</p>
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
-          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Lo que NO cubre la POC</h4>
-          <p class="body" style="margin: 0; font-size: 13px;">VC signing real, settlement productivo, compliance review. Eso es post-Q3. La POC respeta la forma del payload real del protocolo, no inventa payloads ad-hoc.</p>
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Lo que NO cubre la POC</h4>
+          <p class="body" style="margin: 0; font-size: 16px;">VC signing real, settlement productivo, compliance review. Eso es post-Q3. La POC respeta la forma del payload real del protocolo, no inventa payloads ad-hoc.</p>
         </div>
       </div>
     </div>
@@ -755,9 +755,9 @@
       <p class="eyebrow">Para el Manager</p>
       <h2 class="heading">Inversion acotada, retorno exponencial si el canal crece como mobile payments.</h2>
       <div class="grid-3" style="margin-top: 24px;">
-        <div class="card"><span class="card__index">Capex Q3</span><div class="num num--md" style="margin: 8px 0;">UVA 115k</div><p class="body" style="margin: 0; font-size: 14px;">2 backend sr + 1 TL · 3 meses + infra. Mismos perfiles que ya existen en COE GenAI.</p></div>
-        <div class="card"><span class="card__index">Payback</span><div class="num num--md" style="margin: 8px 0;">&lt; 1 ano</div><p class="body" style="margin: 0; font-size: 14px;">Con el escenario conservador (0.5% agentic adoption, 30% MODO share en canal).</p></div>
-        <div class="card"><span class="card__index">ROI estimado</span><div class="num num--md" style="margin: 8px 0; color: var(--green-default);">~30x</div><p class="body" style="margin: 0; font-size: 14px;">Contribucion cumulada ~USD 5M en 3 anos vs inversion inicial ~USD 170k.</p></div>
+        <div class="card"><span class="card__index">Capex Q3</span><div class="num num--md" style="margin: 8px 0;">UVA 115k</div><p class="body" style="margin: 0; font-size: 17px;">2 backend sr + 1 TL · 3 meses + infra. Mismos perfiles que ya existen en COE GenAI.</p></div>
+        <div class="card"><span class="card__index">Payback</span><div class="num num--md" style="margin: 8px 0;">&lt; 1 ano</div><p class="body" style="margin: 0; font-size: 17px;">Con el escenario conservador (0.5% agentic adoption, 30% MODO share en canal).</p></div>
+        <div class="card"><span class="card__index">ROI estimado</span><div class="num num--md" style="margin: 8px 0; color: var(--green-default);">~30x</div><p class="body" style="margin: 0; font-size: 17px;">Contribucion cumulada ~USD 5M en 3 anos vs inversion inicial ~USD 170k.</p></div>
       </div>
       <table class="compare" style="margin-top: 24px;">
         <thead><tr><th style="width: 30%;">Aspecto</th><th>No entrar</th><th>Entrar en Q3</th></tr></thead>
@@ -820,7 +820,7 @@
       <h1 class="title">Si hay apetito,<br /><span style="color: var(--green-default)">agendamos la review</span>.</h1>
       <p class="lede">Este deck propone, no decide. Necesito feedback de los equipos involucrados antes de abrir tickets.</p>
       <div class="card" style="max-width: 640px; margin-top: 32px;">
-        <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 16px;">Equipos que deberian opinar antes de avanzar</h4>
+        <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 16px;">Equipos que deberian opinar antes de avanzar</h4>
         <ul class="checks">
           <li><strong>Legal</strong>: contratos con Stripe (ACP) y Google (AP2), y compliance de mandatos firmados.</li>
           <li><strong>Backend / Infraestructura</strong>: SLA del nuevo servicio ACP + impacto en la plataforma de tokenizacion.</li>
