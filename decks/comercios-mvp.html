@@ -413,7 +413,7 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 17%"></i></div>
-      <span class="counter">02 / 16</span>
+      <span class="counter">02 / 17</span>
     </div>
   </section>
 
@@ -449,7 +449,7 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 25%"></i></div>
-      <span class="counter">03 / 16</span>
+      <span class="counter">03 / 17</span>
     </div>
   </section>
 
@@ -485,7 +485,7 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 33%"></i></div>
-      <span class="counter">04 / 16</span>
+      <span class="counter">04 / 17</span>
     </div>
   </section>
 
@@ -517,7 +517,7 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 31%"></i></div>
-      <span class="counter">05 / 16</span>
+      <span class="counter">05 / 17</span>
     </div>
   </section>
 
@@ -550,7 +550,7 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 38%"></i></div>
-      <span class="counter">06 / 16</span>
+      <span class="counter">06 / 17</span>
     </div>
   </section>
 
@@ -582,7 +582,7 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 44%"></i></div>
-      <span class="counter">07 / 16</span>
+      <span class="counter">07 / 17</span>
     </div>
   </section>
 
@@ -615,11 +615,74 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 50%"></i></div>
-      <span class="counter">08 / 16</span>
+      <span class="counter">08 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 09 · COMPONENTES CLAVE ============ -->
+  <!-- ============ SLIDE 09 · HARNESS DE DESARROLLO ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>09 · harness</span>
+      <span>Cómo lo construimos</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Cómo lo construimos</p>
+      <h2 class="heading" style="margin-bottom: 6px;">Harness de desarrollo · sin atropellar la calidad.</h2>
+      <p class="body" style="font-size: 14px; max-width: 80ch; margin-bottom: 14px;">Cada cambio que entra al MVP pasó por estos 6 pasos. No es jerga: es la forma de que no se nos rompa nada cuando estamos a las apuradas.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px;">
+        <div class="card" style="padding: 14px 16px;">
+          <span class="card__index" style="margin-bottom: 6px;">01 · SDD</span>
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0 0 6px;">Antes de tocar código, escribimos la spec.</h3>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--gray-80); margin: 0;">La spec es el contrato con producto y UX. Si después aparece una duda en la implementación, hay un papel que decide. No discutimos por memoria.</p>
+        </div>
+
+        <div class="card" style="padding: 14px 16px;">
+          <span class="card__index" style="margin-bottom: 6px;">02 · TDD</span>
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0 0 6px;">Test primero · rojo, después verde.</h3>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--gray-80); margin: 0;">Escribimos un test que falla a propósito (rojo). Después el código mínimo que lo hace pasar (verde). Cada línea nace con su prueba al lado.</p>
+        </div>
+
+        <div class="card" style="padding: 14px 16px;">
+          <span class="card__index" style="margin-bottom: 6px;">03 · Testing en 3 niveles</span>
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0 0 6px;">Chico, mediano, grande.</h3>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--gray-80); margin: 0;">Unit (una función sola), integración (un componente con su entorno), end-to-end (un robot navegando como un usuario de verdad). Cada nivel agarra bugs distintos.</p>
+        </div>
+
+        <div class="card" style="padding: 14px 16px;">
+          <span class="card__index" style="margin-bottom: 6px;">04 · Validación E2E</span>
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0 0 6px;">Un robot recorre las pantallas antes de prod.</h3>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--gray-80); margin: 0;">Playwright abre Chrome, hace click, llena formularios y valida que todo responda. Si una pantalla falla, el deploy se frena solo.</p>
+        </div>
+
+        <div class="card" style="padding: 14px 16px;">
+          <span class="card__index" style="margin-bottom: 6px;">05 · Documentación viva</span>
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0 0 6px;">Docs en el mismo repo, no en una wiki olvidada.</h3>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--gray-80); margin: 0;">PRD (qué pide producto), RFC (qué proponemos técnicamente), README (cómo arrancarlo), ADR (qué decidimos y por qué). El equipo y las IAs los leen para entender contexto.</p>
+        </div>
+
+        <div class="card" style="padding: 14px 16px;">
+          <span class="card__index" style="margin-bottom: 6px;">06 · Regresión automática</span>
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0 0 6px;">Cada cambio corre todos los tests viejos.</h3>
+          <p style="font-size: 12px; line-height: 1.5; color: var(--gray-80); margin: 0;">Si algo que antes funcionaba se rompe, los tests lo agarran antes de mergear. No nos enteramos por un usuario enojado.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <span class="chip chip--green">12/12 tests passing</span>
+        <span class="chip">Playwright E2E verde</span>
+        <span class="chip">SonarCloud Quality Gate pass</span>
+        <span class="chip">PR con screenshots desktop + mobile</span>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>shipped a preprod · alpha a2.414.1</span>
+      <div class="progress"><i style="--p: 53%"></i></div>
+      <span class="counter">09 / 17</span>
+    </div>
+  </section>
+
+  <!-- ============ SLIDE 10 · COMPONENTES CLAVE ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -669,11 +732,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 42%"></i></div>
-      <span class="counter">09 / 16</span>
+      <span class="counter">10 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 10 · DISEÑO ============ -->
+  <!-- ============ SLIDE 11 · DISEÑO ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -707,11 +770,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 50%"></i></div>
-      <span class="counter">10 / 16</span>
+      <span class="counter">11 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 11 · SEO + GEO ============ -->
+  <!-- ============ SLIDE 12 · SEO + GEO ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -749,11 +812,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 58%"></i></div>
-      <span class="counter">11 / 16</span>
+      <span class="counter">12 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 12 · BUGS FIXEADOS POST-LAUNCH ============ -->
+  <!-- ============ SLIDE 13 · BUGS FIXEADOS POST-LAUNCH ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -797,11 +860,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 67%"></i></div>
-      <span class="counter">12 / 16</span>
+      <span class="counter">13 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 13 · LO QUE NO ESTÁ AÚN ============ -->
+  <!-- ============ SLIDE 14 · LO QUE NO ESTÁ AÚN ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -837,11 +900,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 75%"></i></div>
-      <span class="counter">13 / 16</span>
+      <span class="counter">14 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 14 · FASE 2 ============ -->
+  <!-- ============ SLIDE 15 · FASE 2 ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -881,11 +944,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 83%"></i></div>
-      <span class="counter">14 / 16</span>
+      <span class="counter">15 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 15 · DECISIONES ============ -->
+  <!-- ============ SLIDE 16 · DECISIONES ============ -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -915,11 +978,11 @@
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
       <div class="progress"><i style="--p: 92%"></i></div>
-      <span class="counter">15 / 16</span>
+      <span class="counter">16 / 17</span>
     </div>
   </section>
 
-  <!-- ============ SLIDE 16 · CIERRE ============ -->
+  <!-- ============ SLIDE 17 · CIERRE ============ -->
   <section class="slide slide--cover" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
@@ -954,7 +1017,7 @@
   <button id="prev" aria-label="Anterior" title="← / k">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
   </button>
-  <span class="counter" id="counter">01 / 16</span>
+  <span class="counter" id="counter">01 / 17</span>
   <button id="next" aria-label="Siguiente" title="→ / j / espacio">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
   </button>
