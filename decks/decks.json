@@ -6,6 +6,21 @@
   },
   "decks": [
     {
+      "id": "usa-la-bitacora",
+      "title": "Usá la bitácora · invitación al equipo MODO",
+      "desc": "Deck de adopción para fomentar el uso de erno-modo (soyernomodo.github.io/erno-modo) como bitácora pública del equipo: decks, RFCs y skills con URL estable, brand MODO y workflow draft → rfc → completo. Tres pasos para arrancar esta semana.",
+      "href": "decks/draft/usa-la-bitacora.html",
+      "status": "draft",
+      "audience": "Equipo extendido MODO",
+      "date": "2026-05-20",
+      "slides": 10,
+      "topics": [
+        "plataforma",
+        "comunicacion"
+      ],
+      "featured": true
+    },
+    {
       "id": "accesibilidad-anclajes-mareos",
       "title": "Modo sereno · anclajes, reduced motion, acelerómetro y navbar A11y",
       "desc": "Segunda capa del programa de accesibilidad MODO. Punto de anclaje visual + reducción de movimiento + acelerómetro auto-detect en TypeScript + navbar con switch de lectura biónica y dropdown A11y que absorbe dark mode. Incluye demo interactivo con botones que activan las features en vivo. 16 slides, ~3 semanas, sin BE nuevo.",
