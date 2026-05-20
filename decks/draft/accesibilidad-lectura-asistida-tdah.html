@@ -767,6 +767,11 @@
           <span class="chip">CSS + regex client-side</span>
           <span class="chip">+3kb al bundle</span>
         </div>
+        <button type="button" data-bionic="skip" onclick="document.querySelector('.deck-bionic-toggle').click()" style="margin-top: 24px; display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; background: var(--green-default); color: white; border: 0; border-radius: 999px; font: 700 17px/1 'Quicksand', 'Red Hat Display', sans-serif; letter-spacing: -0.01em; cursor: pointer; box-shadow: 0 4px 14px rgba(0,136,89,0.25); transition: transform 120ms ease, box-shadow 120ms ease;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(0,136,89,0.35)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 14px rgba(0,136,89,0.25)'">
+          <span style="font-size: 18px;" aria-hidden="true">▶</span>
+          <span>Ver la demo · activá la lectura biónica en este deck</span>
+        </button>
+        <p class="muted" style="margin-top: 10px; max-width: 50ch; font-size: 13px;">Al tocarlo, todo el texto del deck pasa a modo biónico en vivo. Volvé a tocarlo (o el botón "Bio" arriba a la derecha) para apagarlo.</p>
       </div>
       <div>
         <div class="pillar-detail__evidence">
@@ -846,10 +851,10 @@
 
   <!-- ============ 08 · PLAN ============ -->
   <section class="slide" data-slide>
-    <div class="slide__chrome-top"><span>08 · El plan</span><span>3 fases · ~4 semanas</span></div>
+    <div class="slide__chrome-top"><span>08 · El plan</span><span>3 fases · ~4 semanas con IA</span></div>
     <div class="slide__body">
-      <p class="eyebrow">El plan en fases</p>
-      <h2 class="heading">Cuatro semanas con 1 dev FE y design pairing.</h2>
+      <p class="eyebrow">El plan en fases · estimación con IA</p>
+      <h2 class="heading">Cuatro semanas con IA · 1 dev FE + design pairing.</h2>
       <div class="timeline">
         <div class="phase">
           <span class="phase__num">01</span>
@@ -873,7 +878,7 @@
           <span class="phase__weeks">Total</span>
           <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~4</span>
           <span style="font-size: 14px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">semanas</span>
-          <span style="font-size: 13px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">1 FE + design pairing</span>
+          <span style="font-size: 13px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">con IA · 1 FE + design pairing</span>
         </div>
       </div>
       <div class="grid-2" style="margin-top: 24px; gap: 20px;">
@@ -899,30 +904,18 @@
       <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
         <div class="card">
           <h3 class="subheading" style="color: var(--green-default);">Entra en el MVP</h3>
-          <p class="card__index" style="margin: 8px 0 4px;">Core de la feature</p>
-          <ul class="checks" style="margin: 0;">
-            <li>Toggle "Lectura biónica" + 3 niveles de intensidad.</li>
-            <li>Toggle "Lectura extendida" + 3 presets de densidad.</li>
-            <li>Aplicación en 5 pantallas piloto (T&amp;C, privacidad, FAQ, promo detail, errores largos).</li>
-          </ul>
-          <p class="card__index" style="margin: 12px 0 4px;">Plumbing + medición</p>
-          <ul class="checks" style="margin: 0;">
+          <ul class="checks" style="margin-top: 12px;">
+            <li>2 modos opt-in: lectura biónica + lectura extendida.</li>
+            <li>5 pantallas piloto (T&amp;C, privacidad, FAQ, promo, errores).</li>
             <li>Persistencia en perfil MODO + fallback localStorage.</li>
-            <li>Feature flag + A/B con rollout 5/25/100%.</li>
-            <li>Tracking Amplitude (activación, intensidad, tiempo en pantalla).</li>
+            <li>Feature flag + A/B 5/25/100% con tracking Amplitude.</li>
           </ul>
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent;">
           <h3 class="subheading" style="color: var(--dark-gray);">No entra</h3>
-          <p class="card__index" style="margin: 8px 0 4px;">No se aplica el bold a estos elementos</p>
-          <ul class="checks checks--neutral" style="margin: 0;">
-            <li>Inputs y formularios (no se modifican).</li>
-            <li>Montos, números, IDs, datos críticos.</li>
-            <li>JSON-LD, meta tags, nada de SEO.</li>
-          </ul>
-          <p class="card__index" style="margin: 12px 0 4px;">Fuera de scope del MVP</p>
-          <ul class="checks checks--neutral" style="margin: 0;">
-            <li>OpenDyslexic font (se evalúa en fase 2 según feedback).</li>
+          <ul class="checks checks--neutral" style="margin-top: 12px;">
+            <li>Inputs, formularios, montos, IDs, datos críticos (no se tocan).</li>
+            <li>OpenDyslexic font (se evalúa en fase 2).</li>
             <li>Apps móviles nativas (solo web por ahora).</li>
             <li>WCAG 2.2 AAA (apuntamos AA en este MVP).</li>
           </ul>
@@ -981,12 +974,12 @@
     <div class="slide__chrome-top"><span>12 · Vista Manager</span><span>Costo, riesgo, ROI</span></div>
     <div class="slide__body">
       <p class="eyebrow">Para el Manager</p>
-      <h2 class="heading">~4 semanas, costo bajo, upside de marca alto.</h2>
+      <h2 class="heading">~4 semanas con IA, costo bajo, upside de marca alto.</h2>
       <div class="grid-3" style="margin-top: 24px;">
         <div class="card">
           <span class="card__index">Costo dev</span>
           <div class="num num--md" style="margin: 8px 0;">~4 sem</div>
-          <p class="body" style="margin: 0;">1 FE dev + design pairing. Sin BE nuevo. Sin vendor. Sin licencias.</p>
+          <p class="body" style="margin: 0;">Con IA · 1 FE dev + design pairing. Sin BE nuevo. Sin vendor. Sin licencias.</p>
         </div>
         <div class="card">
           <span class="card__index">Costo runtime</span>
