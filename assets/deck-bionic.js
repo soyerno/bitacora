@@ -1,7 +1,9 @@
 /* MODO decks · bionic reading toggle (focus aid, ADHD-friendly)
  * - Walks the DOM once, wraps the prefix (~50%) of each word in <b class="bionic">.
  * - CSS controls whether those <b> render bold (body.bionic-on).
- * - Persists state in localStorage. Floating toggle next to the theme toggle.
+ * - Persists state in localStorage.
+ * - Mounts both the bionic toggle and the existing theme toggle inside a
+ *   single header dropdown (.deck-controls) so they sit at the same level.
  */
 (function () {
   'use strict';
@@ -11,7 +13,7 @@
     SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, CODE: 1, PRE: 1, KBD: 1, SAMP: 1,
     TEXTAREA: 1, INPUT: 1, SELECT: 1, BUTTON: 1, SVG: 1,
   };
-  var SKIP_CLASSES = ['mono', 'deck-theme-toggle', 'deck-bionic-toggle', 'bionic'];
+  var SKIP_CLASSES = ['mono', 'theme-toggle', 'deck-bionic-toggle', 'deck-controls', 'bionic'];
   var bionifiedFlag = '__bionicProcessed';
 
   function readStored() {
@@ -115,8 +117,7 @@
     }
   }
 
-  function mountToggle() {
-    if (document.querySelector('.deck-bionic-toggle')) return;
+  function buildBionicToggle() {
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'deck-bionic-toggle';
@@ -133,11 +134,100 @@
       applyState(next);
       writeStored(next);
     });
-    document.body.appendChild(btn);
+    return btn;
+  }
+
+  function mountControls() {
+    if (document.querySelector('.deck-controls')) return;
+
+    var themeToggle = document.getElementById('theme-toggle')
+      || document.querySelector('.theme-toggle');
+    var bionicToggle = buildBionicToggle();
+
+    // Fallback: no theme toggle in this page — append bionic toggle inline at
+    // the end of <header> so it isn't a floating element.
+    if (!themeToggle) {
+      var header = document.querySelector('header > .container') || document.body;
+      bionicToggle.classList.add('deck-bionic-toggle--standalone');
+      header.appendChild(bionicToggle);
+      return;
+    }
+
+    var wrap = document.createElement('div');
+    wrap.className = 'deck-controls';
+    wrap.setAttribute('data-bionic', 'skip');
+
+    var trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'deck-controls__trigger';
+    trigger.setAttribute('aria-haspopup', 'true');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.setAttribute('aria-label', 'Preferencias de lectura · tema y lectura biónica');
+    trigger.title = 'Preferencias de lectura';
+    trigger.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+        '<circle cx="12" cy="12" r="3"/>' +
+        '<path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>' +
+      '</svg>' +
+      '<span class="deck-controls__caret" aria-hidden="true">▾</span>';
+
+    var panel = document.createElement('div');
+    panel.className = 'deck-controls__panel';
+    panel.setAttribute('role', 'menu');
+    panel.hidden = true;
+
+    var rowTheme = document.createElement('div');
+    rowTheme.className = 'deck-controls__row';
+    var labelTheme = document.createElement('span');
+    labelTheme.className = 'deck-controls__label';
+    labelTheme.textContent = 'Tema';
+    rowTheme.appendChild(labelTheme);
+
+    var rowBionic = document.createElement('div');
+    rowBionic.className = 'deck-controls__row';
+    var labelBionic = document.createElement('span');
+    labelBionic.className = 'deck-controls__label';
+    labelBionic.textContent = 'Lectura biónica';
+    rowBionic.appendChild(labelBionic);
+
+    var themeParent = themeToggle.parentNode;
+    if (themeParent) themeParent.replaceChild(wrap, themeToggle);
+    rowTheme.appendChild(themeToggle);
+    rowBionic.appendChild(bionicToggle);
+
+    panel.appendChild(rowTheme);
+    panel.appendChild(rowBionic);
+    wrap.appendChild(trigger);
+    wrap.appendChild(panel);
+
+    function setOpen(open) {
+      panel.hidden = !open;
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      wrap.setAttribute('data-open', open ? 'true' : 'false');
+    }
+    function isOpen() { return !panel.hidden; }
+
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(!isOpen());
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!isOpen()) return;
+      if (wrap.contains(e.target)) return;
+      setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
   }
 
   function init() {
-    mountToggle();
+    mountControls();
     if (readStored()) applyState(true);
   }
 
