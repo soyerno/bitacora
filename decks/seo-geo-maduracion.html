@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<title>SEO + GEO Architecture · Maduración Q1-Q2 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1280px, 100vw); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 36px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 22px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  .eyebrow--neutral { color: var(--gray-60); }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(36px, 4.4vw, 64px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(28px, 3vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 20px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 22px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 16px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 13px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(80px, 9vw, 140px); line-height: 0.95; }
+  .num--lg { font-size: clamp(48px, 5vw, 72px); line-height: 1; }
+  .num--md { font-size: clamp(32px, 3.4vw, 48px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; display: block; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 12px; font-weight: 500; letter-spacing: 0.02em; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.compare th, table.compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20); }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 14px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 15px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .pillar-detail { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; height: 100%; align-items: center; }
+  .pillar-detail__evidence { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; }
+  .pillar-detail__evidence h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-default); margin: 0 0 12px; }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 16px; align-items: stretch; margin-top: 24px; }
+  .phase { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); display: flex; flex-direction: column; }
+  .phase__num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 56px; line-height: 1; color: var(--green-default); margin-bottom: 8px; letter-spacing: -0.04em; }
+  .phase__weeks { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
+  .phase__title { font-size: 17px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 13px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total { background: var(--green-10); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 180px; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 14px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 12px; }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(48px, 6vw, 80px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.4; }
+  .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 01 · COVER -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>seo + geo · maduración 2026</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Maduración Q1-Q2 2026</p>
+      <h1 class="title">SEO + GEO<br /><span style="color: var(--green-default)">de cero a producción</span>.</h1>
+      <p class="lede">Cómo pasamos de un sitio invisible para buscadores y modelos de IA a una arquitectura semántica completa en 11 semanas.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>Comité mixto · PM, TL, Manager</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Tech Lead</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>20 mayo 2026</p></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 02 · TL;DR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>02 · TL;DR</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">El resumen</p>
+      <h2 class="heading">De sitio sin datos estructurados<br /><span style="color: var(--green-default)">a arquitectura SEO/GEO completa</span>.</h2>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat">
+          <span class="stat__label">Commits mergeados</span>
+          <span class="num num--md stat__value">25+</span>
+          <p class="muted">Entre marzo y mayo 2026, todos en main</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Tipos de schema implementados</span>
+          <span class="num num--md stat__value">8</span>
+          <p class="muted">Organization, MobileApp, FAQPage, Breadcrumb, CollectionPage, ItemList, BankOrCreditUnion, JSON-LD CMS-driven</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Entidades bancarias cubiertas</span>
+          <span class="num num--md stat__value">37</span>
+          <p class="muted">BankOrCreditUnion con schema valido en /bancos</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por que importa</strong>: el sitio hoy aparece en Google AI Overviews, tiene datos estructurados validados, y los modelos de IA pueden crawlear y citar correctamente a MODO. Partimos de ninguno de estos tres puntos en enero.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 15%"></i></div>
+      <span class="counter">02 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 03 · PUNTO DE PARTIDA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>03 · Punto de partida</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Enero 2026 · el estado inicial</p>
+      <h2 class="heading">Teníamos un sitio funcionando,<br /><span style="color: var(--green-default)">pero invisible para buscadores</span>.</h2>
+      <div class="stack-today" style="margin-top: 24px;">
+        <div class="stack-block">
+          <h4>Lo que faltaba</h4>
+          <div class="row-item"><span class="label">Datos estructurados</span><span class="value"><span class="dot dot--bad"></span> ninguno</span></div>
+          <div class="row-item"><span class="label">Canonical tags</span><span class="value"><span class="dot dot--bad"></span> ausentes</span></div>
+          <div class="row-item"><span class="label">og:image / Twitter cards</span><span class="value"><span class="dot dot--bad"></span> ausentes</span></div>
+          <div class="row-item"><span class="label">Sitemap blog + FAQ</span><span class="value"><span class="dot dot--bad"></span> incompleto</span></div>
+          <div class="row-item"><span class="label">AI crawlers (robots.txt)</span><span class="value"><span class="dot dot--bad"></span> bloqueados</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Problemas derivados</h4>
+          <div class="row-item"><span class="label">Staging subdominios</span><span class="value"><span class="dot dot--warn"></span> indexados en Google</span></div>
+          <div class="row-item"><span class="label">Blog SSR</span><span class="value"><span class="dot dot--warn"></span> body vacio sin SSR</span></div>
+          <div class="row-item"><span class="label">FAQ</span><span class="value"><span class="dot dot--warn"></span> sin rutas individuales</span></div>
+          <div class="row-item"><span class="label">alt attributes</span><span class="value"><span class="dot dot--warn"></span> imagenes sin alt</span></div>
+          <div class="row-item"><span class="label">JSON-LD validation</span><span class="value"><span class="dot dot--warn"></span> errores en Rich Results</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 23%"></i></div>
+      <span class="counter">03 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 04 · HITO 1 MARZO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>04 · Hito 1 · Marzo 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Marzo 2026 · cimientos</p>
+      <h2 class="heading">Metimos los fundamentos estructurales<br /><span style="color: var(--green-default)">en una sola semana</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">Semana del 17 mar</span>
+          <h3 class="subheading">Shared SEO utilities</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">2b5b33a5b</span></strong>: Breadcrumb, JsonLd, SEO utils compartidas</li>
+            <li><strong><span class="mono">dbd32c484</span></strong>: Organization JSON-LD en homepage</li>
+            <li><strong><span class="mono">497f2273a</span></strong>: Canonical tags en todas las paginas</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">Semana del 19 mar</span>
+          <h3 class="subheading">SSR SEO metadata</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">de13ac0d3</span></strong>: SSR metadata + sitemap dinamico + robots.txt para paginas de promos</li>
+            <li><strong><span class="mono">fdbba9028</span></strong>: SoftwareApplication schema + rel en links externos</li>
+            <li><strong><span class="mono">4414d5e17</span></strong>: Paginas informacionales core en el sitemap</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>Impacto</strong>: Google Search Console empezo a ver datos estructurados validos por primera vez. La arquitectura base quedo lista en 5 dias.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 31%"></i></div>
+      <span class="counter">04 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 05 · HITO 2 ABRIL EARLY -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>05 · Hito 2 · Abril 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Abril 2026 · profundidad</p>
+      <h2 class="heading">Open Graph, Twitter cards, AI crawlers<br /><span style="color: var(--green-default)">y breadcrumbs en CMS</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">7-8 abr · Social + sitemap</span>
+          <h3 class="subheading">Visibilidad social</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">cae5b1af6</span></strong>: og:image default, og:type y Twitter cards en HeadWithSeo</li>
+            <li><strong><span class="mono">f58f07fce</span></strong>: sitemap expandido con paginas de blog + fix anchors FAQ</li>
+            <li><strong><span class="mono">392aa2cb5</span></strong>: alt attributes en todas las imagenes del sitio</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">14-16 abr · GEO + CI</span>
+          <h3 class="subheading">GEO y AI readiness</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">def2c2d99</span></strong>: robots.txt abre paso a AI crawlers (GPTBot, ClaudeBot, PerplexityBot)</li>
+            <li><strong><span class="mono">ccf45f7f9</span></strong>: Breadcrumb + FAQPage JSON-LD en paginas CMS-driven</li>
+            <li><strong><span class="mono">f48794310</span></strong>: Pagina 404 con branding MODO (antes Next.js default)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>AI readiness</strong>: desde el 16 de abril los modelos de lenguaje pueden crawlear y citar modo.com.ar correctamente. Antes estaban todos bloqueados en robots.txt.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 38%"></i></div>
+      <span class="counter">05 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 06 · HITO 3 ABRIL LATE -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>06 · Hito 3 · Abril final</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Abril 2026 · schemas especificos</p>
+      <h2 class="heading">MobileApplication, Organization corregida<br /><span style="color: var(--green-default)">y SSR-safe SEO slot</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">27-28 abr · Schema fixes</span>
+          <h3 class="subheading">Precision en el schema</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">7ad3a9c62</span></strong>: SoftwareApplication migrado a MobileApplication (mas especifico, mejor en AI Overviews)</li>
+            <li><strong><span class="mono">81af2d94d</span></strong>: foundingCountry reemplazado por foundingLocation en Organization (schema.org fix)</li>
+            <li><strong><span class="mono">af0af49d7</span></strong>: PageSeo SSR-safe: metadata renderiza en server, no solo en client</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">21 abr · SEO metadata</span>
+          <h3 class="subheading">Mejoras generales</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">60185731c</span></strong>: SEO metadata mejorada en todas las paginas estaticas (title, description, og)</li>
+            <li><strong><span class="mono">4290f2a08</span></strong>: Salesforce credentials para FAQ Experience Cloud (imagen rendering fix)</li>
+          </ul>
+          <p class="muted" style="margin-top: 12px;">El SSR fix en PageSeo fue critico: antes los bots veian el HTML vacio, ahora ven el contenido completo.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 46%"></i></div>
+      <span class="counter">06 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 07 · HITO 4 MAYO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>07 · Hito 4 · Mayo 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Mayo 2026 · CMS-driven JSON-LD + 37 bancos</p>
+      <h2 class="heading">JSON-LD configurable desde Storyblok<br /><span style="color: var(--green-default)">y BankOrCreditUnion para 37 entidades</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">5 may · CMS-SEO</span>
+          <h3 class="subheading">JSON-LD desde Storyblok</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">93536f280</span></strong>: JSON-LD configurable por Storyblok con fallbacks automaticos (COENXT-274/275)</li>
+            <li><strong><span class="mono">8a570eb00</span></strong>: CollectionPage + ItemList en /blog para rich results de listados</li>
+            <li>Los editores de contenido pueden ahora definir schema sin tocar codigo</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">13 may · Post-auditoria GSC</span>
+          <h3 class="subheading">Post-auditoria Google Search Console</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">452f62f18</span></strong>: Mejoras SEO/GEO + fixes de indexacion post auditoria GSC</li>
+            <li><strong><span class="mono">4f1bc6279</span></strong>: og:url SSR en todas las paginas</li>
+            <li>BankOrCreditUnion: 37 entidades con schema valido en /bancos</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>37 BankOrCreditUnion</strong>: es el primer sitio del ecosistema de pagos argentino con schema valido para cada banco asociado. Esto habilita Knowledge Graph panels y AI citations especificas por banco.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 54%"></i></div>
+      <span class="counter">07 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 08 · ESTADO ACTUAL -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>08 · Estado actual</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Mayo 2026 · lo que esta vivo</p>
+      <h2 class="heading">La arquitectura SEO/GEO<br /><span style="color: var(--green-default)">esta completa y funcionando</span>.</h2>
+      <div class="grid-2" style="margin-top: 28px; align-items: flex-start;">
+        <div class="card">
+          <h3 class="subheading" style="color: var(--green-default);">En produccion</h3>
+          <ul class="checks">
+            <li>Organization JSON-LD con foundingLocation correcto</li>
+            <li>MobileApplication schema (App Store + Google Play)</li>
+            <li>FAQPage + Breadcrumb en paginas CMS</li>
+            <li>CollectionPage + ItemList en /blog</li>
+            <li>37 BankOrCreditUnion en /bancos</li>
+            <li>JSON-LD configurable desde Storyblok (sin deploys)</li>
+            <li>AI crawlers habilitados (GPTBot, ClaudeBot, Perplexity)</li>
+            <li>Canonical + og:url SSR en todas las paginas</li>
+          </ul>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--dark-gray);">Pendiente (Fase 2)</h3>
+          <ul class="checks checks--neutral">
+            <li>llms.txt (protocolo de discovery para modelos de IA)</li>
+            <li>WebSite + SearchAction schema para el buscador interno</li>
+            <li>Paginas individuales /bancos/slug con schema por entidad</li>
+            <li>Fix link rot en sitemap (detectado en auditoria GSC)</li>
+            <li>Indexing fix subdominios staging (leak critico)</li>
+            <li>ucp.json / agent.json para UCP comercios</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 61%"></i></div>
+      <span class="counter">08 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 09 · VALOR APORTADO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>09 · Valor aportado</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Impacto</p>
+      <h2 class="heading">Tres impactos directos, sin metricas inventadas.</h2>
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card">
+          <span class="card__index">GEO readiness</span>
+          <p class="body" style="margin: 8px 0 0;">Los modelos de IA pueden crawlear, entender y citar a MODO correctamente desde el 16 de abril. Antes estaban bloqueados. No hay metrica todavia, pero el window se abrio.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Rich Results</span>
+          <p class="body" style="margin: 8px 0 0;">FAQPage, Breadcrumb y CollectionPage habilitan rich results en SERPs. Google Search Console confirma que los schemas son validos. CTR data disponible en ~30 dias desde el rollout.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Velocidad de equipo</span>
+          <p class="body" style="margin: 8px 0 0;">JSON-LD editable desde Storyblok: el equipo de contenido puede iterar schemas sin involucrar a dev. Antes cada cambio requeria un PR y un deploy.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--gray-3); border-radius: 14px; max-width: none;">
+        <strong>Honestidad</strong>: no tenemos metricas de impressions comparativas enero vs mayo todavia. El impacto en rankings y CTR es visible en GSC pero requiere 60-90 dias de datos post-implementacion para ser concluyente. Lo que si podemos afirmar: la arquitectura esta correcta y validada.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 69%"></i></div>
+      <span class="counter">09 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 · LO QUE SIGUE -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>10 · Lo que sigue</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Fase 2 · si hay apetito</p>
+      <h2 class="heading">Tres items de alto impacto<br /><span style="color: var(--green-default)">sin costo de ownership complejo</span>.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">01</span>
+          <span class="phase__weeks">1-2 semanas</span>
+          <h3 class="phase__title">llms.txt + SearchAction</h3>
+          <p class="phase__body">llms.txt en root para AI discovery. WebSite + SearchAction schema para que los modelos entiendan el buscador interno.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">02</span>
+          <span class="phase__weeks">2-3 semanas</span>
+          <h3 class="phase__title">Staging no-index + sitemap fix</h3>
+          <p class="phase__body">Fix critico: los subdominios de staging estan indexados en Google. X-Robots-Tag noindex en Helm values para todos los envs no-prod.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">03</span>
+          <span class="phase__weeks">3-4 semanas</span>
+          <h3 class="phase__title">/bancos/slug pages</h3>
+          <p class="phase__body">Paginas individuales por banco con BankOrCreditUnion dedicado. ISR + CMS-driven. Habilita citations individuales por entidad en AI.</p>
+        </div>
+        <div class="phase__total">
+          <span class="phase__weeks">Estimacion total</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">6-8</span>
+          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">semanas</span>
+          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">con 1 dev + 1 PM validando contenido</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 77%"></i></div>
+      <span class="counter">10 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 · COMPARATIVA PM/TL/MANAGER -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>11 · Antes vs ahora</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Comparativa</p>
+      <h2 class="heading">Lo que cambio en 11 semanas.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead>
+          <tr><th style="width: 32%;">Aspecto</th><th>Enero 2026</th><th>Mayo 2026</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Datos estructurados</td><td class="was">Ninguno validado</td><td class="now">8 tipos en produccion</td></tr>
+          <tr><td>AI crawlers</td><td class="was">Bloqueados en robots.txt</td><td class="now">Habilitados (GPTBot, Claude, Perplexity)</td></tr>
+          <tr><td>Canonical tags</td><td class="was">Ausentes</td><td class="now">100% de paginas cubiertas</td></tr>
+          <tr><td>Social sharing</td><td class="was">Sin og:image default</td><td class="now">og:image + Twitter cards en todo el sitio</td></tr>
+          <tr><td>JSON-LD + CMS</td><td class="was">Solo en codigo</td><td class="now">Editable desde Storyblok sin deploy</td></tr>
+          <tr><td>Cobertura bancaria</td><td class="was">0 entidades con schema</td><td class="now">37 BankOrCreditUnion validados</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 85%"></i></div>
+      <span class="counter">11 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 12 · DECISIONES -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>12 · Decisiones</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Lo que necesitamos del comite</p>
+      <h2 class="heading">Tres decisiones antes de arrancar la Fase 2.</h2>
+      <ol class="decisions" style="margin-top: 32px;">
+        <li>
+          <h3>Urgencia del fix de staging</h3>
+          <p class="body" style="margin: 4px 0 0;">Los subdominios de staging estan indexados en Google. Esto es un riesgo SEO y de marca. Propongo priorizarlo como P0 antes de cualquier feature nueva. Necesito que el team de SRE/Helm apruebe el cambio en values.yaml.</p>
+          <p class="ownership">Owner: TL (EXA) + SRE · Decision para esta reunion</p>
+        </li>
+        <li>
+          <h3>Alcance de /bancos/slug</h3>
+          <p class="body" style="margin: 4px 0 0;">Las paginas individuales por banco requieren coordinacion con el equipo de contenido para definir que info va en cada pagina. No arranco hasta tener ese input.</p>
+          <p class="ownership">Owner: PM + Contenido · Necesita workshop previo</p>
+        </li>
+        <li>
+          <h3>llms.txt: contenido y tono</h3>
+          <p class="body" style="margin: 4px 0 0;">El llms.txt define como MODO se presenta ante modelos de IA. Necesita alineacion con Marketing y Legal antes de publicar.</p>
+          <p class="ownership">Owner: Marketing + Legal + TL · Revisar en una semana</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>seo + geo · maduración 2026</span>
+      <div class="progress"><i style="--p: 92%"></i></div>
+      <span class="counter">12 / 13</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 13 · CIERRE -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>seo + geo · maduración 2026</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Cierre</p>
+      <h1 class="title">Antes de seguir,<br /><span style="color: var(--green-default)">quiero el feedback de ustedes</span>.</h1>
+      <p class="lede">El trabajo de Fase 1 esta mergeado y en produccion. La Fase 2 no arranca sin alineacion en las 3 decisiones de la slide anterior.</p>
+      <div class="card" style="margin-top: 32px; max-width: 640px;">
+        <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px;">Equipos que deben opinar antes de avanzar</h4>
+        <ul class="checks">
+          <li>SRE / Infra (staging no-index, Helm changes)</li>
+          <li>Marketing (llms.txt tono y contenido)</li>
+          <li>Legal (representacion de la marca ante AI)</li>
+          <li>Contenido / SEO externo (estrategia /bancos/slug)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Docs de referencia</h4><p>docs/seo/, RFC-SEO-2026-05-01.md</p></div>
+      <div class="meta__col"><h4>Tickets</h4><p>EXA-* en Jira (ver log por SHA)</p></div>
+      <div class="meta__col"><h4>Contacto</h4><p>hernan.desouza@modo.com.ar</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 13</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) current = hash - 1;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  go(current);
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    if (e.key === 'p' || e.key === 'P') window.print();
+  });
+})();
+</script>
+</body>
+</html>
