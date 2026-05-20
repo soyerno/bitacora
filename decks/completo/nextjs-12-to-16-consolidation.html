@@ -1296,9 +1296,9 @@
 
     <div class="slide__body">
       <p class="eyebrow">Cómo aseguramos el desarrollo</p>
-      <h2 class="heading">El upgrade entra por el mismo harness que ya validó <span class="mono" style="font-size: 0.78em;">/comercios</span>.</h2>
+      <h2 class="heading">El upgrade pasa por el harness que <span style="color: var(--green-default);">ya usamos en cada PR</span>.</h2>
       <p class="body" style="max-width: 80ch; margin-bottom: 14px;">
-        No es jerga ni proceso nuevo. Es el mismo workflow de 6 pasos + 8 guardianes de CI que vienen funcionando hace meses. Si algo de la migración 12→16 se rompe, lo agarra antes de llegar a main.
+        No es proceso nuevo: workflow de 6 pasos + 8 guardianes de CI que vienen activos en modo-landing. Si algo de la migración 12→16 rompe, lo agarra antes de llegar a main.
       </p>
 
       <div class="grid-2" style="margin-top: 6px; align-items: stretch; gap: 24px;">
@@ -1312,7 +1312,6 @@
             <li><strong>Docs vivas</strong> — PRD, RFC, ADR en el mismo repo (no en wiki muerta).</li>
             <li><strong>Regresión automática</strong> — cada PR corre los tests de todo lo viejo.</li>
           </ul>
-          <p class="muted" style="margin-top: 10px;">Probado vivo en <a href="comercios-mvp.html" style="color: var(--green-default); text-decoration: none; font-weight: 600;">/comercios MVP</a> · 12/12 tests · shipped a QA mayo 2026.</p>
         </div>
 
         <div class="pillar-detail__evidence">
@@ -1325,17 +1324,19 @@
             <li><strong>Playwright E2E</strong> — smoke desktop + mobile en cada PR.</li>
             <li><strong>Screenshots desktop + mobile</strong> — review visual obligatoria.</li>
           </ul>
-          <p class="muted" style="margin-top: 10px;">Detalle completo en <a href="cicd-dx-maduracion.html" style="color: var(--green-default); text-decoration: none; font-weight: 600;">CI/CD + DX Hardening</a> · maduración Q1-Q2 2026.</p>
         </div>
       </div>
 
-      <div style="margin-top: 18px; padding: 12px 18px; background: var(--green-10); border-radius: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+      <div style="margin-top: 14px; padding: 10px 18px; background: var(--green-10); border-radius: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
         <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark);">Decks relacionados</span>
         <a href="cicd-dx-maduracion.html" class="chip chip--green" style="text-decoration: none;">CI/CD + DX Hardening</a>
-        <a href="comercios-mvp.html" class="chip chip--green" style="text-decoration: none;">POC /Comercios MVP</a>
         <a href="seo-geo-maduracion.html" class="chip" style="text-decoration: none;">SEO + GEO Architecture</a>
         <a href="storyblok-cms-build-time.html" class="chip" style="text-decoration: none;">Storyblok via BFF</a>
       </div>
+
+      <p class="muted" style="margin-top: 10px; font-size: 12px;">
+        Nota: la <a href="comercios-mvp.html" style="color: var(--gray-60); text-decoration: underline;">POC /Comercios</a> es un primer ejemplo aplicando este workflow (en QA, todavía no live en producción). No se cita como validación del upgrade — el harness se sostiene por sí mismo, por estar activo en cada PR del repo.
+      </p>
     </div>
 
     <div class="slide__chrome-bottom">
