@@ -719,7 +719,7 @@
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>05 · componentes clave</span>
+      <span>10 · componentes clave</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">src/components/Comercios/</p>
@@ -773,7 +773,7 @@
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>06 · diseño</span>
+      <span>11 · diseño</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">Paridad visual con promoshub.modo.com.ar</p>
@@ -811,7 +811,7 @@
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>07 · seo + geo</span>
+      <span>12 · seo + geo</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">Pilar 1 · indexabilidad + citation por LLMs</p>
@@ -830,13 +830,14 @@
           </table>
         </div>
         <div class="card" style="background: var(--green-10); border-color: transparent;">
-          <h3 class="subheading" style="color: var(--green-dark);">Cobertura GEO en producción</h3>
+          <h3 class="subheading" style="color: var(--green-dark);">Stack GEO en marcha</h3>
+          <p class="muted" style="margin: 0 0 8px; font-size: 12px; color: var(--green-dark);">Lo que ya está vivo en prod (modo.com.ar) + lo que la POC suma en QA.</p>
           <ul class="checks">
-            <li><strong>Organization + WebSite + SearchAction</strong> globales en todas las pages.</li>
-            <li><strong>37 entidades <span class="mono" style="font-size:11px;">BankOrCreditUnion</span></strong> de la red MODO ya en <span class="mono" style="font-size:11px;">modo.com.ar/bancos</span>.</li>
-            <li><strong>llms.txt</strong> + canonical + hreflang + AI-crawlers permitidos.</li>
-            <li>ISR 1h · BFF cache 5 min · <span class="mono">/api/revalidate</span> on-demand.</li>
-            <li>Storyblok 401/5xx tolerado · no rompe static export.</li>
+            <li><strong>Organization + WebSite + SearchAction</strong> globales en todas las pages <em>(live en prod)</em>.</li>
+            <li><strong>37 entidades <span class="mono" style="font-size:11px;">BankOrCreditUnion</span></strong> de la red MODO en <span class="mono" style="font-size:11px;">modo.com.ar/bancos</span> <em>(live en prod)</em>.</li>
+            <li><strong>llms.txt</strong> + canonical + hreflang + AI-crawlers permitidos <em>(live en prod)</em>.</li>
+            <li>ISR 1h · BFF cache 5 min · <span class="mono">/api/revalidate</span> on-demand <em>(QA, POC)</em>.</li>
+            <li>Storyblok 401/5xx tolerado · no rompe static export <em>(QA, POC)</em>.</li>
           </ul>
         </div>
       </div>
@@ -853,7 +854,7 @@
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>09 · scope · qué no está</span>
+      <span>13 · scope · qué no está</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">Gaps abiertos · backlog inmediato</p>
@@ -870,13 +871,17 @@
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent;">
           <h3 class="subheading" style="color: var(--dark-gray); font-size: 19px;">Pendientes</h3>
-          <ul class="checks checks--neutral">
+          <p class="card__index" style="margin: 8px 0 4px;">Bloqueantes para prod</p>
+          <ul class="checks checks--neutral" style="margin: 0;">
             <li><strong>Mover la <span class="mono">/comercios</span> actual</strong> a <span class="mono">/modo-en-tu-comercio</span> con 301 (libera la URL para la POC).</li>
+            <li>301 desde <span class="mono">/promos/[slug]-[mes]</span> caducas.</li>
+            <li>Migración 301 de subdominios legacy (staging leak).</li>
+          </ul>
+          <p class="card__index" style="margin: 12px 0 4px;">Fase 2 · backlog</p>
+          <ul class="checks checks--neutral" style="margin: 0;">
             <li>Geolocalización + branches (reemplazo de <span class="mono">stores-maps-lib</span>).</li>
             <li>Hubs por banco <span class="mono">/comercios/banco/[banco]</span> × 25.</li>
             <li>UCP/AP2 manifests · <span class="mono">agent.json</span> + <span class="mono">ucp.json</span>.</li>
-            <li>301 desde <span class="mono">/promos/[slug]-[mes]</span> caducas.</li>
-            <li>Migración 301 de subdominios legacy (staging leak).</li>
           </ul>
         </div>
       </div>
@@ -893,7 +898,7 @@
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>10 · fase 2 · comercios-database</span>
+      <span>14 · fase 2 · comercios-database</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">Track paralelo · v0.1</p>
@@ -937,7 +942,7 @@
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>11 · decisiones</span>
+      <span>15 · decisiones</span>
     </div>
     <div class="slide__body">
       <p class="eyebrow">A resolver esta semana</p>
@@ -971,7 +976,7 @@
   <section class="slide slide--cover" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>12 · cierre</span>
+      <span>16 · cierre</span>
     </div>
     <div class="slide__body" style="justify-content: center;">
       <p class="eyebrow">Gracias · busco feedback</p>
