@@ -153,18 +153,17 @@
       return;
     }
 
-    var wrap = document.createElement('div');
+    // Native <details>/<summary>: open/close handled by the browser via CSS+HTML,
+    // no JS state, no click-outside listeners, no aria juggling.
+    var wrap = document.createElement('details');
     wrap.className = 'deck-controls';
     wrap.setAttribute('data-bionic', 'skip');
 
-    var trigger = document.createElement('button');
-    trigger.type = 'button';
-    trigger.className = 'deck-controls__trigger';
-    trigger.setAttribute('aria-haspopup', 'true');
-    trigger.setAttribute('aria-expanded', 'false');
-    trigger.setAttribute('aria-label', 'Preferencias de lectura · tema y lectura biónica');
-    trigger.title = 'Preferencias de lectura';
-    trigger.innerHTML =
+    var summary = document.createElement('summary');
+    summary.className = 'deck-controls__trigger';
+    summary.setAttribute('aria-label', 'Preferencias de lectura · tema y lectura biónica');
+    summary.title = 'Preferencias de lectura';
+    summary.innerHTML =
       '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
         '<circle cx="12" cy="12" r="3"/>' +
         '<path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>' +
@@ -173,8 +172,6 @@
 
     var panel = document.createElement('div');
     panel.className = 'deck-controls__panel';
-    panel.setAttribute('role', 'menu');
-    panel.hidden = true;
 
     var rowTheme = document.createElement('div');
     rowTheme.className = 'deck-controls__row';
@@ -197,33 +194,8 @@
 
     panel.appendChild(rowTheme);
     panel.appendChild(rowBionic);
-    wrap.appendChild(trigger);
+    wrap.appendChild(summary);
     wrap.appendChild(panel);
-
-    function setOpen(open) {
-      panel.hidden = !open;
-      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      wrap.setAttribute('data-open', open ? 'true' : 'false');
-    }
-    function isOpen() { return !panel.hidden; }
-
-    trigger.addEventListener('click', function (e) {
-      e.stopPropagation();
-      setOpen(!isOpen());
-    });
-
-    document.addEventListener('click', function (e) {
-      if (!isOpen()) return;
-      if (wrap.contains(e.target)) return;
-      setOpen(false);
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && isOpen()) {
-        setOpen(false);
-        trigger.focus();
-      }
-    });
   }
 
   function init() {
