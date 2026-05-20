@@ -25,6 +25,38 @@ https://soyernomodo.github.io/erno-modo/
 
 Theme toggle (auto / claro / oscuro) persiste en `localStorage`. Desde cualquier deck individual hay un pill verde top-left ("← Erno × MODO / Decks") que vuelve al sitio.
 
+## Navegación
+
+Todas las páginas del sitio comparten el mismo header (wordmark + nav + theme toggle) y footer (workflow legend + repo link), envueltos en `<div class="container">` con `max-width: 960px` para que se alineen con el `<main>`. Las líneas de border siguen full-width.
+
+Cada subpágina abre con un breadcrumb de dos niveles:
+
+```
+Erno × MODO  /  Decks
+```
+
+El primer link vuelve a la home (`../`); el segundo está marcado `aria-current="page"`.
+
+Desde cualquier deck individual (`/decks/<estado>/*.html`) hay un pill fijo top-left en verde MODO:
+
+```
+← Erno × MODO  /  Decks
+```
+
+Inyectado de forma idempotente en los 11 decks. Backdrop-blur sobre fondo translúcido para que funcione en cualquier slide. Se oculta automáticamente en `@media print`.
+
+Cada página tiene también un `<a class="skip-link">` (oculto hasta `:focus`) para saltar el header con teclado.
+
+## Home — widget GitHub
+
+Entre "Destacados" y "Explorar" hay un widget que muestra mi presencia pública en GitHub. Tres piezas:
+
+1. **Avatar + perfil** — `<img src="https://github.com/SoyErnoModo.png">` (GitHub sirve el avatar de cualquier user en esa URL sin auth). Bajo el avatar: nombre, handle clickeable y bio corta.
+2. **Stats** — fetch a `https://api.github.com/users/SoyErnoModo` sin token (60 req/hora por IP, alcanza). Muestra `public_repos · followers · siguiendo`. Si falla (rate-limit o offline) cae a un link plano al perfil.
+3. **Gráfico de contribuciones último año** — SVG embebido de `https://ghchart.rshah.org/008859/SoyErnoModo`. El primer segmento del path es el color override en hex sin `#`, así el gráfico queda en verde MODO. En dark mode se le aplica `mix-blend-mode: screen` para integrarse al fondo.
+
+El widget es resiliente: si `api.github.com` está down, el resto de la página igual carga; si `ghchart.rshah.org` está down, queda el `alt` text del `<img>`.
+
 ## Skills descargables (custom MODO)
 
 Las herramientas con el badge `↓ .skill` en `/herramientas/` son skills custom que se distribuyen como ZIPs en `skills/`. Cada ZIP contiene una carpeta `<name>.skill/` con `SKILL.md` + assets. Manifest curado en [`skills/skills.json`](skills/skills.json) (consumible por agentes).
@@ -144,3 +176,41 @@ El wordmark del header es de tres piezas:
 - `MODO` — Quicksand 700, verde #008859 (variable `--accent`)
 
 En decks individuales el back-link pill replica el orden: "← Erno × MODO / Decks", verde MODO sobre fondo blanco translúcido con backdrop-blur.
+
+## Theme toggle
+
+Cicla por tres estados: `auto` → `claro` → `oscuro` → `auto`. Persiste en `localStorage` con la key `modo-decks-theme` (se conserva la key vieja para no resetear preferencias después del rebrand).
+
+Implementación en dos partes para evitar el flash de tema incorrecto:
+
+1. **Pre-paint inline en `<head>`** de cada página — lee `localStorage` y setea `data-theme` en el `<html>` antes del primer render.
+2. **Wiring en `assets/common.js`** — maneja el click del botón, cicla el state, persiste.
+
+El CSS usa `:root[data-theme="dark"]` (forzado por el usuario) y `:root[data-theme="auto"] { @media (prefers-color-scheme: dark) }` (cae al sistema). El widget GitHub adapta el gráfico con `mix-blend-mode: screen` cuando está en oscuro.
+
+## Anatomía del CSS
+
+```
+assets/styles.css
+├── :root              tokens (color, font, shadows) — claro
+├── [data-theme=dark]  override completo de tokens
+├── [data-theme=auto]  override condicionado a prefers-color-scheme
+├── .skip-link         a11y
+├── header / footer    border full-width
+├── .container         max-width: 960px; padding: 0 48px
+├── .wordmark          three-piece typographic logo
+├── .nav               tabs pills con aria-current
+├── .theme-toggle      pill con 3 íconos (auto/light/dark) que muestra uno a la vez
+├── .featured-*        cards del row 'Destacados' en la home
+├── .explore-*         cards del row 'Explorar' en la home
+├── .gh-widget         widget GitHub (home)
+├── .filter-bar / .tabs / .chips / .item-row    catálogos (decks + RFCs)
+├── .tool-* / .download-badge                   herramientas
+├── .breadcrumb        subpáginas
+└── @media             responsive (860px tablet, 640px mobile)
+```
+
+Solo dos JS:
+
+- `assets/common.js` — theme toggle + helpers compartidos (escapeHTML, STATUS_LABELS).
+- `assets/collection.js` — controller declarativo de search/sort/filter/empty/clear. Lo usan tanto `/decks/` como `/rfcs/`.
