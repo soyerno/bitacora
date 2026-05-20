@@ -22,6 +22,7 @@
   </script>
   <script defer src="../assets/common.js"></script>
   <script defer src="../assets/collection.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
 </head>
 <body>
 
@@ -35,8 +36,8 @@
   </div>
   <nav class="nav" aria-label="Navegación principal">
     <a href="../">Home</a>
-    <a href="./" aria-current="page">Decks</a>
-    <a href="../rfcs/">RFCs</a>
+    <a href="./" aria-current="page">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
     <a href="../herramientas/">Herramientas</a>
   </nav>
   <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">

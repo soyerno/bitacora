@@ -27,6 +27,7 @@
     })();
   </script>
   <script defer src="assets/common.js"></script>
+  <script defer src="assets/nav-counts.js"></script>
 </head>
 <body>
 
@@ -71,12 +72,8 @@
       <div class="gh-widget__body">
         <div class="gh-widget__name">Hernán De Souza</div>
         <a class="gh-widget__handle" href="https://github.com/SoyErnoModo" target="_blank" rel="noopener noreferrer">@SoyErnoModo · GitHub</a>
-        <div class="gh-widget__bio">Tech Lead en MODO · modo-landing. Frontend, SEO/GEO, pagos agénticos y herramientas para Claude Code.</div>
+        <div class="gh-widget__bio">Sr AI Engineer en MODO · modo-landing. Frontend, SEO/GEO, pagos agénticos y herramientas para Claude Code.</div>
         <div class="gh-widget__stats" id="gh-stats">cargando perfil…</div>
-      </div>
-      <div class="gh-widget__chart-wrap">
-        <div class="gh-widget__chart-label">Contribuciones último año</div>
-        <img class="gh-widget__chart" src="assets/contributions.svg" alt="Mapa de contribuciones de @SoyErnoModo en el último año (incluye privadas)" loading="lazy" onerror="this.onerror=null;this.src='https://ghchart.rshah.org/008859/SoyErnoModo';" />
       </div>
     </article>
   </section>
@@ -137,8 +134,6 @@
   var $featured = document.getElementById('featured-grid');
   var $exploreDecks = document.getElementById('explore-count-decks');
   var $exploreRfcs = document.getElementById('explore-count-rfcs');
-  var $navDecks = document.getElementById('nav-count-decks');
-  var $navRfcs = document.getElementById('nav-count-rfcs');
 
   function renderFeatured(decks) {
     var featured = decks
@@ -181,8 +176,6 @@
 
     if ($exploreDecks) $exploreDecks.textContent = decks.length;
     if ($exploreRfcs) $exploreRfcs.textContent = rfcs.length;
-    if ($navDecks) $navDecks.textContent = decks.length || '·';
-    if ($navRfcs) $navRfcs.textContent = rfcs.length || '·';
   });
 
   /* Stats from locally generated profile.json (refreshed by GitHub Action,
