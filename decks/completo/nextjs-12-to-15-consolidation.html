@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root {
-    /* MODO design tokens — extraídos de tailwind.config.js */
+    /* MODO design tokens · extraídos de tailwind.config.js */
     --green-default: #008859;
     --green-dark: #00471B;
     --green-10: #DCF5E7;
@@ -81,7 +81,7 @@
   }
   .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
 
-  /* MODO wordmark — text-based logo (Quicksand bold, on-brand fallback while we don't have a clean solid SVG) */
+  /* MODO wordmark · text-based logo (Quicksand bold, on-brand fallback while we don't have a clean solid SVG) */
   .modo-wordmark {
     font-family: "Quicksand", sans-serif;
     font-weight: 700;
@@ -634,28 +634,28 @@
 
     <div class="slide__body">
       <p class="eyebrow">La recomendación · estimación asistida por IA</p>
-      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 22ch;">3 movimientos. 1 programa.<br /><span style="color: var(--green-default)">~3 semanas</span> con trabajo AI-augmented.</h1>
+      <h1 class="title" style="font-size: clamp(36px, 4.4vw, 58px); max-width: 24ch;">Subir Next a 15 para destrabar <span style="color: var(--green-default)">SSR sin romper la UX</span>. De paso, limpiamos 2 deudas más.</h1>
 
-      <div class="grid-3" style="margin-top: 40px;">
+      <div class="grid-3" style="margin-top: 32px;">
         <div class="stat">
-          <span class="stat__label">Pilar 01</span>
+          <span class="stat__label">Pilar 01 · La pieza que destraba</span>
           <span class="num num--md stat__value">Next 12 → 15</span>
-          <p class="muted">framework moderno, base habilitada</p>
+          <p class="muted">SSR moderno con streaming, sin flicker</p>
         </div>
         <div class="stat">
-          <span class="stat__label">Pilar 02</span>
+          <span class="stat__label">Pilar 02 · Aprovechamos la ventana</span>
           <span class="num num--md stat__value">Absorber lib</span>
           <p class="muted"><span class="mono">modo-ui-lib-web</span> al repo principal</p>
         </div>
         <div class="stat">
-          <span class="stat__label">Pilar 03</span>
+          <span class="stat__label">Pilar 03 · Aprovechamos la ventana</span>
           <span class="num num--md stat__value">Tailwind único</span>
-          <p class="muted">deprecar styled-components, Emotion, CSS modules</p>
+          <p class="muted">limpiar styled-components, Emotion y CSS modules</p>
         </div>
       </div>
 
-      <p class="body" style="margin-top: 40px; max-width: 80ch;">
-        <strong>Por qué juntas</strong>: hacer Next 15 con styled-components todavía vivo, o con una lib externa que solo nosotros consumimos, es resolver el 30% del problema. El programa es un sprint de consolidación, no 3 tickets sueltos.
+      <p class="body" style="margin-top: 32px; max-width: 80ch;">
+        <strong>Por qué juntas</strong>: la necesidad real arrancó por GEO (necesitamos SSR para que los buscadores IA nos vean). Al ir a hacerlo, descubrimos que rompe la UX humana en Next 12. El upgrade a 15 lo resuelve. Y ya que tocamos el motor a fondo, vale aprovechar para limpiar las otras 2 deudas que vienen arrastrándose.
       </p>
     </div>
 
@@ -666,55 +666,39 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 3: DIAGNÓSTICO ====== -->
+  <!-- ====== SLIDE 3: PUNTO DE PARTIDA · GEO NECESITA SSR ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
-      <span>03 · Diagnóstico</span>
-      <span>El stack hoy</span>
+      <span>03 · Punto de partida</span>
+      <span>GEO necesita SSR</span>
     </div>
 
     <div class="slide__body">
-      <p class="eyebrow">El stack hoy</p>
-      <h2 class="heading">3 deudas técnicas que crecen en paralelo.</h2>
-      <p class="body" style="max-width: 70ch; margin-bottom: 24px;">
-        Ninguna es crítica por sí sola. Las tres combinadas dejan a modo-landing detrás de cualquier estándar moderno de frontend.
+      <p class="eyebrow">Punto de partida · necesidad GEO</p>
+      <h2 class="heading">Para que los buscadores IA nos vean, la web tiene que ser SSR.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 20px;">
+        Cada vez más usuarios buscan en ChatGPT, Claude, Perplexity y Gemini antes que en Google. Esos asistentes scrappean la web y citan lo que pueden parsear. Si nuestra página entrega HTML vacío y arma el contenido en cliente, los crawlers IA no ven nada útil.
       </p>
 
-      <div class="stack-today">
-        <div class="stack-block">
-          <h4>Framework</h4>
-          <div class="row-item"><span class="label"><span class="mono">next</span></span><span class="value">12.3.5 · Q4 2021</span></div>
-          <div class="row-item"><span class="label"><span class="mono">react</span></span><span class="value">18.2.0</span></div>
-          <div class="row-item"><span class="label">Versiones atrás</span><span class="value" style="color: var(--red-warn); font-weight: 600;">3 majors</span></div>
+      <div class="grid-2" style="margin-top: 12px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">Lo que el negocio necesita</span>
+          <h3 class="subheading" style="font-size: 16px;">Visibilidad en buscadores IA y en Google.</h3>
+          <ul class="checks" style="margin-top: 8px;">
+            <li>Que ChatGPT, Claude, Perplexity y Gemini puedan citar MODO con info correcta.</li>
+            <li>Que Google indexe contenido completo de cada ruta (no shells vacíos).</li>
+            <li>Que la red MODO aparezca en respuestas a queries de promos, comercios, bancos.</li>
+          </ul>
         </div>
 
-        <div class="stack-block">
-          <h4>UI Library privada</h4>
-          <div class="row-item"><span class="label"><span class="mono">@playsistemico/modo-ui-lib-web</span></span><span class="value">1.32.1</span></div>
-          <div class="row-item"><span class="label">Registry</span><span class="value">GitHub Packages</span></div>
-          <div class="row-item"><span class="label">Consumidores externos</span><span class="value" style="color: var(--red-warn); font-weight: 600;">0</span></div>
-        </div>
-
-        <div class="stack-block" style="grid-column: 1 / -1;">
-          <h4>Sistemas de styling conviviendo</h4>
-          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 4px;">
-            <div class="row-item" style="border:none; padding:0; flex-direction:column; align-items:flex-start; gap:4px;">
-              <span class="label"><span class="mono">styled-components</span></span>
-              <span class="value">5.2.3</span>
-            </div>
-            <div class="row-item" style="border:none; padding:0; flex-direction:column; align-items:flex-start; gap:4px;">
-              <span class="label"><span class="mono">@emotion/*</span></span>
-              <span class="value">11.11.x</span>
-            </div>
-            <div class="row-item" style="border:none; padding:0; flex-direction:column; align-items:flex-start; gap:4px;">
-              <span class="label">CSS Modules</span>
-              <span class="value">legacy</span>
-            </div>
-            <div class="row-item" style="border:none; padding:0; flex-direction:column; align-items:flex-start; gap:4px;">
-              <span class="label"><span class="mono">tailwindcss</span></span>
-              <span class="value" style="color: var(--green-default); font-weight: 600;">3.3.3 · primario</span></span>
-            </div>
-          </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <span class="card__index" style="color: var(--gray-60);">Lo que tenemos hoy</span>
+          <h3 class="subheading" style="font-size: 16px;">Render mixto SSR + client en Next 12.</h3>
+          <ul class="checks checks--neutral" style="margin-top: 8px;">
+            <li>Pages Router con <span class="mono">getServerSideProps</span> / <span class="mono">getStaticProps</span> en algunas rutas.</li>
+            <li>Bastante contenido se monta en cliente después de hydration.</li>
+            <li>Rutas como <span class="mono">/aprende-con-modo</span> y <span class="mono">/blog</span> entregan body vacío al crawler.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -726,38 +710,44 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 4: POR QUÉ JUNTAS Y AHORA ====== -->
+  <!-- ====== SLIDE 4: EL BLOQUEO · SSR ROMPE LA UX EN NEXT 12 ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
-      <span>04 · Timing</span>
-      <span>Por qué juntas, por qué ahora</span>
+      <span>04 · El bloqueo</span>
+      <span>SSR vs UX en Next 12</span>
     </div>
 
     <div class="slide__body">
-      <p class="eyebrow">Por qué juntas, por qué ahora</p>
-      <h2 class="heading">Las 3 deudas se potencian. Resolver una sola es trabajo doble.</h2>
+      <p class="eyebrow">Lo que descubrimos al intentar</p>
+      <h2 class="heading">Cuando forzamos SSR en Next 12, se rompe la UX humana.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 16px;">
+        Probamos mover más rutas a SSR para resolver el problema de GEO. Lo que pasa es que la primera carga humana queda peor: aparece flicker en la navbar, el sidebar y las fuentes, y el layout salta antes de estabilizarse.
+      </p>
 
-      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+      <div class="grid-2" style="margin-top: 12px; align-items: stretch;">
         <div class="card">
-          <span class="card__index">El argumento técnico</span>
-          <h3 class="subheading">No tiene sentido subir a Next 15 con styled-components vivo.</h3>
-          <p class="body" style="margin: 0;">Cualquier optimización de bundle, de RSC futura, o de App Router en Fase 2, va a tropezar con tres sistemas de styling. Tampoco tiene sentido mantener una lib privada con un solo consumidor. <strong>Las 3 cosas son la misma cosa</strong>: el stack pidiendo ser consolidado.</p>
+          <span class="card__index">El síntoma</span>
+          <h3 class="subheading" style="font-size: 16px;">UX humana degradada.</h3>
+          <ul class="checks checks--no" style="margin-top: 8px;">
+            <li>Flicker visible en navbar y sidebar al cargar la primera vez.</li>
+            <li>Fuentes Google Fonts cargan tarde, los títulos saltan.</li>
+            <li>Layout shift (CLS) que también empeora Core Web Vitals.</li>
+          </ul>
         </div>
 
         <div class="card">
-          <span class="card__index">El argumento de costo</span>
-          <h3 class="subheading">Cada trimestre que esperamos, el costo compound crece.</h3>
-          <ul class="checks">
-            <li>Cada feature nueva paga <strong>"impuesto de consistencia"</strong> (¿en cuál sistema lo escribo?).</li>
-            <li>Onboarding de devs nuevos toma más tiempo aprendiendo 4 formas de stylar.</li>
-            <li>La lib agrega un release que solo nosotros consumimos cada vez que tocamos un componente compartido.</li>
-            <li>Bundle inflado por 3 runtimes de CSS-in-JS conviviendo.</li>
+          <span class="card__index">La causa raíz</span>
+          <h3 class="subheading" style="font-size: 16px;">Next 12 no tiene las piezas modernas.</h3>
+          <ul class="checks checks--neutral" style="margin-top: 8px;">
+            <li>Sin streaming SSR + Suspense (lo trae Next 13+).</li>
+            <li>Sin <span class="mono">next/font</span> self-hosted (lo trae Next 13+).</li>
+            <li>Sin React Server Components para render sin client weight.</li>
           </ul>
         </div>
       </div>
 
-      <p class="body" style="margin-top: 32px; padding: 20px 24px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
-        <strong>El framing</strong>: este no es un upgrade de Next. Es un reset del stack frontend, donde Next 15 es la primera pieza y la que destraba las otras dos.
+      <p class="body" style="margin-top: 18px; padding: 14px 18px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>Conclusión</strong>: necesitamos el motor moderno (Next 15) que tiene streaming SSR, <span class="mono">next/font</span> y RSC. Es lo que destraba GEO sin sacrificar la experiencia humana.
       </p>
     </div>
 
@@ -768,7 +758,7 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 5: PILAR 01 — NEXT 15 ====== -->
+  <!-- ====== SLIDE 5: PILAR 01 · NEXT 15 ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span>05 · Pilar 01</span>
@@ -813,7 +803,7 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 6: PILAR 02 — ABSORBER LIB ====== -->
+  <!-- ====== SLIDE 6: PILAR 02 · ABSORBER LIB ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span>06 · Pilar 02</span>
@@ -862,7 +852,7 @@
     </div>
   </section>
 
-  <!-- ====== SLIDE 7: PILAR 03 — TAILWIND ÚNICO ====== -->
+  <!-- ====== SLIDE 7: PILAR 03 · TAILWIND ÚNICO ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
       <span>07 · Pilar 03</span>
@@ -960,7 +950,7 @@
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
           <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Qué NO acelera (human floor)</h4>
-          <p class="body" style="margin: 0; font-size: 13px;">Review humana por PR, smoke E2E en QA, validación visual, runtime de CI, ventanas de deploy (mobile freezes), coordinación con stakeholders.</p>
+          <p class="body" style="margin: 0; font-size: 13px;">Review humana por PR, smoke E2E en QA, validación visual, runtime de CI, ventanas de deploy (mobile freezes), coordinación con Mobile, QA y Brand.</p>
         </div>
       </div>
     </div>
@@ -1060,7 +1050,7 @@
           </tr>
           <tr>
             <td>Cambios visuales o UX</td>
-            <td class="was">—</td>
+            <td class="was">N/A</td>
             <td class="now">Ninguno (mismo design system)</td>
           </tr>
           <tr>
@@ -1255,36 +1245,30 @@
       <span>14 · Cierre</span>
     </div>
 
-    <div class="slide__body" style="justify-content: center; gap: 8px;">
-      <p class="eyebrow">Próximo paso</p>
-      <h1 class="title" style="font-size: clamp(30px, 3.4vw, 48px); max-width: 24ch; margin-bottom: 14px;">Antes de arrancar, <span style="color: var(--green-default)">necesito feedback</span> y alineación con los equipos involucrados.</h1>
-      <p class="lede" style="font-size: 16px; margin-bottom: 16px;">Este deck propone un programa, no lo decide. Si hay apetito, el paso siguiente es agendar review con los owners, no abrir tickets unilateralmente.</p>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">¿Avanzamos?</p>
+      <h1 class="title">Antes de arrancar, <span style="color: var(--green-default)">necesito feedback</span>.</h1>
+      <p class="lede">Este deck propone, no decide. El próximo paso es review con Mobile, QA, lib owners, Brand y SRE. Tickets recién después.</p>
 
-      <div class="card" style="max-width: 760px; padding: 14px 20px; margin-bottom: 14px; background: var(--paper);">
-        <p class="card__label" style="margin-bottom: 6px;">Quiénes deberían opinar antes de planificar la ventana</p>
-        <p class="body" style="font-size: 13px; margin: 0; line-height: 1.5;"><strong>Mobile</strong> (release freezes) · <strong>QA</strong> (capacity para smoke E2E) · <strong>Design system / lib owners</strong> (compat <span class="mono" style="font-size:11px;">modo-ui-lib-web</span>) · <strong>Brand</strong> (sin cambios visuales esperados, validar) · <strong>SRE / Helm owners</strong> (rollback plan).</p>
-      </div>
-
-      <div class="card" style="max-width: 760px; padding: 18px 22px;">
-        <h3 class="subheading" style="font-size: 16px; margin-bottom: 4px;">Material de soporte</h3>
-        <ul class="checks" style="margin-top: 4px;">
-          <li style="font-size: 13px; padding: 3px 0 3px 24px;"><span class="mono">01-comparison.md</span> · comparación Next 12 vs 15/16</li>
-          <li style="font-size: 13px; padding: 3px 0 3px 24px;"><span class="mono">02-two-day-plan.md</span> · plan ejecutivo Fase 01</li>
-          <li style="font-size: 13px; padding: 3px 0 3px 24px;"><span class="mono">03-checklist.md</span> · checklist técnico paso a paso</li>
-          <li style="font-size: 13px; padding: 3px 0 3px 24px;"><span class="mono">04-risks-rollback.md</span> · matriz de riesgos + rollback</li>
-          <li style="font-size: 13px; padding: 3px 0 3px 24px;">Skills: <span class="mono">nextjs-12-to-15-migration</span> · <span class="mono">styled-components-to-tailwind</span></li>
+      <div class="card" style="max-width: 720px; margin-top: 24px;">
+        <span class="card__index">Material de soporte</span>
+        <ul class="checks">
+          <li><span class="mono">01-comparison.md</span> · Next 12 vs 15/16</li>
+          <li><span class="mono">02-two-day-plan.md</span> · plan Fase 01</li>
+          <li><span class="mono">03-checklist.md</span> · checklist técnico</li>
+          <li><span class="mono">04-risks-rollback.md</span> · riesgos + rollback</li>
         </ul>
       </div>
     </div>
 
-    <div class="meta" style="margin-top: 16px;">
+    <div class="meta">
       <div class="meta__col">
         <h4>Autor</h4>
         <p>Hernán De Souza</p>
       </div>
       <div class="meta__col">
-        <h4>Tickets a crear</h4>
-        <p><span class="mono">EXA-XXX</span> · 3 tickets, 1 por fase</p>
+        <h4>Próximo paso</h4>
+        <p>Agendar review · sin tickets aún</p>
       </div>
       <div class="meta__col">
         <h4>Repo</h4>
