@@ -746,8 +746,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 14%"></i></div>
-      <span class="counter">02 / 14</span>
+      <div class="progress"><i style="--p: 13%"></i></div>
+      <span class="counter">02 / 15</span>
     </div>
   </section>
 
@@ -790,8 +790,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 21%"></i></div>
-      <span class="counter">03 / 14</span>
+      <div class="progress"><i style="--p: 20%"></i></div>
+      <span class="counter">03 / 15</span>
     </div>
   </section>
 
@@ -838,8 +838,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 28%"></i></div>
-      <span class="counter">04 / 14</span>
+      <div class="progress"><i style="--p: 27%"></i></div>
+      <span class="counter">04 / 15</span>
     </div>
   </section>
 
@@ -889,8 +889,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 35%"></i></div>
-      <span class="counter">05 / 14</span>
+      <div class="progress"><i style="--p: 33%"></i></div>
+      <span class="counter">05 / 15</span>
     </div>
   </section>
 
@@ -938,8 +938,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 42%"></i></div>
-      <span class="counter">06 / 14</span>
+      <div class="progress"><i style="--p: 40%"></i></div>
+      <span class="counter">06 / 15</span>
     </div>
   </section>
 
@@ -988,8 +988,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 50%"></i></div>
-      <span class="counter">07 / 14</span>
+      <div class="progress"><i style="--p: 47%"></i></div>
+      <span class="counter">07 / 15</span>
     </div>
   </section>
 
@@ -1048,8 +1048,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 57%"></i></div>
-      <span class="counter">08 / 14</span>
+      <div class="progress"><i style="--p: 53%"></i></div>
+      <span class="counter">08 / 15</span>
     </div>
   </section>
 
@@ -1094,8 +1094,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 64%"></i></div>
-      <span class="counter">09 / 14</span>
+      <div class="progress"><i style="--p: 60%"></i></div>
+      <span class="counter">09 / 15</span>
     </div>
   </section>
 
@@ -1157,8 +1157,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 71%"></i></div>
-      <span class="counter">10 / 14</span>
+      <div class="progress"><i style="--p: 67%"></i></div>
+      <span class="counter">10 / 15</span>
     </div>
   </section>
 
@@ -1218,8 +1218,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 78%"></i></div>
-      <span class="counter">11 / 14</span>
+      <div class="progress"><i style="--p: 73%"></i></div>
+      <span class="counter">11 / 15</span>
     </div>
   </section>
 
@@ -1282,15 +1282,73 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 85%"></i></div>
-      <span class="counter">12 / 14</span>
+      <div class="progress"><i style="--p: 80%"></i></div>
+      <span class="counter">12 / 15</span>
     </div>
   </section>
 
-  <!-- ====== SLIDE 13: DECISIONES ====== -->
+  <!-- ====== SLIDE 13: HARNESS QUE ASEGURA EL DESARROLLO ====== -->
   <section class="slide" data-slide>
     <div class="slide__chrome-top">
-      <span>13 · Decisiones</span>
+      <span>13 · Harness</span>
+      <span>Cómo aseguramos el upgrade</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Cómo aseguramos el desarrollo</p>
+      <h2 class="heading">El upgrade entra por el mismo harness que ya validó <span class="mono" style="font-size: 0.78em;">/comercios</span>.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 14px;">
+        No es jerga ni proceso nuevo. Es el mismo workflow de 6 pasos + 8 guardianes de CI que vienen funcionando hace meses. Si algo de la migración 12→16 se rompe, lo agarra antes de llegar a main.
+      </p>
+
+      <div class="grid-2" style="margin-top: 6px; align-items: stretch; gap: 24px;">
+        <div class="pillar-detail__evidence">
+          <h4>El workflow · 6 pasos por PR</h4>
+          <ul class="checks">
+            <li><strong>SDD</strong> — spec primero (qué + porqué), antes de tocar código.</li>
+            <li><strong>TDD</strong> — test que falla (rojo) → código mínimo (verde) → refactor.</li>
+            <li><strong>Tests en 3 niveles</strong> — unit, integración y E2E con Playwright.</li>
+            <li><strong>Validación E2E</strong> — un bot recorre las pantallas antes de deploy.</li>
+            <li><strong>Docs vivas</strong> — PRD, RFC, ADR en el mismo repo (no en wiki muerta).</li>
+            <li><strong>Regresión automática</strong> — cada PR corre los tests de todo lo viejo.</li>
+          </ul>
+          <p class="muted" style="margin-top: 10px;">Probado vivo en <a href="comercios-mvp.html" style="color: var(--green-default); text-decoration: none; font-weight: 600;">/comercios MVP</a> · 12/12 tests · shipped a QA mayo 2026.</p>
+        </div>
+
+        <div class="pillar-detail__evidence">
+          <h4>El pipeline · 8 guardianes en CI</h4>
+          <ul class="checks checks--neutral">
+            <li><strong>SonarCloud Quality Gate</strong> — 0 new smells, 0 hotspots, ≤3% duplication.</li>
+            <li><strong>ESLint + commitlint + PR size</strong> — convención forzada por hook.</li>
+            <li><strong>Dependabot + security audit</strong> — vulnerabilidades flageadas en PR.</li>
+            <li><strong>Safe-chain</strong> — validator de dependencias supply-chain.</li>
+            <li><strong>Playwright E2E</strong> — smoke desktop + mobile en cada PR.</li>
+            <li><strong>Screenshots desktop + mobile</strong> — review visual obligatoria.</li>
+          </ul>
+          <p class="muted" style="margin-top: 10px;">Detalle completo en <a href="cicd-dx-maduracion.html" style="color: var(--green-default); text-decoration: none; font-weight: 600;">CI/CD + DX Hardening</a> · maduración Q1-Q2 2026.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 18px; padding: 12px 18px; background: var(--green-10); border-radius: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark);">Decks relacionados</span>
+        <a href="cicd-dx-maduracion.html" class="chip chip--green" style="text-decoration: none;">CI/CD + DX Hardening</a>
+        <a href="comercios-mvp.html" class="chip chip--green" style="text-decoration: none;">POC /Comercios MVP</a>
+        <a href="seo-geo-maduracion.html" class="chip" style="text-decoration: none;">SEO + GEO Architecture</a>
+        <a href="storyblok-cms-build-time.html" class="chip" style="text-decoration: none;">Storyblok via BFF</a>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Stack consolidation · modo-landing</span>
+      <div class="progress"><i style="--p: 87%"></i></div>
+      <span class="counter">13 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 14: DECISIONES ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>14 · Decisiones</span>
       <span>Lo que necesitamos hoy</span>
     </div>
 
@@ -1324,8 +1382,8 @@
 
     <div class="slide__chrome-bottom">
       <span>Stack consolidation · modo-landing</span>
-      <div class="progress"><i style="--p: 92%"></i></div>
-      <span class="counter">13 / 14</span>
+      <div class="progress"><i style="--p: 93%"></i></div>
+      <span class="counter">14 / 15</span>
     </div>
   </section>
 
@@ -1333,7 +1391,7 @@
   <section class="slide slide--cover" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>14 · Cierre</span>
+      <span>15 · Cierre</span>
     </div>
 
     <div class="slide__body" style="justify-content: center;">
@@ -1375,7 +1433,7 @@
   <button id="prev" aria-label="Anterior" title="← / k">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
   </button>
-  <span class="counter" id="counter">01 / 14</span>
+  <span class="counter" id="counter">01 / 15</span>
   <button id="next" aria-label="Siguiente" title="→ / j / espacio">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
   </button>
