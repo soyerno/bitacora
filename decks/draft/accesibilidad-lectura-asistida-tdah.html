@@ -899,10 +899,14 @@
       <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
         <div class="card">
           <h3 class="subheading" style="color: var(--green-default);">Entra en el MVP</h3>
-          <ul class="checks">
+          <p class="card__index" style="margin: 8px 0 4px;">Core de la feature</p>
+          <ul class="checks" style="margin: 0;">
             <li>Toggle "Lectura biónica" + 3 niveles de intensidad.</li>
             <li>Toggle "Lectura extendida" + 3 presets de densidad.</li>
             <li>Aplicación en 5 pantallas piloto (T&amp;C, privacidad, FAQ, promo detail, errores largos).</li>
+          </ul>
+          <p class="card__index" style="margin: 12px 0 4px;">Plumbing + medición</p>
+          <ul class="checks" style="margin: 0;">
             <li>Persistencia en perfil MODO + fallback localStorage.</li>
             <li>Feature flag + A/B con rollout 5/25/100%.</li>
             <li>Tracking Amplitude (activación, intensidad, tiempo en pantalla).</li>
@@ -910,13 +914,17 @@
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent;">
           <h3 class="subheading" style="color: var(--dark-gray);">No entra</h3>
-          <ul class="checks checks--neutral">
+          <p class="card__index" style="margin: 8px 0 4px;">No se aplica el bold a estos elementos</p>
+          <ul class="checks checks--neutral" style="margin: 0;">
             <li>Inputs y formularios (no se modifican).</li>
-            <li>Montos, números, IDs, datos críticos (no se aplica el bold).</li>
+            <li>Montos, números, IDs, datos críticos.</li>
+            <li>JSON-LD, meta tags, nada de SEO.</li>
+          </ul>
+          <p class="card__index" style="margin: 12px 0 4px;">Fuera de scope del MVP</p>
+          <ul class="checks checks--neutral" style="margin: 0;">
             <li>OpenDyslexic font (se evalúa en fase 2 según feedback).</li>
             <li>Apps móviles nativas (solo web por ahora).</li>
             <li>WCAG 2.2 AAA (apuntamos AA en este MVP).</li>
-            <li>JSON-LD, meta tags ni nada de SEO.</li>
           </ul>
         </div>
       </div>
