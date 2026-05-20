@@ -13,14 +13,21 @@ body:not(.bionic-on) b.bionic { font-weight: inherit; }
 
 /* ----------------------------------------------------------------------- */
 /* Header dropdown that hosts both theme + bionic toggles                  */
+/* Built on native <details>/<summary> — open/close is HTML+CSS only,      */
+/* zero JS state.                                                          */
 /* ----------------------------------------------------------------------- */
 .deck-controls {
   position: relative;
   justify-self: end;
-  display: inline-flex;
+  display: inline-block;
 }
 
+/* Kill the native disclosure marker (▶/▼) on every engine. */
+.deck-controls > summary::-webkit-details-marker { display: none; }
+.deck-controls > summary::marker { content: ""; }
+
 .deck-controls__trigger {
+  list-style: none;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -31,6 +38,8 @@ body:not(.bionic-on) b.bionic { font-weight: inherit; }
   border-radius: 999px;
   font: inherit;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
 .deck-controls__trigger:hover,
@@ -54,14 +63,18 @@ body:not(.bionic-on) b.bionic { font-weight: inherit; }
   transform: translateY(1px);
   transition: transform 0.15s;
 }
-.deck-controls[data-open="true"] .deck-controls__trigger {
+.deck-controls[open] .deck-controls__trigger {
   color: var(--accent);
   border-color: var(--accent);
   background: var(--accent-light, color-mix(in srgb, var(--accent) 10%, var(--surface)));
 }
-.deck-controls[data-open="true"] .deck-controls__caret {
+.deck-controls[open] .deck-controls__caret {
   transform: rotate(180deg) translateY(-1px);
 }
+
+/* Closed state: explicitly hide the panel so the panel's own
+   `display: flex` doesn't override the UA's <details>-collapsed rule. */
+.deck-controls:not([open]) > .deck-controls__panel { display: none; }
 
 .deck-controls__panel {
   position: absolute;
