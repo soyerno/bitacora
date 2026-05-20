@@ -770,9 +770,9 @@
         <p class="eyebrow">Pilar 01 · Framework</p>
         <div class="num num--xl num--accent">12 → 16</div>
         <h2 class="heading" style="font-size: 32px; margin-top: 8px;">Subir Next.js a la versión actual,<br />en Pages Router.</h2>
-        <p class="body" style="max-width: 50ch;">Salto incremental con codemods oficiales (<span class="mono">12 → 13 → 14 → 15 → 16</span>). Sin App Router todavía, sin RSC, sin React 19. Lift &amp; shift puro.</p>
-        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
-          <span class="chip chip--green">~1.5 días con IA</span>
+        <p class="body" style="max-width: 50ch;">Salto incremental con codemods oficiales (<span class="mono">12 → 13 → 14 → 15 → 16</span>). Pages Router intacto. <strong>El codemod soporta saltar directo a 16</strong> (<span class="mono">@next/codemod upgrade latest</span>), pero hacerlo incremental nos deja validar build entre cada step y aislar fallos. Para un repo de este tamaño la chain es la práctica segura.</p>
+        <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">~2 días con IA</span>
           <span class="chip">1 dev + Claude Code</span>
           <span class="chip">Pages Router intacto</span>
           <span class="chip">Rollback &lt;10 min</span>
@@ -784,14 +784,20 @@
           <h4>Qué se desbloquea</h4>
           <ul class="checks">
             <li><strong>Performance</strong>: AVIF en <span class="mono">next/image</span>, <span class="mono">next/font</span> self-hosted, streaming SSR.</li>
-            <li><strong>DX</strong>: Turbopack en dev (HMR sub-segundo). Mejores errores.</li>
-            <li><strong>SEO / GEO</strong>: HTML más completo para Google y AI crawlers; Metadata API moderna.</li>
+            <li><strong>DX</strong>: Turbopack default en dev y build (HMR sub-segundo).</li>
+            <li><strong>SEO / GEO</strong>: HTML más completo para Google y AI crawlers, Metadata API moderna.</li>
             <li><strong>Base para Fase 2</strong>: App Router y RSC quedan como opción cuando los necesitemos.</li>
           </ul>
         </div>
-        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
-          <h4 style="color: var(--green-dark);">Lo que NO entra acá</h4>
-          <p class="body" style="margin: 0;">App Router, RSC, React 19, async <span class="mono">params</span> / <span class="mono">searchParams</span>. Eso es Fase 4+, post-programa.</p>
+        <div class="pillar-detail__evidence" style="background: #FFF1C8; border-color: transparent;">
+          <h4 style="color: #5C3F00;">Lo que el upgrade arrastra · scope ampliado en Next 16</h4>
+          <ul class="checks" style="margin-top: 4px;">
+            <li><strong>React 19.2</strong> ya no es opcional. Next 16 lo requiere, sube en el mismo PR.</li>
+            <li><strong>Turbopack es default</strong>. Si hay custom webpack config, migrar o usar flag <span class="mono">--webpack</span>.</li>
+            <li><strong><span class="mono">next lint</span> eliminado</strong>. Codemod migra a ESLint CLI directo.</li>
+            <li><strong><span class="mono">middleware.ts</span> → <span class="mono">proxy.ts</span></strong>. Codemod renombra archivos y funciones.</li>
+            <li><strong>Node 20.9+ obligatorio</strong> (ya estamos en 22.22, OK). AMP eliminado (no usamos, OK).</li>
+          </ul>
         </div>
       </div>
     </div>
