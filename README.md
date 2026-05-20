@@ -1,14 +1,13 @@
 # modo-decks
 
-Presentaciones HTML internas, catálogo de RFCs y stack de herramientas de modo-landing.
+Sistema de publicación de presentaciones HTML, catálogo de RFCs y stack de herramientas de modo-landing. El contenido vive en `decks/`, `rfcs/rfcs.json` y `herramientas/`; este README describe **cómo funciona el sistema**, no qué decks / RFCs / herramientas hay (eso se ve en el [landing](https://soyernomodo.github.io/modo-decks/)).
 
-- Decks generados con la skill privada `modo-deck` (Claude Code, mantenida en `~/.claude/skills/`)
+- Decks generados con la skill privada `modo-deck` (Claude Code, vive en `~/.claude/skills/`)
 - Branding MODO: verde #008859, Red Hat Display + Quicksand, layout 16:9
-- Navegación por teclado dentro de cada deck (← →, j/k, espacio, Home, End)
-- Exportables a PDF (tecla P)
+- Navegación por teclado dentro de cada deck (← →, j/k, espacio, Home, End) + export PDF (tecla P)
 - Reacciones y comentarios por deck via Giscus (tecla `c` o botón 💬)
 
-Los decks y RFCs son **propuestas** que buscan feedback y aprobación, no anuncian implementación. Cada cierre lista los equipos que deben opinar antes de avanzar.
+Los decks y RFCs son **propuestas** que buscan feedback, no anuncios de implementación. Cada cierre lista los equipos que deben opinar antes de avanzar.
 
 ## Live
 
@@ -16,46 +15,33 @@ https://soyernomodo.github.io/modo-decks/
 
 4 páginas con nav y breadcrumbs compartidos:
 
-- `/` — home con destacados de la semana y accesos a cada colección
-- `/decks/` — catálogo de decks: búsqueda + tabs por status + chips por tema + sort
-- `/rfcs/` — catálogo de RFCs: tabs por status + chips por área + saga de versiones colapsada
-- `/herramientas/` — stack en Claude Code: 59 tools agrupadas en 8 categorías + búsqueda
+- `/` — home: destacados + accesos a cada colección
+- `/decks/` — catálogo de decks (búsqueda + tabs por status + chips por tema + sort)
+- `/rfcs/` — catálogo de RFCs (tabs por status + chips por área + saga de versiones colapsada)
+- `/herramientas/` — stack en Claude Code (tools agrupadas en categorías + búsqueda)
 
 Theme toggle (auto / claro / oscuro) persiste en `localStorage`. Desde cualquier deck individual hay un pill verde top-left ("← MODO presentaciones / Decks") que vuelve al sitio.
 
-## Decks
-
-11 presentaciones HTML versionadas en `decks/`. Workflow: `draft → rfc → completo` (la promoción es un `git mv` entre carpetas + update del badge en `decks/decks.json`). Catálogo en `decks/decks.json`, consumible por agentes.
-
-Destacados:
-
-- [Next 12 → 16 · Stack consolidation](decks/completo/nextjs-12-to-16-consolidation.html)
-- [/comercios MVP shipped](decks/completo/comercios-mvp.html)
-- [MODO for Agents · Pagos agénticos](decks/completo/modo-for-agents.html)
-- [SEO Sprint 0 · Staging leaks](decks/completo/seo-sprint0.html)
-
-## RFCs
-
-19 documentos técnicos vivos en Google Drive y GitHub, curados y catalogados en `rfcs/rfcs.json` (consumible por agentes y por el landing sin parsear HTML). El catálogo en `/rfcs/` los renderiza con filtros por estado (`draft / rfc / completo / archivado`).
-
-La saga "Migración modo-landing" colapsa 14 versiones en una sola entrada (la v6 más reciente), con las intermedias accesibles desde el toggle "+ N versiones anteriores".
-
-## Cómo agrego un deck nuevo
+## Cómo se publica un deck
 
 Con la skill `modo-deck` instalada localmente:
 
-1. Generar el HTML con Claude Code (la skill arma el deck respetando branding + Giscus snippet + back-link pill).
-2. Publicar al repo:
+1. Generar el HTML con Claude Code (la skill arma el deck respetando branding + snippet de Giscus + back-link pill).
+2. Publicar:
    ```bash
    ~/.claude/skills/modo-deck/scripts/publish-deck.sh <preview.html> <slug> <draft|rfc|completo>
    ```
    El script rechaza el upload si encuentra `{{PLACEHOLDER}}` sin resolver.
-3. Editar `decks/decks.json` (sumar la entrada) y commit + push a `main`. Pages publica en ~30s.
+3. Sumar entrada a `decks/decks.json` (data source del catálogo) y commit + push a `main`. Pages publica en ~30s.
 
-Promover un deck entre estados:
+Promover entre estados:
 ```bash
 ~/.claude/skills/modo-deck/scripts/promote-deck.sh <slug> <from> <to>
 ```
+
+## RFCs
+
+Catálogo curado en `rfcs/rfcs.json` (formato consumible por agentes y por el landing sin parsear HTML). Los RFCs viven en Google Drive o GitHub — el JSON solo guarda metadata + link.
 
 ## Reacciones y comentarios (Giscus)
 
@@ -72,9 +58,9 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 
 **Cómo se cablea:**
 
-El snippet ya está en el template de la skill `modo-deck` (no es pública — vive en `~/.claude/skills/modo-deck/assets/template.html`), así que cualquier deck generado por ahí lo incluye automáticamente. `publish-deck.sh` rechaza el upload si encuentra `{{DECK_SLUG}}` sin resolver (evita que dos decks compartan thread por accidente).
+El snippet ya está en el template de la skill `modo-deck` (`~/.claude/skills/modo-deck/assets/template.html`), así que cualquier deck nuevo lo incluye automáticamente. `publish-deck.sh` rechaza el upload si encuentra `{{DECK_SLUG}}` sin resolver (evita que dos decks compartan thread por accidente).
 
-Para retrofittear un deck ya publicado que no lo tenga (idempotente — si ya tiene Giscus, skip):
+Para retrofittear un deck publicado que no lo tenga (idempotente — si ya tiene Giscus, skip):
 
 ```bash
 ~/.claude/skills/modo-deck/scripts/add-giscus.py decks/<estado>/<slug>.html
@@ -112,6 +98,6 @@ Para retrofittear un deck ya publicado que no lo tenga (idempotente — si ya ti
 
 ## Cómo sumar contenido
 
-- **Deck nuevo**: ver "Cómo agrego un deck nuevo" arriba. Después sumá entrada a `decks/decks.json`.
+- **Deck nuevo**: ver "Cómo se publica un deck" arriba. Después sumá entrada a `decks/decks.json`.
 - **RFC nuevo**: agregar entrada a `rfcs/rfcs.json` (campos: `number`, `slug`, `title`, `summary`, `status`, `area`, `date`, `drive_url` o `repo_url`).
 - **Herramienta nueva**: editar `herramientas/index.html`, sumar un `<div class="tool-item" data-tool>...</div>` en la categoría correspondiente.
