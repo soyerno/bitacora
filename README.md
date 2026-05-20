@@ -27,6 +27,8 @@ La saga "Migración modo-landing" colapsa 14 versiones en una sola entrada (la v
 
 https://soyernomodo.github.io/modo-decks/
 
+El index trae búsqueda full-text, filtros por tema/área, tabs por status, sort por recencia, y theme toggle (auto / claro / oscuro) con persistencia en `localStorage`.
+
 ## Voz / comms
 
 Los decks y RFCs son propuestas que buscan feedback y aprobación, no anuncian implementación. Cada cierre lista los equipos que deben opinar antes de avanzar.

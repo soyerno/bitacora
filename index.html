@@ -3,19 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presentaciones · modo-landing</title>
+  <title>Presentaciones · MODO · modo-landing</title>
+  <meta name="description" content="Decks internos + catálogo de RFCs de modo-landing. Propuestas que buscan feedback antes de implementar. Generadas con Claude Code." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="MODO · Presentaciones modo-landing" />
+  <meta property="og:description" content="Decks + RFCs. Búsqueda, filtros por tema y status. Draft → RFC → Completo." />
+  <meta property="og:url" content="https://soyernomodo.github.io/modo-decks/" />
+  <meta property="og:locale" content="es_AR" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    // Set theme BEFORE paint to avoid flash. Persists to localStorage.
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'auto');
+      }
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #FAFAF7;
+      --surface: #FFFFFF;
       --ink: #1A1A1A;
+      --ink-soft: #2A2A2A;
       --muted: #6B6B6B;
       --border: #E2E2DC;
+      --border-soft: #EFEFE9;
       --accent: #008859;
+      --accent-ink: #00471B;
       --accent-light: #E6F4EE;
       --draft-bg: #FFF1C8;
       --draft-fg: #5C3F00;
@@ -25,30 +50,131 @@
       --done-fg: #00471B;
       --archived-bg: #EEE9E2;
       --archived-fg: #6B5B3B;
+      --urgent-bg: #FFE0E0;
+      --urgent-fg: #B0001A;
+      --focus: #008859;
+      --shadow-card: 0 6px 20px rgba(0,0,0,0.08);
     }
+
+    :root[data-theme="dark"] {
+      --bg: #0E1411;
+      --surface: #131B17;
+      --ink: #F2F4F1;
+      --ink-soft: #DDE0DC;
+      --muted: #92978F;
+      --border: #232C26;
+      --border-soft: #1B231E;
+      --accent: #2DD68B;
+      --accent-ink: #DCF5E7;
+      --accent-light: #14271E;
+      --draft-bg: #2E2510;
+      --draft-fg: #F2D470;
+      --rfc-bg: #142046;
+      --rfc-fg: #93B4FF;
+      --done-bg: #103226;
+      --done-fg: #6FE3A8;
+      --archived-bg: #221E18;
+      --archived-fg: #B5A788;
+      --urgent-bg: #2E1213;
+      --urgent-fg: #FF8B97;
+      --shadow-card: 0 6px 20px rgba(0,0,0,0.35);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root[data-theme="auto"] {
+        --bg: #0E1411;
+        --surface: #131B17;
+        --ink: #F2F4F1;
+        --ink-soft: #DDE0DC;
+        --muted: #92978F;
+        --border: #232C26;
+        --border-soft: #1B231E;
+        --accent: #2DD68B;
+        --accent-ink: #DCF5E7;
+        --accent-light: #14271E;
+        --draft-bg: #2E2510;
+        --draft-fg: #F2D470;
+        --rfc-bg: #142046;
+        --rfc-fg: #93B4FF;
+        --done-bg: #103226;
+        --done-fg: #6FE3A8;
+        --archived-bg: #221E18;
+        --archived-fg: #B5A788;
+        --urgent-bg: #2E1213;
+        --urgent-fg: #FF8B97;
+        --shadow-card: 0 6px 20px rgba(0,0,0,0.35);
+      }
+    }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-toggle svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .label { letter-spacing: 0.04em; text-transform: capitalize; }
+    .theme-toggle [data-icon] { display: none; }
+    :root[data-theme="auto"] .theme-toggle [data-icon="auto"] { display: inline-flex; }
+    :root[data-theme="light"] .theme-toggle [data-icon="light"] { display: inline-flex; }
+    :root[data-theme="dark"] .theme-toggle [data-icon="dark"] { display: inline-flex; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: 'Red Hat Display', sans-serif;
+      font-family: 'Red Hat Display', system-ui, sans-serif;
       font-size: 16px;
       line-height: 1.55;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
     }
 
     a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
 
-    /* -- HEADER -- */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 8px;
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 10;
+      transition: top 0.15s;
+    }
+    .skip-link:focus { top: 8px; }
+
+    /* HEADER */
     header {
       border-bottom: 1px solid var(--border);
       padding: 32px 48px 28px;
       display: flex;
       align-items: baseline;
       gap: 20px;
+      flex-wrap: wrap;
     }
-
     .wordmark {
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
@@ -57,20 +183,25 @@
       letter-spacing: -0.06em;
       line-height: 1;
     }
-
+    .header-text { display: flex; flex-direction: column; gap: 2px; }
     .header-subtitle {
       font-size: 14px;
       color: var(--muted);
-      font-weight: 400;
+      font-weight: 500;
       letter-spacing: 0.02em;
     }
+    .header-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 560px;
+    }
 
-    /* -- MAIN -- */
+    /* MAIN */
     main {
       flex: 1;
       max-width: 960px;
       margin: 0 auto;
-      padding: 48px 48px;
+      padding: 48px;
       width: 100%;
     }
 
@@ -80,10 +211,10 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    /* -- STATUS BADGES -- */
+    /* STATUS BADGES */
     .status-badge {
       font-family: 'Quicksand', sans-serif;
       font-size: 10px;
@@ -92,59 +223,56 @@
       text-transform: uppercase;
       padding: 3px 10px;
       border-radius: 999px;
+      white-space: nowrap;
     }
     .status-badge.draft { background: var(--draft-bg); color: var(--draft-fg); }
     .status-badge.rfc { background: var(--rfc-bg); color: var(--rfc-fg); }
     .status-badge.completo { background: var(--done-bg); color: var(--done-fg); }
     .status-badge.archivado { background: var(--archived-bg); color: var(--archived-fg); }
+    .status-badge.urgent { background: var(--urgent-bg); color: var(--urgent-fg); }
 
-    /* -- FEATURED CAROUSEL -- */
-    .featured-section {
-      margin-bottom: 56px;
-    }
-
+    /* FEATURED */
+    .featured-section { margin-bottom: 48px; }
     .featured-heading {
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
-      font-size: 28px;
+      font-size: 26px;
       letter-spacing: -0.03em;
       color: var(--ink);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
-
     .featured-subtitle {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
-
     .featured-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
     }
-
     .featured-card {
-      display: block;
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 20px;
-      background: #fff;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: var(--surface);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
     }
-
     .featured-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-card);
+      border-color: var(--accent);
     }
-
-    .featured-badge-wrap {
-      margin-bottom: 12px;
+    .featured-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
     }
-
     .featured-card-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--ink);
       line-height: 1.35;
@@ -154,48 +282,108 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-
     .featured-card-desc {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 14px;
+      line-height: 1.55;
+      margin-bottom: 16px;
+      flex: 1;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-
-    .featured-card-meta {
+    .featured-card-foot {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--muted);
-      font-variant-numeric: tabular-nums;
-      margin-bottom: 14px;
       gap: 6px;
     }
-
     .featured-card-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      font-weight: 500;
       color: var(--accent);
+      font-weight: 600;
+      font-size: 12.5px;
     }
 
-    /* -- TABS -- */
+    /* COLLECTION SECTIONS */
+    .collection { margin-bottom: 48px; }
+    .collection-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .collection-heading {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+    .collection-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .search-wrap { position: relative; }
+    .search-input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus { border-color: var(--accent); outline: none; }
+    .search-input::placeholder { color: var(--muted); }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: var(--muted);
+      pointer-events: none;
+    }
+    .sort-select {
+      padding: 10px 32px 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%236B6B6B' stroke-width='1.5' stroke-linecap='round'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+
+    /* TABS */
     .tabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 32px;
+      gap: 4px;
       border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
     }
-
     .tab {
-      padding: 10px 16px;
+      padding: 10px 14px;
       font-size: 13px;
       font-weight: 500;
       color: var(--muted);
@@ -208,10 +396,11 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      margin-bottom: -1px;
     }
-
-    .tab:hover { color: var(--ink); }
-    .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab:hover:not([disabled]) { color: var(--ink); }
+    .tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+    .tab[disabled] { opacity: 0.45; cursor: not-allowed; }
     .tab .count {
       background: var(--border);
       color: var(--muted);
@@ -221,132 +410,141 @@
       font-weight: 600;
       font-variant-numeric: tabular-nums;
     }
-    .tab.active .count { background: var(--accent-light); color: var(--accent); }
+    .tab[aria-selected="true"] .count { background: var(--accent-light); color: var(--accent); }
 
-    /* -- DECK LIST -- */
-    .deck-list { display: flex; flex-direction: column; gap: 0; }
+    /* CHIPS */
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .chip {
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--ink-soft);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .chip[aria-pressed="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
 
-    .deck-item {
+    /* RESULT META */
+    .result-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .result-meta button {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+    }
+    .result-meta button:hover { text-decoration: underline; }
+    .result-meta button[hidden] { display: none; }
+
+    /* ITEM LIST (shared between decks + RFCs) */
+    .item-list { display: flex; flex-direction: column; }
+    .item-list[hidden] { display: none; }
+
+    .item-row {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: start;
       gap: 16px;
-      padding: 28px 0;
+      padding: 22px 0;
       border-bottom: 1px solid var(--border);
     }
-    .deck-item:first-child { border-top: 1px solid var(--border); }
+    .item-row:first-child { border-top: 1px solid var(--border); }
 
-    .deck-header {
+    .item-header {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 8px;
+      flex-wrap: wrap;
     }
-
-    .deck-number {
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 600;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-    }
-
-    .deck-title {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 19px;
+    .item-title {
+      font-size: 18px;
       font-weight: 600;
       color: var(--ink);
       line-height: 1.3;
       margin-bottom: 6px;
     }
-
-    .deck-description {
-      font-size: 14px;
+    .item-desc {
+      font-size: 13.5px;
       color: var(--muted);
       margin-bottom: 12px;
-      max-width: 560px;
+      max-width: 600px;
+      line-height: 1.55;
     }
-
-    .deck-meta {
+    .item-meta {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       font-size: 12px;
       color: var(--muted);
       align-items: center;
       flex-wrap: wrap;
     }
-
     .meta-tag {
       background: var(--accent-light);
       color: var(--accent);
       padding: 2px 8px;
-      border-radius: 3px;
+      border-radius: 4px;
       font-size: 11px;
       font-weight: 500;
     }
+    .meta-tag.muted {
+      background: var(--border);
+      color: var(--muted);
+    }
+    .meta-dot { color: var(--border); }
+    .meta-link {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: rgba(0,136,89,0.3);
+      font-size: 12px;
+    }
+    .meta-link:hover { text-decoration-color: var(--accent); }
 
-    .deck-link {
+    .open-link {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       color: var(--accent);
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
       white-space: nowrap;
       margin-top: 4px;
       padding: 8px 16px;
       border: 1px solid var(--accent);
-      border-radius: 4px;
+      border-radius: 6px;
       transition: background 0.15s, color 0.15s;
     }
-    .deck-link:hover { background: var(--accent); color: #fff; }
+    .open-link:hover { background: var(--accent); color: #fff; }
 
-    /* -- RFC CATALOG SECTION -- */
-    .rfcs-section {
-      border-top: 1px solid var(--border);
-      padding-top: 52px;
-      margin-top: 56px;
-    }
-
-    .rfcs-section .featured-heading { margin-bottom: 6px; }
-    .rfcs-section .featured-subtitle { margin-bottom: 24px; max-width: 640px; }
-
-    .rfc-list { display: flex; flex-direction: column; gap: 0; }
-
-    .rfc-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: start;
-      gap: 16px;
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .rfc-item:first-child { border-top: 1px solid var(--border); }
-
-    .drive-tag {
-      background: var(--border) !important;
-      color: var(--muted) !important;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .drive-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--accent);
-      font-size: 14px;
-      font-weight: 500;
-      white-space: nowrap;
-      margin-top: 4px;
-      padding: 8px 16px;
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      transition: background 0.15s, color 0.15s;
-    }
-    .drive-link:hover { background: var(--accent); color: #fff; }
-
-    .rfc-versions-toggle {
-      font-family: 'Red Hat Display', sans-serif;
+    /* RFC versions toggle */
+    .versions-toggle {
+      font-family: inherit;
       font-size: 12px;
       color: var(--muted);
       background: transparent;
@@ -354,53 +552,113 @@
       padding: 0;
       cursor: pointer;
       text-decoration: underline;
-      text-decoration-color: rgba(0,0,0,0.15);
+      text-decoration-color: rgba(107,107,107,0.4);
     }
-    .rfc-versions-toggle:hover { color: var(--accent); }
-
-    .rfc-versions {
+    .versions-toggle:hover { color: var(--accent); text-decoration-color: var(--accent); }
+    .versions-panel {
       margin-top: 10px;
       padding: 10px 14px;
       border-left: 2px solid var(--border);
-      background: #fff;
+      background: var(--surface);
       border-radius: 4px;
       display: none;
     }
-    .rfc-versions.open { display: block; }
-    .rfc-versions ul { list-style: none; margin: 0; padding: 0; }
-    .rfc-versions li {
+    .versions-panel.open { display: block; }
+    .versions-panel ul { list-style: none; }
+    .versions-panel li {
       font-size: 12px;
       color: var(--muted);
       padding: 3px 0;
       font-variant-numeric: tabular-nums;
     }
-    .rfc-versions li a {
+    .versions-panel li a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline;
+      text-decoration-color: rgba(0,136,89,0.3);
     }
-    .rfc-versions li a:hover { text-decoration: underline; }
+    .versions-panel li a:hover { text-decoration-color: var(--accent); }
 
-    /* -- SKILLS SECTION -- */
+    /* EMPTY / LOADING / ERROR STATES */
+    .state-box {
+      text-align: center;
+      padding: 56px 20px;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+    }
+    .state-box strong { color: var(--ink); display: block; font-size: 15px; margin-bottom: 6px; }
+    .state-box[hidden] { display: none; }
+
+    /* SKILLS */
     .skills-section {
       border-top: 1px solid var(--border);
-      padding-top: 52px;
-      margin-top: 56px;
-      margin-bottom: 16px;
+      padding-top: 36px;
+      margin-top: 48px;
+    }
+    .skills-section summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      padding: 4px 0;
+    }
+    .skills-section summary::-webkit-details-marker { display: none; }
+    .skills-section summary::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid var(--muted);
+      border-bottom: 2px solid var(--muted);
+      transform: rotate(-45deg);
+      transition: transform 0.15s;
+    }
+    .skills-section[open] summary::before { transform: rotate(45deg); }
+    .skills-section summary .count-meta {
+      font-family: 'Red Hat Display', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0;
     }
 
-    .tool-category { margin-bottom: 36px; }
-
+    .skills-body { padding-top: 18px; }
+    .skills-intro {
+      font-size: 13.5px;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .skills-intro code, .skill-name code, .skills-note code {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 12px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tool-category { margin-bottom: 28px; }
     .tool-category-name {
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 14px;
-      padding-top: 8px;
+      margin-bottom: 12px;
     }
-
     .tool-meta-tag {
       font-family: 'Red Hat Display', sans-serif;
       font-size: 10px;
@@ -413,53 +671,16 @@
       vertical-align: middle;
       letter-spacing: 0.02em;
     }
-
     .tool-meta-tag.mcp { background: var(--rfc-bg); color: var(--rfc-fg); }
     .tool-meta-tag.plugin { background: var(--accent-light); color: var(--accent); }
     .tool-meta-tag.external { background: var(--draft-bg); color: var(--draft-fg); }
-
-    .skills-heading {
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 700;
-      font-size: 26px;
-      letter-spacing: -0.03em;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
-
-    .skills-intro {
-      font-size: 14px;
-      color: var(--muted);
-      max-width: 640px;
-      margin-bottom: 32px;
-      line-height: 1.6;
-    }
-
-    .skills-intro code {
-      font-family: 'Red Hat Display', monospace;
-      font-size: 12px;
-      background: var(--accent-light);
-      color: var(--accent);
-      padding: 1px 6px;
-      border-radius: 3px;
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-
     .skill-item {
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 16px 18px;
-      background: #fff;
+      padding: 14px 16px;
+      background: var(--surface);
     }
-
     .skill-name {
-      font-family: 'Red Hat Display', sans-serif;
       font-size: 13px;
       font-weight: 600;
       color: var(--ink);
@@ -469,16 +690,6 @@
       gap: 8px;
       flex-wrap: wrap;
     }
-
-    .skill-name code {
-      font-family: 'Red Hat Display', monospace;
-      font-size: 12px;
-      background: var(--accent-light);
-      color: var(--accent);
-      padding: 1px 6px;
-      border-radius: 3px;
-    }
-
     .skill-name a {
       color: var(--accent);
       text-decoration: underline;
@@ -486,17 +697,12 @@
       font-size: 11px;
       font-weight: 400;
     }
-
-    .skill-name a:hover {
-      text-decoration-color: var(--accent);
-    }
-
+    .skill-name a:hover { text-decoration-color: var(--accent); }
     .skill-desc {
       font-size: 12px;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.55;
     }
-
     .skills-note {
       font-size: 13px;
       color: var(--muted);
@@ -505,16 +711,7 @@
       line-height: 1.6;
     }
 
-    .skills-note code {
-      font-family: 'Red Hat Display', monospace;
-      font-size: 12px;
-      background: var(--accent-light);
-      color: var(--accent);
-      padding: 1px 6px;
-      border-radius: 3px;
-    }
-
-    /* -- FOOTER -- */
+    /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
       padding: 24px 48px;
@@ -528,1068 +725,735 @@
     }
     footer a { color: var(--accent); }
     footer a:hover { text-decoration: underline; }
+    .workflow-legend { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .workflow-arrow { color: var(--border); }
 
-    /* -- RESPONSIVE -- */
+    /* RESPONSIVE */
     @media (max-width: 860px) {
       .featured-grid { grid-template-columns: repeat(2, 1fr); }
+      main { padding: 36px 28px; }
     }
-
     @media (max-width: 640px) {
-      header { padding: 24px 20px; flex-direction: column; gap: 4px; }
-      main { padding: 32px 20px; }
+      header { padding: 24px 20px; gap: 8px; }
+      .wordmark { font-size: 34px; }
+      main { padding: 28px 20px; }
       footer { padding: 20px; flex-direction: column; align-items: flex-start; }
-      .deck-item { grid-template-columns: 1fr; }
+      .item-row { grid-template-columns: 1fr; }
       .featured-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
-      .tabs { overflow-x: auto; }
+      .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .filter-bar { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
+<a class="skip-link" href="#decks-section">Saltar al listado de decks</a>
+
 <header>
   <span class="wordmark">MODO</span>
-  <span class="header-subtitle">Presentaciones · modo-landing</span>
+  <div class="header-text">
+    <span class="header-subtitle">Presentaciones · modo-landing</span>
+    <span class="header-tagline">Decks HTML y catálogo de RFCs. Propuestas que buscan feedback antes de implementar. Workflow Draft → RFC → Completo.</span>
+  </div>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg>
+    </span>
+    <span data-icon="light" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </span>
+    <span data-icon="dark" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
 </header>
 
 <main>
 
-  <!-- FEATURED CAROUSEL -->
-  <section class="featured-section">
+  <!-- FEATURED -->
+  <section class="featured-section" aria-labelledby="featured-h">
     <p class="section-label">Destacados</p>
-    <h2 class="featured-heading">Decks con decision abierta</h2>
-    <p class="featured-subtitle">Los decks con mas storytelling afilado o decision pendiente esta semana.</p>
+    <h2 class="featured-heading" id="featured-h">Recomendados esta semana</h2>
+    <p class="featured-subtitle">Los decks con storytelling más afilado o decisión más cercana.</p>
+    <div class="featured-grid" id="featured-grid"></div>
+  </section>
 
-    <div class="featured-grid">
+  <!-- DECKS -->
+  <section class="collection" id="decks-section" aria-labelledby="decks-h" data-collection="decks">
+    <div class="collection-header">
+      <p class="section-label" style="margin: 0;">Colección 1</p>
+      <h2 class="collection-heading" id="decks-h">Decks</h2>
+      <span class="collection-sub">presentaciones HTML versionadas en este repo</span>
+    </div>
 
-      <article>
-        <a class="featured-card" href="decks/completo/nextjs-12-to-16-consolidation.html" target="_blank" rel="noopener noreferrer">
-          <div class="featured-badge-wrap"><span class="status-badge completo">Completo</span></div>
-          <div class="featured-card-title">Next 12 &rarr; 16 &middot; Stack consolidation</div>
-          <div class="featured-card-desc">7 fases, contexto tecnico completo, riesgos y cronograma para el equipo.</div>
-          <div class="featured-card-meta">
-            <span>PM + TL + Manager</span>
-            <span>2026-05-20</span>
-          </div>
-          <span class="featured-card-cta">Abrir &rarr;</span>
-        </a>
-      </article>
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+        </svg>
+        <input class="search-input" type="search" data-search aria-label="Buscar decks" placeholder="Buscar por título, descripción o audiencia…" />
+      </div>
+      <select class="sort-select" data-sort aria-label="Ordenar decks">
+        <option value="recent">Más recientes</option>
+        <option value="title">A → Z</option>
+        <option value="slides">Más cortos</option>
+      </select>
+    </div>
 
-      <article>
-        <a class="featured-card" href="decks/completo/comercios-mvp.html" target="_blank" rel="noopener noreferrer">
-          <div class="featured-badge-wrap"><span class="status-badge completo">Completo</span></div>
-          <div class="featured-card-title">/comercios MVP shipped</div>
-          <div class="featured-card-desc">Busqueda, filtros y MerchantCard en preprod. Proximos pasos visibles.</div>
-          <div class="featured-card-meta">
-            <span>PM + TL + Manager</span>
-            <span>2026-05-20</span>
-          </div>
-          <span class="featured-card-cta">Abrir &rarr;</span>
-        </a>
-      </article>
+    <div class="tabs" role="tablist" aria-label="Filtrar decks por estado" data-tabs></div>
+    <div class="chips" role="group" aria-label="Filtrar decks por tema" data-chips></div>
 
-      <article>
-        <a class="featured-card" href="decks/completo/modo-for-agents.html" target="_blank" rel="noopener noreferrer">
-          <div class="featured-badge-wrap"><span class="status-badge completo">Completo</span></div>
-          <div class="featured-card-title">MODO for Agents &middot; Pagos agénticos</div>
-          <div class="featured-card-desc">MODO como wallet por defecto para agentes de IA. ROI ~30x, payback &lt;1 ano.</div>
-          <div class="featured-card-meta">
-            <span>Comite mixto</span>
-            <span>2026-05-20</span>
-          </div>
-          <span class="featured-card-cta">Abrir &rarr;</span>
-        </a>
-      </article>
+    <div class="result-meta">
+      <span data-result-count aria-live="polite" aria-atomic="true">—</span>
+      <button type="button" data-clear hidden>Limpiar filtros</button>
+    </div>
 
-      <article>
-        <a class="featured-card" href="decks/completo/seo-sprint0.html" target="_blank" rel="noopener noreferrer">
-          <div class="featured-badge-wrap"><span class="status-badge draft">Urgente</span></div>
-          <div class="featured-card-title">SEO Sprint 0 &middot; Staging leaks + plan 12 semanas</div>
-          <div class="featured-card-desc">5 subdominios non-prod indexados en Google. Bloqueo de seguridad activo.</div>
-          <div class="featured-card-meta">
-            <span>Comite mixto</span>
-            <span>2026-05-20</span>
-          </div>
-          <span class="featured-card-cta">Abrir &rarr;</span>
-        </a>
-      </article>
-
+    <div class="item-list" data-list></div>
+    <div class="state-box" data-empty hidden>
+      <strong>No hay decks con esos filtros.</strong>
+      Probá quitar el filtro de tema, cambiar el estado o limpiar la búsqueda.
     </div>
   </section>
 
-  <!-- TABS + FULL DECK LIST -->
-  <p class="section-label">Colecciones</p>
-  <h2 class="featured-heading">Decks</h2>
-  <p class="featured-subtitle">11 presentaciones &middot; workflow draft &rarr; rfc &rarr; completo. Cada deck es una propuesta que busca feedback antes de avanzar.</p>
-
-  <div class="tabs" role="tablist" data-scope="decks">
-    <button class="tab active" data-stage="all" role="tab">Todos <span class="count">11</span></button>
-    <button class="tab" data-stage="draft" role="tab">Draft <span class="count">1</span></button>
-    <button class="tab" data-stage="rfc" role="tab">RFC <span class="count">0</span></button>
-    <button class="tab" data-stage="completo" role="tab">Completo <span class="count">10</span></button>
-  </div>
-
-  <div class="deck-list">
-
-    <div class="deck-item" data-stage="draft">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">D01</span>
-          <span class="status-badge draft">Draft</span>
-        </div>
-        <div class="deck-title">modo-design-system &middot; skill / SDK para devs frontend</div>
-        <div class="deck-description">Skill MODO-especifico para generar paginas Next/Astro one-shot con tokens canonicos, JSON-LD obligatorio, NavFooterLayout, validacion automatica. 5 repos &middot; 4 stacks &middot; learning loop.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">Equipo frontend + TL + PM</span>
-          <span>2026-05-20</span>
-          <span>15 slides</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/draft/modo-design-system-skill.html">abrir &rarr;</a>
+  <!-- RFCs -->
+  <section class="collection" id="rfcs-section" aria-labelledby="rfcs-h" data-collection="rfcs">
+    <div class="collection-header">
+      <p class="section-label" style="margin: 0;">Colección 2</p>
+      <h2 class="collection-heading" id="rfcs-h">RFCs</h2>
+      <span class="collection-sub">catálogo curado de documentos vivos en Drive · <a href="rfcs/rfcs.json" target="_blank" rel="noopener" class="meta-link">rfcs.json</a></span>
     </div>
 
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C01</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">Next 12 &rarr; 16 &middot; Stack consolidation</div>
-        <div class="deck-description">Propuesta de migracion del stack de modo-landing (Next.js 12) a Next.js 16 en 7 fases. Contexto tecnico, riesgos, cronograma y equipos involucrados.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+        </svg>
+        <input class="search-input" type="search" data-search aria-label="Buscar RFCs" placeholder="Buscar por título, summary o área…" />
       </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/nextjs-12-to-16-consolidation.html">abrir &rarr;</a>
+      <select class="sort-select" data-sort aria-label="Ordenar RFCs">
+        <option value="recent">Más recientes</option>
+        <option value="oldest">Más antiguos</option>
+        <option value="title">A → Z</option>
+      </select>
     </div>
 
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C02</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">/comercios MVP shipped</div>
-        <div class="deck-description">Resultados del MVP de la pagina de comercios para modo.com.ar: busqueda, filtros, MerchantCard con paridad visual a PromoHub, ISR, y proximos pasos.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/comercios-mvp.html">abrir &rarr;</a>
+    <div class="tabs" role="tablist" aria-label="Filtrar RFCs por estado" data-tabs></div>
+    <div class="chips" role="group" aria-label="Filtrar RFCs por área" data-chips></div>
+
+    <div class="result-meta">
+      <span data-result-count aria-live="polite" aria-atomic="true">—</span>
+      <button type="button" data-clear hidden>Limpiar filtros</button>
     </div>
 
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C03</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">Sumar ChatGPT App + Claude Skill al modal "Usa MODO"</div>
-        <div class="deck-description">Propuesta de integracion de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisicion via el modal existente. Incluye demo del flujo agentico end-to-end.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/marketplaces.html">abrir &rarr;</a>
+    <div class="item-list" data-list></div>
+    <div class="state-box" data-empty hidden>
+      <strong>No hay RFCs con esos filtros.</strong>
+      Probá quitar el filtro de área, cambiar el estado o limpiar la búsqueda.
     </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C04</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">Storyblok build-time &middot; Navbar / Footer en la lib</div>
-        <div class="deck-description">Hidratar Navbar y Footer desde Storyblok en el build de modo-landing-web-ui-lib. Snapshot embebido, release cascade automatico hacia modo-landing y promos-hub-site (PR #38).</div>
-        <div class="deck-meta">
-          <span class="meta-tag">Tech Leads + PMs</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/storyblok-cms-build-time.html">abrir &rarr;</a>
+    <div class="state-box" data-loading hidden>
+      <strong>Cargando RFCs…</strong>
+      Leyendo <code>rfcs/rfcs.json</code>.
     </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C05</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">MODO for Agents &middot; Pagos agenticos en el ecosistema MODO</div>
-        <div class="deck-description">POC del hackathon de pagos agenticos: discovery + Intent Mandate + checkout + Cart Mandate + SPT + SDK deeplink + biometric + capture, end-to-end.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/modo-for-agents.html">abrir &rarr;</a>
+    <div class="state-box" data-error hidden>
+      <strong>No se pudo cargar el catálogo de RFCs.</strong>
+      Abrí <a href="rfcs/rfcs.json" target="_blank" rel="noopener" class="meta-link">rfcs/rfcs.json</a> directamente.
     </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C06</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">SEO Sprint 0 &middot; Staging leaks y plan 12 semanas</div>
-        <div class="deck-description">Staging leaks criticos (intra, develop, qa indexados en Google) + canibalizacion subdominios + /aprende-con-modo crawled-not-indexed. Plan 12 semanas modo-landing.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/seo-sprint0.html">abrir &rarr;</a>
-    </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C07</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">Comercios Database &middot; De 200 ruidosos a catalogo canonico</div>
-        <div class="deck-description">Roadmap V1-V3 para construir el catalogo canonico de comercios MODO. V1 BFF materializado &rarr; V2 geo+branches &rarr; V3 UCP + agent.json + MCP + 301.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/comercios-database.html">abrir &rarr;</a>
-    </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C08</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">SEO + GEO Architecture &middot; Maduracion Q1-Q2 2026</div>
-        <div class="deck-description">Retrospectiva enero-mayo 2026 del trabajo de SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, 37 BankOrCreditUnion, AI crawlers.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/seo-geo-maduracion.html">abrir &rarr;</a>
-    </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C09</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">FAQ + Centro de Ayuda &middot; Maduracion Q1-Q2 2026</div>
-        <div class="deck-description">Retrospectiva enero-mayo 2026 del rework de FAQ + centro de ayuda. Topics, FAQPage JSON-LD, search in-page, indexabilidad en AI overviews.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/faq-ayuda-maduracion.html">abrir &rarr;</a>
-    </div>
-
-    <div class="deck-item" data-stage="completo">
-      <div>
-        <div class="deck-header">
-          <span class="deck-number">C10</span>
-          <span class="status-badge completo">Completo</span>
-        </div>
-        <div class="deck-title">CI/CD + DX Hardening &middot; Maduracion Q1-Q2 2026</div>
-        <div class="deck-description">Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times.</div>
-        <div class="deck-meta">
-          <span class="meta-tag">PM + TL + Manager</span>
-          <span>2026-05-20</span>
-        </div>
-      </div>
-      <a class="deck-link" target="_blank" rel="noopener noreferrer" href="decks/completo/cicd-dx-maduracion.html">abrir &rarr;</a>
-    </div>
-
-  </div>
-
-  <!-- RFC CATALOG SECTION -->
-  <section class="rfcs-section" aria-label="Catálogo de RFCs">
-    <p class="section-label">Catálogo</p>
-    <h2 class="featured-heading">RFCs &middot; Documentos técnicos</h2>
-    <p class="featured-subtitle">19 RFCs vivos en Drive y en este repo. El index los ordena por fecha, los deduplica por concepto (la saga &laquo;Migración modo-landing&raquo; colapsa 14 versiones en una sola entrada) y enlaza la versión más reciente de cada uno.</p>
-
-    <div class="tabs" role="tablist" data-scope="rfcs">
-      <button class="tab active" data-rfc-stage="all" role="tab">Todos <span class="count">19</span></button>
-      <button class="tab" data-rfc-stage="draft" role="tab">Draft <span class="count">1</span></button>
-      <button class="tab" data-rfc-stage="rfc" role="tab">RFC <span class="count">10</span></button>
-      <button class="tab" data-rfc-stage="completo" role="tab">Completo <span class="count">6</span></button>
-      <button class="tab" data-rfc-stage="archivado" role="tab">Archivado <span class="count">2</span></button>
-    </div>
-
-    <div class="rfc-list">
-
-      <div class="rfc-item" data-rfc-stage="draft">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R19</span>
-            <span class="status-badge draft">Draft</span>
-          </div>
-          <div class="deck-title">Auto-sync de rfcs.json desde Google Drive</div>
-          <div class="deck-description">Skill <code>/modo-rfc-sync</code> que lee Drive, deduplica versiones de la saga modo-landing, genera summaries vía Haiku y regenera el catálogo. Saca el mantenimiento manual de encima.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">tooling</span>
-            <span class="meta-tag drive-tag">Repo</span>
-            <span>2026-05-20</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://github.com/SoyErnoModo/modo-decks/blob/main/rfcs/RFC-modo-rfc-sync-skill.md">abrir RFC &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="completo">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R01</span>
-            <span class="status-badge completo">Completo</span>
-          </div>
-          <div class="deck-title">MODO for Agents &middot; Pagos agénticos</div>
-          <div class="deck-description">MODO como wallet por defecto para agentes IA. POC end-to-end: discovery, Intent Mandate, checkout, Cart Mandate, SPT, SDK deeplink, biometric, capture.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">ai-agents</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2026-05-18</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1Zf5j44sI1Wt9UV1qIFhkqad-cEOzjVj2/view">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R02</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Migración modo-landing (Next 12 &rarr; 15/16)</div>
-          <div class="deck-description">Plan 7 fases para llevar modo-landing de Next.js 12 a Next.js 16. Contexto técnico, riesgos, cronograma y equipos involucrados. Versión activa: v6.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2026-05-13</span>
-            <button class="rfc-versions-toggle" type="button" data-target="versions-r02">+ 8 versiones anteriores</button>
-          </div>
-          <div class="rfc-versions" id="versions-r02">
-            <ul>
-              <li>2026-05-07 &middot; v6 &middot; <a href="https://docs.google.com/document/d/19zX1kX3QrszERSY_QPV_yaW4EY9yU5HNFzJILy3ODsY/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-06 &middot; v5 &middot; <a href="https://docs.google.com/document/d/1f13iazsqAP4FLIP9c5UaETfcMkDsuQKG8kASC-YF82s/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-06 &middot; v5 clean (sin refs PR) &middot; <a href="https://docs.google.com/document/d/1bDhdZjxwNKMXXiyXzFAza5vN0Nyv5tyKbmwXDC1RRkM/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-06 &middot; v4 &middot; <a href="https://docs.google.com/document/d/1_vZVqH3pfiXdHV9xK57e2IidkU_ycjg9H50Z2s5dcsM/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-06 &middot; v3 &middot; <a href="https://docs.google.com/document/d/1nw18pXTjeOPwbNjiTKk89ezHL7voOY7WNehHuc7tS_c/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-06 &middot; v1 &middot; <a href="https://docs.google.com/document/d/1UIrXOlt1XBQmYGz7VwUZztUNpWyB-H11INj3Alku8JA/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-05 &middot; Modularizada por stakeholder (v2) &middot; <a href="https://drive.google.com/file/d/1pbv8JUggudKsCLeRf3Squ4XEa8oy_n1i/view" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-              <li>2026-05-05 &middot; Original &middot; <a href="https://docs.google.com/document/d/1sgs26ahjBtrapz8Z9vhiY_5KdLwGhgLKXbuFGyGAeHE/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-            </ul>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1bI3n69nkDXj6zPsJcu8Nm4TlnIPvsS3uDOvRa28bOOc/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="completo">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R03</span>
-            <span class="status-badge completo">Completo</span>
-          </div>
-          <div class="deck-title">Plan de Contenido SEO + GEO MODO</div>
-          <div class="deck-description">Programa de contenido para cubrir el cuadrante SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, bancos y AI crawlers.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">geo-seo</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2026-04-13</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ZVJ0hq_OoWZZuc4P11s9P5EkdeNwnmdb/view">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R04</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Autenticación Web y Personalización en modo.com.ar</div>
-          <div class="deck-description">Login web propio en modo.com.ar y capa de personalización sobre Storyblok + BFFs. Habilita CTAs personalizados y métricas por usuario.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2026-03-03</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1i709DN1PHUtN01hqn8k5z7B0yngO_0FnxYZnVWSXS0E/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="completo">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R05</span>
-            <span class="status-badge completo">Completo</span>
-          </div>
-          <div class="deck-title">Centralización de Layout + SEO en /promos</div>
-          <div class="deck-description">Layout único para promos en modo-landing y promos-hub-site con SEO optimizado: JSON-LD, breadcrumbs, sitemap y migración de subdominios al hub central.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2026-02-03</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/132fQBe0VMUeKk4avIQeJrbM92PLBoOspETXDgPRjmBo/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R06</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Agent Skills &middot; Dev Workflows</div>
-          <div class="deck-description">Pipeline de skills para Claude Code que cubren el ciclo dev de modo-landing: code review, PR quality, generación de páginas, validación de tokens.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">ai-agents</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2026-01-16</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1fU0exbiVZF5fWisDTCzi2z_V2pG-FxRh/view">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="archivado">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R07</span>
-            <span class="status-badge archivado">Archivado</span>
-          </div>
-          <div class="deck-title">Estrategias IFRAME vs SIN IFRAME</div>
-          <div class="deck-description">Análisis de embedding de la home de MODO en partners (con iframe vs render server-side). Concluye que SSR + tokens cortos gana en performance y SEO.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-12-22</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1ht5nOnRm4bfI1aPQb-XNponeBK69lCCo/view">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R08</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Modelo Operativo AI-First (OpenSpec + MCP)</div>
-          <div class="deck-description">Workflow Spec-Driven Development con OpenSpec + agentes vía MCP. Cómo el equipo escribe specs antes de código y los agentes consumen contexto persistente.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">ai-agents</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-11-14</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/14MtOkJ4IYSwVP-SbRt4F0ePMn7xTzC86/view">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R09</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Automatización Docs + Changelog desde Commits</div>
-          <div class="deck-description">Commits convencionales como fuente de verdad para changelog y docs internas. Pipeline que cosecha mensajes y produce release notes + docs versionadas.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">tooling</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-09-25</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1UQa-8Ru_Spoa35mJNTAAOLdrJT3A9GHmzwrPAgmjS8c/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R10</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Sistema de Creación y Validación de Postmortems</div>
-          <div class="deck-description">Template + validación automática de postmortems SRE: causa raíz, blast radius, action items con dueño y deadline. Bloquea cierre si falta evidencia.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">sre</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-09-23</span>
-            <button class="rfc-versions-toggle" type="button" data-target="versions-r10">+ 1 versión anterior</button>
-          </div>
-          <div class="rfc-versions" id="versions-r10">
-            <ul>
-              <li>2025-09-23 &middot; Validación Automatizada SRE (precursor) &middot; <a href="https://docs.google.com/document/d/1oDUo5_xpPA87dZiQfAAVODLVbnEB-I_yY5eRa69G_xY/edit" target="_blank" rel="noopener noreferrer">Drive &#8599;</a></li>
-            </ul>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1NF3Ij9ZvV2jj1KisSnoOHBW3avWSJ8fRzldVy0rM0uU/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R11</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Monitoreo + Observabilidad en apps Next</div>
-          <div class="deck-description">Stack de observabilidad para modo-landing y promos-hub-site: traces, métricas Core Web Vitals, alertas de runtime y dashboards por feature.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">sre</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-08-08</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1ji71t1YmXGZR4lPo0T1tzfXxfMRYDvU2MbBuz8pZKuk/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R12</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Sugerencia de Transferencia por Ubicación</div>
-          <div class="deck-description">Recomendaciones de transferencia basadas en la ubicación previa del usuario en la app. Captura señales de geolocalización y propone destinos frecuentes.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">product</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-07-08</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/10l6Alz_aaQGQWqWK4tGVXXRYlmw0y5lCe1IFFq9Zunw/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R13</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Integración de Promociones al Hub via IA</div>
-          <div class="deck-description">Pipeline IA que clasifica, deduplica y enriquece promociones para el Hub. Resuelve ruido en /comercios y mejora cobertura por rubro.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">ai-agents</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-05-13</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/132XJ2brNkkMaaumNAPGFXtnam6Lg2lnB-yNwVze61ZQ/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="rfc">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R14</span>
-            <span class="status-badge rfc">RFC</span>
-          </div>
-          <div class="deck-title">Migración Tailwind v3 &rarr; v4 con Dynamic Tokens (SDK)</div>
-          <div class="deck-description">Consolidación de styled-components + emotion + tailwind a tailwind-only en modo-landing. Tokens dinámicos vía SDK MODO y CSS-first configuration.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">design-system</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-05-08</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1Ochm5xRypb6nk5RuPKpBEyobdqKWbgkM2C26VIOm-9k/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="completo">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R15</span>
-            <span class="status-badge completo">Completo</span>
-          </div>
-          <div class="deck-title">Migración Node (LTS bump)</div>
-          <div class="deck-description">Subida del runtime de modo-landing a la última LTS de Node: cambios en CI, husky, .nvmrc, helm y compatibilidad con dependencias internas.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">infra</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2025-04-30</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1aWM8LBsLzpJzhaQoLlVcNJcuVtEmC8Q0fSMf5h9MQVI/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="archivado">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R16</span>
-            <span class="status-badge archivado">Archivado</span>
-          </div>
-          <div class="deck-title">Unificación de Portales</div>
-          <div class="deck-description">Estrategia para colapsar portales legacy bajo modo.com.ar con redirects 301 y consolidación de DNS. Reemplazado por la estrategia SEO Sprint 0.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2024-12-05</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1iByL0Kj3nNOvFpa8n6a3gaE-GoJKU5KZKjl4RoJDWFQ/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="completo">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R17</span>
-            <span class="status-badge completo">Completo</span>
-          </div>
-          <div class="deck-title">Feature Flag &middot; App modo PromoHub</div>
-          <div class="deck-description">Feature flag para rollout progresivo de PromoHub en la app modo. Define cohortes, kill switch y observabilidad del rollout.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2024-11-27</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/15mmIJV6et_-uLn79hZGk14Fgr7lnp5uXMCmkl3KsWos/edit">abrir en Drive &#8599;</a>
-      </div>
-
-      <div class="rfc-item" data-rfc-stage="completo">
-        <div>
-          <div class="deck-header">
-            <span class="deck-number">R18</span>
-            <span class="status-badge completo">Completo</span>
-          </div>
-          <div class="deck-title">Promo Hub Site (proposal original)</div>
-          <div class="deck-description">Propuesta original de PromoHub como sitio Next.js standalone con BFF dedicado. Base de lo que hoy es promos-hub-site en producción.</div>
-          <div class="deck-meta">
-            <span class="meta-tag">frontend</span>
-            <span class="meta-tag drive-tag">Drive</span>
-            <span>2024-10-10</span>
-          </div>
-        </div>
-        <a class="drive-link" target="_blank" rel="noopener noreferrer" href="https://docs.google.com/document/d/1IOoG6eIY0cA4lR60B7l8FT3orOpV0K3lmjt1t8bqRvw/edit">abrir en Drive &#8599;</a>
-      </div>
-
-    </div>
-
-    <p class="skills-note" style="margin-top: 24px;">
-      Catálogo curado a partir de Google Drive (dump 2026-05-20). Datos crudos versionados en <a href="rfcs/rfcs.json" target="_blank" rel="noopener">rfcs/rfcs.json</a> para que un agente pueda consumirlos sin parsear el HTML.
-    </p>
   </section>
 
-  <!-- TOOLS CATALOG SECTION -->
-  <section class="skills-section" aria-label="Catálogo de herramientas">
-    <p class="section-label">Catálogo</p>
-    <h2 class="skills-heading">Herramientas &middot; mi stack en Claude Code</h2>
-    <p class="skills-intro">
-      Skills, MCPs y plugins que uso día a día en Claude Code para sostener el trabajo de TL en MODO. Agrupados por uso real, no por orden alfabético. Cada uno se invoca por slash o auto-trigger según corresponda. Markers: <span class="tool-meta-tag mcp">MCP</span> servidor MCP &middot; <span class="tool-meta-tag plugin">plugin</span> plugin Claude Code &middot; <span class="tool-meta-tag external">github</span> skill comunitario externo.
-    </p>
+  <!-- TOOLS CATALOG -->
+  <details class="skills-section">
+    <summary>
+      Herramientas · mi stack en Claude Code
+      <span class="count-meta">· 8 categorías · 59 tools</span>
+    </summary>
+    <div class="skills-body">
+      <p class="skills-intro">
+        Skills, MCPs y plugins que uso día a día en Claude Code para sostener el trabajo de TL en MODO. Agrupados por uso real, no por orden alfabético. Cada uno se invoca por slash o auto-trigger según corresponda. Markers: <span class="tool-meta-tag mcp">MCP</span> servidor MCP · <span class="tool-meta-tag plugin">plugin</span> plugin Claude Code · <span class="tool-meta-tag external">github</span> skill comunitario externo.
+      </p>
 
-    <!-- CATEGORY 1: MODO -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">MODO &middot; skills y MCPs propios</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>modo-deck</code></div>
-          <div class="skill-desc">Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">MODO · skills y MCPs propios</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>modo-deck</code></div><div class="skill-desc">Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>modo-design-system</code></div><div class="skill-desc">SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>modo-tech-architect</code></div><div class="skill-desc">PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>modo-code-review-checklist</code></div><div class="skill-desc">Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>modo-promos</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo <code>mcp__modo-promos__*</code>.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>consultar-promos-modo</code></div><div class="skill-desc">Capa NL sobre <code>modo-promos</code>. Mapea preguntas humanas ("¿qué descuentos hay hoy en supermercados?") a las tools correctas del MCP.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>simular-compra-agentica</code></div><div class="skill-desc">Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>agente-cx-whatsapp</code></div><div class="skill-desc">Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo "levantar el agente cx".</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>modo-design-system</code></div>
-          <div class="skill-desc">SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>modo-tech-architect</code></div>
-          <div class="skill-desc">PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>modo-code-review-checklist</code></div>
-          <div class="skill-desc">Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>modo-promos</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo <code>mcp__modo-promos__*</code>.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>consultar-promos-modo</code></div>
-          <div class="skill-desc">Capa NL sobre <code>modo-promos</code>. Mapea preguntas humanas ("¿qué descuentos hay hoy en supermercados?") a las tools correctas del MCP.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>simular-compra-agentica</code></div>
-          <div class="skill-desc">Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>agente-cx-whatsapp</code></div>
-          <div class="skill-desc">Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo "levantar el agente cx".</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 2: AI workflow + memoria -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">AI &middot; workflow + memoria + agentes</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>ruflo</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Memoria persistente (sql.js + HNSW + ONNX), swarm coordinator, autopilot y federation cross-installation. Backend único de memoria user-level.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">AI · workflow + memoria + agentes</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>ruflo</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Memoria persistente (sql.js + HNSW + ONNX), swarm coordinator, autopilot y federation cross-installation. Backend único de memoria user-level.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>claude-api</code></div><div class="skill-desc">Build/debug apps con Claude API + Anthropic SDK. Maneja prompt caching, tool use, batch, files, citations y migración entre versiones de modelo.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>mcp-builder</code></div><div class="skill-desc">Diseñar, construir y testear MCP servers custom con tools, resources y prompts para extender capabilities de agentes.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>skill-creator</code></div><div class="skill-desc">Crear skills nuevos (o actualizar existentes) que extienden Claude con conocimiento especializado, workflows o integraciones.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>sdd-*</code> · explore / propose / design / tasks / apply / verify / archive</div><div class="skill-desc">Spec-Driven Development en MODO. Obligatorio para cambios en <code>/comercios</code> y features no-triviales: spec antes de código, verify después.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>brainstorming</code></div><div class="skill-desc">Explorar intent + requirements + design ANTES de implementar. Bloquea cualquier feature/componente/behavior nuevo hasta tener intent claro.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>doc-coauthoring</code></div><div class="skill-desc">Workflow estructurado para escribir docs, proposals, technical specs y decision docs. Transfer de contexto + iteración + verificación con readers.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>caveman</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>claude-api</code></div>
-          <div class="skill-desc">Build/debug apps con Claude API + Anthropic SDK. Maneja prompt caching, tool use, batch, files, citations y migración entre versiones de modelo.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>mcp-builder</code></div>
-          <div class="skill-desc">Diseñar, construir y testear MCP servers custom con tools, resources y prompts para extender capabilities de agentes.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>skill-creator</code></div>
-          <div class="skill-desc">Crear skills nuevos (o actualizar existentes) que extienden Claude con conocimiento especializado, workflows o integraciones.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>sdd-*</code> &middot; explore / propose / design / tasks / apply / verify / archive</div>
-          <div class="skill-desc">Spec-Driven Development en MODO. Obligatorio para cambios en <code>/comercios</code> y features no-triviales: spec antes de código, verify después.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>brainstorming</code></div>
-          <div class="skill-desc">Explorar intent + requirements + design ANTES de implementar. Bloquea cualquier feature/componente/behavior nuevo hasta tener intent claro.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>doc-coauthoring</code></div>
-          <div class="skill-desc">Workflow estructurado para escribir docs, proposals, technical specs y decision docs. Transfer de contexto + iteración + verificación con readers.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>caveman</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 3: Frontend diseño + UX -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">Frontend &middot; diseño y UX</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>impeccable</code><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div>
-          <div class="skill-desc">Skill de Phil Bakaus para frontend production-grade. Anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">Frontend · diseño y UX</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>impeccable</code><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="skill-desc">Skill de Phil Bakaus para frontend production-grade. Anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>taste-skill</code><a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="skill-desc">Anti-slop frontend rules de Leonxlnx. Evita over-design y mantiene interfaces limpias y funcionales.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>ui-ux-pro-max</code><a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="skill-desc">161 paletas, 57 font pairings, 50+ estilos de UI (NextLevelBuilder). Referencia para composición visual y tipografía.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>frontend-design</code></div><div class="skill-desc">Diseño visual + interacción para web. Cobertura amplia: layouts, hierarchy, motion, micro-interactions.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>web-design-guidelines</code></div><div class="skill-desc">Review de UI contra Web Interface Guidelines. Trigger en frases tipo "review my UI", "check accessibility", "audit design".</div></div>
+          <div class="skill-item"><div class="skill-name"><code>react-doctor</code></div><div class="skill-desc">Catch React issues early después de cambios. Se invoca al revisar código, terminar features o fixear bugs en proyectos React.</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>taste-skill</code><a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div>
-          <div class="skill-desc">Anti-slop frontend rules de Leonxlnx. Evita over-design y mantiene interfaces limpias y funcionales.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>ui-ux-pro-max</code><a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div>
-          <div class="skill-desc">161 paletas, 57 font pairings, 50+ estilos de UI (NextLevelBuilder). Referencia para composición visual y tipografía.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>frontend-design</code></div>
-          <div class="skill-desc">Diseño visual + interacción para web. Cobertura amplia: layouts, hierarchy, motion, micro-interactions.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>web-design-guidelines</code></div>
-          <div class="skill-desc">Review de UI contra Web Interface Guidelines. Trigger en frases tipo "review my UI", "check accessibility", "audit design".</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>react-doctor</code></div>
-          <div class="skill-desc">Catch React issues early después de cambios. Se invoca al revisar código, terminar features o fixear bugs en proyectos React.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 4: Frontend code quality + migraciones -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">Frontend &middot; code quality + migraciones</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>next-best-practices</code></div>
-          <div class="skill-desc">Next.js file conventions, RSC boundaries, data patterns, async APIs, metadata, route handlers, image/font optimization.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">Frontend · code quality + migraciones</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>next-best-practices</code></div><div class="skill-desc">Next.js file conventions, RSC boundaries, data patterns, async APIs, metadata, route handlers, image/font optimization.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>vercel:react-best-practices</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Guidelines de Vercel Engineering para perf React/Next: rendering strategies, bundle, caching, data fetching.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>typescript-strict-mode</code></div><div class="skill-desc">Migrar codebases existentes a strict mode sin romper la app. Pattern incremental con feature flags.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>sonar-best-practices</code></div><div class="skill-desc">Reglas SonarQube/SonarCloud para JS/TS/React. Auto-invoca al escribir JS/TS o crear componentes React.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>tailwind-3-to-4-migration</code></div><div class="skill-desc">Tailwind v3 → v4 con CSS-first config. Después de consolidar styled-components.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>styled-components-to-tailwind</code></div><div class="skill-desc">Consolidar 3 sistemas (Styled Components 5.2 + Emotion 11 + Tailwind 3) en Tailwind-only. Migración componente por componente.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>nextjs-12-to-15-migration</code></div><div class="skill-desc">Guía step-by-step Next.js 12 → 15 con coexistencia Pages Router. Breaking changes + estrategia gradual hacia App Router.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>bundle-size-optimization</code></div><div class="skill-desc">Análisis y refactor para bajar bundle size. Tree-shaking checks, dynamic imports, dependencies audit.</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:react-best-practices</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Guidelines de Vercel Engineering para perf React/Next: rendering strategies, bundle, caching, data fetching.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>typescript-strict-mode</code></div>
-          <div class="skill-desc">Migrar codebases existentes a strict mode sin romper la app. Pattern incremental con feature flags.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>sonar-best-practices</code></div>
-          <div class="skill-desc">Reglas SonarQube/SonarCloud para JS/TS/React. Auto-invoca al escribir JS/TS o crear componentes React.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>tailwind-3-to-4-migration</code></div>
-          <div class="skill-desc">Tailwind v3 → v4 con CSS-first config. Después de consolidar styled-components.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>styled-components-to-tailwind</code></div>
-          <div class="skill-desc">Consolidar 3 sistemas (Styled Components 5.2 + Emotion 11 + Tailwind 3) en Tailwind-only. Migración componente por componente.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>nextjs-12-to-15-migration</code></div>
-          <div class="skill-desc">Guía step-by-step Next.js 12 → 15 con coexistencia Pages Router. Breaking changes + estrategia gradual hacia App Router.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>bundle-size-optimization</code></div>
-          <div class="skill-desc">Análisis y refactor para bajar bundle size. Tree-shaking checks, dynamic imports, dependencies audit.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 5: Code review + security -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">Code review + security</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>guardia</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Full parallel sub-agent review: SonarCloud, tests, React Doctor, security, CI/CD, bundle size. Trigger <code>/guardia &lt;pr&gt;</code>.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">Code review + security</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>guardia</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Full parallel sub-agent review: SonarCloud, tests, React Doctor, security, CI/CD, bundle size. Trigger <code>/guardia &lt;pr&gt;</code>.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>pr-quality-review</code></div><div class="skill-desc">Review rápido de metadata + code quality + SonarCloud + arch + SEO + a11y. Output Slack-ready.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>code-review-excellence</code></div><div class="skill-desc">Code review guidance multi-stack: React, Vue, Angular, Svelte, Rust, TS, Java, Python, Go, NestJS. Catch bugs + improve quality.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>frontend-security-checklist</code></div><div class="skill-desc">Checklist OWASP-aligned para frontend. XSS, CSRF, secrets, auth flows, dependencias inseguras.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>github-actions-security</code></div><div class="skill-desc">Securing GitHub Actions workflows: pin actions, secrets scope, OIDC, supply chain attacks.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>csp-hardening</code></div><div class="skill-desc">Content Security Policy hardening. Audit headers actuales y plan de migración a strict CSP sin romper third-parties.</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>pr-quality-review</code></div>
-          <div class="skill-desc">Review rápido de metadata + code quality + SonarCloud + arch + SEO + a11y. Output Slack-ready.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>code-review-excellence</code></div>
-          <div class="skill-desc">Code review guidance multi-stack: React, Vue, Angular, Svelte, Rust, TS, Java, Python, Go, NestJS. Catch bugs + improve quality.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>frontend-security-checklist</code></div>
-          <div class="skill-desc">Checklist OWASP-aligned para frontend. XSS, CSRF, secrets, auth flows, dependencias inseguras.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>github-actions-security</code></div>
-          <div class="skill-desc">Securing GitHub Actions workflows: pin actions, secrets scope, OIDC, supply chain attacks.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>csp-hardening</code></div>
-          <div class="skill-desc">Content Security Policy hardening. Audit headers actuales y plan de migración a strict CSP sin romper third-parties.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 6: MCPs productividad -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">MCPs &middot; productividad y workspace</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Atlassian</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Jira issues + Confluence pages. Crear/editar issues COENXT/EXA, leer wiki, transicionar status, comentar.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">MCPs · productividad y workspace</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>Atlassian</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Jira issues + Confluence pages. Crear/editar issues COENXT/EXA, leer wiki, transicionar status, comentar.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>Google Drive</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Search files + read content. La fuente que construyó el catálogo de RFCs en esta misma página.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>Gmail</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Threads, labels, drafts, search. Para comms internas que no caen en Slack.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>Google Calendar</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Events, scheduling, suggest_time. Útil para coordinar revisiones de RFC con stakeholders.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>Slack</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Read channels + send messages + canvas. Pegar resultados de <code>pr-quality-review</code> directo al canal.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>Amplitude</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Product analytics + experiments. Charts, cohorts, dashboards, session replays, A/B tests.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>Storyblok</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">CMS de MODO hosted en mcp.labs.storyblok.com. Leer y escribir contenido del sitio desde el agente.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>chrome-devtools</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Browser automation, screenshots, Lighthouse audits, network inspection, console messages. Wrappeado con caveman para ahorrar tokens.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>gscServer</code><span class="tool-meta-tag mcp">MCP</span></div><div class="skill-desc">Google Search Console. Performance, indexing issues, sitemap status, advanced search analytics, batch URL inspection.</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Google Drive</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Search files + read content. La fuente que construyó el catálogo de RFCs en esta misma página.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Gmail</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Threads, labels, drafts, search. Para comms internas que no caen en Slack.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Google Calendar</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Events, scheduling, suggest_time. Útil para coordinar revisiones de RFC con stakeholders.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Slack</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Read channels + send messages + canvas. Pegar resultados de <code>pr-quality-review</code> directo al canal.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Amplitude</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Product analytics + experiments. Charts, cohorts, dashboards, session replays, A/B tests.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>Storyblok</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">CMS de MODO hosted en mcp.labs.storyblok.com. Leer y escribir contenido del sitio desde el agente.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>chrome-devtools</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Browser automation, screenshots, Lighthouse audits, network inspection, console messages. Wrappeado con caveman para ahorrar tokens.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>gscServer</code><span class="tool-meta-tag mcp">MCP</span></div>
-          <div class="skill-desc">Google Search Console. Performance, indexing issues, sitemap status, advanced search analytics, batch URL inspection.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 7: Vercel -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">Vercel &middot; deploy y plataforma</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:deploy</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Deploy a Vercel (preview o prod). Default preview, pass "prod" para production.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">Vercel · deploy y plataforma</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>vercel:deploy</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Deploy a Vercel (preview o prod). Default preview, pass "prod" para production.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>vercel:nextjs</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Next.js patterns optimizados para Vercel: ISR, edge runtime, image optimization.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>vercel:ai-sdk</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Vercel AI SDK patterns para apps con LLMs streaming + tool use.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>vercel:vercel-functions</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Edge + serverless functions. Cuándo usar cada runtime, cómo configurar regiones y caching.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>vercel:env</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Environment variables management: scopes (dev/preview/prod), secrets, runtime vs build-time.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>vercel:vercel-firewall</code><span class="tool-meta-tag plugin">plugin</span></div><div class="skill-desc">Firewall config para bloquear bots, rate limiting, geo restrictions, custom rules.</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:nextjs</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Next.js patterns optimizados para Vercel: ISR, edge runtime, image optimization.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:ai-sdk</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Vercel AI SDK patterns para apps con LLMs streaming + tool use.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:vercel-functions</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Edge + serverless functions. Cuándo usar cada runtime, cómo configurar regiones y caching.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:env</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Environment variables management: scopes (dev/preview/prod), secrets, runtime vs build-time.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>vercel:vercel-firewall</code><span class="tool-meta-tag plugin">plugin</span></div>
-          <div class="skill-desc">Firewall config para bloquear bots, rate limiting, geo restrictions, custom rules.</div>
-        </div>
-
       </div>
-    </div>
 
-    <!-- CATEGORY 8: Design + comms + output -->
-    <div class="tool-category">
-      <h3 class="tool-category-name">Design + comms + output</h3>
-      <div class="skills-grid">
-
-        <div class="skill-item">
-          <div class="skill-name"><code>design</code></div>
-          <div class="skill-desc">Brand identity, design tokens, logo generation (55 styles, Gemini), CIP (50 deliverables), HTML presentations, banners, icons, social photos.</div>
+      <div class="tool-category">
+        <h3 class="tool-category-name">Design + comms + output</h3>
+        <div class="skills-grid">
+          <div class="skill-item"><div class="skill-name"><code>design</code></div><div class="skill-desc">Brand identity, design tokens, logo generation (55 styles, Gemini), CIP (50 deliverables), HTML presentations, banners, icons, social photos.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>slides</code></div><div class="skill-desc">HTML presentations con Chart.js, design tokens, layouts responsive y copywriting formulas. Base de los decks de este repo.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>banner-design</code></div><div class="skill-desc">Banners para social media, ads, web heroes y print. Múltiples direcciones de arte con AI-generated visuals.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>writing-clearly-and-concisely</code></div><div class="skill-desc">Strunk para prose: una claim por oración, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>internal-comms</code></div><div class="skill-desc">Status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, project updates. Formato que el management ya espera.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>brand</code></div><div class="skill-desc">Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Anchor para todo material externo.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>theme-factory</code></div><div class="skill-desc">Aplicar themes pre-set (10 colores/fonts) a artifacts: slides, docs, reportings, landings HTML. Generar themes on-the-fly también.</div></div>
+          <div class="skill-item"><div class="skill-name"><code>pdf</code> · <code>docx</code> · <code>pptx</code> · <code>xlsx</code></div><div class="skill-desc">Toolkits de manipulación de formatos. PDF (extract + forms), DOCX (tracked changes), PPTX (layouts), XLSX (formulas + viz).</div></div>
         </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>slides</code></div>
-          <div class="skill-desc">HTML presentations con Chart.js, design tokens, layouts responsive y copywriting formulas. Base de los decks de este repo.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>banner-design</code></div>
-          <div class="skill-desc">Banners para social media, ads, web heroes y print. Múltiples direcciones de arte con AI-generated visuals.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>writing-clearly-and-concisely</code></div>
-          <div class="skill-desc">Strunk para prose: una claim por oración, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>internal-comms</code></div>
-          <div class="skill-desc">Status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, project updates. Formato que el management ya espera.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>brand</code></div>
-          <div class="skill-desc">Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Anchor para todo material externo.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>theme-factory</code></div>
-          <div class="skill-desc">Aplicar themes pre-set (10 colores/fonts) a artifacts: slides, docs, reportings, landings HTML. Generar themes on-the-fly también.</div>
-        </div>
-
-        <div class="skill-item">
-          <div class="skill-name"><code>pdf</code> &middot; <code>docx</code> &middot; <code>pptx</code> &middot; <code>xlsx</code></div>
-          <div class="skill-desc">Toolkits de manipulación de formatos. PDF (extract + forms), DOCX (tracked changes), PPTX (layouts), XLSX (formulas + viz).</div>
-        </div>
-
       </div>
-    </div>
 
-    <p class="skills-note">
-      Regla operativa: cada deck/RFC se versiona en <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>. Las decisiones de comms y voz se anclan en el skill <code>modo-deck</code>. Para sumar herramientas al catálogo: editar <code>index.html</code> &mdash; o esperar al skill <code>/modo-rfc-sync</code> (ver <a href="#" onclick="document.querySelector('[data-rfc-stage=\'draft\']').scrollIntoView({behavior:'smooth'}); return false;">R19 en este index</a>).
-    </p>
-  </section>
+      <p class="skills-note">
+        Regla operativa: cada deck/RFC se versiona en <a href="https://github.com/SoyErnoModo/modo-decks" target="_blank" rel="noopener">github.com/SoyErnoModo/modo-decks</a>. Las decisiones de comms y voz se anclan en el skill <code>modo-deck</code>. Para sumar herramientas: editar <code>index.html</code> — o esperar al skill <code>/modo-rfc-sync</code> (ver <strong>R19</strong> en este index).
+      </p>
+    </div>
+  </details>
 
 </main>
 
 <footer>
   <div>
-    Generados con la skill <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> &middot;
-    repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
+    Generados con <a href="https://github.com/SoyErnoModo/modo-decks">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/modo-decks">SoyErnoModo/modo-decks</a>
   </div>
-  <div>
-    <strong>Workflow</strong>: <span class="status-badge draft">Draft</span> &rarr; <span class="status-badge rfc">RFC</span> &rarr; <span class="status-badge completo">Completo</span>
+  <div class="workflow-legend">
+    <strong>Workflow:</strong>
+    <span class="status-badge draft">Draft</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">RFC</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Completo</span>
   </div>
 </footer>
 
+<script type="application/json" id="decks-data">
+[
+  {
+    "id": "modo-design-system-skill",
+    "title": "modo-design-system · skill/SDK para devs frontend",
+    "desc": "Skill MODO-específico para generar páginas Next/Astro one-shot con tokens canónicos, JSON-LD obligatorio, NavFooterLayout, validación automática. 5 repos · 4 stacks · learning loop.",
+    "href": "decks/draft/modo-design-system-skill.html",
+    "status": "draft",
+    "audience": "Equipo frontend + TL + PM",
+    "date": "2026-05-20",
+    "slides": 15,
+    "topics": ["frontend", "plataforma"],
+    "featured": true
+  },
+  {
+    "id": "nextjs-12-to-16-consolidation",
+    "title": "Next 12 → 16 · Stack consolidation",
+    "desc": "Migración del stack de modo-landing (Next.js 12) a Next.js 16 en 7 fases. Contexto técnico, riesgos, cronograma y equipos involucrados.",
+    "href": "decks/completo/nextjs-12-to-16-consolidation.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 14,
+    "topics": ["frontend", "plataforma"],
+    "featured": true
+  },
+  {
+    "id": "comercios-mvp",
+    "title": "/comercios MVP shipped",
+    "desc": "Resultados del MVP de comercios para modo.com.ar: búsqueda, filtros, MerchantCard con paridad visual a PromoHub, ISR, y próximos pasos.",
+    "href": "decks/completo/comercios-mvp.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 17,
+    "topics": ["comercios", "frontend"]
+  },
+  {
+    "id": "marketplaces",
+    "title": "Sumar ChatGPT App + Claude Skill al modal 'Usa MODO'",
+    "desc": "Integración de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisición vía el modal existente. Incluye demo del flujo agéntico end-to-end.",
+    "href": "decks/completo/marketplaces.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 6,
+    "topics": ["agents"]
+  },
+  {
+    "id": "storyblok-cms-build-time",
+    "title": "Storyblok build-time · Navbar/Footer en la lib",
+    "desc": "Hidratar Navbar y Footer desde Storyblok en el build de modo-landing-web-ui-lib. Snapshot embebido, release cascade automático hacia modo-landing y promos-hub-site (PR #38).",
+    "href": "decks/completo/storyblok-cms-build-time.html",
+    "status": "completo",
+    "audience": "Tech Leads + PMs",
+    "date": "2026-05-20",
+    "slides": 9,
+    "topics": ["frontend", "plataforma"]
+  },
+  {
+    "id": "modo-for-agents",
+    "title": "MODO for Agents · Pagos agénticos",
+    "desc": "POC del hackathon de pagos agénticos: discovery + Intent Mandate + checkout + Cart Mandate + SPT + SDK deeplink + biometric + capture, end-to-end.",
+    "href": "decks/completo/modo-for-agents.html",
+    "status": "completo",
+    "audience": "Comité mixto",
+    "date": "2026-05-20",
+    "slides": 14,
+    "topics": ["agents"],
+    "featured": true
+  },
+  {
+    "id": "seo-sprint0",
+    "title": "SEO Sprint 0 · Staging leaks + plan 12 semanas",
+    "desc": "5 subdominios non-prod indexados en Google. Bloqueo de seguridad activo. Canibalización subdominios legacy y /aprende-con-modo crawled-not-indexed. Plan 12 semanas.",
+    "href": "decks/completo/seo-sprint0.html",
+    "status": "completo",
+    "audience": "Comité mixto",
+    "date": "2026-05-20",
+    "slides": 13,
+    "topics": ["seo"],
+    "urgent": true,
+    "featured": true
+  },
+  {
+    "id": "comercios-database",
+    "title": "Comercios Database · De 200 ruidosos a catálogo canónico",
+    "desc": "Roadmap V1-V3 para construir el catálogo canónico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301.",
+    "href": "decks/completo/comercios-database.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 13,
+    "topics": ["comercios"]
+  },
+  {
+    "id": "seo-geo-maduracion",
+    "title": "SEO + GEO Architecture · Maduración Q1-Q2 2026",
+    "desc": "Retrospectiva enero-mayo 2026 del trabajo de SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, 37 BankOrCreditUnion, AI crawlers.",
+    "href": "decks/completo/seo-geo-maduracion.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 13,
+    "topics": ["seo", "retro"]
+  },
+  {
+    "id": "faq-ayuda-maduracion",
+    "title": "FAQ + Centro de Ayuda · Maduración Q1-Q2 2026",
+    "desc": "Retrospectiva enero-mayo 2026 del rework de FAQ + centro de ayuda. Topics, FAQPage JSON-LD, search in-page, indexabilidad en AI overviews.",
+    "href": "decks/completo/faq-ayuda-maduracion.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 11,
+    "topics": ["seo", "retro"]
+  },
+  {
+    "id": "cicd-dx-maduracion",
+    "title": "CI/CD + DX Hardening · Maduración Q1-Q2 2026",
+    "desc": "Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times.",
+    "href": "decks/completo/cicd-dx-maduracion.html",
+    "status": "completo",
+    "audience": "PM + TL + Manager",
+    "date": "2026-05-20",
+    "slides": 11,
+    "topics": ["plataforma", "retro"]
+  }
+]
+</script>
+
 <script>
-  // Scoped tab filters: each .tabs container filters its own collection
-  document.querySelectorAll('.tabs').forEach(container => {
-    const scope = container.dataset.scope || 'decks';
-    const tabs = container.querySelectorAll('.tab');
-    const itemSelector = scope === 'rfcs' ? '.rfc-item' : '.deck-item';
-    const items = document.querySelectorAll(itemSelector);
-    const attrKey = scope === 'rfcs' ? 'rfcStage' : 'stage';
-    tabs.forEach(tab => {
+(() => {
+  /* -- THEME TOGGLE (auto → light → dark → auto) -- */
+  const THEMES = ['auto', 'light', 'dark'];
+  const $theme = document.getElementById('theme-toggle');
+  const $themeLabel = document.getElementById('theme-label');
+  function updateThemeLabel() {
+    const t = document.documentElement.getAttribute('data-theme') || 'auto';
+    if ($themeLabel) $themeLabel.textContent = t === 'auto' ? 'auto' : (t === 'dark' ? 'oscuro' : 'claro');
+  }
+  updateThemeLabel();
+  if ($theme) {
+    $theme.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'auto';
+      const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('modo-decks-theme', next); } catch (e) {}
+      updateThemeLabel();
+    });
+  }
+
+  const escapeHTML = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+
+  const STATUS_LABELS = {
+    draft: 'Draft',
+    rfc: 'RFC',
+    completo: 'Completo',
+    archivado: 'Archivado'
+  };
+
+  const DECK_TOPIC_LABELS = {
+    frontend: 'Frontend',
+    seo: 'SEO',
+    comercios: 'Comercios',
+    agents: 'Agents',
+    plataforma: 'Plataforma',
+    retro: 'Retrospectiva'
+  };
+
+  const RFC_AREA_LABELS = {
+    'ai-agents': 'Agents',
+    frontend: 'Frontend',
+    'geo-seo': 'SEO/GEO',
+    tooling: 'Tooling',
+    sre: 'SRE',
+    product: 'Producto',
+    infra: 'Infra'
+  };
+
+  /* -- Collection controller (works for both decks and rfcs) -- */
+  function createCollection(opts) {
+    const root = document.querySelector(`[data-collection="${opts.name}"]`);
+    if (!root) return null;
+    const $search = root.querySelector('[data-search]');
+    const $sort = root.querySelector('[data-sort]');
+    const $tabs = root.querySelector('[data-tabs]');
+    const $chips = root.querySelector('[data-chips]');
+    const $list = root.querySelector('[data-list]');
+    const $empty = root.querySelector('[data-empty]');
+    const $count = root.querySelector('[data-result-count]');
+    const $clear = root.querySelector('[data-clear]');
+
+    const state = {
+      items: opts.items,
+      stages: opts.stages,
+      stage: 'all',
+      topics: new Set(),
+      search: '',
+      sort: $sort.value,
+      labels: opts.labels,
+      getTopics: opts.getTopics,
+      itemTpl: opts.itemTpl,
+      searchHaystack: opts.searchHaystack,
+      sortFn: opts.sortFn,
+      noun: opts.noun
+    };
+
+    // Tabs
+    const stageCounts = { all: state.items.length };
+    state.items.forEach(it => { stageCounts[it.status] = (stageCounts[it.status] || 0) + 1; });
+    state.stages.forEach(stage => { if (!(stage in stageCounts)) stageCounts[stage] = 0; });
+
+    const allTabs = [{ key: 'all', label: 'Todos' }, ...state.stages.map(s => ({ key: s, label: STATUS_LABELS[s] || s }))];
+    $tabs.innerHTML = allTabs.map((t, i) => `
+      <button class="tab" role="tab" data-stage="${t.key}" aria-selected="${i === 0 ? 'true' : 'false'}" ${stageCounts[t.key] === 0 && t.key !== 'all' ? 'disabled' : ''}>
+        ${t.label} <span class="count">${stageCounts[t.key] || 0}</span>
+      </button>
+    `).join('');
+    const tabEls = Array.from($tabs.querySelectorAll('.tab'));
+    tabEls.forEach((tab, i) => {
       tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        const stage = tab.dataset[attrKey];
-        items.forEach(it => {
-          it.style.display = (stage === 'all' || it.dataset[attrKey] === stage) ? '' : 'none';
-        });
+        if (tab.hasAttribute('disabled')) return;
+        tabEls.forEach(t => t.setAttribute('aria-selected', 'false'));
+        tab.setAttribute('aria-selected', 'true');
+        state.stage = tab.dataset.stage;
+        apply();
+      });
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const dir = e.key === 'ArrowRight' ? 1 : -1;
+        let next = i;
+        for (let step = 0; step < tabEls.length; step++) {
+          next = (next + dir + tabEls.length) % tabEls.length;
+          if (!tabEls[next].hasAttribute('disabled')) break;
+        }
+        tabEls[next].focus();
+        tabEls[next].click();
       });
     });
+
+    // Chips
+    const topicCounts = {};
+    state.items.forEach(it => state.getTopics(it).forEach(t => { topicCounts[t] = (topicCounts[t] || 0) + 1; }));
+    const topicOrder = Object.keys(state.labels).filter(t => topicCounts[t]);
+    $chips.innerHTML = topicOrder
+      .map(t => `<button class="chip" type="button" data-topic="${t}" aria-pressed="false">${escapeHTML(state.labels[t])} <span aria-hidden="true">·</span> ${topicCounts[t]}</button>`)
+      .join('');
+    $chips.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const topic = chip.dataset.topic;
+        const pressed = chip.getAttribute('aria-pressed') === 'true';
+        chip.setAttribute('aria-pressed', String(!pressed));
+        if (pressed) state.topics.delete(topic);
+        else state.topics.add(topic);
+        apply();
+      });
+    });
+
+    // Search / sort / clear
+    $search.addEventListener('input', () => { state.search = $search.value; apply(); });
+    $sort.addEventListener('change', () => { state.sort = $sort.value; apply(); });
+    $clear.addEventListener('click', () => {
+      state.search = ''; $search.value = '';
+      state.stage = 'all';
+      state.topics.clear();
+      tabEls.forEach(t => t.setAttribute('aria-selected', String(t.dataset.stage === 'all')));
+      $chips.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+      apply();
+    });
+
+    function apply() {
+      const q = state.search.trim().toLowerCase();
+      const filtered = state.items.filter(it => {
+        if (state.stage !== 'all' && it.status !== state.stage) return false;
+        if (state.topics.size > 0 && !state.getTopics(it).some(t => state.topics.has(t))) return false;
+        if (q && !state.searchHaystack(it).toLowerCase().includes(q)) return false;
+        return true;
+      });
+      filtered.sort(state.sortFn(state.sort));
+      $list.innerHTML = filtered.map(state.itemTpl).join('');
+
+      const total = state.items.length;
+      $count.textContent = filtered.length === total
+        ? `${total} ${state.noun}`
+        : `${filtered.length} de ${total} ${state.noun}`;
+
+      $empty.hidden = filtered.length > 0;
+      $list.hidden = filtered.length === 0;
+
+      const filtersActive = !!state.search || state.stage !== 'all' || state.topics.size > 0;
+      $clear.hidden = !filtersActive;
+
+      // Wire version toggles after render
+      $list.querySelectorAll('.versions-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panel = document.getElementById(btn.dataset.target);
+          if (!panel) return;
+          const open = panel.classList.toggle('open');
+          btn.dataset.open = String(open);
+          btn.textContent = btn.textContent
+            .replace(/^[+−]\s*/, '')
+            .replace(/^/, open ? '− ' : '+ ');
+        });
+      });
+    }
+
+    apply();
+    return { apply };
+  }
+
+  /* -- DECKS -- */
+  const decks = JSON.parse(document.getElementById('decks-data').textContent);
+
+  // Featured: urgent first, then any other featured, capped at 3
+  function renderFeatured() {
+    const $featured = document.getElementById('featured-grid');
+    const featured = decks
+      .filter(d => d.featured)
+      .sort((a, b) => (b.urgent ? 1 : 0) - (a.urgent ? 1 : 0))
+      .slice(0, 3);
+    $featured.innerHTML = featured.map(d => `
+      <a class="featured-card" href="${escapeHTML(d.href)}" target="_blank" rel="noopener noreferrer">
+        <div class="featured-badges">
+          <span class="status-badge ${d.status}">${STATUS_LABELS[d.status]}</span>
+          ${d.urgent ? '<span class="status-badge urgent">Urgente</span>' : ''}
+        </div>
+        <div class="featured-card-title">${escapeHTML(d.title)}</div>
+        <div class="featured-card-desc">${escapeHTML(d.desc)}</div>
+        <div class="featured-card-foot">
+          <span>${escapeHTML(d.audience)} · ${d.slides} slides</span>
+          <span class="featured-card-cta">Abrir →</span>
+        </div>
+      </a>
+    `).join('');
+  }
+  renderFeatured();
+
+  createCollection({
+    name: 'decks',
+    items: decks,
+    stages: ['draft', 'rfc', 'completo'],
+    labels: DECK_TOPIC_LABELS,
+    getTopics: (d) => d.topics || [],
+    noun: 'decks',
+    searchHaystack: (d) => `${d.title} ${d.desc} ${d.audience} ${(d.topics || []).join(' ')}`,
+    sortFn: (mode) => (a, b) => {
+      if (mode === 'title') return a.title.localeCompare(b.title, 'es');
+      if (mode === 'slides') return a.slides - b.slides;
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
+      const d = b.date.localeCompare(a.date);
+      if (d !== 0) return d;
+      return a.title.localeCompare(b.title, 'es');
+    },
+    itemTpl: (d) => `
+      <div class="item-row">
+        <div>
+          <div class="item-header">
+            <span class="status-badge ${d.status}">${STATUS_LABELS[d.status]}</span>
+            ${d.urgent ? '<span class="status-badge urgent">Urgente</span>' : ''}
+          </div>
+          <div class="item-title">${escapeHTML(d.title)}</div>
+          <div class="item-desc">${escapeHTML(d.desc)}</div>
+          <div class="item-meta">
+            <span class="meta-tag">${escapeHTML(d.audience)}</span>
+            <span>${d.slides} slides</span>
+            <span class="meta-dot">·</span>
+            <span>${(d.topics || []).map(t => escapeHTML(DECK_TOPIC_LABELS[t] || t)).join(', ')}</span>
+          </div>
+        </div>
+        <a class="open-link" target="_blank" rel="noopener noreferrer" href="${escapeHTML(d.href)}">abrir →</a>
+      </div>
+    `
   });
 
-  // Version history toggle inside RFC items
-  document.querySelectorAll('.rfc-versions-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = document.getElementById(btn.dataset.target);
-      if (!target) return;
-      const isOpen = target.classList.toggle('open');
-      btn.textContent = isOpen
-        ? btn.textContent.replace(/^\+/, '−')
-        : btn.textContent.replace(/^−/, '+');
+  /* -- RFCs (fetched from rfcs/rfcs.json) -- */
+  const rfcRoot = document.querySelector('[data-collection="rfcs"]');
+  const $rfcLoading = rfcRoot.querySelector('[data-loading]');
+  const $rfcError = rfcRoot.querySelector('[data-error]');
+  $rfcLoading.hidden = false;
+
+  fetch('rfcs/rfcs.json', { cache: 'no-store' })
+    .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(payload => {
+      $rfcLoading.hidden = true;
+      const rfcs = (payload.rfcs || []).map(r => ({
+        ...r,
+        // normalize: ensure status, area defaults
+        status: r.status || 'rfc',
+        area: r.area || 'other'
+      }));
+      createCollection({
+        name: 'rfcs',
+        items: rfcs,
+        stages: ['draft', 'rfc', 'completo', 'archivado'],
+        labels: RFC_AREA_LABELS,
+        getTopics: (r) => [r.area],
+        noun: 'RFCs',
+        searchHaystack: (r) => `${r.title} ${r.summary} ${r.area} ${(r.tags || []).join(' ')}`,
+        sortFn: (mode) => (a, b) => {
+          if (mode === 'title') return a.title.localeCompare(b.title, 'es');
+          if (mode === 'oldest') return a.date.localeCompare(b.date);
+          return b.date.localeCompare(a.date);
+        },
+        itemTpl: (r) => {
+          const versionsId = `versions-${r.slug || r.number}`;
+          const versions = Array.isArray(r.versions) && r.versions.length > 0
+            ? `
+              <button class="versions-toggle" type="button" data-target="${versionsId}" data-open="false">+ ${r.versions.length} ${r.versions.length === 1 ? 'versión anterior' : 'versiones anteriores'}</button>
+              <div class="versions-panel" id="${versionsId}">
+                <ul>
+                  ${r.versions.map(v => `<li>${escapeHTML(v.date || '')} · ${escapeHTML(v.label || '')} · <a href="${escapeHTML(v.url)}" target="_blank" rel="noopener noreferrer">Drive ↗</a></li>`).join('')}
+                </ul>
+              </div>
+            `
+            : '';
+          const deckLink = r.deck ? `<span class="meta-dot">·</span><a class="meta-link" href="${escapeHTML(r.deck)}" target="_blank" rel="noopener noreferrer">ver deck</a>` : '';
+          const url = r.repo_url || r.drive_url || '';
+          const sourceLabel = r.repo_url ? 'GitHub' : 'Drive';
+          const ctaLabel = r.repo_url ? 'ver en GitHub ↗' : 'abrir en Drive ↗';
+          return `
+            <div class="item-row">
+              <div>
+                <div class="item-header">
+                  <span class="status-badge ${r.status}">${STATUS_LABELS[r.status] || r.status}</span>
+                </div>
+                <div class="item-title">${escapeHTML(r.title)}</div>
+                <div class="item-desc">${escapeHTML(r.summary)}</div>
+                <div class="item-meta">
+                  <span class="meta-tag">${escapeHTML(RFC_AREA_LABELS[r.area] || r.area)}</span>
+                  <span class="meta-tag muted">${sourceLabel}</span>
+                  <span>${escapeHTML(r.date)}</span>
+                  ${deckLink}
+                  ${versions ? `<span class="meta-dot">·</span>${versions.split('</button>')[0]}</button>` : ''}
+                </div>
+                ${versions ? versions.split('</button>').slice(1).join('</button>') : ''}
+              </div>
+              <a class="open-link" target="_blank" rel="noopener noreferrer" href="${escapeHTML(url)}">${ctaLabel}</a>
+            </div>
+          `;
+        }
+      });
+    })
+    .catch(err => {
+      console.error('Failed to load rfcs.json', err);
+      $rfcLoading.hidden = true;
+      $rfcError.hidden = false;
     });
-  });
+})();
 </script>
 
 </body>
