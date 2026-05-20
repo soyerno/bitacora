@@ -6,6 +6,21 @@
   },
   "decks": [
     {
+      "id": "accesibilidad-lectura-asistida-tdah",
+      "title": "Lectura asistida en MODO · accesibilidad para TDAH y dislexia",
+      "desc": "Propuesta de MVP para sumar dos modos opt-in en Configuración → Personalización: lectura biónica (bold sobre primera mitad de cada palabra) y lectura extendida (control de densidad tipográfica). 4 semanas, sin BE nuevo, target WCAG 2.2 AA en pantallas de texto largo.",
+      "href": "decks/draft/accesibilidad-lectura-asistida-tdah.html",
+      "status": "draft",
+      "audience": "Comité PM + TL + Manager",
+      "date": "2026-05-20",
+      "slides": 14,
+      "topics": [
+        "accesibilidad",
+        "frontend"
+      ],
+      "featured": true
+    },
+    {
       "id": "modo-design-system-skill",
       "title": "modo-design-system · skill/SDK para devs frontend",
       "desc": "Skill MODO-específico para generar páginas Next/Astro one-shot con tokens canónicos, JSON-LD obligatorio, NavFooterLayout, validación automática. 5 repos · 4 stacks · learning loop.",
