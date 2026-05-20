@@ -1,0 +1,71 @@
+/* MODO decks · bionic reading mode for ADHD/focus
+ * When body.bionic-on is set, the prefix of each word gets extra weight
+ * (wrapped in <b class="bionic"> by deck-bionic.js). Skipped: code, .mono,
+ * the toggle buttons themselves, and any element marked [data-bionic="skip"].
+ */
+
+body.bionic-on b.bionic {
+  font-weight: 700;
+}
+body:not(.bionic-on) b.bionic {
+  font-weight: inherit;
+}
+
+/* Floating toggle, sits to the left of the theme toggle. */
+.deck-bionic-toggle {
+  position: fixed;
+  top: 14px;
+  right: 90px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font: 500 11px/1 "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-60);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 120ms ease, border-color 120ms ease;
+}
+.deck-bionic-toggle:hover {
+  color: var(--green-default);
+  border-color: var(--green-default);
+}
+.deck-bionic-toggle .icon {
+  font-family: "Quicksand", "Red Hat Display", sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.deck-bionic-toggle .icon b {
+  font-weight: 700;
+  color: var(--ink);
+}
+.deck-bionic-toggle:hover .icon b {
+  color: var(--green-default);
+}
+
+/* When active, fill the chip with the accent so the state is obvious. */
+body.bionic-on .deck-bionic-toggle {
+  color: var(--green-default);
+  border-color: var(--green-default);
+  background: color-mix(in srgb, var(--green-default) 14%, var(--paper));
+}
+body.bionic-on .deck-bionic-toggle .icon b {
+  color: var(--green-default);
+}
+
+@media (max-width: 640px) {
+  .deck-bionic-toggle .label { display: none; }
+  .deck-bionic-toggle { right: 70px; padding: 6px 8px; }
+}
+
+@media print {
+  .deck-bionic-toggle { display: none !important; }
+}
