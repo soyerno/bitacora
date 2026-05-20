@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1280, initial-scale=1" />
-<title>/comercios MVP · shipped a preprod · 2026-05-20</title>
+<title>POC /Comercios · funciona en preprod · 2026-05-20</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -368,12 +368,12 @@
   <section class="slide slide--cover active" data-slide>
     <div class="slide__chrome-top">
       <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
-      <span>/comercios mvp · modo-landing</span>
+      <span>POC /comercios · modo-landing</span>
     </div>
     <div class="slide__body" style="justify-content: center;">
       <p class="eyebrow">Sprint review · 2026-05-20</p>
-      <h1 class="title">Lanzamos <span style="color: var(--green-default)">/comercios</span> MVP.</h1>
-      <p class="lede">URLs canónicas evergreen por comercio, con JSON-LD denso para SEO + GEO. Shipped a preprod, pendiente release a prod.</p>
+      <h1 class="title">POC <span style="color: var(--green-default)">/Comercios</span>.</h1>
+      <p class="lede">URLs canónicas evergreen por comercio, con JSON-LD denso para SEO + GEO. Funciona en preprod, todavía no es release a prod: faltan gaps, redirects y validación con varios equipos.</p>
     </div>
     <div class="meta">
       <div class="meta__col"><h4>Audiencia</h4><p>PM · Tech Lead · Manager</p></div>
@@ -460,7 +460,7 @@
       <span>04 · lo que shippeamos</span>
     </div>
     <div class="slide__body">
-      <p class="eyebrow">Surface MVP · branch feat/comercios-mvp-2026-05-15</p>
+      <p class="eyebrow">Surface POC · branch feat/comercios-mvp-2026-05-15</p>
       <h2 class="heading">4 rutas + BFF composer + JSON-LD emitter.</h2>
       <div class="stack-today">
         <div class="stack-block">
@@ -628,7 +628,7 @@
     <div class="slide__body">
       <p class="eyebrow">Cómo lo construimos</p>
       <h2 class="heading" style="margin-bottom: 6px;">Harness de desarrollo · sin atropellar la calidad.</h2>
-      <p class="body" style="font-size: 14px; max-width: 80ch; margin-bottom: 14px;">Cada cambio que entra al MVP pasó por estos 6 pasos. No es jerga: es la forma de que no se nos rompa nada cuando estamos a las apuradas.</p>
+      <p class="body" style="font-size: 14px; max-width: 80ch; margin-bottom: 14px;">Cada cambio que entra a la POC pasó por estos 6 pasos. No es jerga: es la forma de que no se nos rompa nada cuando estamos a las apuradas.</p>
 
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px;">
         <div class="card" style="padding: 14px 16px;">
@@ -871,23 +871,24 @@
       <span>09 · scope · qué no está</span>
     </div>
     <div class="slide__body">
-      <p class="eyebrow">Non-goals declarados · backlog inmediato</p>
-      <h2 class="heading">Lo que el MVP shippeado no resuelve.</h2>
-      <div class="grid-2" style="margin-top: 24px; align-items: flex-start;">
+      <p class="eyebrow">Gaps y pendientes · backlog inmediato</p>
+      <h2 class="heading">Lo que la POC no resuelve todavía.</h2>
+      <div class="grid-2" style="margin-top: 16px; align-items: flex-start;">
         <div class="card">
-          <h3 class="subheading" style="color: var(--green-default);">Dentro del MVP shipped</h3>
+          <h3 class="subheading" style="color: var(--green-default); font-size: 16px;">Dentro de la POC</h3>
           <ul class="checks">
             <li>4 rutas SSR/ISR + on-demand revalidation.</li>
             <li>JSON-LD denso · 7 schemas por surface.</li>
             <li>Composición desde BFF promos · sin batch nightly.</li>
             <li>Tolerancia Storyblok 401/5xx en marketing page.</li>
-            <li>10 componentes Comercios/* + tipografía paritaria.</li>
+            <li>10 componentes <span class="mono">Comercios/*</span> + tipografía paritaria.</li>
           </ul>
         </div>
         <div class="card" style="background: var(--gray-3); border-color: transparent;">
-          <h3 class="subheading" style="color: var(--dark-gray);">Fuera del MVP · backlog</h3>
+          <h3 class="subheading" style="color: var(--dark-gray); font-size: 16px;">Pendientes · gaps abiertos</h3>
           <ul class="checks checks--neutral">
-            <li>Geolocalización + branches (requiere reemplazar stores-maps-lib).</li>
+            <li><strong>Mover <span class="mono">/comercios</span> actual</strong> (la página "Aceptá pagos con MODO en tu comercio") a <span class="mono">/modo-en-tu-comercio</span>, con redirect 301. La URL <span class="mono">/comercios</span> queda libre para la POC.</li>
+            <li>Geolocalización + branches (requiere reemplazar <span class="mono">stores-maps-lib</span>).</li>
             <li>Hubs por banco <span class="mono">/comercios/banco/[banco]</span> × 25.</li>
             <li>UCP/AP2 manifests · <span class="mono">/.well-known/agent.json</span> + <span class="mono">/ucp.json</span>.</li>
             <li>Política 301 desde <span class="mono">/promos/[slug]-[mes]</span> caducas.</li>
@@ -896,6 +897,7 @@
           </ul>
         </div>
       </div>
+      <p class="muted" style="margin-top: 14px;"><span class="sigil"></span>El primer pendiente es <strong>bloqueante para release a prod</strong>: hoy <span class="mono">modo.com.ar/comercios</span> sirve la página vieja de adquisición de comercios, no la POC. Antes de promover, hay que coordinar con brand, marketing y SEO el reroute a <span class="mono">/modo-en-tu-comercio</span>.</p>
     </div>
     <div class="slide__chrome-bottom">
       <span>shipped a preprod · alpha a2.414.1</span>
@@ -911,7 +913,7 @@
       <span>10 · fase 2 · comercios-database</span>
     </div>
     <div class="slide__body">
-      <p class="eyebrow">Track paralelo al MVP shipped · v0.1</p>
+      <p class="eyebrow">Track paralelo a la POC · v0.1</p>
       <h2 class="heading">comercios-database evoluciona en 3 versiones.</h2>
       <div class="timeline">
         <div class="phase">
@@ -959,7 +961,7 @@
       <h2 class="heading">3 decisiones a tomar para release a prod + Fase 2.</h2>
       <ol class="decisions" style="margin-top: 16px;">
         <li>
-          <h3>Release a prod del MVP shippeado</h3>
+          <h3>Release a prod de la POC + reroute de la página vieja a /modo-en-tu-comercio</h3>
           <p class="body" style="margin: 4px 0 0;">QA visual Playwright + Rich Results Test + legal review claims + decisión Fase 0 staging leak (bloquear o monitorear).</p>
           <p class="ownership">Owner: PM + Tech Lead · Deadline: 2026-05-23</p>
         </li>
