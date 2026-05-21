@@ -296,6 +296,10 @@ main {
 .status-badge.completo { background: var(--done-bg); color: var(--done-fg); }
 .status-badge.archivado { background: var(--archived-bg); color: var(--archived-fg); }
 .status-badge.urgent { background: var(--urgent-bg); color: var(--urgent-fg); }
+/* Postmans · env-based status reuses draft/rfc/completo tokens. */
+.status-badge.local { background: var(--draft-bg); color: var(--draft-fg); }
+.status-badge.qa { background: var(--rfc-bg); color: var(--rfc-fg); }
+.status-badge.prod { background: var(--done-bg); color: var(--done-fg); }
 
 /* FEATURED CARDS (home only) */
 .featured-section { margin-bottom: 56px; }

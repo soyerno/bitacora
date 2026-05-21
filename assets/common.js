@@ -6,7 +6,10 @@ MODO.STATUS_LABELS = {
   draft: 'Draft',
   rfc: 'RFC',
   completo: 'Completo',
-  archivado: 'Archivado'
+  archivado: 'Archivado',
+  local: 'Local',
+  qa: 'QA',
+  prod: 'Prod'
 };
 
 MODO.escapeHTML = function (s) {

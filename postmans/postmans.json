@@ -1,0 +1,108 @@
+{
+  "_meta": {
+    "generated": "2026-05-20",
+    "source": "URLs de prueba que uso para abrir pantallas con query strings",
+    "notes": "MVP con seed de /promos y /comercios. Cada item es una URL parametrizada que abre una pantalla específica en modo.com.ar o ambiente equivalente. Pensado para QA de deep links, validación de branding por banco y reproducir bugs reportados."
+  },
+  "postmans": [
+    {
+      "id": "promos-pdp-deeplink-merchant-bank",
+      "title": "Promos · PDP por merchant + bank",
+      "desc": "Deep link al detalle de una promo combinando comercio y banco. Útil para validar branding del banco, copy del comercio, CTA y métricas Amplitude del PDP.",
+      "url": "https://modo.com.ar/promos?merchantId=carrefour&bankId=santander",
+      "env": "prod",
+      "status": "prod",
+      "category": "promos",
+      "tags": ["promos", "deeplink", "pdp"],
+      "date": "2026-05-20",
+      "params": [
+        { "key": "merchantId", "example": "carrefour", "required": true },
+        { "key": "bankId", "example": "santander", "required": true }
+      ]
+    },
+    {
+      "id": "promos-listado-bank-filter",
+      "title": "Promos · listado filtrado por banco",
+      "desc": "Abre /promos con el filtro de banco pre-aplicado. Útil para validar el conteo de promos por banco y la consistencia con los datos del backoffice.",
+      "url": "https://modo.com.ar/promos?bank=galicia",
+      "env": "prod",
+      "status": "prod",
+      "category": "promos",
+      "tags": ["promos", "listado", "filtro"],
+      "date": "2026-05-20",
+      "params": [
+        { "key": "bank", "example": "galicia", "required": true }
+      ]
+    },
+    {
+      "id": "promos-listado-rubro-supermercados",
+      "title": "Promos · listado por rubro (supermercados)",
+      "desc": "Filtro por rubro en /promos. Reproduce el path que sale del navbar mobile y del menú de categorías de la home.",
+      "url": "https://modo.com.ar/promos?category=supermercados",
+      "env": "prod",
+      "status": "prod",
+      "category": "promos",
+      "tags": ["promos", "listado", "rubro"],
+      "date": "2026-05-20",
+      "params": [
+        { "key": "category", "example": "supermercados", "required": true }
+      ]
+    },
+    {
+      "id": "comercios-buscar-query",
+      "title": "Comercios · buscar por texto",
+      "desc": "Search box de /comercios/buscar con query pre-cargada. Reproduce el caso típico del usuario que llega desde un share de WhatsApp.",
+      "url": "https://modo.com.ar/comercios/buscar?q=mcdonalds",
+      "env": "prod",
+      "status": "prod",
+      "category": "comercios",
+      "tags": ["comercios", "search", "deeplink"],
+      "date": "2026-05-20",
+      "params": [
+        { "key": "q", "example": "mcdonalds", "required": true }
+      ]
+    },
+    {
+      "id": "promos-qa-staging-bank",
+      "title": "Promos · staging con banco",
+      "desc": "Mismo PDP pero contra el ambiente de QA. Para comparar contra prod antes de aprobar un release.",
+      "url": "https://modo.com.ar.qa.modocloud.com.ar/promos?merchantId=carrefour&bankId=santander",
+      "env": "qa",
+      "status": "qa",
+      "category": "promos",
+      "tags": ["promos", "qa", "deeplink"],
+      "date": "2026-05-20",
+      "params": [
+        { "key": "merchantId", "example": "carrefour", "required": true },
+        { "key": "bankId", "example": "santander", "required": true }
+      ]
+    },
+    {
+      "id": "promos-local-dev-bank",
+      "title": "Promos · local dev con banco",
+      "desc": "Mismo PDP pero contra el dev server local (`pnpm dev` en modo-landing). Para iterar sobre cambios de UI antes de pushear a develop.",
+      "url": "http://localhost:3000/promos?merchantId=carrefour&bankId=santander",
+      "env": "local",
+      "status": "local",
+      "category": "promos",
+      "tags": ["promos", "local", "deeplink"],
+      "date": "2026-05-20",
+      "params": [
+        { "key": "merchantId", "example": "carrefour", "required": true },
+        { "key": "bankId", "example": "santander", "required": true }
+      ]
+    },
+    {
+      "id": "_tbd-proyecto-autor-url-tester",
+      "title": "TBD · proyecto del autor (URL tester completo)",
+      "desc": "Placeholder. El autor tiene un proyecto local que guarda configs de URLs de prueba y abre pantallas con query strings — fue usado intensivamente para QA de promos. Una vez confirmado el path/repo, este item linkea al proyecto completo (o se reemplaza por el listado importado desde ese proyecto).",
+      "url": "https://github.com/SoyErnoModo/erno-modo/issues/new?title=Sumar+proyecto+URL+tester+a+postmans",
+      "env": "local",
+      "status": "local",
+      "category": "other",
+      "tags": ["meta", "tbd"],
+      "date": "2026-05-20",
+      "params": []
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Postmans · Erno × MODO</title>
+  <meta name="description" content="Configuraciones de URLs de prueba que abren pantallas con query strings. QA de deep links, validación de branding por banco y reproducción de bugs reportados." />
+  <meta name="theme-color" content="#008859" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/collection.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#postman-list">Saltar al listado</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="./" aria-current="page">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div></header>
+
+<main>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Postmans</span>
+  </nav>
+  <p class="section-label">Colección 3</p>
+  <h1 class="page-heading">Postmans</h1>
+  <p class="page-sub">Configuraciones de URLs de prueba que abren pantallas con query strings — el equivalente liviano a una colección de Postman, pero para front. Sirve para QA de deep links, validar branding por banco y reproducir bugs reportados. Datos crudos en <a href="postmans.json" target="_blank" rel="noopener" class="meta-link">postmans.json</a> para que un agente pueda consumirlos sin parsear el HTML.</p>
+
+  <section data-collection="postmans" aria-labelledby="postmans-h">
+    <h2 class="sr-only" id="postmans-h" style="position:absolute;left:-9999px">Catálogo de Postmans</h2>
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+        </svg>
+        <input class="search-input" type="search" data-search aria-label="Buscar postmans" placeholder="Buscar por título, descripción, categoría o tag…" />
+      </div>
+      <select class="sort-select" data-sort aria-label="Ordenar postmans">
+        <option value="recent">Más recientes</option>
+        <option value="title">A → Z</option>
+        <option value="env">Por ambiente</option>
+      </select>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Filtrar postmans por ambiente" data-tabs></div>
+    <div class="chips" role="group" aria-label="Filtrar postmans por categoría" data-chips></div>
+
+    <div class="result-meta">
+      <span data-result-count aria-live="polite" aria-atomic="true">—</span>
+      <button type="button" data-clear hidden>Limpiar filtros</button>
+    </div>
+
+    <div class="item-list" id="postman-list" data-list></div>
+    <div class="state-box" data-empty hidden>
+      <strong>No hay postmans con esos filtros.</strong>
+      Probá quitar el filtro de categoría, cambiar el ambiente o limpiar la búsqueda.
+    </div>
+    <div class="state-box" id="postmans-loading">
+      <strong>Cargando postmans…</strong>
+      Leyendo <code>postmans/postmans.json</code>.
+    </div>
+    <div class="state-box" id="postmans-error" hidden>
+      <strong>No se pudo cargar el catálogo de postmans.</strong>
+      Abrí <a href="postmans.json" target="_blank" rel="noopener" class="meta-link">postmans.json</a> directamente.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Ambiente:</strong>
+    <span class="status-badge local">Local</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge qa">QA</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge prod">Prod</span>
+  </div>
+  </div></footer>
+
+<script>
+(function () {
+  var POSTMAN_CATEGORY_LABELS = {
+    promos: 'Promos',
+    comercios: 'Comercios',
+    banks: 'Bancos',
+    sdk: 'SDK',
+    home: 'Home',
+    other: 'Otros'
+  };
+
+  var $loading = document.getElementById('postmans-loading');
+  var $error = document.getElementById('postmans-error');
+
+  fetch('postmans.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (payload) {
+      $loading.hidden = true;
+      var postmans = (payload.postmans || []).map(function (p) {
+        return Object.assign({}, p, {
+          status: p.status || 'local',
+          category: p.category || 'other'
+        });
+      });
+
+      MODO.createCollection({
+        name: 'postmans',
+        items: postmans,
+        stages: ['local', 'qa', 'prod'],
+        labels: POSTMAN_CATEGORY_LABELS,
+        getTopics: function (p) { return [p.category]; },
+        noun: 'postmans',
+        searchHaystack: function (p) {
+          return p.title + ' ' + p.desc + ' ' + p.category + ' ' + p.url + ' ' + (p.tags || []).join(' ');
+        },
+        sortFn: function (mode) {
+          var ENV_ORDER = { local: 0, qa: 1, prod: 2 };
+          return function (a, b) {
+            if (mode === 'title') return a.title.localeCompare(b.title, 'es');
+            if (mode === 'env') {
+              var d = (ENV_ORDER[a.env] || 99) - (ENV_ORDER[b.env] || 99);
+              if (d !== 0) return d;
+              return a.title.localeCompare(b.title, 'es');
+            }
+            return b.date.localeCompare(a.date);
+          };
+        },
+        itemTpl: function (p) {
+          var statusLabel = MODO.STATUS_LABELS[p.status] || p.status;
+          var paramsHtml = '';
+          if (Array.isArray(p.params) && p.params.length > 0) {
+            paramsHtml = '<div class="item-meta" style="margin-top:6px">' +
+              p.params.map(function (pa) {
+                var req = pa.required ? '' : ' <span class="meta-tag muted">opcional</span>';
+                return '<span class="meta-tag"><code>' + MODO.escapeHTML(pa.key) + '</code>=' + MODO.escapeHTML(pa.example || '…') + '</span>' + req;
+              }).join('') +
+              '</div>';
+          }
+          return (
+            '<div class="item-row">' +
+              '<div>' +
+                '<div class="item-header">' +
+                  '<span class="status-badge ' + p.status + '">' + statusLabel + '</span>' +
+                '</div>' +
+                '<div class="item-title">' + MODO.escapeHTML(p.title) + '</div>' +
+                '<div class="item-desc">' + MODO.escapeHTML(p.desc) + '</div>' +
+                '<div class="item-meta">' +
+                  '<span class="meta-tag">' + MODO.escapeHTML(POSTMAN_CATEGORY_LABELS[p.category] || p.category) + '</span>' +
+                  '<span class="meta-tag muted">' + MODO.escapeHTML(p.env) + '</span>' +
+                  '<span>' + MODO.escapeHTML(p.date) + '</span>' +
+                '</div>' +
+                '<div class="item-meta" style="margin-top:6px"><code class="meta-tag" style="font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:middle">' + MODO.escapeHTML(p.url) + '</code></div>' +
+                paramsHtml +
+              '</div>' +
+              '<a class="open-link" target="_blank" rel="noopener noreferrer" href="' + MODO.escapeHTML(p.url) + '">abrir →</a>' +
+            '</div>'
+          );
+        }
+      });
+    })
+    .catch(function (err) {
+      console.error('Failed to load postmans.json', err);
+      $loading.hidden = true;
+      $error.hidden = false;
+    });
+})();
+</script>
+
+  <script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

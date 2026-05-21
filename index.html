@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Erno × MODO</title>
-  <meta name="description" content="Hernán De Souza · Sr AI Engineer @ MODO — Decks, RFCs y stack de herramientas que aporto a modo-landing. Workflow Draft → RFC → Completo." />
+  <meta name="description" content="Hernán De Souza · Sr AI Engineer @ MODO — Decks, RFCs, postmans y stack de herramientas que aporto a modo-landing." />
   <meta name="author" content="Hernán De Souza" />
   <meta name="theme-color" content="#008859" />
   <meta property="og:type" content="profile" />
@@ -80,6 +80,7 @@
     <a href="./" aria-current="page">Home</a>
     <a href="decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
     <a href="rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
     <a href="herramientas/">Herramientas</a>
   </nav>
   <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
@@ -138,6 +139,16 @@
         </span>
       </a>
 
+      <a class="explore-card" href="postmans/">
+        <span class="explore-card-eyebrow">Colección 3</span>
+        <span class="explore-card-title">Postmans</span>
+        <span class="explore-card-desc">Configuraciones de URLs de prueba que abren pantallas con query strings. QA de deep links, validación de branding por banco y reproducción de bugs reportados.</span>
+        <span class="explore-card-foot">
+          <span><span id="explore-count-postmans">…</span> postmans</span>
+          <span class="explore-card-cta">Abrir →</span>
+        </span>
+      </a>
+
       <a class="explore-card" href="herramientas/">
         <span class="explore-card-eyebrow">Stack</span>
         <span class="explore-card-title">Herramientas</span>
@@ -156,14 +167,6 @@
   <div>
     Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
   </div>
-  <div class="workflow-legend">
-    <strong>Workflow:</strong>
-    <span class="status-badge draft">Draft</span>
-    <span class="workflow-arrow">→</span>
-    <span class="status-badge rfc">RFC</span>
-    <span class="workflow-arrow">→</span>
-    <span class="status-badge completo">Completo</span>
-  </div>
   </div></footer>
 
 <script>
@@ -171,6 +174,7 @@
   var $featured = document.getElementById('featured-grid');
   var $exploreDecks = document.getElementById('explore-count-decks');
   var $exploreRfcs = document.getElementById('explore-count-rfcs');
+  var $explorePostmans = document.getElementById('explore-count-postmans');
 
   function renderFeatured(decks) {
     var featured = decks
@@ -204,15 +208,18 @@
 
   Promise.all([
     fetch('decks/decks.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-    fetch('rfcs/rfcs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    fetch('rfcs/rfcs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    fetch('postmans/postmans.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
   ]).then(function (results) {
     var decks = (results[0] && results[0].decks) || [];
     var rfcs = (results[1] && results[1].rfcs) || [];
+    var postmans = (results[2] && results[2].postmans) || [];
 
     renderFeatured(decks);
 
     if ($exploreDecks) $exploreDecks.textContent = decks.length;
     if ($exploreRfcs) $exploreRfcs.textContent = rfcs.length;
+    if ($explorePostmans) $explorePostmans.textContent = postmans.length;
   });
 
   /* Stats from locally generated profile.json (refreshed by GitHub Action,

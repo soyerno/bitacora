@@ -1,11 +1,12 @@
 /* Erno × MODO · nav counters
  *
  * Populates `.nav-count` spans across all top-level pages with the live count
- * of decks/RFCs. Works from any depth because it resolves the data URLs from
- * its own <script src> attribute (which always points at /assets/nav-counts.js).
+ * of decks/RFCs/postmans. Works from any depth because it resolves the data URLs
+ * from its own <script src> attribute (which always points at /assets/nav-counts.js).
  *
- * Counter elements expected: #nav-count-decks, #nav-count-rfcs
- * Data: <site-root>/decks/decks.json, <site-root>/rfcs/rfcs.json
+ * Counter elements expected: #nav-count-decks, #nav-count-rfcs, #nav-count-postmans
+ * Data: <site-root>/decks/decks.json, <site-root>/rfcs/rfcs.json,
+ *       <site-root>/postmans/postmans.json
  */
 (function () {
   'use strict';
@@ -23,8 +24,9 @@
   var BASE = baseFromOwnSrc();
 
   var targets = [
-    { id: 'nav-count-decks', url: BASE + 'decks/decks.json',  key: 'decks' },
-    { id: 'nav-count-rfcs',  url: BASE + 'rfcs/rfcs.json',    key: 'rfcs'  }
+    { id: 'nav-count-decks',    url: BASE + 'decks/decks.json',       key: 'decks'    },
+    { id: 'nav-count-rfcs',     url: BASE + 'rfcs/rfcs.json',         key: 'rfcs'     },
+    { id: 'nav-count-postmans', url: BASE + 'postmans/postmans.json', key: 'postmans' }
   ];
 
   targets.forEach(function (t) {
