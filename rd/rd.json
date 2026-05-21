@@ -1,0 +1,53 @@
+{
+  "_meta": {
+    "generated": "2026-05-21",
+    "category": "R&D",
+    "format": "HTML long-form articles with inline SVG diagrams and Chart.js visualizations",
+    "workflow": ["exploración", "síntesis", "completo", "archivado"],
+    "notes": "Investigaciones técnicas que preceden a un RFC formal. Mapeos, descubrimientos, análisis de superficie. Más cortas que un RFC, más profundas que un comentario en Slack."
+  },
+  "items": [
+    {
+      "number": "RD01",
+      "slug": "developers-portal-mapping",
+      "title": "MODO Developers Portal · Mapeo de API y gaps de DX",
+      "summary": "Qué hostea developers.modo.com.ar (un viewer auth-gated, no la API), dónde vive la API real (merchants.playdigital.com.ar), modelo de auth (JWT HS256 / 7d) y heatmap de 9 gaps críticos + 7 importantes para mover esto a DX moderna.",
+      "status": "exploración",
+      "tags": ["dx", "api", "portal", "developers"],
+      "area": "platform",
+      "date": "2026-05-20",
+      "href": "developers-portal-mapping.html",
+      "reading_minutes": 12,
+      "diagrams": 3,
+      "charts": 1,
+      "sources": [
+        "https://developers.modo.com.ar/",
+        "https://central.modo.com.ar/",
+        "https://merchants.modo.com.ar/docs",
+        "Confluence space Developers (play-sistemico)"
+      ]
+    },
+    {
+      "number": "RD02",
+      "slug": "modo-govern-influencias",
+      "title": "MODO Govern · análisis de influencias",
+      "summary": "Genealogía de un proyecto interno: qué prior art declarada (Paperclip, OpenClaw, Spotify Engineering, Zettelkasten/Obsidian, HRIS, MCP) e implícita (sigstore/SLSA, OPA, Backstage, Vanta, n8n/Temporal, JumpCloud, Supabase, Lovable) lo formó, y por qué los docs cuentan dos historias que todavía no terminan de cerrar.",
+      "status": "exploración",
+      "tags": ["interno", "agentes", "compliance", "genealogía"],
+      "area": "platform",
+      "date": "2026-05-21",
+      "href": "modo-govern-influencias.html",
+      "reading_minutes": 10,
+      "diagrams": 1,
+      "charts": 1,
+      "sources": [
+        "modo-govern-source-2026-04-13/README.md",
+        "modo-govern-source-2026-04-13/docs/AI-SQUAD-AUTOMATION.md",
+        "modo-govern-source-2026-04-13/docs/ARCHITECTURE.md",
+        "modo-govern-source-2026-04-13/docs/PITCH-PRESENTATION.md",
+        "modo-govern-source-2026-04-13/docs/SALES-STRATEGY.md",
+        "modo-govern-source-2026-04-13/docs/specs/SPEC-{101,106,107,109,110,113,119}*.md"
+      ]
+    }
+  ]
+}

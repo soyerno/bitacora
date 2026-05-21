@@ -81,6 +81,7 @@
     <a href="decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
     <a href="rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
     <a href="postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
     <a href="herramientas/">Herramientas</a>
   </nav>
   <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
@@ -149,6 +150,16 @@
         </span>
       </a>
 
+      <a class="explore-card" href="rd/">
+        <span class="explore-card-eyebrow">Colección 4</span>
+        <span class="explore-card-title">R&amp;D</span>
+        <span class="explore-card-desc">Investigaciones técnicas previas a un RFC formal. Mapeos de API, análisis de plataforma, genealogía de proyectos. Long-form HTML con diagramas inline y gráficos.</span>
+        <span class="explore-card-foot">
+          <span><span id="explore-count-rd">…</span> research</span>
+          <span class="explore-card-cta">Abrir →</span>
+        </span>
+      </a>
+
       <a class="explore-card" href="herramientas/">
         <span class="explore-card-eyebrow">Stack</span>
         <span class="explore-card-title">Herramientas</span>
@@ -175,6 +186,7 @@
   var $exploreDecks = document.getElementById('explore-count-decks');
   var $exploreRfcs = document.getElementById('explore-count-rfcs');
   var $explorePostmans = document.getElementById('explore-count-postmans');
+  var $exploreRd = document.getElementById('explore-count-rd');
 
   function renderFeatured(decks) {
     var featured = decks
@@ -209,17 +221,20 @@
   Promise.all([
     fetch('decks/decks.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     fetch('rfcs/rfcs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-    fetch('postmans/postmans.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    fetch('postmans/postmans.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    fetch('rd/rd.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
   ]).then(function (results) {
     var decks = (results[0] && results[0].decks) || [];
     var rfcs = (results[1] && results[1].rfcs) || [];
     var postmans = (results[2] && results[2].postmans) || [];
+    var rd = (results[3] && results[3].items) || [];
 
     renderFeatured(decks);
 
     if ($exploreDecks) $exploreDecks.textContent = decks.length;
     if ($exploreRfcs) $exploreRfcs.textContent = rfcs.length;
     if ($explorePostmans) $explorePostmans.textContent = postmans.length;
+    if ($exploreRd) $exploreRd.textContent = rd.length;
   });
 
   /* Stats from locally generated profile.json (refreshed by GitHub Action,

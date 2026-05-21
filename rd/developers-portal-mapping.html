@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MODO Developers Portal · Mapeo de API y gaps de DX · R&amp;D · Erno × MODO</title>
+  <meta name="description" content="Qué hostea developers.modo.com.ar, dónde vive la API real, y qué falta para que sea un portal de developers moderno. Mapeo de endpoints, modelo de auth y heatmap de gaps DX." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="MODO Developers Portal · Mapeo de API y gaps de DX" />
+  <meta property="og:description" content="Qué hostea developers.modo.com.ar, dónde vive la API real, y qué falta para que sea un portal de developers moderno." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/developers-portal-mapping.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-20" />
+  <meta property="article:section" content="R&D" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+</svg>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Developers Portal · Mapping</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge draft">Exploración</span>
+        <span class="meta-pill">R&amp;D · 01</span>
+      </div>
+      <h1 class="article-title">MODO Developers Portal · Mapeo de API y gaps de DX</h1>
+      <p class="article-deck">Qué hostea <code>developers.modo.com.ar</code>, dónde vive la API real, y qué falta para que sea un portal de developers moderno.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-20">2026-05-20</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~12 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li><strong><code>developers.modo.com.ar</code> no hostea API.</strong> Es un viewer auth-gated que renderea el espacio Confluence "Developers". La API real vive en <code>merchants.playdigital.com.ar</code>.</li>
+        <li>El modelo de auth es <strong>username/password → JWT HS256 con TTL de 1 semana</strong>. No es OAuth2 client_credentials. No hay scopes. El onboarding pasa por la app MODO con SMS hardcodeado <code>000000</code> en preprod.</li>
+        <li>Hay <strong>5 endpoints documentados</strong> (auth, crear intención, obtener pago, split, JWKS). El resto (devoluciones, multi-merchant, V2) son páginas Confluence parciales o procedimientos manuales en paneles externos.</li>
+        <li>Los gaps de DX que faltan para mover esto a un portal moderno son <strong>9 críticos</strong> (OpenAPI, sandbox público, SDKs versionados, self-service signup, etc.) y <strong>7 importantes</strong> (playground, webhook tester, dashboard del integrador, etc.).</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#encuadre">Encuadre y topología</a></li>
+          <li><a href="#api-real">La API real</a></li>
+          <li><a href="#auth">Modelo de autenticación</a></li>
+          <li><a href="#productos">Productos × API</a></li>
+          <li><a href="#state-machine">Ciclo de vida de la intención</a></li>
+          <li><a href="#webhooks">Webhooks</a></li>
+          <li><a href="#gaps">Gaps de DX</a></li>
+          <li><a href="#bloqueos">Bloqueos / qué falta verificar</a></li>
+          <li><a href="#proximo">Próximo paso</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="encuadre">
+          <h2>Encuadre y topología</h2>
+          <p>Si entrás a <a href="https://developers.modo.com.ar/" target="_blank" rel="noopener">developers.modo.com.ar</a> sin sesión, no ves nada. Si te logueás, ves docs. Pero las docs no son docs nativas del portal: son el mismo contenido que <a href="https://merchants.modo.com.ar/docs" target="_blank" rel="noopener">merchants.modo.com.ar/docs</a>, que a su vez renderea un espacio Confluence interno llamado <em>Developers</em>. Y la API que esas docs describen no vive en <code>modo.com.ar</code>: vive en <code>merchants.playdigital.com.ar</code>, otro dominio.</p>
+
+          <p>El SSR loader de la SPA confirma el encuadre: trae hardcoded una lista de <code>bankIDS</code> con los 16 bancos socios y arranca pidiéndole al usuario que se identifique como integrador de uno de ellos. La home no es un portal abierto al mundo, es una rampa selectiva.</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 360" class="diagram" role="img" aria-labelledby="topology-title topology-desc">
+              <title id="topology-title">Topología actual del developers portal</title>
+              <desc id="topology-desc">El integrador entra a developers.modo.com.ar (auth gate), que renderiza docs de merchants.modo.com.ar/docs, las cuales vienen del Confluence space "Developers". La API real está en merchants.playdigital.com.ar (otro dominio).</desc>
+
+              <!-- developer browser -->
+              <g transform="translate(40,140)">
+                <rect width="120" height="80" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="60" y="35" class="dgm-text dgm-text-strong" text-anchor="middle">Integrador</text>
+                <text x="60" y="55" class="dgm-text dgm-text-muted" text-anchor="middle">(banco · ecommerce)</text>
+              </g>
+
+              <!-- developers.modo + central.modo -->
+              <g transform="translate(220,40)">
+                <rect width="170" height="76" rx="10" class="dgm-node"/>
+                <text x="85" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">developers.modo.com.ar</text>
+                <text x="85" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">SPA auth-gated</text>
+                <text x="85" y="65" class="dgm-text dgm-text-muted" text-anchor="middle">16 bank IDs hardcoded</text>
+              </g>
+
+              <g transform="translate(220,240)">
+                <rect width="170" height="76" rx="10" class="dgm-node"/>
+                <text x="85" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">central.modo.com.ar</text>
+                <text x="85" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">Consola del comercio</text>
+                <text x="85" y="65" class="dgm-text dgm-text-muted" text-anchor="middle">Operativa, no docs</text>
+              </g>
+
+              <!-- docs renderer -->
+              <g transform="translate(450,140)">
+                <rect width="200" height="80" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="100" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">merchants.modo.com.ar/docs</text>
+                <text x="100" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">Docs renderer (Docusaurus-like)</text>
+                <text x="100" y="65" class="dgm-text dgm-text-muted" text-anchor="middle">Espejo de Confluence</text>
+              </g>
+
+              <!-- arrows: dev → developers -->
+              <path d="M 160 165 L 215 80" class="dgm-arrow"/>
+              <path d="M 160 195 L 215 275" class="dgm-arrow"/>
+              <!-- arrows: developers/central → docs -->
+              <path d="M 395 80 L 510 145" class="dgm-arrow dgm-arrow-dotted"/>
+              <path d="M 395 275 L 510 215" class="dgm-arrow dgm-arrow-dotted"/>
+
+              <!-- API hits aside -->
+              <g transform="translate(450,18)">
+                <rect width="240" height="60" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="120" y="24" class="dgm-text dgm-text-strong" text-anchor="middle">merchants.playdigital.com.ar</text>
+                <text x="120" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">API real · backend Merchants</text>
+              </g>
+              <path d="M 160 155 C 320 90, 380 60, 450 50" class="dgm-arrow dgm-arrow-accent" stroke-dasharray="0"/>
+              <text x="285" y="105" class="dgm-text dgm-text-accent" text-anchor="middle">requests reales (cURL, SDK)</text>
+            </svg>
+            <figcaption>El portal y la consola son frontends auth-gated que apuntan al mismo viewer de docs. La API que esas docs describen no comparte dominio con ninguno de los dos: vive en <code>merchants.playdigital.com.ar</code>.</figcaption>
+          </figure>
+
+          <p>Esto cambia el encuadre del roadmap. No estamos hablando de "evolucionar el portal developers": estamos hablando de <strong>convertir el viewer en un portal de developers real frente a una API que ya existe pero no tiene DX moderna</strong>. Son dos trabajos distintos con dueños distintos.</p>
+        </section>
+
+        <section id="api-real">
+          <h2>La API real</h2>
+          <p>Después de pullear las páginas core del espacio Confluence (Autenticación, Creación de intención de pago, Obtener información de pago, Webhooks, Split de pagos, V2 Modificación de cuotas), este es el mapa de endpoints documentados:</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <caption>Endpoints confirmados en docs (5 al 2026-05-20)</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Verbo</th>
+                  <th scope="col">Path</th>
+                  <th scope="col">Propósito</th>
+                  <th scope="col">Auth</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="verb verb-post">POST</code></td>
+                  <td><code>/merchants/middleman/token</code></td>
+                  <td>Generar <code>accessToken</code> (JWT HS256, TTL 1 semana)</td>
+                  <td>username/password en body</td>
+                </tr>
+                <tr>
+                  <td><code class="verb verb-post">POST</code></td>
+                  <td><code>/merchants/ecommerce/payment-intention</code></td>
+                  <td>Crear intención de pago (QR + deeplink)</td>
+                  <td>Bearer token</td>
+                </tr>
+                <tr>
+                  <td><code class="verb verb-post">POST</code></td>
+                  <td><code>/merchants/ecommerce/payment-intention</code></td>
+                  <td>Misma ruta + <code>subPayments[]</code> → <strong>Split de pago</strong> (solo DECIDIR 2.0/Tradicional)</td>
+                  <td>Bearer token</td>
+                </tr>
+                <tr>
+                  <td><code class="verb verb-get">GET</code></td>
+                  <td><code>/merchants/ecommerce/payment-intention/{id}/data</code></td>
+                  <td>Obtener info de pago + <code>payment_data</code> + <code>sub_payments</code></td>
+                  <td>Bearer token</td>
+                </tr>
+                <tr>
+                  <td><code class="verb verb-get">GET</code></td>
+                  <td><code>/.well-known/jwks.json</code></td>
+                  <td>JSON Web Key Set para verificar firmas de webhooks</td>
+                  <td>público</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="callout callout-info"><strong>Base URLs:</strong> Preprod <code>https://merchants.preprod.playdigital.com.ar</code> · Prod <code>https://merchants.playdigital.com.ar</code>. Los ejemplos cURL en las docs usan a veces <code>merchants-api.playdigital.com.ar</code>, que no matchea la Base URL declarada — gap menor de doc.</p>
+
+          <p>Headers obligatorios en todos los requests: <code>Content-Type: application/json</code>, <code>Authorization: Bearer &lt;token&gt;</code> (excepto <code>/token</code> y JWKS), y un detalle que vale señalar: <code>User-Agent: &lt;Merchant-Name&gt;</code> es <strong>mandatorio</strong>. Si falta, el server rechaza. Es no-estándar — típicamente UA es informativo — pero está documentado.</p>
+        </section>
+
+        <section id="auth">
+          <h2>Modelo de autenticación</h2>
+          <p>No es OAuth2. Es login con usuario y password contra <code>/merchants/middleman/token</code> que devuelve un JWT firmado HS256 con TTL de una semana. La doc recomienda explícitamente <strong>reutilizar el token entre requests</strong>, no pedir uno nuevo cada vez.</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 200" class="diagram" role="img" aria-labelledby="auth-title auth-desc">
+              <title id="auth-title">Flujo de autenticación</title>
+              <desc id="auth-desc">El integrador hace POST /merchants/middleman/token con username y password, recibe JWT HS256 con TTL de 1 semana, y lo usa como Bearer en todos los otros requests.</desc>
+
+              <g transform="translate(20,70)">
+                <rect width="120" height="60" rx="8" class="dgm-node"/>
+                <text x="60" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">Backend</text>
+                <text x="60" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">del integrador</text>
+              </g>
+
+              <g transform="translate(200,30)">
+                <rect width="200" height="50" rx="8" class="dgm-node dgm-node-accent"/>
+                <text x="100" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">POST /middleman/token</text>
+                <text x="100" y="40" class="dgm-text dgm-text-muted" text-anchor="middle">{ username, password }</text>
+              </g>
+
+              <g transform="translate(200,120)">
+                <rect width="200" height="50" rx="8" class="dgm-node dgm-node-mid"/>
+                <text x="100" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">201 Created</text>
+                <text x="100" y="40" class="dgm-text dgm-text-muted" text-anchor="middle">accessToken (JWT HS256, exp 7d)</text>
+              </g>
+
+              <g transform="translate(450,70)">
+                <rect width="240" height="60" rx="8" class="dgm-node"/>
+                <text x="120" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Reusar token en cada request</text>
+                <text x="120" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">Authorization: Bearer &lt;jwt&gt;</text>
+              </g>
+
+              <path d="M 140 90 L 200 55" class="dgm-arrow"/>
+              <path d="M 200 145 L 140 110" class="dgm-arrow"/>
+              <path d="M 400 100 L 450 100" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>El JWT vale 7 días. La doc pide explícitamente reutilizarlo. El payload trae el listado de <code>stores[]</code> del integrador con <code>paymentMethods[]</code> y <code>acquirer</code> (DECIDIR, DECIDIR_PLUS, IPG).</figcaption>
+          </figure>
+
+          <p>El onboarding de credenciales es atípico: el integrador <strong>se da de alta como usuario en la app MODO</strong>, y cuando llega el SMS de verificación, en preprod completa con <code>000000</code> porque ese código no se envía. Es un hack documentado, no un mecanismo de self-service. No hay panel de credenciales para integradores externos.</p>
+
+          <p>Los webhooks van por carril aparte: MODO firma con <strong>JWS Flat (RFC-7515 §7.2.2)</strong>, el integrador verifica contra el JWKS público en <code>/.well-known/jwks.json</code>. Esto sí es ortodoxo — la única recomendación de la doc que es security-grade.</p>
+        </section>
+
+        <section id="productos">
+          <h2>Productos × API</h2>
+          <p>Cruzando los productos que aparecen en titles del Confluence contra los endpoints documentados, el coverage es desparejo:</p>
+
+          <div class="matrix-card">
+            <div class="matrix">
+              <div class="matrix-cell matrix-head"></div>
+              <div class="matrix-cell matrix-head">Token</div>
+              <div class="matrix-cell matrix-head">Crear intención</div>
+              <div class="matrix-cell matrix-head">Obtener pago</div>
+              <div class="matrix-cell matrix-head">Split</div>
+              <div class="matrix-cell matrix-head">Webhooks</div>
+
+              <div class="matrix-cell matrix-row-label">MODO Checkout</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-na">—</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+
+              <div class="matrix-cell matrix-row-label">SDK v2 (Frontend)</div>
+              <div class="matrix-cell matrix-na">—</div>
+              <div class="matrix-cell matrix-mid">QR/deeplink</div>
+              <div class="matrix-cell matrix-na">—</div>
+              <div class="matrix-cell matrix-na">—</div>
+              <div class="matrix-cell matrix-na">—</div>
+
+              <div class="matrix-cell matrix-row-label">Split de pagos</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+
+              <div class="matrix-cell matrix-row-label">Multi-Merchant</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+
+              <div class="matrix-cell matrix-row-label">Devoluciones</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+              <div class="matrix-cell matrix-gap">?</div>
+
+              <div class="matrix-cell matrix-row-label">Modificación cuotas "V2"</div>
+              <div class="matrix-cell matrix-na" colspan="5"><em>no es API · procedimiento manual en panel VTEX (<code>cc_code</code>)</em></div>
+            </div>
+            <div class="matrix-legend">
+              <span><span class="lg-dot lg-ok"></span> Documentado</span>
+              <span><span class="lg-dot lg-mid"></span> Parcial</span>
+              <span><span class="lg-dot lg-gap"></span> No verificado en esta corrida</span>
+              <span><span class="lg-dot lg-na"></span> N/A</span>
+            </div>
+          </div>
+
+          <p>Dos zonas críticas de incertidumbre: <strong>devoluciones</strong> (simples y split) y <strong>multi-merchant</strong>. Tienen páginas Confluence que existen pero no fueron leídas en esta corrida. Resolverlas es lo primero antes de cualquier roadmap.</p>
+
+          <p>Detalle importante: lo que las docs llaman "V2 Modificación de cuotas" <strong>no es un endpoint API</strong>. Es un procedimiento manual donde el integrador entra al admin de VTEX, edita el campo <code>STORE ID</code> del proveedor, y cambia el sufijo <code>cc_code</code>. El naming "V2" sugiere endpoint versionado pero no lo es. Esto va a confundir a cualquiera que entre nuevo.</p>
+        </section>
+
+        <section id="state-machine">
+          <h2>Ciclo de vida de la intención</h2>
+          <p>Las docs definen 5 estados por los que pasa una intención de pago. Estos son los que el webhook notifica:</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 240" class="diagram" role="img" aria-labelledby="states-title states-desc">
+              <title id="states-title">Máquina de estados de la intención de pago</title>
+              <desc id="states-desc">CREATED → SCANNED → PROCESSING → ACCEPTED o REJECTED. Los estados terminales gatillan reintentos del webhook a 30, 60, 90 y 120 segundos.</desc>
+
+              <g transform="translate(20,100)">
+                <rect width="110" height="50" rx="25" class="dgm-state dgm-state-init"/>
+                <text x="55" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">CREATED</text>
+              </g>
+
+              <g transform="translate(170,100)">
+                <rect width="110" height="50" rx="25" class="dgm-state"/>
+                <text x="55" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">SCANNED</text>
+              </g>
+
+              <g transform="translate(320,100)">
+                <rect width="120" height="50" rx="25" class="dgm-state"/>
+                <text x="60" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">PROCESSING</text>
+              </g>
+
+              <g transform="translate(490,30)">
+                <rect width="120" height="50" rx="25" class="dgm-state dgm-state-ok"/>
+                <text x="60" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">ACCEPTED</text>
+              </g>
+
+              <g transform="translate(490,170)">
+                <rect width="120" height="50" rx="25" class="dgm-state dgm-state-err"/>
+                <text x="60" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">REJECTED</text>
+              </g>
+
+              <!-- transitions -->
+              <path d="M 130 125 L 168 125" class="dgm-arrow"/>
+              <path d="M 280 125 L 318 125" class="dgm-arrow"/>
+              <path d="M 440 122 L 488 60" class="dgm-arrow dgm-arrow-accent"/>
+              <path d="M 440 130 L 488 195" class="dgm-arrow dgm-arrow-err"/>
+
+              <!-- retry annotation -->
+              <g transform="translate(640,55)">
+                <text x="0" y="0" class="dgm-text dgm-text-muted" text-anchor="start">retry × 4</text>
+                <text x="0" y="14" class="dgm-text dgm-text-muted" text-anchor="start">30 · 60 ·</text>
+                <text x="0" y="28" class="dgm-text dgm-text-muted" text-anchor="start">90 · 120 s</text>
+              </g>
+              <g transform="translate(640,195)">
+                <text x="0" y="0" class="dgm-text dgm-text-muted" text-anchor="start">retry × 4</text>
+                <text x="0" y="14" class="dgm-text dgm-text-muted" text-anchor="start">30 · 60 ·</text>
+                <text x="0" y="28" class="dgm-text dgm-text-muted" text-anchor="start">90 · 120 s</text>
+              </g>
+            </svg>
+            <figcaption>El default del <code>expirationDate</code> es 10 minutos (mínimo 5, máximo 10). Hoy la expiración se valida al escaneo, no al pago — la doc marca esto como bug abierto: una persona puede escanear cerca del límite y pagar después del vencimiento.</figcaption>
+          </figure>
+
+          <p class="callout callout-warn"><strong>Inconsistencia en la doc:</strong> la página de Webhooks dice "reintentamos APPROVED y REJECTED", pero el estado real del lifecycle es <code>ACCEPTED</code>, no <code>APPROVED</code>. Pequeño pero confunde a cualquier integrador que esté armando el handler.</p>
+        </section>
+
+        <section id="webhooks">
+          <h2>Webhooks</h2>
+          <p>El integrador expone una URL al onboardar la tienda. MODO postea ahí con un objeto que incluye <code>signature</code> en formato JWS Flat. La doc pide dos cosas en orden:</p>
+
+          <ol>
+            <li><strong>Responder 200 instantáneo</strong>, antes de procesar nada.</li>
+            <li><strong>Procesar asincrónicamente</strong> en otro thread.</li>
+          </ol>
+
+          <p>Y una optimización con dientes: descargar el JWKS <strong>una vez al iniciar</strong> la app, no en cada llamada al webhook. Es la primera vez que vi una doc oficial hacer ese llamado explícito — útil.</p>
+
+          <pre class="code-block"><code>import { JWS, JWK } from 'node-jose';
+
+let modoKeyStore;
+
+async function initModoKeyStore() {
+  const jwksUrl = 'https://merchants.playdigital.com.ar/.well-known/jwks.json';
+  const response = await fetch(jwksUrl);
+  const parsedResponse = await response.json();
+  modoKeyStore = await JWK.asKeyStore(parsedResponse);
+}
+
+async function verifySignature(body) {
+  const verificationResult = await JWS.createVerify(modoKeyStore).verify(
+    body.signature
+  );
+
+  delete body.signature;
+  return isEqual(
+    body,
+    JSON.parse(verificationResult.payload.toString())
+  );
+}</code></pre>
+        </section>
+
+        <section id="gaps">
+          <h2>Gaps de DX</h2>
+          <p>Si el roadmap es "que esto se parezca a un portal de developers moderno" — Stripe, Mercado Pago for developers, Plaid — esta es la deuda visible. Los críticos bloquean adopción autónoma; los importantes son fricción que ahuyenta a integradores sin contacto comercial directo.</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap">
+              <canvas id="gap-chart" aria-label="Gaps de DX por categoría" role="img"></canvas>
+            </div>
+            <figcaption>9 gaps críticos, 7 importantes, 5 cosas que ya están bien. El grueso de los críticos viene del lado de credenciales y descubrimiento; los importantes del lado de herramientas para debuggear.</figcaption>
+          </figure>
+
+          <div class="gap-columns">
+            <div class="gap-col gap-col-crit">
+              <h3>Críticos · 9</h3>
+              <ul>
+                <li>Sin OpenAPI/Swagger descargable</li>
+                <li>Sin self-service signup de credenciales</li>
+                <li>Sin sandbox público sin login</li>
+                <li>Sin SDKs versionados en npm/PyPI/Maven</li>
+                <li>Sin changelog formal</li>
+                <li>Sin Postman/Insomnia collection</li>
+                <li>Sin status page público</li>
+                <li>Sin ratelimits documentados</li>
+                <li>Sin idempotency keys explícitas (más allá de <code>externalIntentionId</code>)</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-mid">
+              <h3>Importantes · 7</h3>
+              <ul>
+                <li>Sin playground interactivo</li>
+                <li>Sin webhook tester / replay tool</li>
+                <li>Sin dashboard del integrador dentro del portal</li>
+                <li>Sin guías diferenciales por banco (aunque los 16 IDs están hardcoded)</li>
+                <li>Inconsistencia de base URL en cURL examples</li>
+                <li>Página "Integración Backend" vacía</li>
+                <li>Naming "V2" confuso (no es endpoint, es procedimiento)</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-ok">
+              <h3>Lo que está bien · 5</h3>
+              <ul>
+                <li>Base URLs preprod/prod claras</li>
+                <li>Ejemplos cURL en cada endpoint</li>
+                <li>JWS firmado para webhooks (security-grade)</li>
+                <li>Política <code>200 OK</code> inmediato + async bien explicada</li>
+                <li>Estados de transacción claros y tabulados</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="bloqueos">
+          <h2>Bloqueos / qué falta verificar</h2>
+          <ul>
+            <li><strong>No tengo credenciales</strong> del integrador. Sin login no puedo hacer <code>POST /token</code> y, desde ahí, descubrir endpoints no documentados vía respuestas de error o introspección.</li>
+            <li><strong>No accedí</strong> a páginas Confluence de: Devoluciones (simples y split), Cancelaciones, Multi-Merchant, Integración Frontend, ni a los plugins (Tiendanube, VTEX, Magento, WooCommerce, Tiendastic, Drubbit, Tienda Negocio).</li>
+            <li><strong>No grep'eé</strong> los repos internos de MODO buscando consumo de estas APIs desde dentro — esto serviría para confirmar endpoints internos no documentados públicamente.</li>
+            <li>El skill <code>modo-tech-architect</code> no tiene un Swagger MODO cacheado en <code>references/</code>; los patterns que trae son del proyecto promos/ChatGPT widget, no de merchants/checkout.</li>
+          </ul>
+        </section>
+
+        <section id="proximo">
+          <h2>Próximo paso</h2>
+          <p>Con este mapa, la siguiente movida es disparar <code>modo-planner</code> con todo este input como contexto. La salida esperada:</p>
+          <ul>
+            <li><code>openspec/changes/developers-portal-evolution/</code> con proposal, design y tasks.</li>
+            <li>Worktree map de qué repos se tocan (portal frontend, merchants backend, posibles SDKs nuevos).</li>
+            <li>Jira tasks por fase: sandbox público, OpenAPI generado, SDKs publicados, playground, webhook tester, status page, changelog formal.</li>
+            <li>Ruflo swarm config para correr fases en paralelo cuando esté aprobado.</li>
+          </ul>
+          <p>Lo que sí no debería pasar: que esto se quede como insight suelto. El research sirve si destraba la decisión, y la decisión hoy es: <strong>¿el portal developers entra al plan de plataforma para 2026 H2?</strong> Si la respuesta es sí, lo que sigue es RFC formal. Si es no, esto queda archivado acá como evidencia para la próxima vez que el tema vuelva.</p>
+        </section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-20">2026-05-20</time>
+          </p>
+          <p class="article-disclaimer">
+            Investigación read-only. No incluye llamadas autenticadas a la API: el mapeo se basa en doc pública del Confluence space "Developers" y en el SSR loader de los portales <code>developers.modo.com.ar</code> y <code>central.modo.com.ar</code>. Cualquier endpoint no listado en la tabla principal queda como bloqueo a verificar.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof Chart === 'undefined') return;
+
+  function getCss(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  var ctx = document.getElementById('gap-chart');
+  if (!ctx) return;
+
+  var urgent = getCss('--urgent-fg', '#B0001A');
+  var draft = getCss('--draft-fg', '#8a5a00');
+  var accent = getCss('--accent-ink', '#00471B');
+  var muted = getCss('--muted', '#6B6B6B');
+  var ink = getCss('--ink', '#1A1A1A');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Críticos', 'Importantes', 'Lo que está bien'],
+      datasets: [{
+        label: 'Cantidad',
+        data: [9, 7, 5],
+        backgroundColor: [urgent, draft, accent],
+        borderRadius: 8,
+        borderSkipped: false,
+        maxBarThickness: 60
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) { return ctx.parsed.y + ' gaps'; }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: ink, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 13, weight: '500' } },
+          grid: { display: false }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: { color: muted, stepSize: 1, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12 } },
+          grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

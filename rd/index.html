@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R&amp;D · Erno × MODO</title>
+  <meta name="description" content="Investigaciones técnicas que preceden a un RFC formal: mapeos, descubrimientos, análisis de superficie. Long-form HTML con diagramas y gráficos." />
+  <meta name="theme-color" content="#008859" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <style>
+    .rd-intro {
+      max-width: 70ch;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+    }
+
+    .rd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .rd-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 22px 22px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-card);
+      color: inherit;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .rd-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .rd-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .rd-number {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .rd-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 4px 0 0;
+    }
+
+    .rd-summary {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .rd-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      align-items: center;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .rd-meta .dot { opacity: 0.5; }
+
+    .rd-cta {
+      align-self: flex-start;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+
+    .rd-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--border-soft);
+      color: var(--muted);
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .rd-workflow {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 20px 0 32px;
+      padding: 14px 18px;
+      background: var(--border-soft);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .rd-workflow strong {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#rd-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div></header>
+
+<main id="rd-main">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">R&amp;D</span>
+  </nav>
+  <p class="section-label">Colección 3</p>
+  <h1 class="page-heading">R&amp;D</h1>
+  <p class="rd-intro">Investigaciones técnicas que preceden a un RFC formal. Mapeos de superficie API, análisis de plataforma, descubrimientos. Long-form HTML con diagramas inline y gráficos. Datos crudos en <a href="rd.json" target="_blank" rel="noopener" class="meta-link">rd.json</a> para que un agente pueda consumir el catálogo sin parsear el HTML.</p>
+
+  <div class="rd-workflow">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow" aria-hidden="true">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow" aria-hidden="true">→</span>
+    <span class="status-badge completo">Decisión</span>
+    <span class="dot" aria-hidden="true">·</span>
+    <span>cuando una R&amp;D sintetiza, sale a la colección RFCs como propuesta formal.</span>
+  </div>
+
+  <div class="rd-grid" id="rd-list">
+    <div class="state-box">Cargando R&amp;D…</div>
+  </div>
+
+  <div class="state-box" id="rd-error" hidden style="margin-top:24px">
+    <strong>No se pudo cargar el catálogo.</strong>
+    Abrí <a href="rd.json" target="_blank" rel="noopener" class="meta-link">rd.json</a> directamente.
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div></footer>
+
+<script>
+(function () {
+  var STATUS_LABELS = {
+    'exploración': 'Exploración',
+    'síntesis': 'Síntesis',
+    'completo': 'Completo',
+    'archivado': 'Archivado'
+  };
+  var STATUS_CLASSES = {
+    'exploración': 'draft',
+    'síntesis': 'rfc',
+    'completo': 'completo',
+    'archivado': 'archived'
+  };
+
+  var $list = document.getElementById('rd-list');
+  var $error = document.getElementById('rd-error');
+
+  fetch('rd.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (payload) {
+      var items = (payload.items || []).slice().sort(function (a, b) {
+        return (b.date || '').localeCompare(a.date || '');
+      });
+
+      if (items.length === 0) {
+        $list.innerHTML = '<div class="state-box"><strong>Todavía no hay R&D publicadas.</strong> Esta colección arranca con el primer mapeo de developers portal.</div>';
+        return;
+      }
+
+      $list.innerHTML = items.map(function (it) {
+        var statusLabel = STATUS_LABELS[it.status] || it.status;
+        var statusClass = STATUS_CLASSES[it.status] || 'draft';
+        var tags = (it.tags || []).slice(0, 4).map(function (t) {
+          return '<span class="rd-tag">' + MODO.escapeHTML(t) + '</span>';
+        }).join('');
+        var diagrams = it.diagrams ? '<span>' + it.diagrams + ' diagramas</span><span class="dot">·</span>' : '';
+        var charts = it.charts ? '<span>' + it.charts + ' gráfico' + (it.charts === 1 ? '' : 's') + '</span><span class="dot">·</span>' : '';
+        var reading = it.reading_minutes ? '<span>~' + it.reading_minutes + ' min</span>' : '';
+
+        return (
+          '<a class="rd-card" href="' + MODO.escapeHTML(it.href) + '">' +
+            '<div class="rd-card-head">' +
+              '<span class="status-badge ' + statusClass + '">' + statusLabel + '</span>' +
+              '<span class="rd-number">' + MODO.escapeHTML(it.number) + '</span>' +
+            '</div>' +
+            '<h2 class="rd-title">' + MODO.escapeHTML(it.title) + '</h2>' +
+            '<p class="rd-summary">' + MODO.escapeHTML(it.summary) + '</p>' +
+            (tags ? '<div style="display:flex; flex-wrap:wrap; gap:6px;">' + tags + '</div>' : '') +
+            '<div class="rd-meta">' +
+              '<time datetime="' + MODO.escapeHTML(it.date) + '">' + MODO.escapeHTML(it.date) + '</time>' +
+              '<span class="dot">·</span>' + diagrams + charts + reading +
+            '</div>' +
+            '<span class="rd-cta">Leer →</span>' +
+          '</a>'
+        );
+      }).join('');
+    })
+    .catch(function (err) {
+      console.error('Failed to load rd.json', err);
+      $list.innerHTML = '';
+      $error.hidden = false;
+    });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>
