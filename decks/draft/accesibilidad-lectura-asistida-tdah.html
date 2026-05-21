@@ -32,6 +32,11 @@
 
   *, *::before, *::after { box-sizing: border-box; }
 
+  /* Fluid root font-size: 15px en 320px → 17px en ≥1024px. Todo lo tipográfico hereda rem y escala con esto. */
+  html {
+    font-size: clamp(15px, 0.9rem + 0.25vw, 17px);
+  }
+
   html, body {
     margin: 0;
     padding: 0;
@@ -56,7 +61,7 @@
     background: var(--paper-warm);
     position: relative;
     display: none;
-    padding: 72px 20px 80px;
+    padding: 64px 16px 72px;
     box-shadow: 0 24px 80px rgba(18,18,18,0.08);
     overflow: hidden;
     min-height: 100vh;
@@ -100,16 +105,16 @@
 
   .slide__chrome-top {
     position: absolute;
-    top: 16px; left: 20px; right: 20px;
+    top: 1rem; left: 1.25rem; right: 1.25rem;
     display: none; /* en mobile lo ocultamos para no colisionar con el crumb global y el bionic toggle */
     align-items: center;
     justify-content: space-between;
-    font-size: clamp(11px, 1.1vw, 13px);
+    font-size: clamp(0.6875rem, 0.6rem + 0.25vw, 0.8125rem);
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--gray-60);
-    gap: 12px;
+    gap: 0.75rem;
   }
   .slide__chrome-top > :nth-child(2) {
     text-align: right;
@@ -136,20 +141,20 @@
     letter-spacing: -0.06em;
     line-height: 1;
     display: inline-block;
-    font-size: clamp(28px, 3.4vw, 42px);
+    font-size: clamp(1.5rem, 0.75rem + 2.2vw, 2.625rem); /* 24→42px */
     font-variant-numeric: tabular-nums;
   }
-  .modo-wordmark--sm { font-size: clamp(18px, 2vw, 26px); letter-spacing: -0.05em; }
+  .modo-wordmark--sm { font-size: clamp(1rem, 0.5rem + 1.4vw, 1.625rem); letter-spacing: -0.05em; }
 
   .slide__chrome-bottom {
     position: absolute;
-    bottom: 16px; left: 20px; right: 20px;
+    bottom: 1rem; left: 1.25rem; right: 1.25rem;
     display: none; /* en mobile usamos el deck__mobile-bar fijo abajo */
     align-items: center;
     justify-content: space-between;
-    font-size: clamp(11px, 1vw, 13px);
+    font-size: clamp(0.6875rem, 0.6rem + 0.25vw, 0.8125rem);
     color: var(--gray-60);
-    gap: 12px;
+    gap: 0.75rem;
   }
   @media (min-width: 640px) { .slide__chrome-bottom { display: flex; } }
   .slide__chrome-bottom > :first-child {
@@ -177,57 +182,60 @@
     transition: width 360ms var(--ease);
   }
 
+  /* Tokens tipográficos en rem con clamp() adaptativo.
+     Floors pensados para iPhone SE/13 (320-390px). Techos para desktop ≥1024px.
+     vw-middle hace el escalado proporcional sin saltos. */
   .eyebrow {
-    font-size: clamp(12px, 1vw, 14px);
+    font-size: clamp(0.6875rem, 0.6rem + 0.3vw, 0.8125rem); /* 11→13px */
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--green-default);
-    margin: 0 0 16px;
+    margin: 0 0 1rem;
   }
   .eyebrow--neutral { color: var(--gray-60); }
   h1.title {
     font-family: "Quicksand", "Red Hat Display", sans-serif;
-    font-size: clamp(32px, 6vw, 80px);
+    font-size: clamp(1.625rem, 0.75rem + 4vw, 4.75rem); /* 26→76px aprox · cover sobreescribe */
     font-weight: 700;
-    line-height: 1.05;
+    line-height: 1.08;
     letter-spacing: -0.025em;
-    margin: 0 0 24px;
+    margin: 0 0 1.25rem;
     color: var(--ink);
   }
   h2.heading {
     font-family: "Quicksand", "Red Hat Display", sans-serif;
-    font-size: clamp(26px, 4vw, 54px);
+    font-size: clamp(1.375rem, 0.6rem + 3vw, 3.25rem); /* 22→52px */
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.12;
     letter-spacing: -0.018em;
-    margin: 0 0 16px;
+    margin: 0 0 0.875rem;
     color: var(--ink);
   }
   h3.subheading {
-    font-size: clamp(20px, 2.2vw, 28px);
+    font-size: clamp(1.0625rem, 0.85rem + 0.9vw, 1.5rem); /* 17→24px */
     font-weight: 600;
     line-height: 1.3;
-    margin: 0 0 8px;
+    margin: 0 0 0.5rem;
     color: var(--ink);
   }
   p.lede {
-    font-size: clamp(18px, 2vw, 26px);
+    font-size: clamp(1rem, 0.8rem + 0.9vw, 1.5rem); /* 16→24px */
     line-height: 1.45;
     color: var(--gray-80);
-    margin: 0 0 24px;
+    margin: 0 0 1.25rem;
     max-width: 62ch;
   }
   p.body {
-    font-size: clamp(16px, 1.5vw, 19px);
+    font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.125rem); /* 15→18px */
     line-height: 1.55;
     color: var(--gray-80);
-    margin: 0 0 12px;
+    margin: 0 0 0.75rem;
     max-width: 68ch;
   }
   p.body strong { color: var(--ink); font-weight: 600; }
   p.muted {
-    font-size: clamp(13px, 1.1vw, 16px);
+    font-size: clamp(0.8125rem, 0.75rem + 0.25vw, 1rem); /* 13→16px */
     color: var(--gray-60);
     margin: 0;
     line-height: 1.5;
@@ -239,9 +247,9 @@
     font-weight: 700;
     letter-spacing: -0.035em;
   }
-  .num--xl { font-size: clamp(64px, 12vw, 168px); line-height: 0.95; }
-  .num--lg { font-size: clamp(44px, 6.5vw, 88px); line-height: 1; }
-  .num--md { font-size: clamp(32px, 4.5vw, 58px); line-height: 1; }
+  .num--xl { font-size: clamp(3rem, 1rem + 9vw, 10.5rem); line-height: 0.95; }  /* 48→168px */
+  .num--lg { font-size: clamp(2.25rem, 0.75rem + 6vw, 5.5rem); line-height: 1; } /* 36→88px */
+  .num--md { font-size: clamp(1.75rem, 0.75rem + 3.5vw, 3.625rem); line-height: 1; } /* 28→58px */
   .num--accent { color: var(--green-default); }
 
   .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
@@ -318,7 +326,7 @@
   table.compare {
     width: 100%;
     border-collapse: collapse;
-    font-size: clamp(14px, 1.4vw, 17px);
+    font-size: clamp(0.875rem, 0.8rem + 0.45vw, 1.0625rem); /* 14→17px */
   }
   table.compare th, table.compare td {
     padding: 10px 8px;
@@ -330,7 +338,7 @@
     table.compare th, table.compare td { padding: 12px 16px; }
   }
   table.compare thead th {
-    font-size: clamp(11px, 1.1vw, 13px);
+    font-size: clamp(0.6875rem, 0.6rem + 0.25vw, 0.8125rem);
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -367,7 +375,7 @@
     color: var(--green-default);
     letter-spacing: 0.04em;
   }
-  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions h3 { font-size: clamp(1.0625rem, 0.85rem + 0.9vw, 1.375rem); font-weight: 600; margin: 0 0 0.25rem; }
   ol.decisions .ownership {
     font-size: 13px;
     letter-spacing: 0.12em;
@@ -379,8 +387,8 @@
   ul.checks { list-style: none; padding: 0; margin: 0; }
   ul.checks li {
     position: relative;
-    padding: 6px 0 6px 28px;
-    font-size: 18px;
+    padding: 0.375rem 0 0.375rem 1.75rem;
+    font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.125rem); /* 15→18px */
     line-height: 1.5;
     color: var(--gray-80);
   }
@@ -452,10 +460,10 @@
     font-family: "Quicksand", sans-serif;
     font-variant-numeric: tabular-nums;
     font-weight: 700;
-    font-size: 66px;
+    font-size: clamp(2.25rem, 0.75rem + 4vw, 4.125rem); /* 36→66px */
     line-height: 1;
     color: var(--green-default);
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     letter-spacing: -0.04em;
   }
   .phase__weeks {
@@ -532,24 +540,24 @@
       var(--paper-warm);
   }
   .slide--cover h1.title {
-    font-size: clamp(36px, 7vw, 96px);
+    font-size: clamp(1.875rem, 0.75rem + 5.5vw, 6rem); /* 30→96px */
     max-width: 18ch;
   }
   .slide--cover .meta {
-    margin-top: 32px;
+    margin-top: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 0.875rem;
   }
   .slide--cover .meta__col h4 {
-    font-size: clamp(11px, 1vw, 13px);
+    font-size: clamp(0.6875rem, 0.6rem + 0.3vw, 0.8125rem); /* 11→13px */
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--gray-60);
-    margin: 0 0 6px;
+    margin: 0 0 0.375rem;
   }
-  .slide--cover .meta__col p { margin: 0; font-size: clamp(15px, 1.6vw, 18px); color: var(--ink); line-height: 1.4; }
+  .slide--cover .meta__col p { margin: 0; font-size: clamp(0.9375rem, 0.8rem + 0.55vw, 1.125rem); color: var(--ink); line-height: 1.4; }
 
   @media (min-width: 640px) {
     .slide--cover .meta {
@@ -606,11 +614,11 @@
     padding: 20px;
   }
   .slide-dyr__col h4 {
-    font-size: clamp(11px, 1.1vw, 13px);
+    font-size: clamp(0.6875rem, 0.6rem + 0.3vw, 0.8125rem);
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin: 0 0 16px;
+    margin: 0 0 1rem;
   }
   .slide-dyr__col--decision h4 { color: var(--green-default); }
   .slide-dyr__col--risk h4 { color: #A92121; }
@@ -624,8 +632,8 @@
   }
   .slide-dyr__col li {
     position: relative;
-    padding-left: 28px;
-    font-size: clamp(14px, 1.4vw, 17px);
+    padding-left: 1.75rem;
+    font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1.0625rem); /* 14→17px */
     line-height: 1.5;
     color: var(--gray-80);
   }
@@ -882,7 +890,7 @@
     </div>
     <div class="slide__body">
       <p class="eyebrow">La recomendación</p>
-      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 24ch;">Sumamos dos modos de <span style="color: var(--green-default)">lectura asistida</span> opt-in, opcionales, opt-out con un toggle.</h1>
+      <h1 class="title" style="font-size: clamp(1.5rem, 0.6rem + 3.5vw, 4.25rem); max-width: 24ch;">Sumamos dos modos de <span style="color: var(--green-default)">lectura asistida</span> opt-in, opcionales, opt-out con un toggle.</h1>
       <div class="grid-3" style="margin-top: 40px;">
         <div class="stat">
           <span class="stat__label">Población alcanzada</span>
@@ -978,7 +986,7 @@
       <div>
         <p class="eyebrow">Pilar 01 · Lectura biónica</p>
         <div class="num num--xl num--accent">3</div>
-        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Niveles de intensidad sobre la primera mitad de cada palabra.</h2>
+        <h2 class="heading" style="font-size: clamp(1.375rem, 0.6rem + 2.4vw, 38px); margin-top: 0.5rem;">Niveles de intensidad sobre la primera mitad de cada palabra.</h2>
         <p class="body" style="max-width: 50ch;">El cerebro completa la palabra cuando ve el "ancla" en negrita. Reduce regresiones oculares y ayuda a engancharse en textos largos. Evidencia académica mixta, feedback de usuarios con TDAH/dislexia consistentemente positivo.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">opt-in</span>
@@ -1012,7 +1020,7 @@
       <div>
         <p class="eyebrow">Pilar 02 · Lectura extendida</p>
         <div class="num num--xl num--accent">4</div>
-        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Controles para ajustar densidad tipográfica.</h2>
+        <h2 class="heading" style="font-size: clamp(1.375rem, 0.6rem + 2.4vw, 38px); margin-top: 0.5rem;">Controles para ajustar densidad tipográfica.</h2>
         <p class="body" style="max-width: 50ch;">Tamaño de fuente, interlineado, tracking entre letras y espaciado entre palabras. Cubre directamente WCAG 2.2 SC 1.4.12 (text spacing) y reduce fatiga visual en bloques largos.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">WCAG 2.2 AA</span>
@@ -1041,7 +1049,7 @@
       <div>
         <p class="eyebrow">Pilar 03 · Persistencia</p>
         <div class="num num--xl num--accent">1×</div>
-        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">El usuario lo configura una vez y queda guardado.</h2>
+        <h2 class="heading" style="font-size: clamp(1.375rem, 0.6rem + 2.4vw, 38px); margin-top: 0.5rem;">El usuario lo configura una vez y queda guardado.</h2>
         <p class="body" style="max-width: 50ch;">Persistido en el perfil MODO (API existente). Sin perfil disponible, fallback a localStorage. Sin re-configurar al cambiar de dispositivo. Sin friction.</p>
         <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
           <span class="chip chip--green">perfil MODO</span>
@@ -1297,7 +1305,7 @@
     </div>
     <div class="slide__body" style="justify-content: center;">
       <p class="eyebrow">¿Damos luz verde?</p>
-      <h1 class="title" style="font-size: clamp(44px, 5.5vw, 72px);">Antes de avanzar,<br /><span style="color: var(--green-default)">necesito feedback</span> de cuatro equipos.</h1>
+      <h1 class="title" style="font-size: clamp(1.625rem, 0.7rem + 4vw, 4.5rem);">Antes de avanzar,<br /><span style="color: var(--green-default)">necesito feedback</span> de cuatro equipos.</h1>
       <p class="lede" style="max-width: 70ch;">Brand (font alternativa), Mobile (si replicamos en nativo), Legal (mención de WCAG en políticas), Marketing (ángulo de comms). Con su feedback, agendamos review con los owners antes de abrir tickets.</p>
       <div class="card" style="margin-top: 32px; max-width: 100%;">
         <span class="card__index">Material de soporte</span>
