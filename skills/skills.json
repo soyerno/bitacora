@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-20",
+    "generated": "2026-05-21",
     "updated_by": "erno-modo-sync-all",
     "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
   },
@@ -9,8 +9,8 @@
       "name": "modo-deck",
       "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
       "filename": "modo-deck.zip",
-      "sha256_prefix": "ab974a4139e924b7",
-      "size_kb": 90.7,
+      "sha256_prefix": "addb5fa9aef5a409",
+      "size_kb": 91.8,
       "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
     },
     {
@@ -25,8 +25,8 @@
       "name": "modo-tech-architect",
       "description": ">",
       "filename": "modo-tech-architect.zip",
-      "sha256_prefix": "152fe42fd72c8777",
-      "size_kb": 29.0,
+      "sha256_prefix": "f75c28640e6a81c7",
+      "size_kb": 34.5,
       "install_hint": "unzip modo-tech-architect.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-tech-architect.skill ~/.claude/skills/modo-tech-architect"
     },
     {
@@ -73,8 +73,8 @@
       "name": "lectura-bionica",
       "description": "Lectura biónica + lectura asistida para TDAH/dislexia aplicada a la salida de Claude y a archivos arbitrarios. Bold de la primera mitad de cada palabra ≥3 letras para crear un ancla visual que reduce ",
       "filename": "lectura-bionica.zip",
-      "sha256_prefix": "324256f650455e92",
-      "size_kb": 7.8,
+      "sha256_prefix": "2baadfe204ee5c92",
+      "size_kb": 10.1,
       "install_hint": "unzip lectura-bionica.zip -d ~/.claude/skills/ && mv ~/.claude/skills/lectura-bionica.skill ~/.claude/skills/lectura-bionica"
     }
   ]
