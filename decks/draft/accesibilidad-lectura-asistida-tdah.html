@@ -800,6 +800,68 @@
   .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
   .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
   @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+
+  /* ============================================================
+     MOBILE LANDSCAPE (orientation:landscape, height ≤600px)
+     Override del breakpoint tablet 4:3 — usamos 16:9 fit-to-screen
+     porque la altura corta no admite 4:3 ni un canvas portrait scroll.
+     ============================================================ */
+  @media (orientation: landscape) and (max-height: 600px) {
+    .deck {
+      width: 100vw;
+      height: 100vh;
+      min-height: 0;
+      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide {
+      width: min(96vw, calc(94vh * 16 / 9));
+      aspect-ratio: 16 / 9;
+      max-height: 94vh;
+      min-height: 0;
+      /* padding-top 44px clear-a el crumb global · bottom 44px clear-a la mobile bar */
+      padding: 44px clamp(28px, 5vw, 48px) 44px;
+      overflow-y: auto; /* scroll interno cuando el contenido excede 94vh */
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+    .slide::-webkit-scrollbar { width: 4px; }
+    .slide::-webkit-scrollbar-thumb { background: rgba(18,18,18,0.15); border-radius: 999px; }
+    /* Tipografía un poco más compacta porque la altura es la limitante */
+    .slide h1.title { font-size: clamp(1.25rem, 4.5vh, 2.5rem); margin-bottom: 0.75rem; }
+    .slide h2.heading { font-size: clamp(1.125rem, 3.8vh, 2.125rem); margin-bottom: 0.625rem; }
+    .slide p.lede { font-size: clamp(0.9375rem, 2.4vh, 1.25rem); margin-bottom: 0.75rem; }
+    .slide p.body { font-size: clamp(0.875rem, 2vh, 1.0625rem); margin-bottom: 0.5rem; }
+    .slide .num--xl { font-size: clamp(2rem, 9vh, 5rem); }
+    .slide .num--lg { font-size: clamp(1.75rem, 6vh, 3.5rem); }
+    .slide .num--md { font-size: clamp(1.375rem, 4vh, 2.5rem); }
+    .slide .phase__num { font-size: clamp(1.75rem, 5vh, 3rem); }
+
+    /* Chrome top/bottom hidden — siguen chocando con el crumb global */
+    .slide__chrome-top { display: none !important; }
+    .slide__chrome-bottom { display: none !important; }
+
+    /* Mobile bar + tap zones se mantienen visibles */
+    .deck__mobile-bar { display: flex !important; padding: 4px 12px; }
+    .deck__mobile-bar .progress { height: 2px; }
+    .deck__tap-zone {
+      display: block !important;
+      top: 0;
+      bottom: 36px; /* clearance del mobile bar */
+      width: 10%;
+    }
+
+    /* Floating deck__nav (desktop) oculto en landscape mobile */
+    .deck__nav { display: none !important; }
+
+    /* Grilla del deck-crumb más compacta para no robar espacio vertical */
+    .deck-crumb {
+      top: 8px;
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+  }
 </style>
 
 <style id="deck-crumb-style">
