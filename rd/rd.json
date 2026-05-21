@@ -48,6 +48,25 @@
         "modo-govern-source-2026-04-13/docs/SALES-STRATEGY.md",
         "modo-govern-source-2026-04-13/docs/specs/SPEC-{101,106,107,109,110,113,119}*.md"
       ]
+    },
+    {
+      "number": "RD03",
+      "slug": "rd-infrastructure-ship",
+      "title": "R&D Infrastructure ship · skill canónico + validación de catálogo",
+      "summary": "24 horas después de abrir la categoría R&D con RD01, cómo quedó armada la infra para que el siguiente research no requiera reinventar nada: skill modo-research-article que enforce el pattern + validate_rd() en el sync diario + post-mortem del swarm de ruflo que se cayó mid-flight (1 socket disconnect + 1 rate limit, 0 trabajos completos).",
+      "status": "decisión",
+      "tags": ["meta", "infra", "swarm", "post-mortem"],
+      "area": "platform",
+      "date": "2026-05-21",
+      "href": "rd-infrastructure-ship.html",
+      "reading_minutes": 8,
+      "diagrams": 2,
+      "charts": 1,
+      "sources": [
+        "~/.claude/skills/modo-research-article/ (SKILL.md + README + assets + references)",
+        "~/.claude/skills/erno-modo-sync-all/scripts/sync.py (validate_rd)",
+        "https://soyernomodo.github.io/erno-modo/rd/developers-portal-mapping.html (RD01, pattern source)"
+      ]
     }
   ]
 }
