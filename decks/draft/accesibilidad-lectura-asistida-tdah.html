@@ -692,21 +692,10 @@
   .deck__mobile-bar button[aria-pressed="true"] { background: var(--green-default); color: white; border-color: var(--green-default); }
   @media (min-width: 1024px) { .deck__mobile-bar { display: none; } }
 
-  /* Tap zones invisibles (mobile) — sólo los bordes 12% para no robar texto */
-  .deck__tap-zone {
-    position: fixed;
-    top: 80px; bottom: 56px;
-    width: 12%;
-    z-index: 80;
-    background: transparent;
-    border: 0;
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-  }
-  .deck__tap-zone--prev { left: 0; }
-  .deck__tap-zone--next { right: 0; }
-  @media (min-width: 1024px), (pointer: fine) { .deck__tap-zone { display: none; } }
-  body[data-deck-mode="scroll"] .deck__tap-zone { display: none; }
+  /* Tap-to-navigate: la mitad izquierda del viewport navega hacia atrás,
+     la mitad derecha hacia adelante. Implementado 100% en JS (pointerup)
+     para poder excluir clicks sobre botones/links/inputs sin pintar
+     overlays que tapen el contenido. No hay tap-zones físicas. */
 
   @media print {
     body { background: white; }
@@ -721,7 +710,7 @@
       aspect-ratio: 16 / 9;
       padding: 64px 80px;
     }
-    .deck__nav, .deck__mobile-bar, .deck__tap-zone { display: none !important; }
+    .deck__nav, .deck__mobile-bar { display: none !important; }
   }
 
   .deck__nav {
@@ -842,15 +831,9 @@
     .slide__chrome-top { display: none !important; }
     .slide__chrome-bottom { display: none !important; }
 
-    /* Mobile bar + tap zones se mantienen visibles */
+    /* Mobile bar visible — tap-nav se maneja en JS contra el deck */
     .deck__mobile-bar { display: flex !important; padding: 4px 12px; }
     .deck__mobile-bar .progress { height: 2px; }
-    .deck__tap-zone {
-      display: block !important;
-      top: 0;
-      bottom: 36px; /* clearance del mobile bar */
-      width: 10%;
-    }
 
     /* Floating deck__nav (desktop) oculto en landscape mobile */
     .deck__nav { display: none !important; }
@@ -1392,9 +1375,7 @@
 
 </div>
 
-<!-- Tap zones para nav táctil en mobile (sólo bordes 12%) -->
-<button class="deck__tap-zone deck__tap-zone--prev" id="tap-prev" aria-label="Anterior" type="button"></button>
-<button class="deck__tap-zone deck__tap-zone--next" id="tap-next" aria-label="Siguiente" type="button"></button>
+<!-- Tap-to-navigate: la lógica vive en el JS (pointerup contra el deck) — sin overlays físicos -->
 
 <!-- Mobile bottom bar (counter + progress + toggle scroll/slide) -->
 <div class="deck__mobile-bar" aria-label="Navegación del deck">
@@ -1450,11 +1431,6 @@
   document.getElementById('prev').addEventListener('click', () => go(current - 1));
   document.getElementById('next').addEventListener('click', () => go(current + 1));
 
-  const tapPrev = document.getElementById('tap-prev');
-  const tapNext = document.getElementById('tap-next');
-  if (tapPrev) tapPrev.addEventListener('click', () => go(current - 1));
-  if (tapNext) tapNext.addEventListener('click', () => go(current + 1));
-
   document.addEventListener('keydown', (e) => {
     if (e.target && (e.target.closest('input, textarea, select, [contenteditable]'))) return;
     if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
@@ -1470,23 +1446,46 @@
     }
   });
 
-  // Swipe horizontal en pointer:coarse (touch)
+  // Touch nav: swipe horizontal (>60px) o tap (movimiento <10px) → mitad izq = prev, mitad der = next.
+  // Excluye taps sobre elementos interactivos para no robarles el click.
   if (window.matchMedia('(pointer: coarse)').matches && deck) {
-    let startX = 0, startY = 0, tracking = false;
+    const INTERACTIVE_SEL = 'button, a, input, textarea, select, summary, label, [role="button"], [role="link"], [contenteditable], .deck__mobile-bar, .deck-crumb';
+    let startX = 0, startY = 0, startTarget = null, tracking = false;
+
     deck.addEventListener('pointerdown', (e) => {
       if (e.pointerType !== 'touch') return;
-      tracking = true; startX = e.clientX; startY = e.clientY;
+      tracking = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startTarget = e.target;
     });
+
     deck.addEventListener('pointerup', (e) => {
       if (!tracking) return;
       tracking = false;
+      if (e.pointerType !== 'touch') return;
+
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      // 1) Swipe horizontal (dominante)
+      if (absDx > 60 && absDx > absDy * 1.5) {
         if (dx < 0) go(current + 1);
         else go(current - 1);
+        return;
+      }
+
+      // 2) Tap (movimiento mínimo): mitad izq → prev, mitad der → next.
+      // Salimos si el tap fue sobre algo interactivo (botón "Ver demo", crumb, bionic toggle, mobile bar).
+      if (absDx < 10 && absDy < 10) {
+        if (startTarget && startTarget.closest && startTarget.closest(INTERACTIVE_SEL)) return;
+        if (e.clientX < window.innerWidth / 2) go(current - 1);
+        else go(current + 1);
       }
     });
+
     deck.addEventListener('pointercancel', () => { tracking = false; });
   }
 
