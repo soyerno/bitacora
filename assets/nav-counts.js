@@ -4,9 +4,10 @@
  * of decks/RFCs/postmans/R&D. Works from any depth because it resolves the data
  * URLs from its own <script src> attribute (which always points at /assets/nav-counts.js).
  *
- * Counter elements expected: #nav-count-decks, #nav-count-rfcs, #nav-count-postmans, #nav-count-rd
+ * Counter elements expected: #nav-count-decks, #nav-count-rfcs, #nav-count-postmans, #nav-count-rd, #nav-count-proyectos
  * Data: <site-root>/decks/decks.json, <site-root>/rfcs/rfcs.json,
- *       <site-root>/postmans/postmans.json, <site-root>/rd/rd.json
+ *       <site-root>/postmans/postmans.json, <site-root>/rd/rd.json,
+ *       <site-root>/proyectos/proyectos.json
  */
 (function () {
   'use strict';
@@ -27,7 +28,8 @@
     { id: 'nav-count-decks',    url: BASE + 'decks/decks.json',       key: 'decks'    },
     { id: 'nav-count-rfcs',     url: BASE + 'rfcs/rfcs.json',         key: 'rfcs'     },
     { id: 'nav-count-postmans', url: BASE + 'postmans/postmans.json', key: 'postmans' },
-    { id: 'nav-count-rd',       url: BASE + 'rd/rd.json',             key: 'items'    }
+    { id: 'nav-count-rd',       url: BASE + 'rd/rd.json',             key: 'items'    },
+    { id: 'nav-count-proyectos', url: BASE + 'proyectos/proyectos.json', key: 'projects' }
   ];
 
   targets.forEach(function (t) {
