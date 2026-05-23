@@ -1,0 +1,1458 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<title>El home no es el video · son las imágenes · modo.com.ar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* MODO design tokens · extraídos de tailwind.config.js */
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--gray-8);
+    font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ============ DECK CONTAINER ============ */
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: min(1600px, 96vw, calc(92vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    background: var(--paper-warm);
+    position: relative;
+    display: none;
+    padding: 64px 80px;
+    box-shadow: 0 24px 80px rgba(18,18,18,0.08);
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  .slide__chrome-top {
+    position: absolute;
+    top: 28px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
+
+  /* MODO wordmark · text-based logo (Quicksand bold, on-brand fallback while we don't have a clean solid SVG) */
+  .modo-wordmark {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    color: var(--green-default);
+    letter-spacing: -0.06em;
+    line-height: 1;
+    display: inline-block;
+    font-size: 42px;
+    font-variant-numeric: tabular-nums;
+  }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+
+  .slide__chrome-bottom {
+    position: absolute;
+    bottom: 24px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray-60);
+  }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress {
+    flex: 1;
+    margin: 0 24px;
+    height: 2px;
+    background: var(--gray-8);
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  .slide__chrome-bottom .progress > i {
+    display: block;
+    height: 100%;
+    background: var(--green-default);
+    width: var(--p, 0%);
+    transition: width 360ms var(--ease);
+  }
+
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 16px;
+  }
+  .eyebrow--neutral { color: var(--gray-60); }
+  h1.title {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(42px, 4.8vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    color: var(--ink);
+  }
+  h2.heading {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(33px, 3.4vw, 54px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  h3.subheading {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  p.lede {
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--gray-80);
+    margin: 0 0 24px;
+    max-width: 62ch;
+  }
+  p.body {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--gray-80);
+    margin: 0 0 12px;
+    max-width: 68ch;
+  }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted {
+    font-size: 16px;
+    color: var(--gray-60);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+
+  .slide__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    overflow-y: auto;
+    /* Scrollbar branded · Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: var(--green-default) var(--gray-8);
+  }
+  /* Cuando el contenido excede el viewport, top-align + reservar espacio para el scrollbar
+     sin que le pegue al texto. Solo se aplica cuando hace falta para no shiftear otros slides. */
+  .slide__body.is-scrollable {
+    justify-content: flex-start;
+    margin-right: -12px;
+    padding-right: 12px;
+  }
+  /* Scrollbar branded · WebKit (Chrome, Safari, Edge) · siempre visible */
+  .slide__body::-webkit-scrollbar { width: 8px; }
+  .slide__body::-webkit-scrollbar-track {
+    background: var(--gray-8);
+    border-radius: 999px;
+  }
+  .slide__body::-webkit-scrollbar-thumb {
+    background: var(--green-default);
+    border-radius: 999px;
+    border: 2px solid var(--gray-8);
+    background-clip: padding-box;
+    min-height: 32px;
+  }
+  .slide__body::-webkit-scrollbar-thumb:hover { background: var(--green-dark); background-clip: padding-box; }
+  /* Indicador visual · "hay más contenido" · fade gradient en el bottom mientras se puede scrollear */
+  .slide__body.is-scrollable::after {
+    content: "";
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    margin-top: -48px;
+    background: linear-gradient(to bottom, transparent, var(--paper-warm) 85%);
+    pointer-events: none;
+    flex-shrink: 0;
+    transition: opacity 200ms var(--ease);
+  }
+  .slide__body.is-scrollable.is-bottom::after { opacity: 0; }
+  .row { display: flex; gap: 32px; }
+  .row > * { flex: 1; min-width: 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .stack-sm > * + * { margin-top: 8px; }
+  .stack-md > * + * { margin-top: 16px; }
+  .stack-lg > * + * { margin-top: 24px; }
+
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+  }
+  .card__index {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--gray-3);
+    color: var(--gray-80);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .chip--red { background: #FFE6E6; color: #A92121; font-weight: 600; }
+  .chip--ghost { background: transparent; color: var(--gray-60); border: 1px solid var(--gray-20); }
+
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .stat__value { color: var(--ink); }
+
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+  }
+  table.compare th, table.compare td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-8);
+  }
+  table.compare thead th {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    background: transparent;
+    border-bottom: 1px solid var(--gray-20);
+  }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+
+  ol.decisions {
+    list-style: none;
+    counter-reset: decisions;
+    padding: 0;
+    margin: 0;
+  }
+  ol.decisions li {
+    counter-increment: decisions;
+    position: relative;
+    padding: 16px 0 16px 56px;
+    border-bottom: 1px solid var(--gray-8);
+  }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before {
+    content: counter(decisions, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 18px;
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+  }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin-top: 4px;
+  }
+
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li {
+    position: relative;
+    padding: 6px 0 6px 28px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--gray-80);
+  }
+  ul.checks li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 13px;
+    width: 12px; height: 12px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default);
+  }
+  ul.checks.checks--no li::before { background: var(--red-warn); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--red-warn); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+
+  /* Pillar tiles */
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 280px;
+  }
+  .pillar__index {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+  }
+  .pillar__title { font-size: 22px; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0; }
+  .pillar__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .pillar__footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-8);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .pillar__footer .label {
+    font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60);
+  }
+  .pillar__footer .value {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--ink);
+  }
+
+  /* Big pillar detail (slides 5-7) */
+  .pillar-detail {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 48px;
+    height: 100%;
+    align-items: center;
+  }
+  .pillar-detail__evidence {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .pillar-detail__evidence h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 8px;
+  }
+  .pillar-detail__evidence ul.checks li {
+    padding: 4px 0 4px 24px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .pillar-detail__evidence ul.checks li::before {
+    top: 10px;
+    width: 10px; height: 10px;
+  }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 10px; }
+
+  /* Phase timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 16px;
+    align-items: stretch;
+    margin-top: 24px;
+  }
+  .phase {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .phase__num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 66px;
+    line-height: 1;
+    color: var(--green-default);
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+  }
+  .phase__weeks {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin-bottom: 12px;
+  }
+  .phase__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total {
+    background: var(--green-10);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 180px;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 16px;
+    background: var(--gray-3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--gray-80);
+  }
+
+  /* Branded abbr tooltip · siglas técnicas (LCP, FCP, CLS, TTFB, CWV, SSR, CMS, AVIF...) */
+  abbr.sig {
+    position: relative;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--green-default);
+    cursor: help;
+    font-variant: inherit;
+    color: inherit;
+  }
+  abbr.sig:focus { outline: none; }
+  abbr.sig::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(4px);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    white-space: normal;
+    width: max-content;
+    max-width: 280px;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(18,18,18,0.18);
+    border-left: 3px solid var(--green-default);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+    z-index: 10;
+  }
+  abbr.sig::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 4px);
+    transform: translateX(-50%) translateY(4px);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+    z-index: 10;
+  }
+  abbr.sig:hover::after,
+  abbr.sig:focus::after,
+  abbr.sig:hover::before,
+  abbr.sig:focus::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Stack-today visual */
+  .stack-today {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .stack-block {
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--border-soft);
+    background: var(--paper);
+  }
+  .stack-block h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 12px;
+  }
+  .stack-block .row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-8);
+    font-size: 17px;
+  }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+
+  /* Cover slide */
+  .slide--cover {
+    background:
+      radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%),
+      var(--paper-warm);
+    padding: 80px;
+  }
+  .slide--cover h1.title {
+    font-size: clamp(56px, 6.5vw, 96px);
+    max-width: 18ch;
+  }
+  .slide--cover .meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+  }
+  .slide--cover .meta__col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 6px;
+  }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+
+  .sigil {
+    width: 12px;
+    height: 12px;
+    background: var(--green-default);
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide {
+      display: flex !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1280px;
+      height: 720px;
+      max-height: 720px;
+    }
+    .deck__nav { display: none !important; }
+  }
+
+  /* Nav */
+  .deck__nav {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 8px;
+    background: var(--paper);
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(18,18,18,0.12);
+    z-index: 100;
+  }
+  .deck__nav button {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    transition: background 180ms var(--ease), color 180ms var(--ease);
+  }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.04em;
+  }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+
+<style id="deck-payload-viz">
+  .payload-bar { width: 100%; height: 56px; border-radius: 12px; overflow: hidden; display: flex; background: var(--gray-3); box-shadow: var(--shadow-card); border: 1px solid var(--border-soft); }
+  .payload-bar__seg { display: flex; align-items: center; justify-content: center; color: #fff; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .payload-bar__seg--images  { background: var(--green-default); }
+  .payload-bar__seg--scripts { background: var(--gray-80); }
+  .payload-bar__seg--other   { background: var(--gray-20); color: var(--gray-80); }
+  .payload-legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 18px; }
+  .payload-legend__item { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .payload-legend__swatch { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+  .payload-legend__label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); }
+  .payload-legend__value { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 28px; line-height: 1; color: var(--ink); margin-top: 6px; display: block; }
+  .payload-legend__note { font-size: 13px; color: var(--gray-60); margin: 6px 0 0; }
+  .compare-rows { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+  .compare-row { display: grid; grid-template-columns: 160px 1fr 100px; align-items: center; gap: 18px; }
+  .compare-row__label { font-size: 15px; font-weight: 600; color: var(--gray-80); }
+  .compare-row__bar { height: 22px; background: var(--gray-3); border-radius: 999px; overflow: hidden; position: relative; }
+  .compare-row__fill { height: 100%; border-radius: 999px; background: var(--gray-20); }
+  .compare-row--bad .compare-row__fill { background: var(--red-warn); }
+  .compare-row--neutral .compare-row__fill { background: var(--gray-20); }
+  .compare-row--good .compare-row__fill { background: var(--green-default); }
+  .compare-row__value { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--ink); text-align: right; }
+  .url-strip { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 18px 20px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; line-height: 1.8; color: var(--gray-80); overflow: hidden; }
+  .url-strip b { color: var(--green-default); font-weight: 700; }
+  .url-strip s { color: var(--red-warn); text-decoration: none; }
+  .url-strip .dim { color: var(--gray-60); }
+</style>
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<!-- ============ REUSABLE LOGO SYMBOL ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="modo-logo" viewBox="0 0 107 24">
+    <path d="M2.42202 16.6821C1.80204 16.6818 1.20585 16.45 0.756436 16.0346C0.307025 15.6191 0.0386893 15.0517 0.00679152 14.4495V21.394C-0.000170847 21.7069 0.0571683 22.018 0.175445 22.309C0.293722 22.6001 0.470556 22.8652 0.695573 23.0889C0.92059 23.3125 1.18926 23.4902 1.48582 23.6116C1.78238 23.7329 2.10087 23.7954 2.42259 23.7954C2.74431 23.7954 3.06279 23.7329 3.35936 23.6116C3.65592 23.4902 3.92459 23.3125 4.14961 23.0889C4.37462 22.8652 4.55146 22.6001 4.66973 22.309C4.78801 22.018 4.84535 21.7069 4.83839 21.394V14.4484C4.80622 15.0508 4.53768 15.6183 4.08812 16.0339C3.63855 16.4495 3.04222 16.6815 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M2.42202 16.6821C3.75967 16.6821 4.84404 15.6273 4.84404 14.3262C4.84404 13.025 3.75967 11.9702 2.42202 11.9702C1.08438 11.9702 0 13.025 0 14.3262C0 15.6273 1.08438 16.6821 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M23.1914 4.9321C22.7557 4.93316 22.3277 4.81975 21.9528 4.60384C21.5778 4.38794 21.2697 4.07755 21.0611 3.70545C20.8524 3.33335 20.7509 2.91335 20.7673 2.4898C20.7837 2.06625 20.9174 1.65486 21.1542 1.29907L12.8039 12.6385L14.6679 15.1706C14.9906 15.5483 15.1838 16.0146 15.2205 16.5044C15.2573 16.9941 15.1357 17.4828 14.8728 17.902L20.7728 9.88512V21.2686C20.8028 20.665 21.0705 20.0959 21.5202 19.679C21.97 19.2622 22.5674 19.0297 23.1886 19.0297C23.8098 19.0297 24.4072 19.2622 24.857 19.679C25.3067 20.0959 25.5744 20.665 25.6044 21.2686V2.69834C25.5728 3.30042 25.3049 3.86776 24.8559 4.28338C24.407 4.69899 23.8112 4.93119 23.1914 4.9321Z" fill="#008859"/>
+    <path d="M12.8062 14.3263C13.1625 14.326 13.5144 14.4022 13.8368 14.5495C14.1592 14.6968 14.4442 14.9115 14.6714 15.1784L12.8074 12.6463L4.38688 1.20447C4.20221 0.95356 3.96855 0.740489 3.69922 0.577422C3.4299 0.414355 3.13019 0.304486 2.81721 0.254087C2.50424 0.203687 2.18412 0.213746 1.87514 0.283687C1.56616 0.353628 1.27437 0.482083 1.01643 0.661717C0.758481 0.84135 0.539436 1.06865 0.371797 1.33062C0.204158 1.5926 0.0912076 1.88413 0.0393952 2.18857C-0.0124171 2.49301 -0.00207694 2.8044 0.0698254 3.10495C0.141728 3.40551 0.273784 3.68934 0.458455 3.94025L10.7385 17.9087C10.752 17.9307 10.7668 17.9516 10.7815 17.9725C10.5416 17.6174 10.4051 17.2058 10.3863 16.7813C10.3675 16.3568 10.4672 15.9353 10.6748 15.5614C10.8824 15.1876 11.1901 14.8754 11.5654 14.6579C11.9407 14.4405 12.3694 14.3259 12.8062 14.3263Z" fill="#008859"/>
+    <path d="M75.9179 3.18596C73.686 1.24725 70.654 0.220093 67.1511 0.220093H59.9077C60.5393 0.233393 61.1405 0.486813 61.5824 0.926058C62.0243 1.3653 62.2717 1.95543 62.2717 2.57C62.2717 3.18457 62.0243 3.7747 61.5824 4.21394C61.1405 4.65319 60.5393 4.90661 59.9077 4.91991H67.1511C69.4486 4.91991 71.3681 5.53202 72.6968 6.69018C74.1025 7.9089 74.811 9.69348 74.811 11.9999C74.811 14.3063 74.0991 16.0733 72.6946 17.2843C71.3591 18.4359 69.4418 19.0458 67.1488 19.0458H62.3285V21.1463V21.1518C62.3365 21.23 62.341 21.3082 62.341 21.3885C62.341 22.0135 62.0859 22.6128 61.6317 23.0548C61.1775 23.4968 60.5614 23.7453 59.919 23.7456H67.1511C70.6438 23.7456 73.6702 22.7272 75.9021 20.8006C78.3512 18.688 79.6449 15.6439 79.6449 11.9933C79.6449 8.34266 78.3569 5.30193 75.9179 3.18596Z" fill="#008859"/>
+    <path d="M62.3285 21.1452V9.64066C62.3149 9.02623 62.0543 8.44145 61.6028 8.01161C61.1512 7.58177 60.5445 7.34106 59.9127 7.34106C59.2809 7.34106 58.6743 7.58177 58.2227 8.01161C57.7711 8.44145 57.5106 9.02623 57.497 9.64066V21.3874C57.496 20.783 57.7339 20.2012 58.1615 19.7626C58.5891 19.324 59.1737 19.062 59.7943 19.0309C60.4149 18.9998 61.0241 19.2019 61.4958 19.5955C61.9675 19.989 62.2656 20.5439 62.3285 21.1452Z" fill="#008859"/>
+    <path d="M92.2632 21.644C92.2632 21.0192 92.5184 20.4199 92.9726 19.9781C93.4268 19.5363 94.0429 19.288 94.6852 19.288C93.2024 19.2847 91.7538 18.8542 90.5221 18.051C89.2905 17.2477 88.331 16.1077 87.7647 14.7746C87.1983 13.4416 87.0505 11.9752 87.3399 10.5606C87.6293 9.1459 88.3429 7.84629 89.3907 6.82566C89.841 6.3817 90.0915 5.78194 90.0871 5.15833C90.0828 4.53471 89.8239 3.93831 89.3675 3.50034C88.9111 3.06237 88.2945 2.8187 87.6534 2.82293C87.0123 2.82716 86.3992 3.07895 85.949 3.52291C84.247 5.18687 83.0841 7.29983 82.6042 9.6002C82.1243 11.9006 82.3485 14.2873 83.2491 16.465C84.1496 18.6427 85.687 20.5156 87.6708 21.852C89.6546 23.1883 91.9978 23.9294 94.4102 23.9834H94.4204C93.828 23.9198 93.2805 23.646 92.8825 23.2144C92.4845 22.7829 92.2641 22.2238 92.2632 21.644Z" fill="#008859"/>
+    <path d="M94.6853 4.71192C96.0229 4.71192 97.1073 3.65712 97.1073 2.35596C97.1073 1.0548 96.0229 0 94.6853 0C93.3476 0 92.2632 1.0548 92.2632 2.35596C92.2632 3.65712 93.3476 4.71192 94.6853 4.71192Z" fill="#008859"/>
+    <path d="M12.8062 19.0382C14.1439 19.0382 15.2283 17.9834 15.2283 16.6823C15.2283 15.3811 14.1439 14.3263 12.8062 14.3263C11.4686 14.3263 10.3842 15.3811 10.3842 16.6823C10.3842 17.9834 11.4686 19.0382 12.8062 19.0382Z" fill="#008859"/>
+    <path d="M23.1914 23.7467C24.5291 23.7467 25.6134 22.6919 25.6134 21.3908C25.6134 20.0896 24.5291 19.0348 23.1914 19.0348C21.8538 19.0348 20.7694 20.0896 20.7694 21.3908C20.7694 22.6919 21.8538 23.7467 23.1914 23.7467Z" fill="#008859"/>
+    <path d="M23.1914 4.93202C24.5291 4.93202 25.6134 3.87722 25.6134 2.57606C25.6134 1.27489 24.5291 0.220093 23.1914 0.220093C21.8538 0.220093 20.7694 1.27489 20.7694 2.57606C20.7694 3.87722 21.8538 4.93202 23.1914 4.93202Z" fill="#008859"/>
+    <path d="M59.919 23.7435C61.2566 23.7435 62.341 22.6887 62.341 21.3876C62.341 20.0864 61.2566 19.0316 59.919 19.0316C58.5813 19.0316 57.4969 20.0864 57.4969 21.3876C57.4969 22.6887 58.5813 23.7435 59.919 23.7435Z" fill="#008859"/>
+    <path d="M59.9135 4.92223C61.2474 4.92223 62.3287 3.87038 62.3287 2.57287C62.3287 1.27535 61.2474 0.223511 59.9135 0.223511C58.5796 0.223511 57.4982 1.27535 57.4982 2.57287C57.4982 3.87038 58.5796 4.92223 59.9135 4.92223Z" fill="#008859"/>
+    <path d="M94.9172 0.0098877C95.5234 0.0673384 96.0851 0.344936 96.4902 0.787322C96.8953 1.22971 97.1141 1.80437 97.103 2.39672C97.0918 2.98907 96.8516 3.55556 96.4301 3.98324C96.0086 4.41092 95.4369 4.66835 94.829 4.7042C96.7973 4.75011 98.6681 5.54753 100.037 6.92415C101.406 8.30077 102.163 10.146 102.145 12.0612C102.126 13.9763 101.334 15.8076 99.9393 17.1593C98.5443 18.5109 96.6587 19.2744 94.6898 19.2847C95.3129 19.279 95.9143 19.5071 96.369 19.9217C96.8237 20.3362 97.0966 20.9053 97.131 21.5106C97.1654 22.1158 96.9586 22.7107 96.5537 23.1714C96.1488 23.6322 95.5769 23.9234 94.9569 23.9846C98.1795 23.9125 101.245 22.6154 103.496 20.3711C105.747 18.1268 107.005 15.114 107 11.9784C106.995 8.84276 105.727 5.8339 103.468 3.59666C101.21 1.35942 98.1401 0.0718412 94.9172 0.0098877Z" fill="#008859"/>
+    <path d="M94.6853 24C96.0229 24 97.1073 22.9452 97.1073 21.644C97.1073 20.3429 96.0229 19.2881 94.6853 19.2881C93.3476 19.2881 92.2632 20.3429 92.2632 21.644C92.2632 22.9452 93.3476 24 94.6853 24Z" fill="#008859"/>
+    <path d="M39.3658 21.6441C39.3658 21.0192 39.621 20.42 40.0752 19.9782C40.5294 19.5363 41.1455 19.2881 41.7879 19.2881C40.3048 19.2853 38.8558 18.8551 37.6238 18.052C36.3918 17.2488 35.432 16.1087 34.8656 14.7754C34.2992 13.4421 34.1515 11.9755 34.4412 10.5607C34.7309 9.14582 35.445 7.84616 36.4934 6.82574C36.9436 6.38134 37.1939 5.78116 37.1893 5.15724C37.1846 4.53331 36.9253 3.93674 36.4685 3.49877C36.0116 3.0608 35.3946 2.8173 34.7532 2.82184C34.1118 2.82638 33.4985 3.07859 33.0482 3.52299C31.3462 5.18695 30.1833 7.29991 29.7034 9.60028C29.2236 11.9006 29.4478 14.2874 30.3483 16.4651C31.2489 18.6427 32.7862 20.5157 34.77 21.8521C36.7538 23.1884 39.097 23.9295 41.5094 23.9835H41.5207C40.9286 23.9196 40.3815 23.6457 39.984 23.2141C39.5864 22.7825 39.3664 22.2236 39.3658 21.6441Z" fill="#008859"/>
+    <path d="M41.7877 4.71192C43.1253 4.71192 44.2097 3.65712 44.2097 2.35596C44.2097 1.0548 43.1253 0 41.7877 0C40.45 0 39.3657 1.0548 39.3657 2.35596C39.3657 3.65712 40.45 4.71192 41.7877 4.71192Z" fill="#008859"/>
+    <path d="M42.0198 0.0098877C42.626 0.0673384 43.1877 0.344936 43.5928 0.787322C43.9979 1.22971 44.2167 1.80437 44.2056 2.39672C44.1944 2.98907 43.9542 3.55556 43.5327 3.98324C43.1112 4.41092 42.5395 4.66835 41.9316 4.7042C43.8999 4.75011 45.7707 5.54753 47.1396 6.92415C48.5085 8.30077 49.2657 10.146 49.2474 12.0612C49.2291 13.9763 48.4369 15.8076 47.0419 17.1593C45.647 18.5109 43.7613 19.2744 41.7924 19.2847C42.4102 19.2862 43.0041 19.5174 43.4526 19.9308C43.901 20.3443 44.17 20.9088 44.2046 21.5089C44.2391 22.109 44.0366 22.6992 43.6385 23.1588C43.2403 23.6184 42.6767 23.9126 42.0629 23.9812C45.2729 23.8913 48.3202 22.5863 50.5561 20.344C52.7919 18.1016 54.0399 15.099 54.0343 11.9752C54.0287 8.8514 52.77 5.85305 50.5261 3.61831C48.2821 1.38357 45.2302 0.0889181 42.0198 0.0098877Z" fill="#008859"/>
+    <path d="M41.7877 24C43.1253 24 44.2097 22.9452 44.2097 21.644C44.2097 20.3429 43.1253 19.2881 41.7877 19.2881C40.45 19.2881 39.3657 20.3429 39.3657 21.644C39.3657 22.9452 40.45 24 41.7877 24Z" fill="#008859"/>
+  </symbol>
+</svg>
+
+<div class="deck" id="deck">
+
+  <!-- ====== SLIDE 01 · COVER ====== -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>perf baseline · modo-landing · 2026-05-21</span>
+    </div>
+
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Finding · perf baseline pre-migración Next 15/16</p>
+      <h1 class="title" style="font-size: clamp(40px, 4.6vw, 72px); line-height: 1.06; margin-bottom: 18px;">
+        El home no es el video.<br />
+        Son <span style="color: var(--green-default)">38 imágenes</span> sin optimizar.
+      </h1>
+      <p class="lede" style="font-size: 20px; line-height: 1.5; margin-bottom: 0;">
+        17.5 MB en el home de <span class="mono" style="font-size:0.9em">modo.com.ar</span> mobile.<br />
+        15.8 MB de eso son fotos servidas desde Storyblok sin transforms.
+      </p>
+    </div>
+
+    <div class="meta">
+      <div class="meta__col">
+        <h4>Audiencia</h4>
+        <p>Tech Lead · Product Manager</p>
+      </div>
+      <div class="meta__col">
+        <h4>Autor</h4>
+        <p>Hernán De Souza · Sr AI Engineer</p>
+      </div>
+      <div class="meta__col">
+        <h4>Fecha</h4>
+        <p>2026-05-21</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 02 · EL REFLEJO EQUIVOCADO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>02 · El reflejo equivocado</span><span>asumir el video, ignorar las fotos</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Antes de medir</p>
+      <h2 class="heading">Cuando alguien dice "el home está lento",<br />el reflejo es <span style="color: var(--green-default)">"será el video del hero"</span>.</h2>
+      <p class="body" style="max-width: 70ch; margin-top: 8px;">
+        Es la respuesta natural · video pesa, video bloquea, video bufferea bajo 4G. Suena bien y queda corto: hay que medir antes de fixear.
+      </p>
+      <div class="grid-2" style="margin-top: 28px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">01 · El reflejo</span>
+          <h3 class="subheading">"Es el video"</h3>
+          <p class="body" style="margin: 0;">
+            Lo intuitivo. Suena cierto. Hubiera sido la primera task del backlog.
+            El problema · el home actual <strong>no tiene <span class="mono">&lt;video&gt;</span></strong>. Cero tags en el HTML servido.
+          </p>
+        </div>
+        <div class="card card--green-tint">
+          <span class="card__index">02 · El finding real</span>
+          <h3 class="subheading">Son las fotos</h3>
+          <ul class="checks">
+            <li><strong>38 imágenes</strong> en el home, todas raw desde Storyblok.</li>
+            <li><strong>15.8 MB</strong> · 90% del payload total.</li>
+            <li>Dos <span class="mono">.gif</span> animados como sustituto del "video".</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 28px; padding: 18px 22px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>Por qué importa la distinción</strong> · si arrancamos por el video, gastamos 1 sprint en una hipótesis falsa. El payload sigue igual de gordo, el <abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr> no se mueve.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 17%"></i></div><span class="counter">02 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 03 · LA MEDICIÓN ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>03 · La medición</span><span>Unlighthouse · mobile · 4G throttle</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Cómo lo medimos</p>
+      <h2 class="heading">Antes de la migración a Next 15/16,<br />locked baseline del home tal como está hoy.</h2>
+      <p class="body" style="max-width: 78ch; margin-bottom: 18px;">
+        Tirar Unlighthouse contra <span class="mono">modo.com.ar</span> en perfil mobile + throttle 4G, 1 sample por ruta. La data queda guardada en el repo · es la referencia contra la que va a medirse cualquier mejora.
+      </p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>Setup del scan</h4>
+          <div class="row-item"><span class="label"><span class="mono">@unlighthouse/cli</span></span><span class="value">latest</span></div>
+          <div class="row-item"><span class="label">Perfil</span><span class="value">mobile · 4G throttle</span></div>
+          <div class="row-item"><span class="label">Sample</span><span class="value">1 run / ruta</span></div>
+          <div class="row-item"><span class="label">Rutas escaneadas</span><span class="value">7 / 12 intentadas</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Top-line del home</h4>
+          <div class="row-item"><span class="label">Performance</span><span class="value">58 / 100</span></div>
+          <div class="row-item"><span class="label"><abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital de Google." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr></span><span class="value">13.5 s · target &lt;2.5 s</span></div>
+          <div class="row-item"><span class="label"><abbr class="sig" title="First Contentful Paint — tiempo hasta el primer píxel de contenido (texto, imagen, SVG) en pantalla." data-tip="First Contentful Paint — tiempo hasta el primer píxel de contenido en pantalla.">FCP</abbr></span><span class="value">4.5 s</span></div>
+          <div class="row-item"><span class="label"><abbr class="sig" title="Cumulative Layout Shift — suma de los saltos visuales inesperados del layout durante la carga. Core Web Vital." data-tip="Cumulative Layout Shift — suma de saltos visuales del layout durante la carga. Core Web Vital.">CLS</abbr></span><span class="value">0.006 · OK</span></div>
+          <div class="row-item"><span class="label"><abbr class="sig" title="Time To First Byte — tiempo hasta el primer byte de respuesta del servidor. Mide salud del backend/edge." data-tip="Time To First Byte — primer byte de respuesta del servidor. Mide salud backend/edge.">TTFB</abbr></span><span class="value">6 ms · server OK</span></div>
+        </div>
+        <div class="stack-block" style="grid-column: 1 / -1;">
+          <h4>Dónde vive la baseline</h4>
+          <div class="row-item"><span class="label">Snapshot</span><span class="value mono">docs/perf/baselines/2026-05-21-pre-migration/</span></div>
+          <div class="row-item"><span class="label">Metodología</span><span class="value mono">docs/perf/README.md</span></div>
+          <div class="row-item"><span class="label">Cómo volver a correrlo</span><span class="value mono">./scripts/perf/run-scan.sh &lt;label&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 25%"></i></div><span class="counter">03 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 04 · EL NÚMERO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>04 · El número</span><span>17.5 MB · 1 home · mobile</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">El número que duele</p>
+      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 24ch;">
+        El home pesa <span style="color: var(--green-default)">17.5 MB</span>.<br />
+        Comparalo con cualquier referencia conocida.
+      </h1>
+      <div class="compare-rows" style="margin-top: 32px;">
+        <div class="compare-row compare-row--good">
+          <span class="compare-row__label">google.com</span>
+          <div class="compare-row__bar"><div class="compare-row__fill" style="width: 4%;"></div></div>
+          <span class="compare-row__value">~0.7 MB</span>
+        </div>
+        <div class="compare-row compare-row--neutral">
+          <span class="compare-row__label">Banco AR promedio</span>
+          <div class="compare-row__bar"><div class="compare-row__fill" style="width: 17%;"></div></div>
+          <span class="compare-row__value">~3 MB</span>
+        </div>
+        <div class="compare-row compare-row--neutral">
+          <span class="compare-row__label">/comercios</span>
+          <div class="compare-row__bar"><div class="compare-row__fill" style="width: 15%;"></div></div>
+          <span class="compare-row__value">2.7 MB</span>
+        </div>
+        <div class="compare-row compare-row--bad">
+          <span class="compare-row__label">/ (home)</span>
+          <div class="compare-row__bar"><div class="compare-row__fill" style="width: 100%;"></div></div>
+          <span class="compare-row__value">17.5 MB</span>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 26px; max-width: 78ch;"><strong>Lectura</strong> · el home pesa <strong>25× lo que google.com</strong> y <strong>6× lo que el banco AR promedio</strong>. Y casi <strong>7× lo que pesa cualquier otra ruta interna</strong> de modo.com.ar.</p>
+      <p class="muted" style="margin-top: 12px;"><span class="sigil"></span>Referencias externas son orden de magnitud, no medición pareja. La comparación interna (otras rutas de modo.com.ar) sí es del mismo scan.</p>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 33%"></i></div><span class="counter">04 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 05 · EL DESGLOSE ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>05 · Desglose del payload</span><span>17.5 MB · cómo se reparten</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Quién aporta los bytes</p>
+      <h2 class="heading">Cuando partís los 17.5 MB,<br /><span style="color: var(--green-default)">90% son imágenes</span>. El JS es la sombra.</h2>
+
+      <div class="payload-bar" style="margin-top: 26px;" role="img" aria-label="Stacked bar: 90% imágenes, 11% scripts, 1% otros (fonts CSS HTML)">
+        <div class="payload-bar__seg payload-bar__seg--images"  style="width: 90.4%;">15.8 MB · imágenes</div>
+        <div class="payload-bar__seg payload-bar__seg--scripts" style="width: 8.4%;">2.0 MB · JS</div>
+        <div class="payload-bar__seg payload-bar__seg--other"   style="width: 1.2%;" title="fonts + CSS + HTML">resto</div>
+      </div>
+
+      <div class="payload-legend">
+        <div class="payload-legend__item">
+          <span class="payload-legend__label"><span class="payload-legend__swatch" style="background: var(--green-default);"></span>Imágenes</span>
+          <span class="payload-legend__value">15.8 MB</span>
+          <p class="payload-legend__note">38 requests · raw desde <span class="mono">a.storyblok.com</span></p>
+        </div>
+        <div class="payload-legend__item">
+          <span class="payload-legend__label"><span class="payload-legend__swatch" style="background: var(--gray-80);"></span>Scripts</span>
+          <span class="payload-legend__value">2.0 MB</span>
+          <p class="payload-legend__note">35 requests · 776 KB unused JS</p>
+        </div>
+        <div class="payload-legend__item">
+          <span class="payload-legend__label"><span class="payload-legend__swatch" style="background: var(--gray-20);"></span>Fonts + CSS + HTML</span>
+          <span class="payload-legend__value">~210 KB</span>
+          <p class="payload-legend__note">2 fonts · 3 CSS · 2 docs</p>
+        </div>
+      </div>
+
+      <p class="body" style="margin-top: 22px; max-width: 80ch;"><strong>Conclusión</strong> · el JS es ruido al lado de las imágenes. Si arreglás las imágenes, el home cae &gt;80% sin tocar ni una línea de código de feature.</p>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 42%"></i></div><span class="counter">05 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 06 · LAS 38 IMÁGENES ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>06 · Las 38 imágenes</span><span>patrón Storyblok sin transforms</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">El patrón concreto</p>
+        <div class="num num--xl num--accent">38 / 38</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">URLs raw, cero transforms,<br />cero responsive sizing.</h2>
+        <p class="body" style="max-width: 50ch;">
+          Las 38 imágenes salen del <span class="mono">__NEXT_DATA__</span> como vienen del <abbr class="sig" title="Content Management System — el headless CMS que sirve el contenido. Acá es Storyblok." data-tip="Content Management System — el headless CMS que sirve el contenido. Acá es Storyblok.">CMS</abbr>. Ninguna pasa por el image service de Storyblok (<span class="mono">/m/&lt;w&gt;x&lt;h&gt;</span>) ni por <span class="mono">_next/image</span>. El servidor manda la versión más grande disponible y el browser la achica con CSS.
+        </p>
+        <div style="margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="chip chip--green">0 / 38 con <span class="mono">/m/</span></span>
+          <span class="chip">0 con <span class="mono">loading="lazy"</span></span>
+          <span class="chip">0 con <span class="mono">fetchpriority</span></span>
+          <span class="chip">0 con <span class="mono">srcset</span></span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>URLs reales del home · evidencia</h4>
+          <div class="url-strip" style="margin-top: 8px;">
+            <s>a.storyblok.com/f/244835/<b>2428x2428</b>/.../qr-modo-verde.webp</s><br />
+            <s>a.storyblok.com/f/244835/<b>1500x1583</b>/.../modo-billetera-y-home.png</s><br />
+            <s>a.storyblok.com/f/244835/<b>1121x1681</b>/.../pill-adentro-verde.webp</s><br />
+            <s>a.storyblok.com/f/244835/<b>500x365</b>/.../adentro-promo_1_1<b>.gif</b></s><br />
+            <s>a.storyblok.com/f/244835/<b>800x584</b>/.../modo-cierre-adentro<b>.gif</b></s>
+          </div>
+          <p class="muted" style="margin-top: 10px;"><span class="sigil"></span>Extracto del HTML servido a un user-agent mobile. Las 38 URLs viven en el <abbr class="sig" title="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser." data-tip="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser.">SSR</abbr> del catch-all <abbr class="sig" title="Content Management System — el headless CMS que sirve el contenido. Acá es Storyblok." data-tip="Content Management System — el headless CMS que sirve el contenido. Acá es Storyblok.">CMS</abbr>.</p>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">La forma correcta · lo que ya soporta Storyblok</h4>
+          <p class="body" style="margin: 0;">
+            <span class="mono">.../qr-modo-verde.webp<b style="color: var(--green-default)">/m/750x0/filters:format(avif):quality(80)</b></span> · responsive width 750, <abbr class="sig" title="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente." data-tip="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente.">AVIF</abbr>, q80. Mismo asset, ~10% del peso.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 50%"></i></div><span class="counter">06 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 07 · POR QUÉ DUELE ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>07 · Por qué duele</span><span>tres ejes · LCP · SEO · data cost</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Tres frentes al mismo tiempo</p>
+      <h2 class="heading">Bytes brutos en el home tocan<br /><span style="color: var(--green-default)">ranking, retención y costo de usuario</span>.</h2>
+      <div class="grid-3" style="margin-top: 28px;">
+        <div class="card">
+          <span class="card__index">01 · <abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr></span>
+          <div class="num num--md num--accent" style="margin: 6px 0;">13.5 s</div>
+          <p class="body" style="margin: 0; font-size: 16px;">
+            El <abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr> del home está <strong>5× sobre el target de Google</strong> (&lt;2.5 s). Cualquier intervención de marketing que tire tráfico al home arranca con un -5× de handicap.
+          </p>
+        </div>
+        <div class="card">
+          <span class="card__index">02 · <abbr class="sig" title="Search Engine Optimization — optimización para buscadores. En 2026 Google usa Core Web Vitals como ranking signal." data-tip="Search Engine Optimization — optimización para buscadores. CWV son ranking signal desde 2021.">SEO</abbr> ranking</span>
+          <div class="num num--md" style="margin: 6px 0; color: var(--ink);"><abbr class="sig" title="Core Web Vitals — set de métricas oficiales de Google (LCP, INP, CLS). Ranking signal desde 2021." data-tip="Core Web Vitals — set de métricas oficiales de Google (LCP, INP, CLS). Ranking signal desde 2021.">CWV</abbr></div>
+          <p class="body" style="margin: 0; font-size: 16px;">
+            Google usa Core Web Vitals como ranking signal desde 2021. <strong><abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr> rojo</strong> baja posicionamiento. Si el home no rankea, las landing internas heredan menos autoridad.
+          </p>
+        </div>
+        <div class="card card--green-tint">
+          <span class="card__index">03 · Data cost AR</span>
+          <div class="num num--md" style="margin: 6px 0; color: var(--green-dark);">17.5 MB</div>
+          <p class="body" style="margin: 0; font-size: 16px; color: var(--green-dark);">
+            Mucho usuario MODO está en planes prepagos / bonos limitados. <strong>17.5 MB</strong> en una sesión es ~1% del bono mensual típico. Bounce antes de cargar.
+          </p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 22px; background: var(--gray-3); border-radius: 12px; max-width: none;">
+        <strong>Lectura combinada</strong> · no es un problema solo de devs, es un problema de adquisición. El home es la puerta de entrada y hoy es la más cara.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 58%"></i></div><span class="counter">07 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 08 · POR QUÉ NO ES EL VIDEO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>08 · Por qué no es el video</span><span>cero tags · dos gifs</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Verificable · grep del HTML servido</p>
+      <h2 class="heading">El home <span style="color: var(--green-default)">no tiene video</span>.<br />Lo que parece "el hero" son dos GIFs y un PNG gigante.</h2>
+      <div class="grid-2" style="margin-top: 28px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">01 · Lo que NO hay</span>
+          <h3 class="subheading">Tags y formatos ausentes</h3>
+          <ul class="checks checks--no">
+            <li><span class="mono">&lt;video&gt;</span> · 0 ocurrencias</li>
+            <li><span class="mono">&lt;source&gt;</span> · 0 ocurrencias</li>
+            <li><span class="mono">.mp4 / .webm</span> · 0 referencias</li>
+            <li><span class="mono">media</span> en payload Unlighthouse · 0 bytes</li>
+          </ul>
+        </div>
+        <div class="card card--green-tint">
+          <span class="card__index">02 · Lo que sí hay</span>
+          <h3 class="subheading" style="color: var(--green-dark);">Dos GIFs que actúan de "video"</h3>
+          <ul class="checks">
+            <li><span class="mono">adentro-promo_1_1.gif</span> · loop animado</li>
+            <li><span class="mono">modo-cierre-adentro-1x1_b.gif</span> · loop animado</li>
+            <li>Un PNG hero <span class="mono">modo-billetera-y-home.png</span> · 1500×1583</li>
+            <li>GIF y PNG sin compresión moderna · sin <abbr class="sig" title="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente." data-tip="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente.">AVIF</abbr> · sin <abbr class="sig" title="Web Picture format — formato de Google, ~25-35% menos peso que JPEG/PNG. Soportado en todos los browsers modernos." data-tip="Web Picture format — formato de Google, ~25-35% menos peso que JPEG/PNG.">WebP</abbr> optimizado</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 26px; padding: 16px 22px; background: var(--green-10); border-radius: 12px; color: var(--green-dark); max-width: none;">
+        <strong>Por qué importa</strong> · los GIFs son el peor formato para movimiento. Reemplazarlos por video <span class="mono">.mp4</span> o <span class="mono">.webm</span> baja típicamente 90% el peso. Pero no es el cuello hoy · el cuello son las 38 imágenes en total, no los 2 GIFs sueltos.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 67%"></i></div><span class="counter">08 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 09 · EL PLAN ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>09 · El plan</span><span>tres fases · estimación con IA</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Cómo lo encaramos · estimación con IA</p>
+      <h2 class="heading">Tres fases · de quick wins<br />a componente del design system.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">01</span>
+          <span class="phase__weeks">1-2 días con IA</span>
+          <h3 class="phase__title">Quick wins · Storyblok transforms</h3>
+          <p class="phase__body">
+            Inventario de las 38 imágenes. Forzar <span class="mono">/m/&lt;w&gt;x0/filters:format(avif):quality(80)</span> en el helper <span class="mono">createImageUrl</span> que ya existe. Aplicar <abbr class="sig" title="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser." data-tip="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser.">SSR</abbr>-side. <span class="mono">priority</span> + <span class="mono">fetchpriority="high"</span> en el <abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr> element. <span class="mono">loading="lazy"</span> en below-fold.
+          </p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">02</span>
+          <span class="phase__weeks">3-5 días con IA</span>
+          <h3 class="phase__title">Sistemático · CMSImage everywhere</h3>
+          <p class="phase__body">
+            <span class="mono">CMSImage</span> ya existe en <span class="mono">src/CMS/components/CMSImage/</span>. Hoy renderea raw porque el transform se hace en <span class="mono">useEffect</span> (post-<abbr class="sig" title="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser." data-tip="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser.">SSR</abbr>). Mover a <abbr class="sig" title="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser." data-tip="Server-Side Rendering — el HTML se arma en el servidor antes de mandarlo al browser.">SSR</abbr>. Reservar <span class="mono">aspect-ratio</span> para no romper <abbr class="sig" title="Cumulative Layout Shift — suma de saltos visuales del layout durante la carga. Core Web Vital." data-tip="Cumulative Layout Shift — suma de saltos visuales del layout durante la carga. Core Web Vital.">CLS</abbr>. Preconnect a <span class="mono">a.storyblok.com</span>. Validar con re-run Unlighthouse.
+          </p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">03</span>
+          <span class="phase__weeks">post-migración Next 15/16</span>
+          <h3 class="phase__title">Estructural · Image del design system</h3>
+          <p class="phase__body">
+            <span class="mono">next/image</span> moderno con todas las features. Un <span class="mono">&lt;Image&gt;</span> del design system MODO con defaults sanos (<abbr class="sig" title="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente." data-tip="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente.">AVIF</abbr>, responsive, lazy, fetchpriority condicional, fallback). Va a la lib <span class="mono">modo-ui-lib-web</span>, lo reusan los otros frontends del workspace.
+          </p>
+        </div>
+        <div class="phase__total">
+          <span class="phase__weeks">Total fase 1+2</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~1 sem</span>
+          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">con IA</span>
+          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">1 dev + Claude Code · diff &lt;200 líneas · Pages Router intacto</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 22px; gap: 20px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Lo que ya está en el repo</h4>
+          <p class="body" style="margin: 0; font-size: 13px; color: var(--green-dark);">
+            <span class="mono">createImageUrl()</span>, <span class="mono">CMSImage</span> con <span class="mono">next/future/image</span>, rewrite proxy en <span class="mono">next.config.js</span> a <span class="mono">/static/images/cms-rewrite/</span>. Las palancas existen · falta enchufarlas en el home.
+          </p>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Lo que NO depende de Next 15</h4>
+          <p class="body" style="margin: 0; font-size: 13px;">
+            Fase 1 y 2 son resolubles HOY en Next 12. La migración a 15/16 ayuda en fase 3, pero no la condiciona. Si la migración se mueve, el problema sigue arreglado.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 75%"></i></div><span class="counter">09 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 10 · IMPACTO ESPERADO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>10 · Impacto esperado</span><span>estimación · no garantía</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Antes / después · estimación honesta</p>
+      <h2 class="heading">Qué razonablemente esperamos<br />después de la fase 1+2.</h2>
+      <table class="compare" style="margin-top: 22px;">
+        <thead>
+          <tr>
+            <th style="width: 32%;">Métrica · home mobile</th>
+            <th>Baseline 2026-05-21</th>
+            <th>Estimación post fase 1+2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Payload total</td>
+            <td class="was">17.5 MB</td>
+            <td class="now">~2-3 MB</td>
+          </tr>
+          <tr>
+            <td>Imágenes</td>
+            <td class="was">15.8 MB · 38 reqs raw</td>
+            <td class="now">~1-2 MB · <abbr class="sig" title="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente." data-tip="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente.">AVIF</abbr> + responsive</td>
+          </tr>
+          <tr>
+            <td><abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr></td>
+            <td class="was">13.5 s</td>
+            <td class="now">~3-5 s</td>
+          </tr>
+          <tr>
+            <td>Performance score</td>
+            <td class="was">58 / 100</td>
+            <td class="now">~75-85</td>
+          </tr>
+          <tr>
+            <td>Llegar a <abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr> &lt;2.5 s (target Google)</td>
+            <td class="was" colspan="2"><span class="dot dot--warn"></span> Requiere fase 3 · <span class="mono">next/image</span> + tuning bundle JS post-migración</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top: 20px;"><span class="sigil"></span><strong>Estimación, no garantía</strong> · los % de reducción salen de benchmarks típicos de <abbr class="sig" title="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente." data-tip="AV1 Image File Format — formato moderno con ~80% menos peso que JPEG a calidad equivalente.">AVIF</abbr> + responsive sizing (Cloudinary, Imgix, Next.js docs reportan 80-90% de reducción habitual). El número exacto se mide después con el mismo <span class="mono">run-scan.sh</span>.</p>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 83%"></i></div><span class="counter">10 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 11 · CÓMO VALIDAR ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>11 · Cómo validar</span><span>diff vs baseline locked</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">El proceso de validación está armado</p>
+      <h2 class="heading" style="margin-bottom: 6px;">Re-correr el mismo scan,<br />diff automático contra la baseline.</h2>
+      <p class="body" style="font-size: 17px; max-width: 80ch; margin-bottom: 14px;">
+        La baseline <span class="mono">2026-05-21-pre-migration</span> está locked en el repo. El script de diff ya existe · marca 🟢 / 🔴 / ⚪ por dimensión con tolerancias razonables. Cualquier mejora se mide en bytes y milisegundos · no en opinión.
+      </p>
+      <div class="mini-grid">
+        <div class="card">
+          <span class="card__index">01 · scan</span>
+          <h3>Re-correr Unlighthouse</h3>
+          <p><span class="mono">./scripts/perf/run-scan.sh 2026-MM-DD-image-pipeline-v1</span> · misma config, mismo perfil mobile + 4G.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">02 · extract</span>
+          <h3>Snapshot nuevo</h3>
+          <p>Genera <span class="mono">metrics.json</span> + <span class="mono">ci-result.json</span> en <span class="mono">docs/perf/baselines/&lt;label&gt;/</span>.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">03 · diff</span>
+          <h3>Diff automático</h3>
+          <p><span class="mono">diff-baselines.mjs</span> · markdown table 🟢/🔴/⚪ por métrica. Tolerancias en el script.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">04 · payload</span>
+          <h3>Lo que tiene que bajar</h3>
+          <p><span class="mono">payload.byResource.image.transferSize</span> · de 15.8 MB a &lt;2 MB.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">05 · <abbr class="sig" title="Core Web Vitals — set de métricas oficiales de Google (LCP, INP, CLS). Ranking signal desde 2021." data-tip="Core Web Vitals — set de métricas oficiales de Google (LCP, INP, CLS). Ranking signal desde 2021.">CWV</abbr></span>
+          <h3>Lo que tiene que mejorar</h3>
+          <p><span class="mono">cwv.lcpMs</span> · de 13523 ms a &lt;5000 ms en la primera ronda.</p>
+        </div>
+        <div class="card card--green-tint">
+          <span class="card__index">06 · cross-check</span>
+          <h3>CrUX / Search Console</h3>
+          <p>Confirmar con data real de usuarios AR · sintético solo da signal controlado, no realidad de carrier.</p>
+        </div>
+      </div>
+      <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <span class="chip chip--green">baseline locked</span>
+        <span class="chip">diff automático</span>
+        <span class="chip">tolerancias en script</span>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>perf baseline · modo-landing · 2026-05-21</span><div class="progress"><i style="--p: 92%"></i></div><span class="counter">11 / 12</span></div>
+  </section>
+
+  <!-- ====== SLIDE 12 · CIERRE ====== -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>12 · cierre · aguardo feedback</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Decisión que pido</p>
+      <h1 class="title" style="font-size: clamp(40px, 5.2vw, 72px); max-width: 22ch;">
+        Arrancar <span style="color: var(--green-default)">fase 1</span> esta semana.<br />
+        Aguardo feedback.
+      </h1>
+      <p class="lede" style="font-size: 20px; line-height: 1.5; max-width: 70ch;">
+        Quick wins · ~1-2 días con IA · 1 PR chico · rollback &lt;10 min con feature flag. No bloquea ni adelanta la migración a Next 15/16.
+      </p>
+      <div class="card" style="margin-top: 18px; max-width: 800px; padding: 16px 20px;">
+        <h3 class="subheading" style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); font-weight: 600; margin-bottom: 8px;">Quiénes opinan antes</h3>
+        <p class="body" style="margin: 0; font-size: 16px;">
+          <strong><abbr class="sig" title="Product Manager — owner de producto que prioriza qué se construye y por qué." data-tip="Product Manager — owner de producto que prioriza qué se construye y por qué.">PM</abbr></strong> · ok con que el <abbr class="sig" title="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital." data-tip="Largest Contentful Paint — tiempo hasta que se pinta el elemento más grande del viewport. Core Web Vital.">LCP</abbr> es prioridad de adquisición · <strong><abbr class="sig" title="Tech Lead — owner técnico que decide el cómo y desbloquea al equipo." data-tip="Tech Lead — owner técnico que decide el cómo y desbloquea al equipo.">TL</abbr></strong> · ok con tocar <span class="mono">createImageUrl</span> + <span class="mono">CMSImage</span> sin esperar a Next 15.
+        </p>
+      </div>
+      <div class="card" style="margin-top: 10px; max-width: 800px; padding: 14px 20px;">
+        <h3 class="subheading" style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); font-weight: 600; margin-bottom: 6px;">Material de soporte</h3>
+        <p class="body" style="margin: 0 0 6px; font-size: 15px;">
+          <strong>Baseline</strong> · <span class="mono">docs/perf/baselines/2026-05-21-pre-migration/README.md</span>
+        </p>
+        <p class="body" style="margin: 0 0 6px; font-size: 15px;">
+          <strong>Metodología</strong> · <span class="mono">docs/perf/README.md</span>
+        </p>
+        <p class="body" style="margin: 0; font-size: 15px;">
+          <strong>Helper existente</strong> · <span class="mono">src/CMS/utils/images.tsx</span> · <strong>componente</strong> · <span class="mono">src/CMS/components/CMSImage/CMSImage.tsx</span>
+        </p>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col">
+        <h4>Autor</h4>
+        <p>Hernán De Souza · Sr AI Engineer</p>
+      </div>
+      <div class="meta__col">
+        <h4>Tickets</h4>
+        <p>por abrir tras feedback</p>
+      </div>
+      <div class="meta__col">
+        <h4>Repo</h4>
+        <p><span class="mono">modo-landing</span></p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+
+<!-- ============ NAV ============ -->
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 15</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+    updateScrollHints();
+  }
+
+  // Detect overflow + bottom-of-scroll en el slide__body activo para
+  // togglear scrollbar branded visible y fade indicator de "hay más contenido".
+  function updateScrollHints() {
+    const activeBody = slides[current] && slides[current].querySelector('.slide__body');
+    if (!activeBody) return;
+    activeBody.scrollTop = 0;
+    requestAnimationFrame(() => {
+      const overflows = activeBody.scrollHeight - activeBody.clientHeight > 4;
+      activeBody.classList.toggle('is-scrollable', overflows);
+      activeBody.classList.remove('is-bottom');
+    });
+  }
+  function onBodyScroll(e) {
+    const b = e.target;
+    if (!b.classList || !b.classList.contains('is-scrollable')) return;
+    const atBottom = b.scrollHeight - b.clientHeight - b.scrollTop < 8;
+    b.classList.toggle('is-bottom', atBottom);
+  }
+  slides.forEach(s => {
+    const body = s.querySelector('.slide__body');
+    if (body) body.addEventListener('scroll', onBodyScroll, { passive: true });
+  });
+  window.addEventListener('resize', () => {
+    clearTimeout(window.__scrollHintsT);
+    window.__scrollHintsT = setTimeout(updateScrollHints, 80);
+  });
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); go(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') {
+      e.preventDefault(); go(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(slides.length - 1);
+    } else if (e.key === 'p' || e.key === 'P') {
+      window.print();
+    }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) {
+    go(hash - 1);
+  } else {
+    go(0);
+  }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="home-imagenes-no-video-2026-05-21"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>
