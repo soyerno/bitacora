@@ -6,6 +6,22 @@
   },
   "decks": [
     {
+      "id": "url-as-state-cache-ssr-filtros",
+      "title": "URL-as-state + cache SSR para filtros públicos",
+      "desc": "Programa para modo-landing /promos + promos-hub-site. Hoy los filtros viven en useState: crawlers no los ven, no se comparten, no se cachean per estado. Propone moverlos a URL-as-state en 4 fases con IA (~3.5 semanas), habilitando indexación per filtro, JSON-LD scoped al subset, y cache CDN/SSR con cardinality controlada (top 25 combos calientes). Capas: hook useUrlFilter, buildCanonical, sitemap top combos, policy de cache 4 clases, revalidateTag, smoke test pre-merge.",
+      "href": "decks/draft/url-as-state-cache-ssr-filtros.html",
+      "status": "draft",
+      "audience": "Comité PM + TL + Manager",
+      "date": "2026-05-25",
+      "slides": 15,
+      "topics": [
+        "seo",
+        "performance",
+        "arquitectura"
+      ],
+      "featured": true
+    },
+    {
       "id": "usa-la-bitacora",
       "title": "Usá la bitácora · invitación al equipo MODO",
       "desc": "Deck de adopción para fomentar el uso de erno-modo (soyernomodo.github.io/erno-modo) como bitácora pública del equipo: decks, RFCs y skills con URL estable, brand MODO y workflow draft → rfc → completo. Tres pasos para arrancar esta semana.",

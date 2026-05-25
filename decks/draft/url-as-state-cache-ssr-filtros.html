@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<title>URL-as-state + cache SSR para filtros públicos · MODO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--gray-8);
+    font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide {
+    width: min(1600px, 96vw, calc(92vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    background: var(--paper-warm);
+    position: relative;
+    display: none;
+    padding: 64px 80px;
+    box-shadow: 0 24px 80px rgba(18,18,18,0.08);
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 42px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  .eyebrow--neutral { color: var(--gray-60); }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(42px, 4.8vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(33px, 3.4vw, 54px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .row { display: flex; gap: 32px; }
+  .row > * { flex: 1; min-width: 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .stack-sm > * + * { margin-top: 8px; }
+  .stack-md > * + * { margin-top: 16px; }
+  .stack-lg > * + * { margin-top: 24px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; }
+  .card--green-tint { background: var(--green-10); border-color: transparent; }
+  .card--green-tint .card__index, .card--green-tint .subheading, .card--green-tint .body { color: var(--green-dark); }
+  .card--gray-tint { background: var(--gray-3); border-color: transparent; }
+  .card--gray-tint .subheading { color: var(--dark-gray); }
+  .card__label { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 4px; }
+  .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 4px; }
+  .mini-grid .card { padding: 14px 16px; }
+  .mini-grid .card__index { margin-bottom: 6px; }
+  .mini-grid h3 { font-size: 17px; font-weight: 700; margin: 0 0 6px; line-height: 1.25; }
+  .mini-grid p { font-size: 14px; line-height: 1.5; color: var(--gray-80); margin: 0; }
+  em.query { font-style: italic; color: var(--ink); font-weight: 500; }
+  .related-decks { margin-top: 14px; padding: 10px 18px; background: var(--green-10); border-radius: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .related-decks__label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); }
+  .related-decks .chip { text-decoration: none; }
+  .footnote--disclaim { font-size: 12px; color: var(--gray-60); margin-top: 12px; line-height: 1.55; }
+  .footnote--disclaim a { color: var(--gray-80); text-decoration: underline; text-underline-offset: 2px; }
+  .footnote--disclaim em { font-style: italic; color: var(--gray-60); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 14px; font-weight: 500; letter-spacing: 0.02em; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .chip--red { background: #FFE6E6; color: #A92121; font-weight: 600; }
+  .chip--ghost { background: transparent; color: var(--gray-60); border: 1px solid var(--gray-20); }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 17px; }
+  table.compare th, table.compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20); }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 18px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--no li::before { background: var(--red-warn); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--red-warn); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pillar { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 280px; }
+  .pillar__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  .pillar__title { font-size: 22px; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0; }
+  .pillar__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .pillar__footer { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--gray-8); display: flex; justify-content: space-between; align-items: baseline; }
+  .pillar__footer .label { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .pillar__footer .value { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 19px; color: var(--ink); }
+  .pillar-detail { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; height: 100%; align-items: center; }
+  .pillar-detail__evidence { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; }
+  .pillar-detail__evidence h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-default); margin: 0 0 12px; }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+  .timeline { display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 14px; align-items: stretch; margin-top: 24px; }
+  .phase { background: var(--paper); border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); display: flex; flex-direction: column; position: relative; }
+  .phase__num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 56px; line-height: 1; color: var(--green-default); margin-bottom: 8px; letter-spacing: -0.04em; }
+  .phase__weeks { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
+  .phase__title { font-size: 18px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 15px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total { background: var(--green-10); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 160px; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+  .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; }
+    .deck__nav { display: none !important; }
+  }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+  .deck-reactions { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 92vw); background: var(--paper); box-shadow: -8px 0 32px rgba(18,18,18,0.18); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 220ms var(--ease); }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--gray-3); font-family: "Quicksand", sans-serif; font-size: 17px; color: var(--ink); }
+  .deck-reactions__head button { background: transparent; border: none; width: 32px; height: 32px; border-radius: 999px; cursor: pointer; color: var(--gray-60); font-size: 24px; line-height: 1; }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+  .codeblock { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px; line-height: 1.55; background: var(--ink); color: #E8E8E8; padding: 14px 16px; border-radius: 10px; overflow: hidden; white-space: pre; }
+  .codeblock .k { color: #8AB6FF; }
+  .codeblock .s { color: #B5E8A1; }
+  .codeblock .c { color: #7E7E7E; font-style: italic; }
+</style>
+<style id="deck-crumb-style">
+.deck-crumb { position: fixed; top: 12px; left: 12px; z-index: 9999; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: rgba(0, 136, 89, 0.92); color: #fff; font-family: 'Red Hat Display', system-ui, sans-serif; font-size: 13px; font-weight: 500; border-radius: 999px; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+<link rel="stylesheet" href="../../assets/deck-bionic.css" />
+</head>
+<body>
+
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="modo-logo-solid" viewBox="0 0 107 24">
+    <path d="M2.42202 16.6821C1.80204 16.6818 1.20585 16.45 0.756436 16.0346C0.307025 15.6191 0.0386893 15.0517 0.00679152 14.4495V21.394C-0.000170847 21.7069 0.0571683 22.018 0.175445 22.309C0.293722 22.6001 0.470556 22.8652 0.695573 23.0889C0.92059 23.3125 1.18926 23.4902 1.48582 23.6116C1.78238 23.7329 2.10087 23.7954 2.42259 23.7954C2.74431 23.7954 3.06279 23.7329 3.35936 23.6116C3.65592 23.4902 3.92459 23.3125 4.14961 23.0889C4.37462 22.8652 4.55146 22.6001 4.66973 22.309C4.78801 22.018 4.84535 21.7069 4.83839 21.394V14.4484C4.80622 15.0508 4.53768 15.6183 4.08812 16.0339C3.63855 16.4495 3.04222 16.6815 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M2.42202 16.6821C3.75967 16.6821 4.84404 15.6273 4.84404 14.3262C4.84404 13.025 3.75967 11.9702 2.42202 11.9702C1.08438 11.9702 0 13.025 0 14.3262C0 15.6273 1.08438 16.6821 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M23.1914 4.9321C22.7557 4.93316 22.3277 4.81975 21.9528 4.60384C21.5778 4.38794 21.2697 4.07755 21.0611 3.70545C20.8524 3.33335 20.7509 2.91335 20.7673 2.4898C20.7837 2.06625 20.9174 1.65486 21.1542 1.29907L12.8039 12.6385L14.6679 15.1706C14.9906 15.5483 15.1838 16.0146 15.2205 16.5044C15.2573 16.9941 15.1357 17.4828 14.8728 17.902L20.7728 9.88512V21.2686C20.8028 20.665 21.0705 20.0959 21.5202 19.679C21.97 19.2622 22.5674 19.0297 23.1886 19.0297C23.8098 19.0297 24.4072 19.2622 24.857 19.679C25.3067 20.0959 25.5744 20.665 25.6044 21.2686V2.69834C25.5728 3.30042 25.3049 3.86776 24.8559 4.28338C24.407 4.69899 23.8112 4.93119 23.1914 4.9321Z" fill="#008859"/>
+    <path d="M12.8062 14.3263C13.1625 14.326 13.5144 14.4022 13.8368 14.5495C14.1592 14.6968 14.4442 14.9115 14.6714 15.1784L12.8074 12.6463L4.38688 1.20447C4.20221 0.95356 3.96855 0.740489 3.69922 0.577422C3.4299 0.414355 3.13019 0.304486 2.81721 0.254087C2.50424 0.203687 2.18412 0.213746 1.87514 0.283687C1.56616 0.353628 1.27437 0.482083 1.01643 0.661717C0.758481 0.84135 0.539436 1.06865 0.371797 1.33062C0.204158 1.5926 0.0912076 1.88413 0.0393952 2.18857C-0.0124171 2.49301 -0.00207694 2.8044 0.0698254 3.10495C0.141728 3.40551 0.273784 3.68934 0.458455 3.94025L10.7385 17.9087C10.752 17.9307 10.7668 17.9516 10.7815 17.9725C10.5416 17.6174 10.4051 17.2058 10.3863 16.7813C10.3675 16.3568 10.4672 15.9353 10.6748 15.5614C10.8824 15.1876 11.1901 14.8754 11.5654 14.6579C11.9407 14.4405 12.3694 14.3259 12.8062 14.3263Z" fill="#008859"/>
+    <path d="M12.8062 19.0382C14.1439 19.0382 15.2283 17.9834 15.2283 16.6823C15.2283 15.3811 14.1439 14.3263 12.8062 14.3263C11.4686 14.3263 10.3842 15.3811 10.3842 16.6823C10.3842 17.9834 11.4686 19.0382 12.8062 19.0382Z" fill="#008859"/>
+    <path d="M23.1914 23.7467C24.5291 23.7467 25.6134 22.6919 25.6134 21.3908C25.6134 20.0896 24.5291 19.0348 23.1914 19.0348C21.8538 19.0348 20.7694 20.0896 20.7694 21.3908C20.7694 22.6919 21.8538 23.7467 23.1914 23.7467Z" fill="#008859"/>
+    <path d="M23.1914 4.93202C24.5291 4.93202 25.6134 3.87722 25.6134 2.57606C25.6134 1.27489 24.5291 0.220093 23.1914 0.220093C21.8538 0.220093 20.7694 1.27489 20.7694 2.57606C20.7694 3.87722 21.8538 4.93202 23.1914 4.93202Z" fill="#008859"/>
+  </symbol>
+</svg>
+
+<div class="deck" id="deck">
+
+  <!-- ============================ SLIDE 01 · COVER ============================ -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark">MODO</span>
+      <span>URL-state programa · modo-landing + promos-hub</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">programa URL-state · estimación con IA</p>
+      <h1 class="title">Filtros con URL.<br/>Cache que pega.<br/><span style="color: var(--green-default)">SEO que indexa</span>.</h1>
+      <p class="lede">Hoy los filtros de <span class="mono">/promos</span> viven en <span class="mono">useState</span>. Los crawlers no los ven, no se comparten, no se cachean per estado. Propongo moverlos a URL-as-state en 4 fases.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>PM · TL · Manager</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>2026-05-25</p></div>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 02 · TL;DR ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>02 · TL;DR</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">la recomendación</p>
+      <h2 class="heading">Un cambio arquitectónico,<br/><span style="color: var(--green-default)">tres palancas que se mueven juntas</span>.</h2>
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card">
+          <p class="card__label">URLs indexables hoy</p>
+          <p class="num num--lg num--accent">0</p>
+          <p class="body" style="margin-top: 8px;">Crawlers ven solo el estado default de <span class="mono">/promos</span>. Categorías y bancos son invisibles a Google.</p>
+        </div>
+        <div class="card">
+          <p class="card__label">LCP mobile /promos hoy</p>
+          <p class="num num--lg num--accent">8.9-17.9s</p>
+          <p class="body" style="margin-top: 8px;">Baseline mobile 2026-05-21. Catálogo completo bajado al cliente para filtrar en memoria.</p>
+        </div>
+        <div class="card">
+          <p class="card__label">Cache entries calientes objetivo</p>
+          <p class="num num--lg num--accent">~25</p>
+          <p class="body" style="margin-top: 8px;">5 categorías top × 5 bancos top. Cardinality controlada, no NxMx7x24.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 18px;">URL diferenciada habilita: indexación de filtros, share, cache key estable, JSON-LD per estado, analytics granular.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 13%"></i></div><span class="counter">02 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 03 · DIAGNÓSTICO ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>03 · Diagnóstico</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow eyebrow--neutral">cómo está hoy</p>
+      <h2 class="heading">Filtros que cambian la UI<br/>pero no cambian nada más.</h2>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>/promos · modo-landing (hoy)</h4>
+          <div class="row-item"><span class="label">Stack de filtro</span><span class="value">useState client-only</span></div>
+          <div class="row-item"><span class="label">Payload SSR</span><span class="value">catálogo completo</span></div>
+          <div class="row-item"><span class="label">URL al filtrar</span><span class="value">no cambia</span></div>
+          <div class="row-item"><span class="label">Crawler ve filtro</span><span class="value" style="color: var(--red-warn);">no</span></div>
+          <div class="row-item"><span class="label">Share del estado</span><span class="value" style="color: var(--red-warn);">no</span></div>
+          <div class="row-item"><span class="label">Cache CDN por filtro</span><span class="value" style="color: var(--red-warn);">no</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Consecuencias medibles</h4>
+          <div class="row-item"><span class="label">LCP mobile baseline</span><span class="value">8.9 a 17.9s</span></div>
+          <div class="row-item"><span class="label">URLs indexadas con filtro</span><span class="value">0</span></div>
+          <div class="row-item"><span class="label">Combos cacheables</span><span class="value">0</span></div>
+          <div class="row-item"><span class="label">JSON-LD scoped</span><span class="value">no aplica</span></div>
+          <div class="row-item"><span class="label">page_view por filtro</span><span class="value">requiere scaffolding</span></div>
+          <div class="row-item"><span class="label">Bundle JS shipped</span><span class="value">catálogo entero</span></div>
+        </div>
+      </div>
+      <p class="footnote--disclaim"><em>Baseline LCP: medición Unlighthouse mobile sobre <span class="mono">modo.com.ar/promos</span> el 2026-05-21. PR #1466 (SSR CMS body) impacta una parte del LCP por aparte; este programa va por la otra parte.</em></p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 20%"></i></div><span class="counter">03 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 04 · TIMING ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>04 · Por qué juntas</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">timing</p>
+      <h2 class="heading">SEO, cache y share son la misma palanca:<br/><span style="color: var(--green-default)">URL diferenciada por estado</span>.</h2>
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="card card--green-tint">
+          <p class="card__index">A</p>
+          <h3 class="subheading">Si hacés URL-state sin cache</h3>
+          <p class="body">Servís SEO indexable pero el origen come N veces más requests. Cada combo de Googlebot pega al BFF. Costo de servidor sube sin proporción.</p>
+        </div>
+        <div class="card card--green-tint">
+          <p class="card__index">B</p>
+          <h3 class="subheading">Si hacés cache sin URL-state</h3>
+          <p class="body">No hay cache key estable. El CDN o cachea mal (user A ve content de B) o el equipo apaga cache entera. Es lo que pasa hoy.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">C</p>
+          <h3 class="subheading">Si hacés SEO sin SSR</h3>
+          <p class="body">El catálogo viene client-side filtered. Crawler descarga 500 items y los filtra en JS que no corre. Default state es lo único que se indexa.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">D</p>
+          <h3 class="subheading">Las tres juntas</h3>
+          <p class="body">URL-state + SSR subset + cache headers per cache-class. Una sola migración, tres ganancias. Después solo se mantiene.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 27%"></i></div><span class="counter">04 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 05 · PILAR 1 · URL CRAWLABLE ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>05 · Pilar 01 · URL crawlable</span>
+    </div>
+    <div class="slide__body">
+      <div class="pillar-detail">
+        <div>
+          <p class="eyebrow">pilar 01</p>
+          <p class="num num--xl num--accent">0 → N</p>
+          <h2 class="heading" style="margin-top: 16px;">URLs distintas<br/>por filtro indexable.</h2>
+          <p class="body" style="margin-top: 12px;">Cada cambio de estado público pasa por <span class="mono">router.replace</span> o <span class="mono">useSearchParams</span>. Default state queda con URL limpia, sin query vacíos.</p>
+        </div>
+        <div>
+          <div class="pillar-detail__evidence">
+            <h4>Decision tree</h4>
+            <ul class="checks">
+              <li>Eje taxonómico, 1 valor → segmento <span class="mono">/promos/categoria/[slug]</span></li>
+              <li>Combinable → query <span class="mono">?categoria=...&banco=...</span></li>
+              <li>Search → query <span class="mono">?q=...</span> con <span class="mono">noindex</span></li>
+              <li>Sort, page → query con <span class="mono">noindex,follow</span></li>
+            </ul>
+          </div>
+          <div class="pillar-detail__evidence">
+            <h4>Sitemap</h4>
+            <ul class="checks">
+              <li>Top 5 categorías + top 5 bancos como entries</li>
+              <li>Long-tail combinatoria queda fuera</li>
+              <li>Generado dinámicamente desde catálogo MODO</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 33%"></i></div><span class="counter">05 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 06 · PILAR 2 · LD SCOPED ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>06 · Pilar 02 · JSON-LD scoped</span>
+    </div>
+    <div class="slide__body">
+      <div class="pillar-detail">
+        <div>
+          <p class="eyebrow">pilar 02</p>
+          <p class="num num--xl num--accent">1 → N</p>
+          <h2 class="heading" style="margin-top: 16px;">JSON-LD scoped<br/>al subset visible.</h2>
+          <p class="body" style="margin-top: 12px;">Cada combinación URL emite su propio <span class="mono">CollectionPage</span> + <span class="mono">ItemList</span> reducido. Sin inconsistencias entre lo que el user ve y lo que el crawler lee.</p>
+        </div>
+        <div>
+          <div class="pillar-detail__evidence">
+            <h4>Por estado</h4>
+            <ul class="checks">
+              <li><span class="mono">ItemList</span> con los N items visibles, no el catálogo entero</li>
+              <li><span class="mono">BreadcrumbList</span> con el filtro como último crumb</li>
+              <li><span class="mono">Offer</span> por card con <span class="mono">validFrom</span>, <span class="mono">validThrough</span>, <span class="mono">offeredBy</span> banco</li>
+              <li><span class="mono">SearchAction</span> en el WebSite del home</li>
+            </ul>
+          </div>
+          <div class="pillar-detail__evidence">
+            <h4>Validación pre-merge</h4>
+            <ul class="checks">
+              <li>Script local <span class="mono">validate-jsonld.py</span> en el skill MODO</li>
+              <li>Google Rich Results test por estado representativo</li>
+              <li>Comparación de <span class="mono">numberOfItems</span> vs <span class="mono">itemListElement.length</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 40%"></i></div><span class="counter">06 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 07 · PILAR 3 · CACHE ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>07 · Pilar 03 · Cache key = URL</span>
+    </div>
+    <div class="slide__body">
+      <div class="pillar-detail">
+        <div>
+          <p class="eyebrow">pilar 03</p>
+          <p class="num num--xl num--accent">1 → 25</p>
+          <h2 class="heading" style="margin-top: 16px;">Entries calientes,<br/>cardinality controlada.</h2>
+          <p class="body" style="margin-top: 12px;">URL es la cache key. Sin ella, todos los filtros colapsan en una entry. Con whitelist de top combos, cada estado popular se cachea independiente.</p>
+        </div>
+        <div>
+          <div class="pillar-detail__evidence">
+            <h4>Policy 4 clases</h4>
+            <table class="compare" style="font-size: 14px;">
+              <thead><tr><th>Clase</th><th>Aplica a</th><th>Header</th></tr></thead>
+              <tbody>
+                <tr><td>long</td><td>Default + top single</td><td class="now"><span class="mono">s-maxage=600 swr=3600</span></td></tr>
+                <tr><td>medium</td><td>Single filter no-top</td><td class="now"><span class="mono">s-maxage=300 swr=1800</span></td></tr>
+                <tr><td>short</td><td>Combo 2 filtros</td><td class="now"><span class="mono">s-maxage=60 swr=300</span></td></tr>
+                <tr><td>none</td><td>Search, sort, long-tail</td><td class="now"><span class="mono">private no-store</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pillar-detail__evidence">
+            <h4>Invalidación</h4>
+            <ul class="checks">
+              <li>Tag-based con <span class="mono">revalidateTag('promos')</span> en Next 15</li>
+              <li>Webhook Storyblok / CMS lo dispara con <span class="mono">ISR_REVALIDATE_TOKEN</span></li>
+              <li>Cero enumeración de URLs en código de invalidación</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 47%"></i></div><span class="counter">07 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 08 · PLAN EN FASES ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>08 · El plan</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">estimación con IA · 4 fases · ~3.5 semanas</p>
+      <h2 class="heading">Fase por fase, cada una<br/>shippable y reversible.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <div class="phase__num">A</div>
+          <div class="phase__weeks">~1 sem con IA</div>
+          <h3 class="phase__title">Hook + 1 filtro principal</h3>
+          <p class="phase__body"><span class="mono">useUrlFilter</span> en <span class="mono">/promos</span>. Categoría a URL. Default limpia. SSR consume query. Smoke test 6 checks pre-merge.</p>
+        </div>
+        <div class="phase">
+          <div class="phase__num">B</div>
+          <div class="phase__weeks">~1 sem con IA</div>
+          <h3 class="phase__title">Resto de filtros combinables</h3>
+          <p class="phase__body">Banco, día, ciudad. <span class="mono">buildCanonical</span> con sort alfabético. <span class="mono">noindex,follow</span> en combos 3+ filtros. Debounce search box.</p>
+        </div>
+        <div class="phase">
+          <div class="phase__num">C</div>
+          <div class="phase__weeks">~1 sem con IA</div>
+          <h3 class="phase__title">LD scoped + cache headers</h3>
+          <p class="phase__body"><span class="mono">ItemList</span> reducido per estado. Sitemap top combos. Policy 4 clases en respuesta. <span class="mono">revalidateTag</span> webhook CMS.</p>
+        </div>
+        <div class="phase">
+          <div class="phase__num">D</div>
+          <div class="phase__weeks">~3 días con IA</div>
+          <h3 class="phase__title">Sweep + smoke tests</h3>
+          <p class="phase__body"><span class="mono">noindex</span> en long-tail. Validador JSON-LD per estado. Test de cache headers con <span class="mono">cf-cache-status</span>. Replicar en promos-hub.</p>
+        </div>
+        <div class="phase__total">
+          <p class="card__label">Total con IA</p>
+          <p class="num num--lg num--accent" style="margin-top: 8px;">~3.5 sem</p>
+          <p class="muted" style="margin-top: 6px;">1 FE + pairing design para copy per estado</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 53%"></i></div><span class="counter">08 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 09 · SCOPE ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>09 · Scope</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">qué entra y qué no</p>
+      <h2 class="heading">Filtros públicos sí.<br/>Estado de UI privada no.</h2>
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="card card--green-tint">
+          <p class="card__index">ENTRA</p>
+          <ul class="checks">
+            <li><span class="mono">/promos</span> modo-landing · categoría, banco, día, búsqueda</li>
+            <li>Root <span class="mono">promos.modo.com.ar</span> · mismos ejes</li>
+            <li>Paginación de listados</li>
+            <li>Sort cuando aplica (<span class="mono">noindex</span>)</li>
+            <li>JSON-LD scoped + sitemap top combos</li>
+            <li>Cache headers per cache-class</li>
+          </ul>
+        </div>
+        <div class="card card--gray-tint">
+          <p class="card__index">NO ENTRA</p>
+          <ul class="checks checks--no">
+            <li>Modal open/close, dropdowns, accordions, tooltips</li>
+            <li>Drawer mobile, animation step, skeleton state</li>
+            <li>Form draft (sigue en localStorage)</li>
+            <li>Auth state (cookies / session)</li>
+            <li><span class="mono">/pagar</span> checkout (flujo privado)</li>
+            <li>Combinatoria long-tail indexable (queda <span class="mono">noindex</span>)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footnote--disclaim"><span class="mono">/comercios</span> <em>(en QA, todavía no live)</em> entra en una fase posterior cuando se promueva a prod, junto con el programa Next 16.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 60%"></i></div><span class="counter">09 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 10 · VISTA PM ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>10 · Vista PM</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">producto · UX · métricas</p>
+      <h2 class="heading">Qué cambia para el usuario<br/>y para los crawlers.</h2>
+      <table class="compare" style="margin-top: 16px;">
+        <thead><tr><th>Eje</th><th>Hoy</th><th>Después</th></tr></thead>
+        <tbody>
+          <tr><td>Share del filtro</td><td class="was">copio link, el otro ve el default</td><td class="now">copio link, el otro ve mi resultado</td></tr>
+          <tr><td>Volver atrás del browser</td><td class="was">vuelve a otra ruta, pierde filtros</td><td class="now">vuelve al estado pre-filtros</td></tr>
+          <tr><td>Bookmark de combo</td><td class="was">no existe</td><td class="now">funciona</td></tr>
+          <tr><td>Google indexa <em class="query">"promos supermercados MODO"</em></td><td class="was">apunta al home</td><td class="now">apunta a <span class="mono">/promos?categoria=supermercados</span></td></tr>
+          <tr><td>page_view por filtro en Amplitude</td><td class="was">requiere event custom</td><td class="now">page_view nativo por URL</td></tr>
+          <tr><td>Tiempo a primer contenido (LCP)</td><td class="was">8.9 a 17.9s mobile baseline</td><td class="now">HTML chico con subset filtrado SSR</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 67%"></i></div><span class="counter">10 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 11 · VISTA TL ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>11 · Vista TL</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">tech lead · scope técnico</p>
+      <h2 class="heading">Stack, breaking changes,<br/>riesgos, rollback.</h2>
+      <table class="compare" style="margin-top: 16px; font-size: 16px;">
+        <thead><tr><th>Capa</th><th>Cambio técnico</th><th>Riesgo</th><th>Rollback</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Next 12 (modo-landing)</td>
+            <td class="now">Hook <span class="mono">useUrlFilter</span> + <span class="mono">getServerSideProps</span> consume query</td>
+            <td>cardinality si default leakea</td>
+            <td>revertir PR de Fase A</td>
+          </tr>
+          <tr>
+            <td>Next 15 (promos-hub)</td>
+            <td class="now"><span class="mono">searchParams</span> en server component + <span class="mono">useTransition</span> client</td>
+            <td>RSC cache vs cliente desincronizado</td>
+            <td><span class="mono">force-dynamic</span> temporal</td>
+          </tr>
+          <tr>
+            <td>SSR / BFF</td>
+            <td class="now">Filtrar en el origen, devolver subset</td>
+            <td>load del BFF si combos explotan</td>
+            <td>cache short en fallback</td>
+          </tr>
+          <tr>
+            <td>JSON-LD</td>
+            <td class="now"><span class="mono">ItemList</span> generado por estado</td>
+            <td>inconsistencia UI vs LD</td>
+            <td>validate-jsonld.py por estado</td>
+          </tr>
+          <tr>
+            <td>Cache CDN</td>
+            <td class="now">Policy 4 clases + <span class="mono">Vary: Accept-Encoding</span></td>
+            <td>Vary mal seteado rompe hit rate</td>
+            <td>Cache-Control no-store global</td>
+          </tr>
+          <tr>
+            <td>Sitemap + robots</td>
+            <td class="now">Top combos en sitemap, long-tail <span class="mono">noindex</span></td>
+            <td>Google indexa combinatoria thin</td>
+            <td>noindex sweep manual</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 73%"></i></div><span class="counter">11 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 12 · VISTA MANAGER ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>12 · Vista Manager</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">manager · costo · riesgo · ROI</p>
+      <h2 class="heading">Qué cuesta y qué entrega.</h2>
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card">
+          <p class="card__label">Costo dev con IA</p>
+          <p class="num num--lg num--accent">~3.5 sem</p>
+          <p class="body" style="margin-top: 8px;">1 FE + pairing con design + 1 review TL. <strong>~7 sem manual</strong> equivalente.</p>
+        </div>
+        <div class="card">
+          <p class="card__label">PRs estimados</p>
+          <p class="num num--lg num--accent">~8</p>
+          <p class="body" style="margin-top: 8px;">2 PRs por fase. Cada uno reversible, shippable a develop. Smoke test pre-merge gate.</p>
+        </div>
+        <div class="card">
+          <p class="card__label">Repos impactados</p>
+          <p class="num num--lg num--accent">2</p>
+          <p class="body" style="margin-top: 8px;">modo-landing + promos-hub-site. SDK lib externa intacta. modo-ui-lib-web intacta.</p>
+        </div>
+      </div>
+      <table class="compare" style="margin-top: 20px; font-size: 16px;">
+        <thead><tr><th>Métrica</th><th>Hoy</th><th>Objetivo post-programa</th></tr></thead>
+        <tbody>
+          <tr><td>URLs indexables por filtro</td><td class="was">0</td><td class="now">~25 top combos</td></tr>
+          <tr><td>LCP mobile <span class="mono">/promos</span></td><td class="was">8.9 a 17.9s</td><td class="now">subset SSR + cache HIT en top combos</td></tr>
+          <tr><td>Cache hit rate top combos</td><td class="was">no medible (1 entry)</td><td class="now">objetivo ≥80% sobre top 25</td></tr>
+          <tr><td>Costo origen (req/seg promo BFF)</td><td class="was">1 endpoint catálogo entero</td><td class="now">cache CDN absorbe top combos</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 80%"></i></div><span class="counter">12 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 13 · HARNESS ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>13 · Harness</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">cómo aseguramos calidad antes de mergear</p>
+      <h2 class="heading">Skill + SDD + TDD + smoke test.<br/><span style="color: var(--green-default)">Cuatro guardrails activos en el repo</span>.</h2>
+      <div class="mini-grid" style="margin-top: 12px;">
+        <div class="card">
+          <p class="card__index">01</p>
+          <h3>Skill <span class="mono">modo-seo-geo-audit</span></h3>
+          <p>Codifica reglas URL-as-state + JSON-LD per filter + cache policy. Auto-invocable en PR de filtros.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">02</p>
+          <h3>SDD en <span class="mono">openspec/changes/</span></h3>
+          <p>1 change folder con tasks, design, spec-delta. Track por fase con <span class="mono">/sdd-track</span>.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">03</p>
+          <h3>TDD por task</h3>
+          <p>Test antes de implementar cada filtro. Unit del hook + integration del SSR + smoke E2E.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">04</p>
+          <h3>Smoke test pre-merge</h3>
+          <p>6 checks bash: URL refleja filtro, subset SSR, LD scoped, default limpia, <span class="mono">noindex</span>, Googlebot ve subset.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">05</p>
+          <h3>Validador JSON-LD</h3>
+          <p>Script Python local del skill. Google Rich Results strict + <span class="mono">numberOfItems</span> match.</p>
+        </div>
+        <div class="card">
+          <p class="card__index">06</p>
+          <h3>Layer 3 CSP + headers</h3>
+          <p>Skill <span class="mono">frontend-security-checklist</span> valida headers post-deploy. Cubre <span class="mono">Cache-Control</span> también.</p>
+        </div>
+      </div>
+      <div class="related-decks">
+        <span class="related-decks__label">Decks relacionados</span>
+        <a href="nextjs-12-to-16-consolidation.html" class="chip chip--green">Next 12 → 16</a>
+        <a href="storyblok-cms-build-time.html" class="chip chip--green">Storyblok CMS build-time</a>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 87%"></i></div><span class="counter">13 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 14 · DECISIONES ============================ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>14 · Decisiones</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">qué necesito de este comité</p>
+      <h2 class="heading">Cuatro decisiones,<br/>cuatro owners.</h2>
+      <ol class="decisions" style="margin-top: 16px;">
+        <li>
+          <h3>Aprobar el plan en 4 fases (~3.5 sem con IA)</h3>
+          <p class="muted">Arrancamos por Fase A en <span class="mono">/promos</span> con un solo filtro. Cada fase es shippable y reversible.</p>
+          <p class="ownership">Owner · TL modo-landing</p>
+        </li>
+        <li>
+          <h3>Aprobar policy de cache headers + Vary</h3>
+          <p class="muted">Las 4 clases <span class="mono">long/medium/short/none</span>. Coordinación con SRE para validar <span class="mono">s-maxage</span> en ALB/istio.</p>
+          <p class="ownership">Owner · TL + SRE</p>
+        </li>
+        <li>
+          <h3>Aprobar prioridad: <span class="mono">/promos</span> primero, promos-hub después</h3>
+          <p class="muted">El learning de Fase A en modo-landing baja el costo de la replicación en Next 15.</p>
+          <p class="ownership">Owner · Manager</p>
+        </li>
+        <li>
+          <h3>Aprobar coordinación con Brand para copy per filter</h3>
+          <p class="muted">Title, description y H1 per estado filtrado. Necesito pairing en Fase B y C, no en Fase A.</p>
+          <p class="ownership">Owner · PM + Brand</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>URL-state programa · modo-landing + promos-hub</span>
+      <div class="progress"><i style="--p: 93%"></i></div><span class="counter">14 / 15</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 15 · CIERRE ============================ -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>URL-state programa · modo-landing + promos-hub</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">cierre</p>
+      <h1 class="title">Aguardo su feedback<br/>para abrir los tickets y<br/><span style="color: var(--green-default)">agendar la review técnica</span>.</h1>
+      <p class="lede">Este deck propone, no decide. Necesito el ok de TL + SRE para la policy de cache, del PM + Brand para el copy per filter, del Manager para la prioridad de repos.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Material de soporte</h4><p>Skill <span class="mono">modo-seo-geo-audit</span> · <span class="mono">openspec/changes/url-as-state-filters/</span></p></div>
+      <div class="meta__col"><h4>Smoke test</h4><p>6 checks bash, en <span class="mono">reference/url-as-state-filters.md</span></p></div>
+      <div class="meta__col"><h4>Contacto</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 15</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); go(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') {
+      e.preventDefault(); go(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(slides.length - 1);
+    } else if (e.key === 'p' || e.key === 'P') {
+      window.print();
+    }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) {
+    go(hash - 1);
+  } else {
+    go(0);
+  }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="url-as-state-cache-ssr-filtros"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>
