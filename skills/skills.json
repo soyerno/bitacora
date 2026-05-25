@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-24",
+    "generated": "2026-05-25",
     "updated_by": "erno-modo-sync-all",
     "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
   },
@@ -9,8 +9,8 @@
       "name": "modo-deck",
       "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
       "filename": "modo-deck.zip",
-      "sha256_prefix": "b26f43f79e08f514",
-      "size_kb": 96.4,
+      "sha256_prefix": "5bd2ee76bd7ab515",
+      "size_kb": 106.2,
       "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
     },
     {
