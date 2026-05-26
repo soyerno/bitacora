@@ -6,6 +6,22 @@
   },
   "decks": [
     {
+      "id": "aprendeatumodo-lovable-a-storyblok",
+      "title": "Aprendé a tu MODO · De Lovable a producción",
+      "desc": "Journey aprendeatumodo de SPA generada por Lovable a sitio Storyblok-driven con GEO 7/7 y pattern reusable para fronts MODO. Resuelve CSR trap con 5 JSON-LD inline, 17 AI bots declarados, llms.txt + Course strict 7/7. 42 stories en Storyblok organizadas en folder con is_startpage child pattern. Dos skills nuevas (modo-seo-geo-audit + modo-storyblok) y aprendizajes para aplicar en modo-landing, promos-hub-site y futuros fronts.",
+      "href": "decks/draft/aprendeatumodo-lovable-a-storyblok.html",
+      "status": "draft",
+      "audience": "Comité PM + TL + Manager",
+      "date": "2026-05-25",
+      "slides": 12,
+      "topics": [
+        "seo",
+        "cms",
+        "skills"
+      ],
+      "featured": true
+    },
+    {
       "id": "aprende-a-tu-modo-ssr-geo-storyblok",
       "title": "Aprendé a tu MODO · SSR + GEO + Storyblok",
       "desc": "Estado del programa aprendeatumodo (COENXT-307 a COENXT-326). 17 PRs mergeados a main: GEO P0 (5 LDs ricos inline + 22 AI bots + sitemap + llms.txt + Course strict 7/7) y Storyblok orchestration W1 a W7 (7 cursos viviendo como stories con dual-source fallback). SSR sigue pendiente: Next 16 Pages router para destrabar HTML estático per /curso/[slug] + LD Course scoped + ISR. Pivot consciente de Vike a Next 16. Plan en 4 fases con IA (~3 semanas).",

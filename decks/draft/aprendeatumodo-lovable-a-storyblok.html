@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<title>Aprendé a tu MODO · De Lovable a Storyblok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1600px, 96vw, calc(92vh * 16 / 9)); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 42px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(42px, 4.8vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(33px, 3.4vw, 54px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; }
+  .card--green-tint { background: var(--green-10); border-color: transparent; }
+  .card--green-tint .card__index, .card--green-tint .subheading, .card--green-tint .body { color: var(--green-dark); }
+  .card--gray-tint { background: var(--gray-3); border-color: transparent; }
+  .card--gray-tint .subheading { color: var(--dark-gray); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 14px; font-weight: 500; letter-spacing: 0.02em; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 16px; }
+  table.compare th, table.compare td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20); }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 18px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .pillar-detail { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; height: 100%; align-items: center; }
+  .pillar-detail__evidence { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; }
+  .pillar-detail__evidence h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-default); margin: 0 0 12px; }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 16px; align-items: stretch; margin-top: 24px; }
+  .phase { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); display: flex; flex-direction: column; position: relative; }
+  .phase__num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 66px; line-height: 1; color: var(--green-default); margin-bottom: 8px; letter-spacing: -0.04em; }
+  .phase__weeks { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
+  .phase__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total { background: var(--green-10); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 180px; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+  .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  em.query { font-style: italic; color: var(--ink); font-weight: 500; }
+  .footnote--disclaim { font-size: 12px; color: var(--gray-60); margin-top: 12px; line-height: 1.55; }
+  .footnote--disclaim a { color: var(--gray-80); text-decoration: underline; text-underline-offset: 2px; }
+  .footnote--disclaim em { font-style: italic; color: var(--gray-60); }
+  .related-decks { margin-top: 14px; padding: 10px 18px; background: var(--green-10); border-radius: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .related-decks__label { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); }
+  .related-decks .chip { text-decoration: none; }
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; }
+    .deck__nav { display: none !important; }
+  }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+  .deck-reactions { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 92vw); background: var(--paper); box-shadow: -8px 0 32px rgba(18,18,18,0.18); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 220ms var(--ease); }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--gray-3); font-family: "Quicksand", sans-serif; font-size: 17px; color: var(--ink); }
+  .deck-reactions__head button { background: transparent; border: none; width: 32px; height: 32px; border-radius: 999px; cursor: pointer; color: var(--gray-60); font-size: 24px; line-height: 1; }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+<style id="deck-crumb-style">
+.deck-crumb { position: fixed; top: 12px; left: 12px; z-index: 9999; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: rgba(0, 136, 89, 0.92); color: #fff; font-family: 'Red Hat Display', system-ui, sans-serif; font-size: 13px; font-weight: 500; border-radius: 999px; text-decoration: none; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+<link rel="stylesheet" href="../../assets/deck-bionic.css" />
+</head>
+<body>
+
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="modo-logo-solid" viewBox="0 0 107 24">
+    <path d="M2.42202 16.6821C1.80204 16.6818 1.20585 16.45 0.756436 16.0346C0.307025 15.6191 0.0386893 15.0517 0.00679152 14.4495V21.394C-0.000170847 21.7069 0.0571683 22.018 0.175445 22.309C0.293722 22.6001 0.470556 22.8652 0.695573 23.0889C0.92059 23.3125 1.18926 23.4902 1.48582 23.6116C1.78238 23.7329 2.10087 23.7954 2.42259 23.7954C2.74431 23.7954 3.06279 23.7329 3.35936 23.6116C3.65592 23.4902 3.92459 23.3125 4.14961 23.0889C4.37462 22.8652 4.55146 22.6001 4.66973 22.309C4.78801 22.018 4.84535 21.7069 4.83839 21.394V14.4484C4.80622 15.0508 4.53768 15.6183 4.08812 16.0339C3.63855 16.4495 3.04222 16.6815 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M2.42202 16.6821C3.75967 16.6821 4.84404 15.6273 4.84404 14.3262C4.84404 13.025 3.75967 11.9702 2.42202 11.9702C1.08438 11.9702 0 13.025 0 14.3262C0 15.6273 1.08438 16.6821 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M23.1914 4.9321C22.7557 4.93316 22.3277 4.81975 21.9528 4.60384C21.5778 4.38794 21.2697 4.07755 21.0611 3.70545C20.8524 3.33335 20.7509 2.91335 20.7673 2.4898C20.7837 2.06625 20.9174 1.65486 21.1542 1.29907L12.8039 12.6385L14.6679 15.1706C14.9906 15.5483 15.1838 16.0146 15.2205 16.5044C15.2573 16.9941 15.1357 17.4828 14.8728 17.902L20.7728 9.88512V21.2686C20.8028 20.665 21.0705 20.0959 21.5202 19.679C21.97 19.2622 22.5674 19.0297 23.1886 19.0297C23.8098 19.0297 24.4072 19.2622 24.857 19.679C25.3067 20.0959 25.5744 20.665 25.6044 21.2686V2.69834C25.5728 3.30042 25.3049 3.86776 24.8559 4.28338C24.407 4.69899 23.8112 4.93119 23.1914 4.9321Z" fill="#008859"/>
+  </symbol>
+</svg>
+
+<div class="deck" id="deck">
+
+  <!-- 01 COVER -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>aprendeatumodo · lovable → storyblok</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Migración + lecciones GEO/CMS</p>
+      <h1 class="title">De Lovable a producción.<br /><span style="color: var(--green-default)">Pattern reusable</span> para frontends MODO.</h1>
+      <p class="lede">Un sitio Lovable hardcoded se volvió Storyblok-driven con 42 stories editables, JSON-LD Course rich result completo y 2 skills nuevas. Pattern listo para extender a modo.com.ar, promos-hub-site y comercios.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>PM · TL · Manager</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>25 mayo 2026</p></div>
+    </div>
+  </section>
+
+  <!-- 02 TL;DR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>02 · La recomendación</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">La recomendación</p>
+      <h1 class="title" style="font-size: clamp(36px, 4.4vw, 60px); max-width: 22ch;">Adoptar el pattern aprendeatumodo<br /><span style="color: var(--green-default)">como base</span> para los frontends MODO con contenido editorial.</h1>
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="stat"><span class="stat__label">Contenido editorial</span><span class="num num--md stat__value">1655 → 0 LOC</span><p class="muted">Hardcoded JSX migrado a 42 stories Storyblok</p></div>
+        <div class="stat"><span class="stat__label">Google Course rich result</span><span class="num num--md stat__value">0/7 → 7/7</span><p class="muted">JSON-LD válido + AI bots declarados + llms.txt</p></div>
+        <div class="stat"><span class="stat__label">Pattern shippeado</span><span class="num num--md stat__value">2 skills</span><p class="muted"><span class="mono">modo-storyblok</span> + <span class="mono">modo-seo-geo-audit</span></p></div>
+      </div>
+      <p class="body" style="margin-top: 32px; max-width: 80ch;"><strong>Por qué juntas</strong>: editorial gana autonomía, los crawlers ven el contenido, y el knowhow queda codificado para que el próximo frontend MODO arranque del punto actual, no desde cero.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 17%"></i></div>
+      <span class="counter">02 / 12</span>
+    </div>
+  </section>
+
+  <!-- 03 DIAGNÓSTICO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>03 · Diagnóstico</span><span>punto de partida · lovable</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">El punto de partida</p>
+      <h2 class="heading">Lovable nos dejó funcionando pero invisible.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 16px;">El sitio cargaba bien y se veía limpio, pero atrás había un Vite SPA hardcoded con problemas de SEO/GEO catastróficos y cero autonomía editorial.</p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>Frontend Lovable · estado heredado</h4>
+          <div class="row-item"><span class="label">Stack</span><span class="value">Vite SPA · React 18 · CSR-only</span></div>
+          <div class="row-item"><span class="label">Contenido</span><span class="value">1655 LOC JSX hardcoded</span></div>
+          <div class="row-item"><span class="label">Editorial</span><span class="value">cambios requieren deploy</span></div>
+          <div class="row-item"><span class="label">CMS</span><span class="value">no había</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>SEO + GEO · lo que veía Googlebot</h4>
+          <div class="row-item"><span class="label">Course rich result</span><span class="value">0 / 7 cursos</span></div>
+          <div class="row-item"><span class="label">Sitemap</span><span class="value">5 entries · 4 con anchor</span></div>
+          <div class="row-item"><span class="label">AI bots en robots.txt</span><span class="value">0 declarados</span></div>
+          <div class="row-item"><span class="label"><span class="mono">/llms.txt</span></span><span class="value">404</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 25%"></i></div>
+      <span class="counter">03 / 12</span>
+    </div>
+  </section>
+
+  <!-- 04 TIMING -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>04 · Por qué ahora</span><span>tensión + oportunidad</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Por qué ahora</p>
+      <h2 class="heading">El sitio crece pero el deploy traba.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">01 · Editorial bloqueado</span>
+          <h3 class="subheading">Cada typo es un PR</h3>
+          <p class="body" style="margin: 0;">Los 7 cursos viven en código. Cualquier cambio de copy, agregado de módulo o edición de tip arranca con un dev. Editorial no tiene autonomía y el roadmap del frontend se mezcla con tareas de contenido.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">02 · Visibilidad rota</span>
+          <h3 class="subheading">Cursos invisibles a IA y buscadores</h3>
+          <ul class="checks">
+            <li>Googlebot ve el shell SPA, no el contenido de cada curso</li>
+            <li>Perplexity, ChatGPT, Claude no encuentran <em class="query">"cómo evitar QRishing MODO"</em></li>
+            <li>OG image apuntaba al preview de Lovable, no a MODO</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 18px 22px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>El framing</strong>: la inversión en SEO/GEO escala a cada front MODO que adopte el pattern. No es un fix puntual de un sitio, es infraestructura.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 33%"></i></div>
+      <span class="counter">04 / 12</span>
+    </div>
+  </section>
+
+  <!-- 05 PILAR 01 · GEO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>05 · Pilar 01</span><span>SEO + GEO recovery</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 01 · GEO</p>
+        <div class="num num--xl num--accent">0 → 7/7</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Cursos pasaron el Google Course strict check.</h2>
+        <p class="body" style="max-width: 50ch;">Cinco JSON-LD inline en <span class="mono">index.html</span> + sitemap reescrito + 17 AI bots declarados + llms.txt canónico. El sitio ahora aparece como recurso citable para IA generativa.</p>
+        <div style="margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="chip chip--green">Google rich result válido</span>
+          <span class="chip">GPTBot</span>
+          <span class="chip">ClaudeBot</span>
+          <span class="chip">PerplexityBot</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Qué arreglamos</h4>
+          <ul class="checks">
+            <li><strong>JSON-LD inline</strong>: Organization · WebSite · BreadcrumbList · CollectionPage · 7 Course · FAQPage.</li>
+            <li><strong>Sitemap</strong>: 5 con anchor → 8 URLs reales por curso.</li>
+            <li><strong>llms.txt</strong>: 404 → archivo canónico con descripción y cursos.</li>
+            <li><strong>robots.txt</strong>: 0 → 17 AI bots declarados explícitos.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">El trap del CSR</h4>
+          <p class="body" style="margin: 0;">Aprendimos que React Helmet en SPAs es invisible a crawlers. El JSON-LD tiene que vivir en el HTML estático que sirve el primer fetch.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 42%"></i></div>
+      <span class="counter">05 / 12</span>
+    </div>
+  </section>
+
+  <!-- 06 PILAR 02 · CMS -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>06 · Pilar 02</span><span>editorial autonomy</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 02 · CMS</p>
+        <div class="num num--xl num--accent">42</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Stories Storyblok donde antes había JSX.</h2>
+        <p class="body" style="max-width: 50ch;">1 home + 7 cursos + 34 módulos · cada módulo es página propia, editable por separado, publicación independiente. Adapter dual-mode soporta nested legacy y refs nuevas durante la transición.</p>
+        <div style="margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="chip chip--green">21 schemas · 9 nuevos del curso</span>
+          <span class="chip">19 TypeScript types</span>
+          <span class="chip">131 tests RTL</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Cómo lo armamos</h4>
+          <ul class="checks">
+            <li><strong>Schemas nestables</strong>: callout · tile · step · check_item · sub_heading · prose · prose_list.</li>
+            <li><strong>Bloks renderer</strong>: 1:1 con primitivas MODO branded existentes.</li>
+            <li><strong>iconMap whitelist</strong>: 32 Lucide expuestos (vs dynamic import 600KB).</li>
+            <li><strong>Adapter en boundary</strong>: page downstream no cambió, solo qué shape recibe.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Lección Storyblok</h4>
+          <p class="body" style="margin: 0;">Folders no sirven contenido al slug raíz · necesitan child story <span class="mono">is_startpage: true</span>. Lo aprendimos rompiéndolo en prod, lo dejamos documentado en el skill.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 50%"></i></div>
+      <span class="counter">06 / 12</span>
+    </div>
+  </section>
+
+  <!-- 07 PILAR 03 · SKILLS -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>07 · Pilar 03</span><span>pattern reusable</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 03 · Knowhow codificado</p>
+        <div class="num num--xl num--accent">2 skills</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">El próximo frontend MODO arranca acá.</h2>
+        <p class="body" style="max-width: 50ch;">Dos skills nuevas auto-invocables: <span class="mono">modo-storyblok</span> para orquestar contenido + <span class="mono">modo-seo-geo-audit</span> para validar SEO/GEO. Cualquier dev MODO los dispara con triggers naturales y arranca con el pattern, no desde cero.</p>
+        <div style="margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="chip chip--green">Triggers ES + EN</span>
+          <span class="chip">Mgmt API scripts</span>
+          <span class="chip">Tests parametrizados</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4><span class="mono">modo-storyblok</span> contiene</h4>
+          <ul class="checks">
+            <li>9 schemas canónicos · 14 TS types · adapter dual-mode</li>
+            <li>Renderer + iconMap + richtextRenderer hand-rolled</li>
+            <li>Mgmt API push scripts · idempotentes · dry-run default</li>
+            <li>Pattern <span class="mono">is_startpage</span> child para folder-as-story</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence">
+          <h4><span class="mono">modo-seo-geo-audit</span> contiene</h4>
+          <ul class="checks">
+            <li>Audit completo · CSR trap detection</li>
+            <li>8 recipes JSON-LD drop-in</li>
+            <li>llms.txt + robots.txt templates</li>
+            <li>Validador Python sin deps externas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 58%"></i></div>
+      <span class="counter">07 / 12</span>
+    </div>
+  </section>
+
+  <!-- 08 PLAN / TIMELINE -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>08 · El plan</span><span>8 PRs · ~3 días con IA</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">El plan · ya ejecutado</p>
+      <h2 class="heading">3 fases que se completaron en ~3 días con IA.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">01</span>
+          <span class="phase__weeks">~1 día con IA</span>
+          <h3 class="phase__title">SEO/GEO P0 + polish</h3>
+          <p class="phase__body">PR #3 audit · 5 JSON-LD inline · sitemap · robots.txt 17 bots · llms.txt. PRs #4-#10 polish visual.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">02</span>
+          <span class="phase__weeks">~1.5 días con IA</span>
+          <h3 class="phase__title">Storyblok pattern</h3>
+          <p class="phase__body">PRs #11-#17 · SDD · schemas · renderer · dual-source · piloto · 6 cursos restantes · Mgmt API scripts.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">03</span>
+          <span class="phase__weeks">~0.5 día con IA</span>
+          <h3 class="phase__title">Split + producción</h3>
+          <p class="phase__body">PR #19 modules as stories · push a Storyblok prod · pattern <span class="mono">is_startpage</span> child · 42 stories live.</p>
+        </div>
+        <div class="phase__total">
+          <span class="phase__weeks">Total con IA</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~3 días</span>
+          <span style="font-size: 11px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">8 PRs · 1 ingeniero</span>
+          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Estimación manual: ~3 semanas · 1 dev FE + content lead</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 20px; gap: 20px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent; padding: 14px 18px;"><h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 6px;">Live hoy</h4><p class="body" style="margin: 0; font-size: 13px; color: var(--green-dark);">42 stories en Storyblok prod · editorial puede entrar al editor y modificar copy por módulo sin tocar código.</p></div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 14px 18px;"><h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 6px;">Pendiente</h4><p class="body" style="margin: 0; font-size: 13px;">Frontend adapter con fetch fallback para refs nested (Storyblok no auto-resuelve multilink dentro de bloks).</p></div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 67%"></i></div>
+      <span class="counter">08 / 12</span>
+    </div>
+  </section>
+
+  <!-- 09 SCOPE -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>09 · Scope</span><span>lo que entregamos · lo que sigue</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Scope</p>
+      <h2 class="heading">Qué entra · qué no entra en esta entrega.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
+        <div class="card">
+          <h3 class="subheading" style="color: var(--green-default);">Sí entra · entregado</h3>
+          <ul class="checks">
+            <li>aprendeatumodo en Storyblok prod · 42 stories · 21 schemas</li>
+            <li>Cursos accesibles editorial via folder + home child pattern</li>
+            <li>JSON-LD inline · Google Course rich result 7/7</li>
+            <li>llms.txt · robots.txt con 17 AI bots · sitemap real</li>
+            <li>2 skills MODO (<span class="mono">modo-storyblok</span> + <span class="mono">modo-seo-geo-audit</span>)</li>
+            <li>SDD documentado · 131 tests RTL · build verde</li>
+          </ul>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--dark-gray);">No entra · siguiente PR</h3>
+          <ul class="checks checks--neutral">
+            <li>Frontend adapter con fetch separado para refs (Storyblok no auto-resuelve nested multilinks)</li>
+            <li>Drop del fallback nested legacy en código (post editorial QA)</li>
+            <li>Migración SSG (Next 16 con <span class="mono">output: 'export'</span>) · resuelve CSR trap de raíz</li>
+            <li>Extender pattern a modo.com.ar / promos-hub-site / comercios</li>
+            <li>Route <span class="mono">/curso/&lt;slug&gt;/&lt;modulo&gt;</span> per módulo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 75%"></i></div>
+      <span class="counter">09 / 12</span>
+    </div>
+  </section>
+
+  <!-- 10 VISTA COMBINADA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>10 · Vistas combinadas</span><span>PM · TL · Manager</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Para los 3 ángulos</p>
+      <h2 class="heading">Lo que cambió, según desde dónde mires.</h2>
+      <table class="compare" style="margin-top: 16px;">
+        <thead><tr><th style="width: 22%;">Aspecto</th><th style="width: 18%;">Vista</th><th>Hoy (post-entrega)</th><th>Antes (Lovable)</th></tr></thead>
+        <tbody>
+          <tr><td>Editorial workflow</td><td><strong>PM</strong></td><td class="now">Edit en Storyblok UI · publicar sin deploy</td><td class="was">Ticket + PR + dev + deploy</td></tr>
+          <tr><td>Page granularity</td><td><strong>PM</strong></td><td class="now">1 page editorial por módulo (34 modules · 7 cursos)</td><td class="was">1 page por curso completo</td></tr>
+          <tr><td>SEO Course rich result</td><td><strong>PM</strong></td><td class="now">7/7 cursos con JSON-LD válido</td><td class="was">0/7</td></tr>
+          <tr><td>Bundle JS</td><td><strong>TL</strong></td><td class="now">131 tests RTL · adapter dual-mode · tsc 0 errors</td><td class="was">1655 LOC hardcoded · sin tests CMS</td></tr>
+          <tr><td>Rollback path</td><td><strong>TL</strong></td><td class="now">Adapter ignora story · fallback al código nested</td><td class="was">N/A (no había CMS)</td></tr>
+          <tr><td>Risk de Storyblok API</td><td><strong>TL</strong></td><td class="now">Push scripts dry-run default · retry 429/5xx · idempotente</td><td class="was">N/A</td></tr>
+          <tr><td>Costo dev</td><td><strong>Manager</strong></td><td class="now">~3 días con IA · 1 ingeniero</td><td class="was">~3 semanas manual estimado</td></tr>
+          <tr><td>Reusabilidad</td><td><strong>Manager</strong></td><td class="now">2 skills aplicables a otros 3+ frontends MODO</td><td class="was">Solución one-off</td></tr>
+          <tr><td>GEO presence</td><td><strong>Manager</strong></td><td class="now">17 AI bots indexan · llms.txt canónico · Course LD válido</td><td class="was">Invisible a IA generativa</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top: 12px;"><span class="sigil"></span>Las estimaciones de tiempo asumen Claude Code + skills MODO existentes. Sin esa stack, multiplicar por ~5.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 83%"></i></div>
+      <span class="counter">10 / 12</span>
+    </div>
+  </section>
+
+  <!-- 11 DECISIONES -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>11 · Decisiones</span><span>qué pido del comité</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Decisiones</p>
+      <h2 class="heading">Qué necesito del comité antes de seguir.</h2>
+      <ol class="decisions" style="margin-top: 28px;">
+        <li>
+          <h3>Adoptar el pattern como base para nuevos frontends MODO con CMS</h3>
+          <p class="body" style="margin: 4px 0 0;">Próximos candidatos: <strong>promos-hub-site</strong> (promos editables · GEO crítico) · <strong>comercios</strong> en QA (ahora con catálogo expandido). El pattern queda probado en aprendeatumodo · arrancar acá baja la curva de aprendizaje.</p>
+          <p class="ownership">Owner: TL + PM. Decisión propuesta · aguardo feedback de los equipos involucrados.</p>
+        </li>
+        <li>
+          <h3>Confirmar drop del fallback legacy post editorial QA</h3>
+          <p class="body" style="margin: 4px 0 0;">Después del QA editorial sobre los 7 cursos en Storyblok, borrar los 7 <span class="mono">*CourseContent.tsx</span> + prop <span class="mono">Content</span> del registry. Cierra el ciclo de migración. Mientras tanto, el pattern dual-source ya soporta ambos paths.</p>
+          <p class="ownership">Owner: Editorial + TL. Pendiente · sin urgencia.</p>
+        </li>
+        <li>
+          <h3>Priorizar migración a SSG (Next 16) para resolver el CSR trap de raíz</h3>
+          <p class="body" style="margin: 4px 0 0;">El JSON-LD inline en <span class="mono">index.html</span> es curita · funciona pero duplica content. SSG con <span class="mono">output: 'export'</span> resuelve crawler visibility per-route. SDD scaffolded · scope ~3 días con IA. <em>Sujeto a feedback del comité</em>.</p>
+          <p class="ownership">Owner: TL. Decisión: ¿Q3 backlog o sprint actual?</p>
+        </li>
+      </ol>
+      <div class="related-decks">
+        <span class="related-decks__label">Decks relacionados</span>
+        <a href="../completo/nextjs-12-to-16-consolidation.html" class="chip chip--green">Next 12 → 16 modo-landing</a>
+        <a href="../completo/comercios-mvp.html" class="chip chip--green">Comercios MVP</a>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>aprendeatumodo · lovable → storyblok</span>
+      <div class="progress"><i style="--p: 92%"></i></div>
+      <span class="counter">11 / 12</span>
+    </div>
+  </section>
+
+  <!-- 12 CIERRE -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>12 · cierre</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Cierre</p>
+      <h1 class="title">¿Arrancamos con <span style="color: var(--green-default)">el próximo front</span>?</h1>
+      <p class="lede">Aguardo el feedback del comité para decidir cuál es el siguiente candidato a migrar. El pattern está probado, los skills están listos, el costo con IA es bajo.</p>
+      <div class="card" style="margin-top: 18px; max-width: 760px; padding: 16px 20px;">
+        <h3 class="subheading" style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); font-weight: 600; margin-bottom: 8px;">Quiénes opinan antes</h3>
+        <p class="body" style="margin: 0; font-size: 16px;"><strong>Editorial</strong> · QA contenido en Storyblok · <strong>SEO</strong> · validar rich results en Google Search Console post-deploy · <strong>Brand</strong> · OG images branded propias (hoy usa storyblok asset).</p>
+      </div>
+      <div class="card" style="margin-top: 10px; max-width: 760px; padding: 14px 20px;">
+        <h3 class="subheading" style="font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); font-weight: 600; margin-bottom: 6px;">Material de soporte</h3>
+        <p class="body" style="margin: 0 0 6px; font-size: 16px;"><strong>Live</strong>: <a href="https://aprendeatumodo.modo.com.ar/" style="color: var(--green-default); text-decoration: underline; font-weight: 600;">aprendeatumodo.modo.com.ar</a></p>
+        <p class="body" style="margin: 0 0 6px; font-size: 16px;"><strong>Skills</strong>: <span class="mono">~/.claude/skills/modo-storyblok</span> · <span class="mono">~/.claude/skills/modo-seo-geo-audit</span></p>
+        <p class="body" style="margin: 0; font-size: 16px;"><strong>SDD</strong>: <span class="mono">openspec/changes/storyblok-courses-orchestration</span> + <span class="mono">storyblok-modules-as-stories</span></p>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><h4>Tickets</h4><p>COENXT-307 a 326 · Jira</p></div>
+      <div class="meta__col"><h4>Repo</h4><p>SoyErnoModo/aprendeatumodo</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg></button>
+  <span class="counter" id="counter">01 / 12</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg></button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg></button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    else if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) { go(hash - 1); } else { go(0); }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="aprendeatumodo-lovable-a-storyblok"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = { 'data-repo': 'SoyErnoModo/erno-modo', 'data-repo-id': 'R_kgDOSjBmAw', 'data-category': 'Announcements', 'data-category-id': 'DIC_kwDOSjBmA84C9erl', 'data-mapping': 'specific', 'data-term': mount.dataset.term, 'data-strict': '1', 'data-reactions-enabled': '1', 'data-emit-metadata': '0', 'data-input-position': 'bottom', 'data-theme': 'light', 'data-lang': 'es', 'data-loading': 'lazy' };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>
