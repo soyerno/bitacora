@@ -79,10 +79,10 @@
     },
     {
       "name": "modo-services-monitor",
-      "description": "Service-status panel para MODO + ecosistema externo. Auto-invocable cuando el user pregunta \"cómo están los servicios\", \"están todos los servicios up\", \"status de servicios\", \"service status\", \"/servi",
+      "description": "Service-status panel para MODO + ecosistema externo. Auto-invocable cuando el user pregunta \"cómo están los servicios\", \"están todos los servicios up\", \"status de servicios\", \"service status\", \"qué ve",
       "filename": "modo-services-monitor.zip",
-      "sha256_prefix": "8453dfa5bcd73772",
-      "size_kb": 10.8,
+      "sha256_prefix": "2cb6a8d8f241327e",
+      "size_kb": 16.7,
       "install_hint": "unzip modo-services-monitor.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-services-monitor.skill ~/.claude/skills/modo-services-monitor"
     }
   ]
