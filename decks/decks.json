@@ -6,6 +6,22 @@
   },
   "decks": [
     {
+      "id": "aprende-a-tu-modo-ssr-geo-storyblok",
+      "title": "Aprendé a tu MODO · SSR + GEO + Storyblok",
+      "desc": "Estado del programa aprendeatumodo (COENXT-307 a COENXT-326). 17 PRs mergeados a main: GEO P0 (5 LDs ricos inline + 22 AI bots + sitemap + llms.txt + Course strict 7/7) y Storyblok orchestration W1 a W7 (7 cursos viviendo como stories con dual-source fallback). SSR sigue pendiente: Next 16 Pages router para destrabar HTML estático per /curso/[slug] + LD Course scoped + ISR. Pivot consciente de Vike a Next 16. Plan en 4 fases con IA (~3 semanas).",
+      "href": "decks/draft/aprende-a-tu-modo-ssr-geo-storyblok.html",
+      "status": "draft",
+      "audience": "Comité PM + TL + Manager",
+      "date": "2026-05-25",
+      "slides": 15,
+      "topics": [
+        "ssr",
+        "seo",
+        "cms"
+      ],
+      "featured": true
+    },
+    {
       "id": "url-as-state-cache-ssr-filtros",
       "title": "URL-as-state + cache SSR para filtros públicos",
       "desc": "Programa para modo-landing /promos + promos-hub-site. Hoy los filtros viven en useState: crawlers no los ven, no se comparten, no se cachean per estado. Propone moverlos a URL-as-state en 4 fases con IA (~3.5 semanas), habilitando indexación per filtro, JSON-LD scoped al subset, y cache CDN/SSR con cardinality controlada (top 25 combos calientes). Capas: hook useUrlFilter, buildCanonical, sitemap top combos, policy de cache 4 clases, revalidateTag, smoke test pre-merge.",
