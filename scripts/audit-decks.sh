@@ -163,14 +163,28 @@ exit_code=0
 [[ $n_broken -gt 0 || $n_orphans -gt 0 ]] && exit_code=1
 
 if $JSON_MODE; then
+  # Build JSON arrays guarding the empty case. Expanding an empty array as
+  # "${arr[@]}" under `set -u` aborts on bash <4.4 (the default /bin/bash on
+  # macOS is 3.2); on modern bash a bare `printf '%s\n'` would still emit a
+  # phantom "" element. So only printf when the array is non-empty.
+  if [[ ${#broken_refs[@]} -gt 0 ]]; then
+    broken_json=$(printf '%s\n' "${broken_refs[@]}" | jq -R . | jq -s .)
+  else
+    broken_json='[]'
+  fi
+  if [[ ${#orphans[@]} -gt 0 ]]; then
+    orphan_json=$(printf '%s\n' "${orphans[@]}" | jq -R . | jq -s .)
+  else
+    orphan_json='[]'
+  fi
   jq -n \
     --argjson total "$total_canonical" \
     --argjson broken "$n_broken" \
     --argjson orphans "$n_orphans" \
     --arg date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    --arg broken_list "$(printf '%s\n' "${broken_refs[@]}" | jq -R . | jq -s .)" \
-    --arg orphan_list "$(printf '%s\n' "${orphans[@]}" | jq -R . | jq -s .)" \
-    '{date: $date, canonical_total: $total, broken_refs: ($broken_list | fromjson), orphans: ($orphan_list | fromjson), exit_code: (if $broken > 0 or $orphans > 0 then 1 else 0 end)}'
+    --argjson broken_list "$broken_json" \
+    --argjson orphan_list "$orphan_json" \
+    '{date: $date, canonical_total: $total, broken_refs: $broken_list, orphans: $orphan_list, exit_code: (if $broken > 0 or $orphans > 0 then 1 else 0 end)}'
 else
   if $QUIET && [[ $exit_code -eq 0 ]]; then
     exit 0
