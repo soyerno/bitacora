@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-25",
+    "generated": "2026-05-26",
     "updated_by": "erno-modo-sync-all",
     "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
   },
@@ -17,8 +17,8 @@
       "name": "modo-design-system",
       "description": "SDK/skill MODO-específico para generar páginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canónicos). Auto-invocar cuando el usuario pid",
       "filename": "modo-design-system.zip",
-      "sha256_prefix": "e176ef21aa07993e",
-      "size_kb": 52.0,
+      "sha256_prefix": "40097fa072748796",
+      "size_kb": 54.7,
       "install_hint": "unzip modo-design-system.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-design-system.skill ~/.claude/skills/modo-design-system"
     },
     {
@@ -73,7 +73,7 @@
       "name": "lectura-bionica",
       "description": "Lectura biónica + lectura asistida para TDAH/dislexia aplicada a la salida de Claude y a archivos arbitrarios. Bold de la primera mitad de cada palabra ≥3 letras para crear un ancla visual que reduce ",
       "filename": "lectura-bionica.zip",
-      "sha256_prefix": "2baadfe204ee5c92",
+      "sha256_prefix": "716be26b132a034a",
       "size_kb": 10.1,
       "install_hint": "unzip lectura-bionica.zip -d ~/.claude/skills/ && mv ~/.claude/skills/lectura-bionica.skill ~/.claude/skills/lectura-bionica"
     },
@@ -81,8 +81,8 @@
       "name": "modo-services-monitor",
       "description": "Service-status panel para MODO + ecosistema externo. Auto-invocable cuando el user pregunta \"cómo están los servicios\", \"están todos los servicios up\", \"status de servicios\", \"service status\", \"qué ve",
       "filename": "modo-services-monitor.zip",
-      "sha256_prefix": "b98f930a24d2e977",
-      "size_kb": 21.3,
+      "sha256_prefix": "12495f123c3ebef3",
+      "size_kb": 26.1,
       "install_hint": "unzip modo-services-monitor.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-services-monitor.skill ~/.claude/skills/modo-services-monitor"
     }
   ]
