@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitácora diaria · Erno × MODO</title>
+  <meta name="description" content="Digest diario de aprendizajes: una historia por feature o lección del día. TLDR + historias navegables, voz rioplatense con claridad pedagógica estilo Karpathy." />
+  <meta name="theme-color" content="#008859" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <style>
+    .bitacora-intro {
+      max-width: 70ch;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+    }
+
+    .bitacora-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin: 0 0 24px;
+    }
+
+    .bitacora-search {
+      flex: 1 1 280px;
+      max-width: 420px;
+      padding: 10px 14px;
+      font-family: 'Red Hat Display', system-ui, sans-serif;
+      font-size: 14px;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .bitacora-search:focus {
+      outline: 2px solid var(--focus);
+      outline-offset: 1px;
+      border-color: var(--accent);
+    }
+
+    .bitacora-search::placeholder { color: var(--muted); }
+
+    .bitacora-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .bitacora-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 22px 22px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-card);
+      color: inherit;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .bitacora-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .bitacora-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .bitacora-date {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .bitacora-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 4px 0 0;
+    }
+
+    .bitacora-tldr {
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .bitacora-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .bitacora-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--border-soft);
+      color: var(--muted);
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .bitacora-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      align-items: center;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .bitacora-meta .dot { opacity: 0.5; }
+
+    .bitacora-cta {
+      align-self: flex-start;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#bitacora-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="./" aria-current="page">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div></header>
+
+<main id="bitacora-main">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Bitácora</span>
+  </nav>
+  <p class="section-label">Bitácora diaria</p>
+  <h1 class="page-heading">Bitácora</h1>
+  <p class="bitacora-intro">Digest diario de aprendizajes. Cada día es una página navegable con un TLDR arriba y una historia por feature o lección — voz rioplatense, claridad pedagógica estilo Karpathy. La idea es la del LLM Wiki Pattern: escribir lo aprendido para no tener que re-aprenderlo. Datos crudos en <a href="bitacora.json" target="_blank" rel="noopener" class="meta-link">bitacora.json</a> para que un agente consuma el catálogo sin parsear el HTML.</p>
+
+  <div class="bitacora-toolbar">
+    <input type="search" class="bitacora-search" id="bitacora-search" placeholder="Buscar por tema, tag o fecha…" aria-label="Buscar en la bitácora" />
+  </div>
+
+  <div class="bitacora-grid" id="bitacora-list">
+    <div class="state-box">Cargando bitácora…</div>
+  </div>
+
+  <div class="state-box" id="bitacora-error" hidden style="margin-top:24px">
+    <strong>No se pudo cargar el catálogo.</strong>
+    Abrí <a href="bitacora.json" target="_blank" rel="noopener" class="meta-link">bitacora.json</a> directamente.
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow Bitácora:</strong>
+    <span class="status-badge draft">Borrador</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Publicado</span>
+  </div>
+  </div></footer>
+
+<script>
+(function () {
+  var STATUS_LABELS = {
+    'borrador': 'Borrador',
+    'publicado': 'Publicado'
+  };
+  var STATUS_CLASSES = {
+    'borrador': 'draft',
+    'publicado': 'completo'
+  };
+
+  var $list = document.getElementById('bitacora-list');
+  var $error = document.getElementById('bitacora-error');
+  var $search = document.getElementById('bitacora-search');
+  var ALL_ITEMS = [];
+
+  function render(items) {
+    if (items.length === 0) {
+      $list.innerHTML = '<div class="state-box"><strong>Sin entradas.</strong> Ajustá la búsqueda o esperá el próximo digest diario.</div>';
+      return;
+    }
+
+    $list.innerHTML = items.map(function (it) {
+      var statusLabel = STATUS_LABELS[it.status] || it.status;
+      var statusClass = STATUS_CLASSES[it.status] || 'draft';
+      var tags = (it.tags || []).slice(0, 5).map(function (t) {
+        return '<span class="bitacora-tag">' + MODO.escapeHTML(t) + '</span>';
+      }).join('');
+      var reading = it.reading_minutes ? '<span>~' + it.reading_minutes + ' min</span>' : '';
+      var c = it.counts || {};
+      var countBits = [];
+      if (typeof c.learnings === 'number') countBits.push(c.learnings + ' aprendizaje' + (c.learnings === 1 ? '' : 's'));
+      if (typeof c.prs === 'number') countBits.push(c.prs + ' PR' + (c.prs === 1 ? '' : 's'));
+      if (typeof c.commits === 'number') countBits.push(c.commits + ' commit' + (c.commits === 1 ? '' : 's'));
+      var counts = countBits.length ? '<span>' + countBits.join(' · ') + '</span><span class="dot">·</span>' : '';
+
+      return (
+        '<a class="bitacora-card" href="' + MODO.escapeHTML(it.href) + '">' +
+          '<div class="bitacora-card-head">' +
+            '<span class="status-badge ' + statusClass + '">' + statusLabel + '</span>' +
+            '<span class="bitacora-date">' + MODO.escapeHTML(it.date) + '</span>' +
+          '</div>' +
+          '<h2 class="bitacora-title">' + MODO.escapeHTML(it.title) + '</h2>' +
+          '<p class="bitacora-tldr">' + MODO.escapeHTML(it.tldr) + '</p>' +
+          (tags ? '<div class="bitacora-tags">' + tags + '</div>' : '') +
+          '<div class="bitacora-meta">' +
+            '<time datetime="' + MODO.escapeHTML(it.date) + '">' + MODO.escapeHTML(it.date) + '</time>' +
+            '<span class="dot">·</span>' + counts + reading +
+          '</div>' +
+          '<span class="bitacora-cta">Leer el día →</span>' +
+        '</a>'
+      );
+    }).join('');
+  }
+
+  function applyFilter() {
+    var q = ($search.value || '').trim().toLowerCase();
+    if (!q) { render(ALL_ITEMS); return; }
+    var filtered = ALL_ITEMS.filter(function (it) {
+      var hay = [it.title, it.tldr, it.date].concat(it.tags || []).join(' ').toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    render(filtered);
+  }
+
+  fetch('bitacora.json', { cache: 'no-store' })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (payload) {
+      ALL_ITEMS = (payload.items || []).slice().sort(function (a, b) {
+        return (b.date || '').localeCompare(a.date || '');
+      });
+      render(ALL_ITEMS);
+      if ($search) $search.addEventListener('input', applyFilter);
+    })
+    .catch(function (err) {
+      console.error('Failed to load bitacora.json', err);
+      $list.innerHTML = '';
+      $error.hidden = false;
+    });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

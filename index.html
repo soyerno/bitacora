@@ -82,6 +82,7 @@
     <a href="rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
     <a href="postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
     <a href="rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="bitacora/">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
     <a href="proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
     <a href="herramientas/">Herramientas</a>
   </nav>
@@ -161,8 +162,18 @@
         </span>
       </a>
 
-      <a class="explore-card" href="proyectos/">
+      <a class="explore-card" href="bitacora/">
         <span class="explore-card-eyebrow">Colección 5</span>
+        <span class="explore-card-title">Bitácora diaria</span>
+        <span class="explore-card-desc">Digest diario de aprendizajes: una historia por feature o lección del día. TLDR + historias navegables, voz rioplatense con claridad pedagógica. La idea es no re-aprender lo aprendido.</span>
+        <span class="explore-card-foot">
+          <span><span id="explore-count-bitacora">…</span> días</span>
+          <span class="explore-card-cta">Abrir →</span>
+        </span>
+      </a>
+
+      <a class="explore-card" href="proyectos/">
+        <span class="explore-card-eyebrow">Colección 6</span>
         <span class="explore-card-title">Proyectos</span>
         <span class="explore-card-desc">Repos del ecosistema MODO (@playsistemico) donde aporté PRs. Agrupados por capa: web, design system, SDK, BFFs, backoffices, infra. Con conteo de PRs por repo.</span>
         <span class="explore-card-foot">
@@ -198,6 +209,7 @@
   var $exploreRfcs = document.getElementById('explore-count-rfcs');
   var $explorePostmans = document.getElementById('explore-count-postmans');
   var $exploreRd = document.getElementById('explore-count-rd');
+  var $exploreBitacora = document.getElementById('explore-count-bitacora');
   var $exploreProyectos = document.getElementById('explore-count-proyectos');
 
   function renderFeatured(decks) {
@@ -235,13 +247,15 @@
     fetch('rfcs/rfcs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     fetch('postmans/postmans.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     fetch('rd/rd.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    fetch('bitacora/bitacora.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     fetch('proyectos/proyectos.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
   ]).then(function (results) {
     var decks = (results[0] && results[0].decks) || [];
     var rfcs = (results[1] && results[1].rfcs) || [];
     var postmans = (results[2] && results[2].postmans) || [];
     var rd = (results[3] && results[3].items) || [];
-    var proyectos = (results[4] && results[4].projects) || [];
+    var bitacora = (results[4] && results[4].items) || [];
+    var proyectos = (results[5] && results[5].projects) || [];
 
     renderFeatured(decks);
 
@@ -249,6 +263,7 @@
     if ($exploreRfcs) $exploreRfcs.textContent = rfcs.length;
     if ($explorePostmans) $explorePostmans.textContent = postmans.length;
     if ($exploreRd) $exploreRd.textContent = rd.length;
+    if ($exploreBitacora) $exploreBitacora.textContent = bitacora.length;
     if ($exploreProyectos) $exploreProyectos.textContent = proyectos.length;
   });
 

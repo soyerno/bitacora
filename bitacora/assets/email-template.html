@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Bitácora MODO · {{DATE}}</title>
+</head>
+<body style="margin:0; padding:0; background-color:#FAFAF7; font-family:'Red Hat Display', Arial, Helvetica, sans-serif; color:#1A1A1A;">
+  <!-- Inline styles are required here: email clients strip <style>/external CSS. This is the documented exception. -->
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FAFAF7;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background-color:#FFFFFF; border-radius:12px; overflow:hidden; border:1px solid #E2E2DC;">
+
+          <!-- Header · MODO green -->
+          <tr>
+            <td style="background-color:#008859; padding:24px 28px;">
+              <p style="margin:0; font-family:'Quicksand', Arial, sans-serif; font-weight:700; font-size:20px; line-height:1.2; color:#FFFFFF; letter-spacing:-0.01em;">Erno × MODO · Bitácora</p>
+              <p style="margin:6px 0 0; font-family:Arial, sans-serif; font-size:13px; line-height:1.4; color:#DCF5E7;">Digest diario de aprendizajes · {{DATE}}</p>
+            </td>
+          </tr>
+
+          <!-- TLDR callout -->
+          <tr>
+            <td style="padding:24px 28px 8px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#E6F4EE; border-radius:8px;">
+                <tr>
+                  <td style="padding:16px 18px;">
+                    <p style="margin:0 0 6px; font-family:'Quicksand', Arial, sans-serif; font-weight:700; font-size:12px; line-height:1.2; color:#00471B; text-transform:uppercase; letter-spacing:0.06em;">TL;DR</p>
+                    <p style="margin:0; font-family:Arial, sans-serif; font-size:15px; line-height:1.55; color:#1A1A1A;">{{TLDR}}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Stories -->
+          <tr>
+            <td style="padding:16px 28px 8px;">
+              {{STORIES_HTML}}
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td align="center" style="padding:12px 28px 28px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="background-color:#008859; border-radius:8px;">
+                    <a href="{{LINK_TO_DAY}}" target="_blank" style="display:inline-block; padding:12px 24px; font-family:'Quicksand', Arial, sans-serif; font-weight:600; font-size:14px; line-height:1; color:#FFFFFF; text-decoration:none; letter-spacing:0.02em;">Leer el día completo →</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:18px 28px; border-top:1px solid #E2E2DC; background-color:#FAFAF7;">
+              <p style="margin:0; font-family:Arial, sans-serif; font-size:12px; line-height:1.5; color:#6B6B6B;">
+                Generado por <strong style="color:#1A1A1A;">/daily-bitacora</strong> · voz rioplatense + claridad Karpathy.
+                Bitácora personal de ingeniería de Hernán De Souza · Sr AI Engineer @ MODO.
+              </p>
+              <p style="margin:8px 0 0; font-family:Arial, sans-serif; font-size:12px; line-height:1.5; color:#6B6B6B;">
+                <a href="{{LINK_TO_DAY}}" target="_blank" style="color:#008859; text-decoration:none;">soyernomodo.github.io/erno-modo/bitacora</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

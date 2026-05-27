@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} · Bitácora · Erno × MODO</title>
+  <meta name="description" content="{{TLDR}}" />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{TITLE}}" />
+  <meta property="og:description" content="{{TLDR}}" />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/bitacora/{{DATE}}.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="{{DATE}}" />
+  <meta property="article:section" content="Bitácora" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../rd/research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="./" aria-current="page">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">Bitácora</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">{{DATE}}</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Publicado</span>
+        <span class="meta-pill">Bitácora · {{DATE}}</span>
+      </div>
+      <h1 class="article-title">{{TITLE}}</h1>
+      <p class="article-deck">{{TLDR}}</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="{{DATE}}">{{DATE}}</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~{{READING_MINUTES}} min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>{{TLDR}}</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          {{TOC}}
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        {{STORIES}}
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="{{DATE}}">{{DATE}}</time>
+          </p>
+          <p class="article-credits">
+            Tags del día: {{TAGS}}
+          </p>
+          <p class="article-disclaimer">
+            Generado por <code>/daily-bitacora</code> · voz rioplatense + claridad Karpathy. Digest diario de aprendizajes propios del workspace MODO (memorias fechadas, actividad de git/gh, transcripts de sesión, memoria ruflo). No describe productos MODO ni decisiones de plataforma como hechos públicos: es bitácora personal de ingeniería para no re-aprender lo aprendido.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow Bitácora:</strong>
+    <span class="status-badge draft">Borrador</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Publicado</span>
+  </div>
+  </div>
+</footer>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

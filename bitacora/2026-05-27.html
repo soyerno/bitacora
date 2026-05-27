@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>27 de mayo · autonomía con freno de mano · Bitácora · Erno × MODO</title>
+  <meta name="description" content="Día de darle autonomía a la máquina sin soltarle el volante: un loop nocturno que se automejora pero no aplica nada solo, gates para avisar antes de tocar lo ajeno, analytics nuevo en Aprende a tu MODO y una auditoría adversarial al UI lib." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="27 de mayo · autonomía con freno de mano" />
+  <meta property="og:description" content="Día de darle autonomía a la máquina sin soltarle el volante: un loop nocturno que se automejora pero no aplica nada solo, gates para avisar antes de tocar lo ajeno, analytics nuevo en Aprende a tu MODO y una auditoría adversarial al UI lib." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/bitacora/2026-05-27.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-27" />
+  <meta property="article:section" content="Bitácora" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../rd/research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="./" aria-current="page">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">Bitácora</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">2026-05-27</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Publicado</span>
+        <span class="meta-pill">Bitácora · 2026-05-27</span>
+      </div>
+      <h1 class="article-title">27 de mayo · autonomía con freno de mano</h1>
+      <p class="article-deck">Día de darle autonomía a la máquina sin soltarle el volante: un loop nocturno que se automejora pero no aplica nada solo, gates para avisar antes de tocar lo ajeno, analytics nuevo en Aprende a tu MODO y una auditoría adversarial al UI lib.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-27">2026-05-27</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~9 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>Día de darle autonomía a la máquina sin soltarle el volante: un loop nocturno que se automejora pero no aplica nada solo, gates para avisar antes de tocar lo ajeno, analytics nuevo en Aprende a tu MODO y una auditoría adversarial al UI lib.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <ul><li><a href="#s1">1 · El loop que corre mientras dormís</a></li><li><a href="#s2">2 · Por qué este digest no puede ser un script pelado</a></li><li><a href="#s3">3 · Antes de construir, avisá</a></li><li><a href="#s4">4 · Triage de inbox — mail y Slack</a></li><li><a href="#s5">5 · Amplitude en Aprende a tu MODO</a></li><li><a href="#s6">6 · Bug hunter sobre el UI lib</a></li><li><a href="#s7">7 · Contribuciones como aprendizaje por refuerzo</a></li></ul>
+
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="s1"><h2>1 · El loop que corre mientras dormís</h2><p>Arranqué con una pregunta tuya directa: <em>¿podés encontrar un ciclo que te permita automejorarte mientras yo duermo?</em> Salió el skill <code>modo-nocturno</code> + un LaunchAgent <code>com.ernomodo.nocturno</code> que corre <code>orchestrate.py</code> a las 03:00 todas las noches. El loop es read-only: mina el knowledge base, los transcripts del día, los PRs y los monitores, y <em>draftea</em> propuestas a una cola <code>_pending/</code>. Nunca aplica un edit ni manda nada afuera — a la mañana las reviso yo.</p><p>El golpe vino acá: en macOS, un launchd job que invoca <code>/bin/bash -c 'find ~/Documents...'</code> devuelve cero resultados <strong>sin error</strong>. TCC (la capa de permisos de Apple) protege <code>~/Documents</code>, <code>~/Desktop</code> y <code>~/Downloads</code>, y bash pelado no tiene el grant. El cron corría, exit 0, y los logs decían “todo bien” — mentira silenciosa. El fix: invocar <code>/usr/bin/env python3</code>, que ya tenía el permiso heredado de otro job. Lo aprendí a los golpes una vez y hoy lo apliqué de entrada.</p></section><section id="s2"><h2>2 · Por qué este digest no puede ser un script pelado</h2><p>Vos querías un resumen diario de aprendizajes + un sitio navegable. La tentación era un cron Python que junte data y escupa HTML. No alcanza, y entender por qué es la parte interesante.</p><p>Primero: dos de las cuatro fuentes no las puede tocar un proceso pelado. La memoria semántica (ruflo) vive en un MCP que solo existe dentro de una sesión de Claude — un cron Python no la ve. Segundo: la narrativa pedagógica que estás leyendo la tiene que escribir un LLM, no un <code>printf</code>. La conclusión fue invertir el diseño: el cron es un wrapper fino que invoca <code>claude --print</code> headless, y ahí adentro sí están las cuatro fuentes y la prosa. La arquitectura correcta apareció cuando aceptamos qué <em>no</em> podía hacer la pieza simple.</p><p>Y hubo una fricción sana: el classifier de seguridad me frenó cuando intenté crear el LaunchAgent que dispara <code>claude -p</code> solo. Lo leí como persistencia autónoma no supervisada — y tiene razón. Entregé el plist como artefacto para que lo prendas vos, con tu mano en el gatillo, en vez de instalarlo a tus espaldas.</p></section><section id="s3"><h2>3 · Antes de construir, avisá</h2><p>Otra de tus frases del día: <em>cuando levanto una iniciativa o pienso en hacer algo tengo que comunicarlo y validarlo</em>. De ahí salió el skill <code>modo-stakeholder-gate</code>: un gate de pregunta-y-espera antes de pasos críticos que tocan tracking, infra o código de otro squad.</p><p>La regla dura que quedó grabada: <strong>no inventar ownership</strong>. Asumir quién es dueño de un servicio para no frenar es el anti-pattern exacto que el gate evita. Es la misma idea que el classifier de la historia 2 — frenar antes de un paso irreversible no es burocracia, es respeto por el laburo del otro.</p></section><section id="s4"><h2>4 · Triage de inbox — action items de mail y Slack</h2><p>Necesitaba dejar de perder cosas entre los correos y los mensajes de Slack. La idea no era un resumen genérico, sino sacar las <em>acciones pendientes</em> que requieren mano mía. Quedó apuntado el skill <code>slack-mentions-distill</code> para eso: lee read-only y destila qué necesita acción.</p><p>El criterio importa: read-only e identificar, no responder por mí. Otra vez el patrón del día — la máquina lee y propone, yo decido. Quedó wireado para sumarse después como una de las fuentes del nocturno.</p></section><section id="s5"><h2>5 · Amplitude en Aprende a tu MODO</h2><p>Lado producto: abrí el PR <strong>#23</strong> en <code>aprendeatumodo</code> (<code>COENXT-318</code>) para integrar Amplitude con tracking de 5 eventos clave. Nada de instrumentar todo a lo loco — cinco eventos que de verdad cuentan la historia del usuario.</p><p>Lo bueno fue no reinventar: el laburo de analytics de MODO ya tiene convenciones de naming y el patrón de tracking dual web/WebView resuelto en otros repos. Reusé eso en vez de improvisar un esquema nuevo. La lección barata: antes de escribir un evento, fijate cómo se nombran los que ya existen.</p></section><section id="s6"><h2>6 · Bug hunter sobre la integración Storyblok del UI lib</h2><p>Le pasé el bug hunter al PR <strong>#38</strong> de <code>modo-landing-web-ui-lib</code> — la integración de Storyblok vía BFF con cache para Navbar y Footer. El bug hunter no es un linter: busca comportamiento en runtime, regresiones, edge cases que el review humano deja pasar.</p><p>Por qué importa que sea acá: Navbar y Footer están en todas las páginas. Un bug de cache o un fallback mal resuelto en el BFF no rompe una pantalla, rompe el sitio entero. Vale la auditoría adversarial antes de mergear.</p></section><section id="s7"><h2>7 · Contribuciones como aprendizaje por refuerzo</h2><p>Para una reunión armé una presentación directa sobre lo que venimos haciendo estas semanas, con un framing que me cierra cada vez más: el destilado de conocimiento que hago al cierre de cada sesión es, en la práctica, aprendizaje por refuerzo. Cada error que documento es una señal negativa; cada patrón que codifico en un skill es una política que no tengo que volver a aprender.</p><p>El punto que quería transmitir, sin vueltas: no estoy usando una IA genérica, estoy entrenando un sistema que mejora con cada vuelta porque le cierro el loop. Es la misma lógica detrás del nocturno y de esta bitácora.</p></section>
+
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-27">2026-05-27</time>
+          </p>
+          <p class="article-credits">
+            Tags del día: <span class="tag">autonomía</span><span class="tag">launchd</span><span class="tag">TCC</span><span class="tag">seguridad</span><span class="tag">skills</span><span class="tag">amplitude</span><span class="tag">bug-hunter</span><span class="tag">aprendizaje-por-refuerzo</span>
+
+          </p>
+          <p class="article-disclaimer">
+            Generado por <code>/daily-bitacora</code> · voz rioplatense + claridad Karpathy. Digest diario de aprendizajes propios del workspace MODO (memorias fechadas, actividad de git/gh, transcripts de sesión, memoria ruflo). No describe productos MODO ni decisiones de plataforma como hechos públicos: es bitácora personal de ingeniería para no re-aprender lo aprendido.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow Bitácora:</strong>
+    <span class="status-badge draft">Borrador</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Publicado</span>
+  </div>
+  </div>
+</footer>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

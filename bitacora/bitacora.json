@@ -1,0 +1,157 @@
+{
+  "_meta": {
+    "generated": "2026-05-27",
+    "category": "Bitácora",
+    "format": "Digest diario de aprendizajes — una historia por feature/lección del día, voz rioplatense con claridad pedagógica estilo Karpathy",
+    "sources": [
+      "memory files dated",
+      "git/gh workspace activity",
+      "session transcripts",
+      "ruflo obsidian-vault"
+    ],
+    "workflow": [
+      "borrador",
+      "publicado"
+    ],
+    "notes": "Journal append-only. Cada día = una página navegable con TLDR + historias. Inspirado en el LLM Wiki Pattern de Karpathy: escribir lo aprendido para no re-aprenderlo."
+  },
+  "items": [
+    {
+      "date": "2026-05-27",
+      "slug": "2026-05-27",
+      "title": "27 de mayo · autonomía con freno de mano",
+      "tldr": "Día de darle autonomía a la máquina sin soltarle el volante: un loop nocturno que se automejora pero no aplica nada solo, gates para avisar antes de tocar lo ajeno, analytics nuevo en Aprende a tu MODO y una auditoría adversarial al UI lib.",
+      "stories": [
+        {
+          "title": "El loop que corre mientras dormís",
+          "summary": "Skill modo-nocturno + LaunchAgent com.ernomodo.nocturno a las 03:00 diario, read-only: mina knowledge base/transcripts/PRs/monitores y draftea a una cola _pending/, nunca aplica ni manda nada. El plist usa python3 directo para esquivar el TCC trap de macOS (bash pelado contra ~/Documents devuelve 0 sin error).",
+          "tags": [
+            "launchd",
+            "TCC",
+            "nocturno"
+          ]
+        },
+        {
+          "title": "Por qué el digest no puede ser un script pelado",
+          "summary": "ruflo es MCP session-scoped y la narrativa la escribe un LLM → el cron invoca claude -p headless en vez de un Python pelado. El classifier frenó la persistencia autónoma; entregué el plist como artefacto para prender a mano.",
+          "tags": [
+            "automatización",
+            "seguridad"
+          ]
+        },
+        {
+          "title": "Antes de construir, avisá",
+          "summary": "Skill modo-stakeholder-gate: gate de pregunta-y-espera antes de pasos críticos sobre tracking/infra/código ajeno. Regla dura: no inventar ownership.",
+          "tags": [
+            "stakeholder-gate",
+            "proceso"
+          ]
+        },
+        {
+          "title": "Triage de inbox — action items de mail y Slack",
+          "summary": "Skills slack-mentions-distill + gmail-triage-distill: leen read-only y destilan qué requiere acción mía, no un resumen. Wireados para sumarse como fuentes del nocturno.",
+          "tags": [
+            "slack",
+            "gmail",
+            "productividad"
+          ]
+        },
+        {
+          "title": "Amplitude en Aprende a tu MODO",
+          "summary": "PR #23 en aprendeatumodo (COENXT-318): Amplitude con 5 eventos clave, reusando convenciones de naming y el patrón dual web/WebView de MODO en vez de improvisar.",
+          "tags": [
+            "amplitude",
+            "analytics",
+            "aprendeatumodo"
+          ]
+        },
+        {
+          "title": "Bug hunter sobre la integración Storyblok del UI lib",
+          "summary": "Auditoría adversarial al PR #38 de modo-landing-web-ui-lib: Storyblok vía BFF + cache Navbar/Footer. Vale acá porque Navbar/Footer están en todas las páginas — un bug de cache rompe el sitio entero.",
+          "tags": [
+            "bug-hunter",
+            "storyblok",
+            "ui-lib"
+          ]
+        },
+        {
+          "title": "Contribuciones como aprendizaje por refuerzo",
+          "summary": "Deck directo para una reunión: el destilado al cierre de cada sesión es RL en la práctica — errores como señal negativa, skills como política que no se vuelve a aprender. No es una IA genérica, es un sistema que mejora porque le cierro el loop.",
+          "tags": [
+            "contribuciones",
+            "aprendizaje-por-refuerzo",
+            "deck"
+          ]
+        }
+      ],
+      "tags": [
+        "autonomía",
+        "skills",
+        "nocturno",
+        "amplitude",
+        "bug-hunter",
+        "aprendizaje-por-refuerzo"
+      ],
+      "area": "platform",
+      "href": "2026-05-27.html",
+      "reading_minutes": 9,
+      "counts": {
+        "learnings": 7,
+        "prs": 2,
+        "commits": 1
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-05-26",
+      "slug": "2026-05-26",
+      "title": "26 de mayo · harness de calidad CI y auditoría de skills",
+      "tldr": "Cerramos 4 gaps de CI con el harness de calidad y endurecimos la auditoría de skills tras cazar bugs que el self-review se había comido.",
+      "stories": [
+        {
+          "title": "CI Quality Harness · 4 gates con config por tipo de build",
+          "summary": "Instalamos los gates de audit, bundle-size, visual y a11y en los repos MODO. La clave fue que la config no puede ser genérica: cada tipo de build necesita la suya. Quedó un detect-repo-type.sh + drop-ins validados para no reinventarlo la próxima.",
+          "tags": [
+            "ci",
+            "quality",
+            "bundle-size"
+          ]
+        },
+        {
+          "title": "Auditoría de skills · no claim fix sin verify-grep",
+          "summary": "Un audit independiente cazó 30+ bugs que el self-review había declarado resueltos. Lección dura: antes de escribir 'fixed X' hay que correr el grep contra el archivo real. Si el anti-pattern matchea, el fix está en la prosa, no en el código.",
+          "tags": [
+            "security",
+            "audit",
+            "bash"
+          ]
+        },
+        {
+          "title": "Sync diario de la bitácora · guardas para arrays vacíos",
+          "summary": "El audit-decks.sh en modo --json reventaba con catálogos vacíos. Agregamos guardas para arrays vacíos y el sync volvió a correr limpio. Bug chico, pero rompía todo el pipeline silenciosamente.",
+          "tags": [
+            "erno-modo",
+            "sync",
+            "bugfix"
+          ]
+        }
+      ],
+      "tags": [
+        "ci",
+        "quality",
+        "security",
+        "audit",
+        "erno-modo"
+      ],
+      "area": "platform",
+      "href": "2026-05-26.html",
+      "reading_minutes": 6,
+      "counts": {
+        "learnings": 3,
+        "prs": 2,
+        "commits": 5
+      },
+      "status": "publicado"
+    }
+  ]
+}
