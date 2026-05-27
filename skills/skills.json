@@ -145,8 +145,8 @@
       "name": "modo-landing-smoke-test",
       "description": "Smoke-testea modo-landing (modo.com.ar) por ambiente — valida rutas clave a nivel HTTP contra el edge live, compara prod vs preprod para cazar regresiones, y conoce qué versión está desplegada por env",
       "filename": "modo-landing-smoke-test.zip",
-      "sha256_prefix": "468b9963b03b9f6c",
-      "size_kb": 9.0,
+      "sha256_prefix": "0317a0e97327a3a4",
+      "size_kb": 9.3,
       "install_hint": "unzip modo-landing-smoke-test.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-landing-smoke-test.skill ~/.claude/skills/modo-landing-smoke-test"
     },
     {
