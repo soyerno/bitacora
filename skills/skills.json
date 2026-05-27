@@ -84,6 +84,118 @@
       "sha256_prefix": "12495f123c3ebef3",
       "size_kb": 26.1,
       "install_hint": "unzip modo-services-monitor.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-services-monitor.skill ~/.claude/skills/modo-services-monitor"
+    },
+    {
+      "name": "modo-planner",
+      "description": "MODO Planning Framework (MPF). Orquesta planificación end-to-end para cualquier feature/change en MODO combinando brainstorming → discovery → SDD → Jira → swarm orchestration → verify → archive. Auto-",
+      "filename": "modo-planner.zip",
+      "sha256_prefix": "9347322ab8171374",
+      "size_kb": 11.1,
+      "install_hint": "unzip modo-planner.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-planner.skill ~/.claude/skills/modo-planner"
+    },
+    {
+      "name": "modo-pr-author",
+      "description": "Author MODO-grade pull request descriptions following the repo template + commit conventions + voz rioplatense. Auto-invocable cuando el usuario pide \"armá el PR\", \"creá el PR\", \"describí este PR\", \"i",
+      "filename": "modo-pr-author.zip",
+      "sha256_prefix": "cea574c17fa62656",
+      "size_kb": 26.6,
+      "install_hint": "unzip modo-pr-author.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-pr-author.skill ~/.claude/skills/modo-pr-author"
+    },
+    {
+      "name": "modo-frontend-onboarding",
+      "description": "Playbook end-to-end para llevar un frontend (SPA Vite/Lovable o app Next) a producción en la infra MODO (EKS + Istio) bajo el org playsistemico. Cubre migración a Next 16 server-rendered, subida limpi",
+      "filename": "modo-frontend-onboarding.zip",
+      "sha256_prefix": "6e05c8db3973c0ef",
+      "size_kb": 15.7,
+      "install_hint": "unzip modo-frontend-onboarding.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-frontend-onboarding.skill ~/.claude/skills/modo-frontend-onboarding"
+    },
+    {
+      "name": "modo-seo-geo-audit",
+      "description": "SEO/GEO/JSON-LD audit + fix workflow for MODO frontends (Vite SPAs, Next.js, Astro). Audits canonical signals, robots/sitemap/llms.txt, Open Graph, Schema.org JSON-LD against Google Rich Results, AI c",
+      "filename": "modo-seo-geo-audit.zip",
+      "sha256_prefix": "9c693c52cb2c1059",
+      "size_kb": 30.3,
+      "install_hint": "unzip modo-seo-geo-audit.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-seo-geo-audit.skill ~/.claude/skills/modo-seo-geo-audit"
+    },
+    {
+      "name": "modo-storyblok",
+      "description": "Orquestar contenido editorial en frontends MODO via Storyblok. Schemas + TS types + bloks renderer + dual-source con fallback al código + Management API push scripts + visual editor wiring. Reusable p",
+      "filename": "modo-storyblok.zip",
+      "sha256_prefix": "c9cde9cffb3f0dde",
+      "size_kb": 25.5,
+      "install_hint": "unzip modo-storyblok.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-storyblok.skill ~/.claude/skills/modo-storyblok"
+    },
+    {
+      "name": "modo-stakeholder-gate",
+      "description": "Gate de proceso MODO que valida comunicación + aprobación con el squad/tribu/chapter dueño de un feature ANTES de avanzar en un paso crítico (agregar tracking, tocar código de otro squad, cambiar infr",
+      "filename": "modo-stakeholder-gate.zip",
+      "sha256_prefix": "bda0ab963bad0171",
+      "size_kb": 11.9,
+      "install_hint": "unzip modo-stakeholder-gate.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-stakeholder-gate.skill ~/.claude/skills/modo-stakeholder-gate"
+    },
+    {
+      "name": "modo-jsm-ticket",
+      "description": "Crear tickets en el Jira Service Management de MODO (https://play-sistemico.atlassian.net/servicedesk/customer/portals) de punta a punta — descubrir el portal correcto, mapear los campos requeridos y ",
+      "filename": "modo-jsm-ticket.zip",
+      "sha256_prefix": "fdae1e4927b90dfa",
+      "size_kb": 41.6,
+      "install_hint": "unzip modo-jsm-ticket.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-jsm-ticket.skill ~/.claude/skills/modo-jsm-ticket"
+    },
+    {
+      "name": "modo-landing-smoke-test",
+      "description": "Smoke-testea modo-landing (modo.com.ar) por ambiente — valida rutas clave a nivel HTTP contra el edge live, compara prod vs preprod para cazar regresiones, y conoce qué versión está desplegada por env",
+      "filename": "modo-landing-smoke-test.zip",
+      "sha256_prefix": "468b9963b03b9f6c",
+      "size_kb": 9.0,
+      "install_hint": "unzip modo-landing-smoke-test.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-landing-smoke-test.skill ~/.claude/skills/modo-landing-smoke-test"
+    },
+    {
+      "name": "modo-contribution-evaluator",
+      "description": "Evaluar contribuciones de Hernán (o cualquier dev) en el ecosistema MODO cruzando GitHub PRs (autor + reviewer) + Jira tickets (assignee + reporter) + repos del workspace. Produce inventario raw (JSON",
+      "filename": "modo-contribution-evaluator.zip",
+      "sha256_prefix": "eb34ed63fd06a488",
+      "size_kb": 25.8,
+      "install_hint": "unzip modo-contribution-evaluator.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-contribution-evaluator.skill ~/.claude/skills/modo-contribution-evaluator"
+    },
+    {
+      "name": "modo-ci-quality-harness",
+      "description": ">-",
+      "filename": "modo-ci-quality-harness.zip",
+      "sha256_prefix": "f1d03983270afb5a",
+      "size_kb": 20.7,
+      "install_hint": "unzip modo-ci-quality-harness.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-ci-quality-harness.skill ~/.claude/skills/modo-ci-quality-harness"
+    },
+    {
+      "name": "modo-research-article",
+      "description": "Generate long-form HTML R&D articles for the erno-modo bitácora (https://soyernomodo.github.io/erno-modo/rd/) using the canonical research-article.css pattern (SVG diagrams theme-aware, Chart.js with ",
+      "filename": "modo-research-article.zip",
+      "sha256_prefix": "fbf1c9735675b1d7",
+      "size_kb": 22.7,
+      "install_hint": "unzip modo-research-article.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-research-article.skill ~/.claude/skills/modo-research-article"
+    },
+    {
+      "name": "modo-postman-pack",
+      "description": "Construir packs Postman extendidos para el workspace MODO cruzando Chrome history + Postman exports existentes + memoria del repo. Genera master environments por tier (QA/PREPROD/PROD), collections nu",
+      "filename": "modo-postman-pack.zip",
+      "sha256_prefix": "e7c28fd039c7e371",
+      "size_kb": 10.7,
+      "install_hint": "unzip modo-postman-pack.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-postman-pack.skill ~/.claude/skills/modo-postman-pack"
+    },
+    {
+      "name": "modo-plugin-builder",
+      "description": "Construir plugins Claude Code para el ecosistema MODO siguiendo el patrón triple-layer (skill auto-invocable + agent worktree-delegable + slash commands explícitos) con symlink architecture para no du",
+      "filename": "modo-plugin-builder.zip",
+      "sha256_prefix": "177a0c783cf524d7",
+      "size_kb": 12.0,
+      "install_hint": "unzip modo-plugin-builder.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-plugin-builder.skill ~/.claude/skills/modo-plugin-builder"
+    },
+    {
+      "name": "modo-nocturno",
+      "description": ">-",
+      "filename": "modo-nocturno.zip",
+      "sha256_prefix": "43aa71abd995b1c5",
+      "size_kb": 26.6,
+      "install_hint": "unzip modo-nocturno.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-nocturno.skill ~/.claude/skills/modo-nocturno"
     }
   ]
 }
