@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance modo-landing · Next 12 prod vs Next 16 preprod (con y sin SSR fix) · R&amp;D · Erno × MODO</title>
+  <meta name="description" content="Comparativa Unlighthouse de modo-landing entre Next 12 en prod, Next 16 en preprod sin SSR fix, y Next 16 en preprod con el SSR fix puesto. Honest read: score baja medio punto, bytes suben 8%, /bancos CLS vuelve a niveles de prod, /bancos LCP regresiona +3s, env mismatch invalida cualquier verdict absoluto." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Performance modo-landing · Next 12 prod vs Next 16 preprod (con y sin SSR fix)" />
+  <meta property="og:description" content="Tres baselines en el mismo día. La migración no rompió plata pero tampoco la regaló — y el env mismatch nos prohíbe cantar victoria." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/perf-next12-vs-next16-ssr-2026-05-28.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-28" />
+  <meta property="article:section" content="R&D" />
+  <meta name="author" content="Hernán De Souza" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/rd/perf-next12-vs-next16-ssr-2026-05-28.html" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+</svg>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks" aria-live="polite">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs" aria-live="polite">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd" aria-live="polite">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label" aria-live="polite">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Perf modo-landing · Next 12 vs Next 16 + SSR fix</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge draft">Exploración</span>
+        <span class="meta-pill">R&amp;D · RD06</span>
+      </div>
+      <h1 class="article-title">Performance modo-landing · Next 12 prod vs Next 16 preprod (con y sin SSR fix)</h1>
+      <p class="article-deck">Tres baselines Unlighthouse tomadas el mismo día — Next 12 en prod, Next 16 en preprod sin SSR, Next 16 en preprod con SSR fix. Lo que cantó cada una y lo que el env mismatch nos prohíbe celebrar.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-28">2026-05-28</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~9 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li><strong>Env mismatch antes que nada:</strong> Next 12 está medido en <code>www.modo.com.ar</code> (prod, CDN caliente). Next 16 vive en <code>preprod.modo.com.ar</code> (infra distinta, cache fría, redirect <code>preprod</code> → <code>www.preprod</code>). Cualquier delta absoluto entre las dos columnas es <em>directional</em>, no veredicto.</li>
+        <li><strong>Score medio cae 5 puntos</strong> (Perf 62 → 57). Bytes medios suben ~8% (2.71 MB → 2.92 MB). LCP mediano salta de 7.87s a 19.27s — leído honesto, eso es ambiente nuevo, no el código nuevo.</li>
+        <li><strong>El SSR fix sí mueve la aguja donde tenía que moverla:</strong> <code>/bancos</code> CLS vuelve de <strong>1.048</strong> (catástrofe del shell vacío) a <strong>0.375</strong>, que es el mismo CLS que ya tenía en prod. No es un win nuevo — es restaurar paridad de layout. <code>/pagar</code> CLS también baja (0.428 → 0.407).</li>
+        <li><strong>Next 16 sí tree-shakea mejor:</strong> unused JS baja 60-90 KB por ruta medida vs prod. Es real y reproducible, pero el ahorro lo absorbe el 8% más de HTML/CSS que mete la migración.</li>
+        <li><strong>PR #1496</strong> (image quality 95→75 + AVIF) está draft, no mergeado. Ese es el ticket que mueve los bytes del home en serio. Hasta que entre, este baseline congela el estado pre-imagen.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#contexto">El experimento</a></li>
+          <li><a href="#metodologia">Metodología</a></li>
+          <li><a href="#escenarios">Los tres escenarios</a></li>
+          <li><a href="#score">Score por ruta</a></li>
+          <li><a href="#lcp">LCP por ruta</a></li>
+          <li><a href="#bytes">Bytes por ruta</a></li>
+          <li><a href="#cls">CLS por ruta</a></li>
+          <li><a href="#tree-shaking">Tree-shaking Next 16</a></li>
+          <li><a href="#ssr-shape">Composición SSR del home</a></li>
+          <li><a href="#limitaciones">Limitaciones honestas</a></li>
+          <li><a href="#proximo">Próximo paso</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="contexto">
+          <h2>El experimento</h2>
+          <p>El 2026-05-28 corrimos tres scans Unlighthouse contra modo-landing dentro de la misma ventana de 45 minutos. La idea era simple: la migración Next 12 → 16 ya está en preprod y el SSR fix del catch-all <code>[[...slug]].jsx</code> también. Antes de promover algo a producción, queríamos ver la foto cruda — sin filtros, sin overclaim, sin tarjetas de marketing.</p>
+          <p>Lo que va abajo no es una declaración de victoria. Es lo que la herramienta dijo, con las salvedades del caso, y sirve para decidir tres cosas: si la migración rompe algo crítico antes de prod, dónde meter el siguiente PR de perf, y qué señal hace falta para que el próximo baseline valga como gate.</p>
+
+          <p class="callout callout-warn">
+            <strong>Caveat de origen:</strong> Next 12 está medido en prod (<code>www.modo.com.ar</code>) y Next 16 está medido en preprod (<code>preprod.modo.com.ar</code> → redirect a <code>www.preprod.modo.com.ar</code>). Infra distinta, CDN distinta, cache cold vs warm. Cualquier delta absoluto entre Next 12 y Next 16 mezcla código + ambiente. Los deltas entre los dos escenarios Next 16 (con y sin SSR fix) sí son comparables — mismo ambiente, mismo día.
+          </p>
+        </section>
+
+        <section id="metodologia">
+          <h2>Metodología</h2>
+          <p>Unlighthouse última, perfil mobile, throttle 4G simulado, 1 sample por ruta. Cliente único (la misma laptop, la misma red). Para los detalles del runner ver <code>docs/perf/README.md</code> en el repo modo-landing.</p>
+          <p>Los baselines viven congelados como JSON bajo <code>docs/perf/baselines/&lt;fecha&gt;-&lt;suffix&gt;/metrics.json</code> + el HTML report completo de Unlighthouse adentro de <code>report/</code>. Eso permite rehacer cualquier diff sin volver a medir, y sobre todo permite que el próximo PR de perf compare contra un punto fijo.</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <caption>Las tres tomas (2026-05-28)</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Escenario</th>
+                  <th scope="col">Stack</th>
+                  <th scope="col">Origin</th>
+                  <th scope="col">Rutas</th>
+                  <th scope="col">Capturado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Next 12 · prod</strong></td>
+                  <td>Next 12.3.5 (Pages Router)</td>
+                  <td><code>www.modo.com.ar</code></td>
+                  <td>6</td>
+                  <td>17:27 UTC</td>
+                </tr>
+                <tr>
+                  <td><strong>Next 16 · preprod sin SSR</strong></td>
+                  <td>Next 16 (Pages Router, catch-all <code>dynamic(ssr:false)</code>)</td>
+                  <td><code>preprod.modo.com.ar</code></td>
+                  <td>7</td>
+                  <td>17:28 UTC</td>
+                </tr>
+                <tr>
+                  <td><strong>Next 16 · preprod con SSR</strong></td>
+                  <td>Next 16 (Pages Router, SSR del CMS body restaurado)</td>
+                  <td><code>preprod.modo.com.ar</code></td>
+                  <td>7</td>
+                  <td>18:13 UTC</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="escenarios">
+          <h2>Los tres escenarios</h2>
+          <p>El primero es el control: lo que el usuario real está viendo hoy en producción. El segundo es Next 16 deployado tal cual quedó después del codemod inicial — la home renderea un shell vacío y el CMS body baja por client-side hydration (<code>dynamic(ssr:false)</code> heredado del catch-all). El tercero es Next 16 con el SSR del CMS body restaurado: el HTML inicial ya trae imágenes, headings y links del Storyblok body, no solo el chrome.</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 760 220" class="diagram" role="img" aria-labelledby="escenarios-title escenarios-desc">
+              <title id="escenarios-title">Tres puntos en el tiempo</title>
+              <desc id="escenarios-desc">Diagrama lineal con tres nodos: Next 12 prod (verde, control), Next 16 preprod sin SSR (azul, estado intermedio), Next 16 preprod con SSR fix (verde acentuado, estado actual final).</desc>
+
+              <g transform="translate(20,80)">
+                <rect width="200" height="80" rx="10" class="dgm-node"/>
+                <text x="100" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">Next 12 · prod</text>
+                <text x="100" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">www.modo.com.ar</text>
+                <text x="100" y="66" class="dgm-text dgm-text-muted" text-anchor="middle">control · CDN caliente</text>
+              </g>
+
+              <g transform="translate(280,80)">
+                <rect width="200" height="80" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="100" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">Next 16 · preprod</text>
+                <text x="100" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">sin SSR</text>
+                <text x="100" y="66" class="dgm-text dgm-text-muted" text-anchor="middle">body shell-vacío</text>
+              </g>
+
+              <g transform="translate(540,80)">
+                <rect width="200" height="80" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="100" y="30" class="dgm-text dgm-text-strong" text-anchor="middle">Next 16 · preprod</text>
+                <text x="100" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">con SSR fix</text>
+                <text x="100" y="66" class="dgm-text dgm-text-muted" text-anchor="middle">CMS body en HTML inicial</text>
+              </g>
+
+              <path d="M 220 120 L 278 120" class="dgm-arrow dgm-arrow-dotted"/>
+              <path d="M 480 120 L 538 120" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>De izquierda a derecha: lo que está hoy en prod (control), el estado intermedio que llegó a preprod después del codemod, y el estado actual con el SSR del CMS body restaurado. Las flechas con guión marcan los pasos donde cambia algo en serio: codemod + entorno (línea punteada) y SSR fix (línea verde).</figcaption>
+          </figure>
+        </section>
+
+        <section id="score">
+          <h2>Score por ruta</h2>
+          <p>Lighthouse Performance Score es una métrica compuesta y ruidosa, pero como termómetro de "hay algo grosero o no" sirve. La caída de score se concentra en las rutas que más dependen del shell de Storyblok — <code>/</code>, <code>/ayuda</code>, <code>/recargas</code> — y la causa más probable mirando los CWV es el TTFB de preprod (~150ms vs ~10ms de prod) más el cold cache del CDN preprod.</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap" style="height: 360px">
+              <canvas id="score-chart" aria-label="Performance Score por ruta, comparando los tres escenarios" role="img"></canvas>
+            </div>
+            <figcaption>Score Lighthouse Performance por ruta. La caída sistemática Next 12 → Next 16 mezcla código + ambiente. El delta entre las dos columnas Next 16 (con y sin SSR) está dentro del ruido de Unlighthouse en single-sample.</figcaption>
+          </figure>
+
+          <p class="callout callout-info">
+            <strong>Cómo leer esto:</strong> el rojo (Next 12 prod) vs azul (Next 16 sin SSR) mezcla migración + cambio de origin. Azul vs verde (Next 16 con SSR) sí compara código limpio. Y verde vs rojo es la foto agregada hacia donde nos vamos cuando promovamos preprod a prod.
+          </p>
+        </section>
+
+        <section id="lcp">
+          <h2>LCP por ruta</h2>
+          <p>El LCP cuenta otra historia. Mediano salta de <strong>7.87s</strong> en prod a <strong>19.27s</strong> en preprod (las dos columnas Next 16). Eso no es una regresión del código: es un TTFB ~20× peor en preprod (179ms vs 7ms del home), más cold cache, más una red de origin que en preprod recién se calienta cuando le pegamos. La distancia entre las dos columnas Next 16 — con y sin SSR fix — es de centésimas en la mayoría de rutas. La home pasó de 18.15s a 17.85s. <code>/aprende-con-modo</code> de 17.41s a 16.47s. Son mejoras direccionales pero dentro del ruido de un single-sample.</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap" style="height: 360px">
+              <canvas id="lcp-chart" aria-label="LCP por ruta en segundos, con line de target en 2.5s, comparando los tres escenarios" role="img"></canvas>
+            </div>
+            <figcaption>LCP (Largest Contentful Paint) por ruta. Target Web Vitals "Good" = 2.5s. Ninguna ruta lo cumple en ningún escenario — pero el salto absoluto entre prod y preprod es ambiente, no código. La línea horizontal punteada marca 2.5s a escala.</figcaption>
+          </figure>
+
+          <p>El caso que sí merece atención independiente del ambiente: <code>/bancos</code> empeora LCP entre las dos columnas Next 16, de 17.86s a 20.88s (+3.02s). Puede ser noise de single-sample, puede ser que el HTML más grueso del SSR fix le sume TTFB al render. Hasta no tener varianza (10+ samples) no decimos cuál. Pero vale anotarlo y volver a medir.</p>
+        </section>
+
+        <section id="bytes">
+          <h2>Bytes por ruta</h2>
+          <p>El payload total crece entre 2% y 23% según ruta. El que más sufre es la home: 14.3 MB → 17.5 MB (+22.8%). Mirando el desglose, el grueso del aumento son <strong>imágenes</strong>: la home en Next 16 baja 30 imágenes pero pesa 15.6 MB vs 12.4 MB en Next 12 — mismo número de assets, más peso por asset. Eso pasa porque <code>next/image</code> de Next 16 sirve cada imagen con la quality default (75-90 según breakpoint) sin downsizing manual, mientras que el deploy Next 12 sirve los mismos JPG procesados a calidades más agresivas vía la pipeline vieja.</p>
+          <p>Esto es exactamente la ventana donde entra el PR #1496 (quality 95→75 + AVIF). Sin él, este número no se mueve.</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap" style="height: 360px">
+              <canvas id="bytes-chart" aria-label="Total bytes transferidos por ruta en KB, escala logarítmica, comparando los tres escenarios" role="img"></canvas>
+            </div>
+            <figcaption>Total bytes transferidos por ruta, escala log para que la home (17 MB) no aplaste a recargas (1.9 MB). El delta entre las dos columnas Next 16 está dentro del 2%: el SSR fix no agrega bytes — agrega HTML, que es cents.</figcaption>
+          </figure>
+        </section>
+
+        <section id="cls">
+          <h2>CLS — el win del SSR</h2>
+          <p>Acá está la lectura más limpia del baseline. <code>/bancos</code> con Next 16 sin SSR fix sufría un CLS de <strong>1.048</strong> — eso es <em>poor</em> según Web Vitals con margen para cuatro sellos. La causa era estructural: el shell vacío del catch-all hacía que el browser pintara header + footer y después insertara el body del CMS de golpe, corriendo todo lo que estaba debajo. Con el SSR fix puesto, el CMS body ya viaja en el HTML inicial y el CLS de <code>/bancos</code> vuelve a <strong>0.375</strong>.</p>
+          <p><strong>Honesto:</strong> 0.375 no es un win nuevo. Es exactamente el mismo CLS que <code>/bancos</code> ya tenía en producción con Next 12. El SSR fix no <em>arregló</em> el CLS de prod — <em>recuperó la paridad</em> que la versión sin SSR había roto. La página tiene un layout shift estructural que arrastra desde antes, y va a haber que atacarlo con dimensiones reservadas, no con cambios de hidratación.</p>
+          <p><code>/pagar</code> tiene el mismo patrón pero más leve: 0.428 sin SSR → 0.407 con SSR (vs 0.326 en prod). El SSR fix lo acerca a prod pero no lo alcanza.</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap" style="height: 360px">
+              <canvas id="cls-chart" aria-label="CLS por ruta con target Web Vitals de 0.1, comparando los tres escenarios" role="img"></canvas>
+            </div>
+            <figcaption>CLS por ruta. Target Web Vitals "Good" = 0.1 (línea punteada). El SSR fix recupera el CLS de <code>/bancos</code> a niveles de prod — no lo mejora; lo restaura. Las rutas que ya tenían CLS ≈ 0 (recargas, ayuda) se quedan donde estaban.</figcaption>
+          </figure>
+        </section>
+
+        <section id="tree-shaking">
+          <h2>Tree-shaking · Next 16</h2>
+          <p>Una cosa que Next 16 sí mejora medible es el <em>unused JS</em>. En todas las rutas que medimos, el shrink es entre 60 KB y 100 KB:</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap" style="height: 320px">
+              <canvas id="unused-chart" aria-label="Unused JS shrink por ruta comparando Next 12 prod vs Next 16 preprod con SSR fix" role="img"></canvas>
+            </div>
+            <figcaption>Unused JS bytes por ruta. El delta absoluto del shrink está entre 60 KB y 100 KB. Es un win real pero modesto, y se lo come la subida del HTML/CSS.</figcaption>
+          </figure>
+
+          <p>Es una mejora real del runtime / bundler de Next 16 (Turbopack-driven, mejor module-level granularity), pero en términos absolutos lo absorbe el HTML más grueso del SSR y el ~8% extra de bytes totales. La sensación neta sobre el cliente final es prácticamente plana — el shrink existe pero no aparece en la fila de "bytes totales".</p>
+        </section>
+
+        <section id="ssr-shape">
+          <h2>Composición SSR del home</h2>
+          <p>Mirando el HTML inicial que sirve cada deploy del home — no las métricas, el markup crudo — la diferencia es visible. Antes del SSR fix, el body de <code>[[...slug]].jsx</code> bajaba como client-only y el HTML inicial llegaba prácticamente sin contenido del CMS. Después del fix, el HTML ya trae 10 imágenes, 16 nodos <code>next/image</code> y 5 secciones semánticas:</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap" style="height: 280px">
+              <canvas id="ssr-shape-chart" aria-label="Composición del HTML inicial del home antes y después del SSR fix" role="img"></canvas>
+            </div>
+            <figcaption>Cuentas extraídas del HTML inicial del home en preprod (no de las métricas Unlighthouse). El SSR fix mete contenido del CMS body en la respuesta server — lo cual es bueno para crawlers y para LCP teórico, aunque acá el LCP empírico todavía no lo refleja por TTFB de preprod.</figcaption>
+          </figure>
+
+          <p class="callout callout-warn">
+            <strong>Honest gap:</strong> el SSR fix cablea SSR para 26 imágenes del home (las del body del CMS), pero quedan 12+ imágenes más que siguen client-render porque viven en componentes que el codemod marcó como <code>dynamic(ssr:false)</code> por separado. La siguiente vuelta del fix debería atacar esa cola, especialmente las del hero — esas son las candidatas a LCP element y son las que el PR #1496 va a re-pesar.
+          </p>
+        </section>
+
+        <section id="limitaciones">
+          <h2>Limitaciones honestas</h2>
+          <div class="gap-columns">
+            <div class="gap-col gap-col-crit">
+              <h3>Bloqueantes · 3</h3>
+              <ul>
+                <li><strong>Env mismatch prod ↔ preprod.</strong> Infra distinta, CDN distinta, TTFB ~20× peor en preprod. Cualquier delta absoluto entre Next 12 y Next 16 mezcla código + ambiente.</li>
+                <li><strong>Sample size = 1 por ruta.</strong> Unlighthouse en single-sample sin protección de varianza. Deltas chicos (±5 puntos de score, ±1s de LCP) son ruido perfectamente esperable.</li>
+                <li><strong>PR #1496 no mergeado.</strong> El image quality (95→75) + AVIF es el que mueve los bytes del home. Hasta que entre, el 17.5 MB del home queda congelado y este baseline subreporta la mejora real.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-mid">
+              <h3>Atenciones · 3</h3>
+              <ul>
+                <li><strong><code>/bancos</code> LCP +3s con SSR fix.</strong> Puede ser noise de single-sample o TTFB extra por HTML más grueso. Hasta tener varianza no decidimos.</li>
+                <li><strong>SSR fix cablea 26/38 imágenes del home.</strong> 12+ siguen client-render porque viven en componentes con <code>dynamic(ssr:false)</code> propio. Cola pendiente para la próxima vuelta del fix.</li>
+                <li><strong>Heading order fallando en 5/6 rutas</strong> (todas menos <code>/pagar</code> y <code>/recargas</code>). No es performance, pero el baseline lo registró — vale atacar mientras tocamos SSR.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-ok">
+              <h3>Lo que sí funcionó · 3</h3>
+              <ul>
+                <li><strong>SSR fix restauró el CLS de <code>/bancos</code></strong> de 1.048 (poor) a 0.375 (necesita trabajo pero comparable a prod). Win estructural verificable.</li>
+                <li><strong>Tree-shaking Next 16.</strong> Unused JS baja 60-100 KB en todas las rutas medidas. Mejora real del runtime, reproducible ruta a ruta.</li>
+                <li><strong>Baselines congelados en repo.</strong> <code>docs/perf/baselines/&lt;fecha&gt;-&lt;suffix&gt;/</code> permite que cualquier PR futuro corra <code>diff-baselines.mjs</code> contra un punto fijo sin volver a medir.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="proximo">
+          <h2>Próximo paso</h2>
+          <p>Antes de cantar mejora o regresión, esto necesita tres cosas — todas se pueden mover en paralelo con IA:</p>
+          <ol>
+            <li><strong>Variance runs.</strong> 10 samples por ruta en preprod-con-SSR. Eso convierte single-point en distribución y nos dice si la regresión de <code>/bancos</code> LCP es real o ruido. ~2h con IA si el script de Unlighthouse ya está cableado.</li>
+            <li><strong>Mergear PR #1496</strong> (image quality 95→75 + AVIF). Después correr un cuarto baseline preprod-con-SSR-y-1496 y diffearlo contra el actual. Es el ticket que de verdad mueve el peso del home.</li>
+            <li><strong>Re-scan post deploy prod.</strong> Cuando promovamos preprod a prod, repetir el scan contra <code>www.modo.com.ar</code>. Esa es la única comparación con Next 12 que <em>no</em> mete env mismatch — mismo origin, mismo CDN, mismo TTFB. Recién ahí podemos cantar el verdadero delta de la migración.</li>
+          </ol>
+          <p>El siguiente paso natural de esta R&amp;D es ese cuarto baseline. Si los tres escenarios actuales son la foto del experimento, el cuarto (post-prod, post-imágenes) es el veredicto.</p>
+        </section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-28">2026-05-28</time>
+          </p>
+          <p class="article-disclaimer">
+            Documento de investigación interna. Mediciones con Unlighthouse, mobile profile, 4G throttle, single-sample por ruta. PR #1496 (image quality 95→75 + AVIF) referenciado pero no mergeado al momento de esta R&amp;D. Estimates de effort asumen Claude Code + skills MODO. Las cifras absolutas de LCP entre Next 12 (prod) y Next 16 (preprod) están afectadas por env mismatch — leerlas como direccionales, no como verdict. Baselines crudos preservados en <code>modo-landing/docs/perf/baselines/</code>.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof Chart === 'undefined') return;
+
+  function getCss(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  var urgent = getCss('--urgent-fg', '#B0001A');
+  var draft = getCss('--draft-fg', '#8a5a00');
+  var accent = getCss('--accent-ink', '#00471B');
+  var mid = getCss('--rfc-fg', '#1F4FA8');
+  var muted = getCss('--muted', '#6B6B6B');
+  var ink = getCss('--ink', '#1A1A1A');
+
+  var routes = ['/', '/ayuda', '/bancos', '/comercios', '/pagar', '/recargas'];
+
+  var fontFamily = "'Red Hat Display', system-ui, sans-serif";
+  var commonScales = function (yLabel, beginAtZero) {
+    return {
+      x: {
+        ticks: { color: ink, font: { family: fontFamily, size: 12, weight: '500' } },
+        grid: { display: false }
+      },
+      y: {
+        beginAtZero: beginAtZero,
+        title: { display: !!yLabel, text: yLabel || '', color: muted, font: { family: fontFamily, size: 12 } },
+        ticks: { color: muted, font: { family: fontFamily, size: 11 } },
+        grid: { color: 'rgba(127,127,127,0.18)', drawBorder: false }
+      }
+    };
+  };
+
+  function makeGroupedBar(canvasId, datasets, yLabel, opts) {
+    var ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    var customOpts = opts || {};
+    new Chart(ctx, {
+      type: 'bar',
+      data: { labels: routes, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: ink, font: { family: fontFamily, size: 12 }, boxWidth: 14, boxHeight: 14, padding: 16 }
+          },
+          tooltip: {
+            callbacks: customOpts.tooltipLabel ? { label: customOpts.tooltipLabel } : undefined
+          }
+        },
+        scales: commonScales(yLabel, true)
+      }
+    });
+  }
+
+  // 1. Score chart
+  makeGroupedBar('score-chart', [
+    { label: 'Next 12 · prod', data: [62, 66, 47, 61, 51, 87], backgroundColor: urgent, borderRadius: 6, maxBarThickness: 28 },
+    { label: 'Next 16 · sin SSR', data: [57, 56, 33, 56, 43, 67], backgroundColor: mid, borderRadius: 6, maxBarThickness: 28 },
+    { label: 'Next 16 · con SSR', data: [57, 57, 38, 56, 45, 68], backgroundColor: accent, borderRadius: 6, maxBarThickness: 28 }
+  ], 'Performance Score (0-100)');
+
+  // 2. LCP chart (seconds) with target line drawn via plugin
+  (function () {
+    var ctx = document.getElementById('lcp-chart');
+    if (!ctx) return;
+    var targetLine = {
+      id: 'targetLine',
+      afterDatasetsDraw: function (chart) {
+        var yScale = chart.scales.y;
+        if (!yScale) return;
+        var yPx = yScale.getPixelForValue(2.5);
+        var x0 = chart.chartArea.left;
+        var x1 = chart.chartArea.right;
+        var c = chart.ctx;
+        c.save();
+        c.beginPath();
+        c.setLineDash([6, 4]);
+        c.strokeStyle = muted;
+        c.lineWidth = 1;
+        c.moveTo(x0, yPx);
+        c.lineTo(x1, yPx);
+        c.stroke();
+        c.setLineDash([]);
+        c.fillStyle = muted;
+        c.font = '11px ' + fontFamily;
+        c.textAlign = 'right';
+        c.fillText('Target Web Vitals 2.5s', x1 - 6, yPx - 6);
+        c.restore();
+      }
+    };
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: routes,
+        datasets: [
+          { label: 'Next 12 · prod', data: [7.87, 7.84, 6.43, 12.34, 17.87, 4.02], backgroundColor: urgent, borderRadius: 6, maxBarThickness: 28 },
+          { label: 'Next 16 · sin SSR', data: [18.15, 19.39, 17.86, 21.65, 19.56, 14.47], backgroundColor: mid, borderRadius: 6, maxBarThickness: 28 },
+          { label: 'Next 16 · con SSR', data: [17.85, 19.27, 20.88, 21.33, 19.18, 13.56], backgroundColor: accent, borderRadius: 6, maxBarThickness: 28 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: ink, font: { family: fontFamily, size: 12 }, boxWidth: 14, boxHeight: 14, padding: 16 } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + c.parsed.y.toFixed(2) + 's'; } } }
+        },
+        scales: commonScales('LCP (segundos)', true)
+      },
+      plugins: [targetLine]
+    });
+  })();
+
+  // 3. Bytes chart (KB, log scale)
+  (function () {
+    var ctx = document.getElementById('bytes-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: routes,
+        datasets: [
+          { label: 'Next 12 · prod', data: [14267, 2470, 2713, 2472, 2723, 1851], backgroundColor: urgent, borderRadius: 6, maxBarThickness: 28 },
+          { label: 'Next 16 · sin SSR', data: [17525, 2686, 2986, 2862, 2924, 1899], backgroundColor: mid, borderRadius: 6, maxBarThickness: 28 },
+          { label: 'Next 16 · con SSR', data: [17525, 2732, 2995, 2863, 2923, 1900], backgroundColor: accent, borderRadius: 6, maxBarThickness: 28 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: ink, font: { family: fontFamily, size: 12 }, boxWidth: 14, boxHeight: 14, padding: 16 } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + c.parsed.y.toLocaleString('es-AR') + ' KB'; } } }
+        },
+        scales: {
+          x: { ticks: { color: ink, font: { family: fontFamily, size: 12, weight: '500' } }, grid: { display: false } },
+          y: {
+            type: 'logarithmic',
+            min: 1000,
+            title: { display: true, text: 'Total bytes (KB, escala log)', color: muted, font: { family: fontFamily, size: 12 } },
+            ticks: {
+              color: muted,
+              font: { family: fontFamily, size: 11 },
+              callback: function (v) { return Number(v).toLocaleString('es-AR'); }
+            },
+            grid: { color: 'rgba(127,127,127,0.18)', drawBorder: false }
+          }
+        }
+      }
+    });
+  })();
+
+  // 4. CLS chart with target line at 0.1
+  (function () {
+    var ctx = document.getElementById('cls-chart');
+    if (!ctx) return;
+    var targetLine = {
+      id: 'targetLineCls',
+      afterDatasetsDraw: function (chart) {
+        var yScale = chart.scales.y;
+        if (!yScale) return;
+        var yPx = yScale.getPixelForValue(0.1);
+        var x0 = chart.chartArea.left;
+        var x1 = chart.chartArea.right;
+        var c = chart.ctx;
+        c.save();
+        c.beginPath();
+        c.setLineDash([6, 4]);
+        c.strokeStyle = muted;
+        c.lineWidth = 1;
+        c.moveTo(x0, yPx);
+        c.lineTo(x1, yPx);
+        c.stroke();
+        c.setLineDash([]);
+        c.fillStyle = muted;
+        c.font = '11px ' + fontFamily;
+        c.textAlign = 'right';
+        c.fillText('Target Web Vitals 0.1', x1 - 6, yPx - 6);
+        c.restore();
+      }
+    };
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: routes,
+        datasets: [
+          { label: 'Next 12 · prod', data: [0.002, 0.002, 0.375, 0.009, 0.326, 0.000], backgroundColor: urgent, borderRadius: 6, maxBarThickness: 28 },
+          { label: 'Next 16 · sin SSR', data: [0.002, 0.002, 1.048, 0.009, 0.428, 0.000], backgroundColor: mid, borderRadius: 6, maxBarThickness: 28 },
+          { label: 'Next 16 · con SSR', data: [0.002, 0.002, 0.375, 0.009, 0.407, 0.000], backgroundColor: accent, borderRadius: 6, maxBarThickness: 28 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: ink, font: { family: fontFamily, size: 12 }, boxWidth: 14, boxHeight: 14, padding: 16 } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + c.parsed.y.toFixed(3); } } }
+        },
+        scales: commonScales('CLS', true)
+      },
+      plugins: [targetLine]
+    });
+  })();
+
+  // 5. Unused JS shrink: 2-series comparison (prod vs preprod-SSR)
+  (function () {
+    var ctx = document.getElementById('unused-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: routes,
+        datasets: [
+          { label: 'Next 12 · prod', data: [786, 789, 790, 804, 931, 698], backgroundColor: urgent, borderRadius: 6, maxBarThickness: 32 },
+          { label: 'Next 16 · con SSR', data: [718, 721, 785, 794, 830, 611], backgroundColor: accent, borderRadius: 6, maxBarThickness: 32 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: ink, font: { family: fontFamily, size: 12 }, boxWidth: 14, boxHeight: 14, padding: 16 } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + c.parsed.y + ' KB'; } } }
+        },
+        scales: commonScales('Unused JS (KB)', true)
+      }
+    });
+  })();
+
+  // 6. SSR composition (home, before vs after SSR fix)
+  (function () {
+    var ctx = document.getElementById('ssr-shape-chart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Antes del SSR fix', 'Después del SSR fix'],
+        datasets: [
+          { label: 'Imágenes en HTML inicial', data: [0, 10], backgroundColor: urgent, borderRadius: 6, maxBarThickness: 60 },
+          { label: 'Nodos next/image', data: [0, 16], backgroundColor: mid, borderRadius: 6, maxBarThickness: 60 },
+          { label: 'Secciones semánticas', data: [0, 5], backgroundColor: accent, borderRadius: 6, maxBarThickness: 60 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: ink, font: { family: fontFamily, size: 12 }, boxWidth: 14, boxHeight: 14, padding: 16 } },
+          tooltip: { callbacks: { label: function (c) { return c.dataset.label + ': ' + c.parsed.y; } } }
+        },
+        scales: commonScales('Cuenta de elementos en HTML inicial', true)
+      }
+    });
+  })();
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

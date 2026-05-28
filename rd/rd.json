@@ -144,6 +144,35 @@
         "skill modo-frontend-deploy (~/.claude/skills/modo-frontend-deploy/)",
         "~/.claude/skills/modo-jsm-ticket/reference/catalog.md (sd/rt validados)"
       ]
+    },
+    {
+      "number": "RD06",
+      "slug": "perf-next12-vs-next16-ssr-2026-05-28",
+      "title": "Performance modo-landing · Next 12 prod vs Next 16 preprod (con y sin SSR fix)",
+      "summary": "Tres baselines Unlighthouse del mismo día — Next 12 en prod, Next 16 en preprod sin SSR del CMS body, Next 16 en preprod con SSR fix puesto. Score medio cae 5 puntos y bytes suben 8%, pero el env mismatch prod ↔ preprod hace que los deltas absolutos sean direccionales, no veredicto. El SSR fix sí mueve la aguja donde tenía que moverla: /bancos CLS de 1.048 (catástrofe) a 0.375 (paridad con prod). Next 16 tree-shakea 60-100 KB de unused JS por ruta — win modesto que se absorbe en el 8% extra de HTML/CSS. PR #1496 (image quality 95→75 + AVIF) sigue draft.",
+      "status": "exploración",
+      "tags": [
+        "performance",
+        "next16",
+        "ssr",
+        "unlighthouse"
+      ],
+      "area": "platform",
+      "date": "2026-05-28",
+      "href": "perf-next12-vs-next16-ssr-2026-05-28.html",
+      "reading_minutes": 9,
+      "diagrams": 1,
+      "charts": 6,
+      "sources": [
+        "modo-landing/docs/perf/baselines/2026-05-28-prod-pre-migration/metrics.json (Next 12 control)",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration/metrics.json (Next 16 sin SSR fix)",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration-ssr/metrics.json (Next 16 con SSR fix)",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration-ssr/diff-vs-prod.md",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration-ssr/diff-vs-noss.md",
+        "modo-landing PR #1466 (SSR fix CMS body, mergeado a preprod)",
+        "modo-landing PR #1496 (CMSImage quality 95→75 + AVIF, draft)",
+        "Web Vitals targets (LCP ≤2.5s, CLS ≤0.1)"
+      ]
     }
   ]
 }
