@@ -7,6 +7,22 @@
  },
  "rfcs": [
   {
+   "number": "R21",
+   "slug": "evergreen-geo-promos-hub",
+   "title": "Resolver evergreen y presencia en buscadores con IA usando promos-hub",
+   "summary": "Construir páginas evergreen por comercio en promos-hub-site para capturar los ~500 clicks/mes de queries 'modo + nombre de comercio' que hoy se pierden, consolidar la reputación que las landings estacionales tiran a la basura cada año, y ganar citaciones por ChatGPT/Perplexity/Claude (GEO). 7 días de dev con IA, sin coord cross-team. URL bajo /promos/comercio/<slug> con plan de redirección permanente al top-level cuando el track de plataforma esté listo. Captura ~60-70% del impacto vs la opción modo-landing track completo. Audiencia primaria del RFC: Product Owners.",
+   "status": "draft",
+   "tags": [
+    "seo",
+    "geo",
+    "comercios",
+    "promos-hub"
+   ],
+   "area": "product",
+   "date": "2026-05-28",
+   "repo_url": "https://github.com/SoyErnoModo/erno-modo/blob/main/rfcs/RFC-evergreen-geo-promos-hub.md"
+  },
+  {
    "number": "R20",
    "slug": "decks-responsivos-canvas-adaptativo",
    "title": "Decks responsivos con canvas adaptativo",
