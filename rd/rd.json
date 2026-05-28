@@ -67,6 +67,29 @@
         "~/.claude/skills/erno-modo-sync-all/scripts/sync.py (validate_rd)",
         "https://soyernomodo.github.io/erno-modo/rd/developers-portal-mapping.html (RD01, pattern source)"
       ]
+    },
+    {
+      "number": "RD04",
+      "slug": "promos-hub-seo-geo-bridge",
+      "title": "Landings temáticas evergreen + /comercios canonical hub para SEO/GEO MODO",
+      "summary": "Cómo recuperar el tráfico estacional que hoy muere cada año en /hotsale-2026, /cyber2025, /navidad-2025: URL evergreen por evento + JSON-LD SaleEvent + cross-link estructural a hubs /comercios/[slug] para que la equity de cada edición se acumule en vez de empezar de cero el año siguiente. Patrón híbrido sin big-bang, ~7 días de dev, encaja como V1.5 del roadmap comercios-database.",
+      "status": "síntesis",
+      "tags": ["seo", "geo", "comercios", "storyblok", "json-ld"],
+      "area": "seo",
+      "date": "2026-05-28",
+      "href": "promos-hub-seo-geo-bridge.html",
+      "reading_minutes": 12,
+      "diagrams": 2,
+      "charts": 1,
+      "sources": [
+        "modo-landing/docs/comercios-database/04-seo-geo-strategy.md",
+        "modo-landing/docs/comercios-database/README.md",
+        "modo-landing/src/components/PromotionsOnlineStores/PromotionsOnlineStores.jsx",
+        "modo-landing/src/components/TextHeader/TextHeader.jsx",
+        "modo-landing/src/pages/[[...slug]].jsx",
+        "Google Search Console export 28d · 2026-05 (queries modo+comercio + URLs /promos/*-mes)",
+        "https://schema.org/SaleEvent"
+      ]
     }
   ]
 }

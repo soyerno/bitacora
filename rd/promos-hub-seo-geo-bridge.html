@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landings temáticas evergreen + /comercios canonical hub para SEO/GEO MODO · R&amp;D · Erno × MODO</title>
+  <meta name="description" content="Cómo recuperar el tráfico estacional que hoy muere cada año en /hotsale-2026, /cyber2025, /navidad-2025: URL evergreen + JSON-LD Event + cross-link a hubs /comercios/[slug] para que la equity de cada edición se acumule en vez de empezar de cero el año siguiente." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Landings temáticas evergreen + /comercios canonical hub para SEO/GEO MODO" />
+  <meta property="og:description" content="Cómo recuperar el tráfico estacional que hoy muere cada año en /hotsale-2026, /cyber2025, /navidad-2025." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/promos-hub-seo-geo-bridge.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-28" />
+  <meta property="article:section" content="R&D" />
+  <meta name="author" content="Hernán De Souza" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/rd/promos-hub-seo-geo-bridge.html" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+</svg>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks" aria-live="polite">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs" aria-live="polite">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd" aria-live="polite">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label" aria-live="polite">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Landings temáticas evergreen</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge rfc">Síntesis</span>
+        <span class="meta-pill">R&amp;D · RD04</span>
+      </div>
+      <h1 class="article-title">Landings temáticas evergreen + <code>/comercios</code> canonical hub para SEO/GEO MODO</h1>
+      <p class="article-deck">Hot Sale, Cyber Monday, Navidad, Día de la Madre. Cada evento estacional levanta una landing nueva en MODO con slug versionado (<code>/hotsale-2026</code>, <code>/cyber2025</code>) y hero hardcoded. La landing vuela durante 7 días, captura intent estacional fuerte, y muere apenas pasa el evento. Al año siguiente arranca de cero porque el slug rotó. La movida es desacoplar el evergreen del año: una URL canónica por evento + JSON-LD <code>Event</code> con <code>validThrough</code> + cross-link a hubs <code>/comercios/[slug]</code> para que la equity de cada edición se acumule en vez de fragmentarse.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-28">2026-05-28</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~12 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>Las landings temáticas (Hot Sale, Cyber Monday, Navidad, Día Madre/Padre, Black Friday) son stories Storyblok con slot <code>landing-especifica-&lt;evento&gt;-&lt;año&gt;</code> + hero estático en <code>src/components/TextHeader</code>. Cada año el slug rota, la URL muere, la equity se evapora.</li>
+        <li><strong>Patrón propuesto</strong>: URL evergreen sin año (<code>/promos/hotsale</code>) + slot Storyblok evergreen que rota contenido por dentro + JSON-LD <code>Event</code> con <code>validThrough</code> + cross-link a hubs <code>/comercios/[slug]</code> por cada merchant participante.</li>
+        <li>Beneficio doble: la landing temática captura intent estacional fuerte (el cliente busca "modo hot sale" no "hot sale comercio"), y cada merchant participante recibe equity transitiva al hub canonical via <code>Offer.itemOffered.@id</code>. Pre-warm SEO 30 días antes del evento + retention post-evento con "próxima edición".</li>
+        <li>Effort estimado ~10 días de dev (la primera pasada se quedaba en ~7d ignorando validador Storyblok, trigger automático de rotación de estado, audit de redirect chains y CI gate de Rich Results). Encaja como V1.5 entre V1 (BFF materializado) y V2 (geo+branches). Siguiente paso: promover esto a la colección RFCs como propuesta formal.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#encuadre">Encuadre del problema</a></li>
+          <li><a href="#estado-actual">Estado actual · cómo funcionan hoy las temáticas</a></li>
+          <li><a href="#topologia">Topología actual y propuesta</a></li>
+          <li><a href="#tradeoffs">Trade-offs · versioned vs evergreen vs híbrido</a></li>
+          <li><a href="#movidas">Las 7 movidas técnicas</a></li>
+          <li><a href="#riesgos">Riesgos y métricas</a></li>
+          <li><a href="#proximo">Próximo paso · RFC</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="encuadre">
+          <h2>Encuadre del problema</h2>
+
+          <p>Cada año MODO levanta cuatro o cinco landings temáticas grandes: Hot Sale en mayo, Cyber Monday en noviembre, Navidad en diciembre, Día de la Madre en octubre, Día del Padre en junio. Son landings que <strong>agrupan promos de muchos comercios bajo un hero estacional único</strong> — no son páginas de un comercio puntual, son páginas <em>de evento</em>.</p>
+
+          <p>El patrón vuela. Durante la semana del evento la landing captura intent fuerte porque el cliente argentino busca "modo hot sale" o "cyber monday modo" — busca el evento, no el comercio. Pero después del evento la URL muere, y al año siguiente la nueva edición arranca con cero equity acumulada de la anterior porque el slug rotó.</p>
+
+          <p class="callout callout-info">
+            <strong>Lo que verifiqué antes de escribir esto:</strong> el patrón actual lo vi en tres lugares concretos del repo. <code>src/components/PromotionsOnlineStores/PromotionsOnlineStores.jsx:17</code> renderiza promos del slot Storyblok <code>landing-especifica-cyber2025</code> — slug del slot incluye el año. <code>src/components/TextHeader/TextHeader.jsx</code> hardcodea <code>/static/images/cybermonday/hotsale-2026.jpg</code> + el copy "Hot Sale en MODO" + las fechas "Del 11 al 17 de Mayo" — todo estático en el componente. Y la ruta vive como story Storyblok en el catch-all <code>src/pages/[[...slug]].jsx</code>.
+          </p>
+
+          <p>Tres anclajes distintos para la misma temática (slug del slot · imágenes · copy y fechas), todos versionados por año, ninguno hablando con los hubs <code>/comercios/[slug]</code> que estoy construyendo en paralelo. Cuando la landing temática lista Coto, Carrefour, Disco, La Anónima, no hay un link estructural al hub merchant. El cliente entra por intent estacional fuerte y sale sin que la autoridad del evento riegue a los hubs.</p>
+        </section>
+
+        <section id="estado-actual">
+          <h2>Estado actual · cómo funcionan hoy las temáticas</h2>
+
+          <p>Las landings temáticas no tienen una page route dedicada. Son stories Storyblok renderizadas por el catch-all <code>[[...slug]].jsx</code>. La estructura típica es:</p>
+
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla — anatomía de una landing temática actual">
+            <table class="data-table">
+              <caption>Anatomía de una landing temática actual (caso Cyber Monday 2025)</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Pieza</th>
+                  <th scope="col">Dónde vive</th>
+                  <th scope="col">Versionada por año</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>URL pública</td>
+                  <td>Story Storyblok publicada como <code>cyber-monday-2025</code> o similar</td>
+                  <td>sí</td>
+                </tr>
+                <tr>
+                  <td>Hero (imagen + copy + fechas)</td>
+                  <td><code>src/components/TextHeader/TextHeader.jsx</code> · hardcoded</td>
+                  <td>sí (commit por edición)</td>
+                </tr>
+                <tr>
+                  <td>Grid de promos</td>
+                  <td><code>PromotionsOnlineStores</code> con <code>slot='landing-especifica-cyber2025'</code></td>
+                  <td>sí</td>
+                </tr>
+                <tr>
+                  <td>Lista de bancos participantes</td>
+                  <td><code>BANKS_APPS</code> hardcoded en <code>TextHeader/utils</code></td>
+                  <td>sí</td>
+                </tr>
+                <tr>
+                  <td>Carrusel tutorial</td>
+                  <td><code>utils/carrouselUtils.jsx</code> con assets <code>/static/images/cybermonday/*</code></td>
+                  <td>sí (assets nuevos por edición)</td>
+                </tr>
+                <tr>
+                  <td>JSON-LD del evento</td>
+                  <td>No existe</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>Cross-link a <code>/comercios/[slug]</code></td>
+                  <td>No existe</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>Plan post-evento (qué pasa con la URL después)</td>
+                  <td>No definido · queda viva con contenido vencido o se despublica</td>
+                  <td>—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Cinco anclajes versionados por año, cero anclajes evergreen, cero structured data. Es un patrón optimizado para <em>shipear rápido cada edición</em> y zero optimizado para <em>capitalizar la autoridad acumulada</em>.</p>
+
+          <p class="callout callout-warn">
+            <strong>El caso más sangrante:</strong> el hero del TextHeader actual dice "¡Hot Sale en MODO!" / "Preparate para el mundial, aprovechá 20% de reintegro" con asset <code>hotsale-2026.jpg</code>. Ese hero estuvo vivo durante 7 días del Hot Sale 2026. Hoy, fuera de esos 7 días, sigue sirviéndose a quien entre por esa ruta porque está hardcoded en el componente. Captura intent vencido y rompe trust.
+          </p>
+        </section>
+
+        <section id="topologia">
+          <h2>Topología actual y propuesta</h2>
+
+          <p>El problema topológico se ve mejor cuando dibujás las dos versiones al lado. La actual tiene anclajes versionados sin puente al hub:</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 760 380" class="diagram" role="img" aria-labelledby="topo-actual-title topo-actual-desc">
+              <title id="topo-actual-title">Topología actual · landing temática sin puente al hub canonical</title>
+              <desc id="topo-actual-desc">El componente TextHeader hardcodea hero del evento, el slot landing-especifica-año filtra promos, y nada linkea a los hubs /comercios/[slug]. Cuando termina el evento la URL se desactualiza o muere.</desc>
+
+              <!-- Storyblok slot -->
+              <g transform="translate(30,30)">
+                <rect width="170" height="64" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">Storyblok</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">slot · year-versioned</text>
+              </g>
+
+              <!-- TextHeader hardcoded -->
+              <g transform="translate(30,140)">
+                <rect width="170" height="64" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">TextHeader.jsx</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">hero hardcoded</text>
+              </g>
+
+              <!-- BFF promos -->
+              <g transform="translate(30,250)">
+                <rect width="170" height="64" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">rewards-handler-bff</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">filtra por slot</text>
+              </g>
+
+              <!-- catch-all rendering landing -->
+              <g transform="translate(290,140)">
+                <rect width="200" height="76" rx="10" class="dgm-node"/>
+                <text x="100" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">/cyber-monday-2025</text>
+                <text x="100" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">[[...slug]].jsx</text>
+                <text x="100" y="64" class="dgm-text dgm-text-muted" text-anchor="middle">muere post-evento</text>
+              </g>
+
+              <!-- hubs comercios (no conectado) -->
+              <g transform="translate(290,290)">
+                <rect width="200" height="64" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="100" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">/comercios/[slug]</text>
+                <text x="100" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">aislado</text>
+              </g>
+
+              <!-- Google / LLMs -->
+              <g transform="translate(560,140)">
+                <rect width="170" height="64" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">Google · LLMs</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">equity muere anual</text>
+              </g>
+
+              <path d="M 200 60 L 290 155" class="dgm-arrow"/>
+              <path d="M 200 172 L 290 172" class="dgm-arrow"/>
+              <path d="M 200 282 L 290 195" class="dgm-arrow"/>
+              <path d="M 490 175 L 558 175" class="dgm-arrow"/>
+
+              <text x="390" y="260" class="dgm-text dgm-text-muted" text-anchor="middle">— sin Event JSON-LD · sin cross-link al hub —</text>
+            </svg>
+            <figcaption>Tres anclajes versionados aportan al render (slot Storyblok, hero hardcoded, BFF filtrado por slot) pero ninguno cruza al hub merchant ni emite structured data del evento.</figcaption>
+          </figure>
+
+          <p>La propuesta cambia muy poco la topología — solo agrega un anclaje evergreen, structured data del evento, y un cable estructural al hub:</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 760 420" class="diagram" role="img" aria-labelledby="topo-prop-title topo-prop-desc">
+              <title id="topo-prop-title">Topología propuesta · slot evergreen + Event JSON-LD + cross-link al hub</title>
+              <desc id="topo-prop-desc">El slot Storyblok pierde el sufijo de año, el hero se hace data-driven, se emite JSON-LD Event con validThrough, y cada merchant participante linkea al hub canonical via Offer.itemOffered @id. URL pre-warm 30 días antes y queda viva post-evento con countdown a próxima edición.</desc>
+
+              <!-- Storyblok evergreen -->
+              <g transform="translate(30,30)">
+                <rect width="170" height="76" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">Storyblok</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">slot evergreen</text>
+                <text x="85" y="64" class="dgm-text dgm-text-accent" text-anchor="middle">+ validThrough</text>
+              </g>
+
+              <!-- Hero data-driven -->
+              <g transform="translate(30,150)">
+                <rect width="170" height="64" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">EventHero</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">data-driven</text>
+              </g>
+
+              <!-- BFF promos -->
+              <g transform="translate(30,260)">
+                <rect width="170" height="64" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">rewards-handler-bff</text>
+                <text x="85" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">slot evergreen</text>
+              </g>
+
+              <!-- landing temática evergreen -->
+              <g transform="translate(290,150)">
+                <rect width="220" height="120" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="110" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">/promos/hotsale</text>
+                <text x="110" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">URL evergreen</text>
+                <text x="110" y="68" class="dgm-text dgm-text-accent" text-anchor="middle">Event JSON-LD</text>
+                <text x="110" y="86" class="dgm-text dgm-text-muted" text-anchor="middle">Offer[].itemOffered → hub</text>
+                <text x="110" y="104" class="dgm-text dgm-text-muted" text-anchor="middle">pre-warm + countdown</text>
+              </g>
+
+              <!-- redirects -->
+              <g transform="translate(290,40)">
+                <rect width="220" height="50" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="110" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">canonical-redirects KV</text>
+                <text x="110" y="38" class="dgm-text dgm-text-muted" text-anchor="middle">/hotsale-2026 → /promos/hotsale</text>
+              </g>
+
+              <!-- hubs merchant -->
+              <g transform="translate(290,320)">
+                <rect width="220" height="64" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="110" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">/comercios/[slug]</text>
+                <text x="110" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">consume Event activo</text>
+              </g>
+
+              <!-- Google / LLMs -->
+              <g transform="translate(580,150)">
+                <rect width="160" height="64" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="80" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">Google · LLMs</text>
+                <text x="80" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">equity acumulada</text>
+              </g>
+
+              <g transform="translate(580,320)">
+                <rect width="160" height="64" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="80" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">Google · LLMs</text>
+                <text x="80" y="48" class="dgm-text dgm-text-muted" text-anchor="middle">hubs reciben equity</text>
+              </g>
+
+              <!-- arrows -->
+              <path d="M 200 68 L 290 195" class="dgm-arrow"/>
+              <path d="M 200 182 L 290 200" class="dgm-arrow"/>
+              <path d="M 200 292 L 290 215" class="dgm-arrow"/>
+              <path d="M 400 90 L 400 145" class="dgm-arrow dgm-arrow-dotted"/>
+              <path d="M 400 275 L 400 315" class="dgm-arrow dgm-arrow-accent"/>
+              <path d="M 510 200 L 578 180" class="dgm-arrow"/>
+              <path d="M 510 350 L 578 350" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>El slot pierde el sufijo de año, el hero se hace data-driven, se emite JSON-LD <code>Event</code>, los <code>Offer</code> linkean al hub canonical via <code>@id</code>, y el KV de redirects archiva las URLs versionadas viejas.</figcaption>
+          </figure>
+        </section>
+
+        <section id="tradeoffs">
+          <h2>Trade-offs · versioned vs evergreen vs híbrido</h2>
+
+          <p>Antes de comprometerse con cualquier camino, vale poner las tres opciones al lado. Estas son las dimensiones que importan para una landing de evento:</p>
+
+          <div class="matrix-card">
+            <div class="matrix matrix-3col">
+              <div class="matrix-cell matrix-head"></div>
+              <div class="matrix-cell matrix-head">Versionada (actual)</div>
+              <div class="matrix-cell matrix-head">Solo evergreen</div>
+              <div class="matrix-cell matrix-head">Híbrido evergreen + archive</div>
+
+              <div class="matrix-cell matrix-row-label">Equity acumulada año a año</div>
+              <div class="matrix-cell matrix-gap">muere cada edición</div>
+              <div class="matrix-cell matrix-ok">acumula</div>
+              <div class="matrix-cell matrix-ok">acumula + preserva backlinks viejos</div>
+
+              <div class="matrix-cell matrix-row-label">Captura intent estacional</div>
+              <div class="matrix-cell matrix-ok">fuerte durante 7 días</div>
+              <div class="matrix-cell matrix-ok">fuerte + pre-warm 30 días antes</div>
+              <div class="matrix-cell matrix-ok">fuerte + pre-warm</div>
+
+              <div class="matrix-cell matrix-row-label">Riesgo de contenido vencido visible</div>
+              <div class="matrix-cell matrix-gap">alto · queda hardcoded</div>
+              <div class="matrix-cell matrix-mid">depende de countdown</div>
+              <div class="matrix-cell matrix-ok">countdown + estados de página</div>
+
+              <div class="matrix-cell matrix-row-label">Backlinks externos al URL viejo</div>
+              <div class="matrix-cell matrix-ok">se preservan en la URL existente</div>
+              <div class="matrix-cell matrix-gap">se pierden sin 301</div>
+              <div class="matrix-cell matrix-ok">301 desde URLs versionadas</div>
+
+              <div class="matrix-cell matrix-row-label">Cross-link a hubs <code>/comercios</code></div>
+              <div class="matrix-cell matrix-gap">no existe</div>
+              <div class="matrix-cell matrix-ok">Offer.itemOffered @id</div>
+              <div class="matrix-cell matrix-ok">Offer.itemOffered @id</div>
+
+              <div class="matrix-cell matrix-row-label">JSON-LD <code>Event</code> + <code>validThrough</code></div>
+              <div class="matrix-cell matrix-gap">no emite</div>
+              <div class="matrix-cell matrix-ok">emite</div>
+              <div class="matrix-cell matrix-ok">emite + status SpecialAnnouncement post</div>
+
+              <div class="matrix-cell matrix-row-label">Effort marketing por edición</div>
+              <div class="matrix-cell matrix-gap">crear todo desde cero</div>
+              <div class="matrix-cell matrix-ok">refresh del slot evergreen</div>
+              <div class="matrix-cell matrix-ok">refresh del slot</div>
+
+              <div class="matrix-cell matrix-row-label">Effort dev inicial</div>
+              <div class="matrix-cell matrix-ok">cero (status quo)</div>
+              <div class="matrix-cell matrix-mid">~4 días</div>
+              <div class="matrix-cell matrix-mid">~6-7 días</div>
+            </div>
+            <div class="matrix-legend">
+              <span><span class="lg-dot lg-ok"></span> Cubre la dimensión</span>
+              <span><span class="lg-dot lg-mid"></span> Cubre parcial</span>
+              <span><span class="lg-dot lg-gap"></span> No cubre</span>
+            </div>
+          </div>
+
+          <p>El híbrido gana en todas las dimensiones de payoff y empata al evergreen en effort dev. La razón para preferirlo sobre el evergreen puro es simple: los backlinks externos que apuntan hoy a <code>/cyber-monday-2025</code> existen. Cualquier nota de prensa, blog de finanzas personales o newsletter del año pasado que referenció esa URL es equity acumulada. Tirarla sin 301 sería tirar plata gratis.</p>
+        </section>
+
+        <section id="movidas">
+          <h2>Las 7 movidas técnicas</h2>
+
+          <h3>1 · URL evergreen por evento</h3>
+
+          <p>Crear URLs evergreen sin año para cada evento recurrente: <code>/promos/hotsale</code>, <code>/promos/cyber-monday</code>, <code>/promos/navidad</code>, <code>/promos/dia-de-la-madre</code>, <code>/promos/dia-del-padre</code>, <code>/promos/black-friday</code>. La URL queda viva todo el año con tres estados posibles: <em>pre-evento</em> (countdown + edición pasada), <em>en vivo</em> (hero + grid + countdown a cierre), <em>post-evento</em> (resumen edición que terminó + countdown a próxima).</p>
+
+          <h3>2 · Slot Storyblok evergreen + EventHero data-driven</h3>
+
+          <p>Renombrar slot <code>landing-especifica-cyber2025</code> → <code>landing-especifica-cyber-monday</code> (sin año). El equipo editorial sigue actualizando contenido año a año <em>por dentro</em> del slot evergreen, sin crear slot nuevo. El componente <code>TextHeader</code> deja de hardcodear assets y copy — pasa a leer del slot un campo <code>EventHero</code> con shape <code>{ title, subtitle, datesFrom, datesTo, heroImage, banks[], status: 'pre'|'live'|'post' }</code>. Cero hardcoding por edición, cero deploy de código para refrescar.</p>
+
+          <h3>3 · JSON-LD <code>SaleEvent</code> denso</h3>
+
+          <p>Emitir <code>SaleEvent</code> con los campos que Google exige para que el rich result de <code>Event</code> aparezca: <code>location</code> (para online <code>VirtualLocation</code>, para Hot Sale online + retail físico <code>[VirtualLocation, Place]</code>), <code>organizer</code> apuntando a MODO como <code>Organization</code>, <code>image</code>, <code>description</code>, <code>eventAttendanceMode</code>, <code>startDate</code> y <code>endDate</code>. El cross-link estructural al hub merchant va por <code>offers[].itemOffered.@id</code>.</p>
+
+          <pre aria-label="Ejemplo JSON-LD SaleEvent para landing temática evergreen Hot Sale"><code lang="json" class="lang-json">{
+  "@context": "https://schema.org",
+  "@type": "SaleEvent",
+  "@id": "https://www.modo.com.ar/promos/hotsale#event-2026",
+  "name": "Hot Sale 2026 con MODO",
+  "description": "Reintegros y cuotas sin interés con la red MODO durante el Hot Sale 2026. Más de N comercios participantes.",
+  "image": "https://www.modo.com.ar/static/images/eventos/hotsale-2026.jpg",
+  "startDate": "2026-05-11T00:00:00-03:00",
+  "endDate": "2026-05-17T23:59:59-03:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/MixedEventAttendanceMode",
+  "location": [
+    {
+      "@type": "VirtualLocation",
+      "url": "https://www.modo.com.ar/promos/hotsale"
+    },
+    {
+      "@type": "Place",
+      "name": "Argentina · sucursales adheridas",
+      "address": { "@type": "PostalAddress", "addressCountry": "AR" }
+    }
+  ],
+  "organizer": { "@id": "https://www.modo.com.ar/#organization" },
+  "offers": [
+    {
+      "@type": "Offer",
+      "@id": "https://www.modo.com.ar/promos/hotsale#offer-changomas-2026",
+      "itemOffered": { "@id": "https://www.modo.com.ar/comercios/changomas#brand" },
+      "validThrough": "2026-05-17T23:59:59-03:00",
+      "offeredBy": { "@id": "https://www.modo.com.ar/bancos/galicia#bank" },
+      "url": "https://www.modo.com.ar/comercios/changomas"
+    }
+  ]
+}</code></pre>
+
+          <p class="callout callout-info">
+            <strong>Tres decisiones de schema que hay que cerrar antes del PR:</strong> (a) <code>validThrough</code> es propiedad de <code>Offer</code>, no de <code>SaleEvent</code> — para el evento se usa <code>endDate</code>. (b) <code>superEvent</code> espera otro <code>Event</code>, no una <code>Organization</code> — la relación con MODO va por <code>organizer</code>. (c) el <code>@id</code> del <code>SaleEvent</code> y de cada <code>Offer</code> incluye sufijo de edición (<code>-2026</code>) porque la entidad evento es per-edition; el brand del hub (<code>itemOffered.@id</code>) NO lleva año porque es estable.
+          </p>
+
+          <p class="callout callout-warn">
+            <strong>Rich Results de <code>SaleEvent</code>:</strong> Google usa el rich result genérico de <code>Event</code> (no hay uno dedicado para <code>SaleEvent</code> al día de hoy). Validar cada landing con Rich Results Test antes del primer push y bloquearlo en CI con <code>scripts/validate-rich-results.ts</code> (doc 04 §8). Si falta <code>location</code>, <code>organizer</code> o <code>image</code>, Google rechaza silenciosamente.
+          </p>
+
+          <h3>4 · 301 desde URLs versionadas viejas</h3>
+
+          <p>Tabla de redirects en KV (Cloudflare o istio rules) que mapea las URLs versionadas al evergreen: <code>/cyber-monday-2025</code> → <code>/promos/cyber-monday</code>, <code>/hotsale-2026</code> → <code>/promos/hotsale</code>, etc. Es la única manera de preservar los backlinks externos que ya existen apuntando a las URLs versionadas. Plus: las stories Storyblok viejas pueden quedar despublicadas — el 301 vive arriba del catch-all.</p>
+
+          <h3>5 · Cross-link estructural al hub <code>/comercios/[slug]</code></h3>
+
+          <p>Cada card de merchant participante en la landing temática linkea explícito a su hub con UTM, no con query param custom: <code>&lt;a href="/comercios/changomas?utm_source=hotsale-2026&amp;utm_medium=themed-landing"&gt;</code>. UTM es la convención que Google ya ignora para canonical, y Amplitude lo trackea por defecto. El hub merchant emite <code>&lt;link rel="canonical" href="https://www.modo.com.ar/comercios/changomas"&gt;</code> self-referencing limpio sin query, así Googlebot consolida equity en una sola URL. El usuario llega a la landing por intent estacional, navega al hub por intent específico de comercio, y el equity de la landing riega los hubs vía authority transfer estructural.</p>
+
+          <p class="callout callout-warn">
+            <strong>Diferenciar intent en <code>&lt;title&gt;</code> y <code>&lt;h1&gt;</code>:</strong> <code>/promos/hotsale</code> targetea intent estacional (title pattern <em>"Hot Sale 2026 con MODO · descuentos y cuotas sin interés"</em>), <code>/comercios/changomas</code> targetea intent merchant (<em>"Changomás con MODO · promociones vigentes"</em>). Sin separación clara las dos URLs canibalizan keywords compartidas como "changomas descuento".
+          </p>
+
+          <h3>6 · Pre-warm SEO + contenido evergreen + countdown post-evento</h3>
+
+          <p>30 días antes del evento se reactiva el slot Storyblok con copy de pre-warm + countdown + <strong>contenido sustantivo evergreen</strong> que vive todo el año: guía de cómo prepararse, recap de la edición anterior (top merchants, top promos, cuotas que se vieron), preguntas frecuentes y banking comparison. Sin ese cuerpo Google trata la URL como thin/doorway durante los 11 meses fuera del evento. Los tres estados de la página los maneja un campo <code>status</code> del slot Storyblok: <em>pre</em> (countdown + recap edición anterior + guía), <em>live</em> (hero + grid promos + countdown a cierre), <em>post</em> (resumen edición que terminó + countdown a próxima conocida). El trigger de rotación entre estados es automático: composer lee <code>startDate</code> / <code>endDate</code> del slot y rota status. La URL nunca queda con contenido vencido.</p>
+
+          <h3>7 · Sitemap split + AI manifests</h3>
+
+          <p>Tres entradas en <code>sitemap-index.xml</code>: <code>/promos-eventos-sitemap.xml</code> (priority 0.85 weekly) con las URLs evergreen de cada evento; <code>/comercios-sitemap.xml</code> (0.9 weekly) con hubs merchant; sitemap principal (0.6) con resto. <code>/llms.txt</code> + <code>/.well-known/agent.json</code> listan los 5-6 eventos canónicos como primary URLs estacionales con <code>validThrough</code> indicando la próxima edición conocida.</p>
+
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla — effort por movida">
+            <table class="data-table">
+              <caption>Effort por movida (con IA · Claude Code + skills MODO)</caption>
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Movida</th>
+                  <th scope="col">Effort</th>
+                  <th scope="col">Bloqueante</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1+2</td>
+                  <td>URL evergreen + slot rename + <code>EventHero</code> data-driven</td>
+                  <td>~2d</td>
+                  <td>coord con equipo Storyblok</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>JSON-LD <code>SaleEvent</code> + <code>Offer[]</code> con <code>@id</code> + Rich Results CI gate</td>
+                  <td>~2d</td>
+                  <td>schema brand del hub estable</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>301 desde URLs versionadas viejas + audit redirect chains</td>
+                  <td>~1d + KV</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Cross-link estructural a hubs + canonical self-ref en hub</td>
+                  <td>~1d</td>
+                  <td>hub shipeado a prod</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Pre-warm + countdown + estado <code>pre/live/post</code> + trigger automático + contenido evergreen</td>
+                  <td>~2.5d</td>
+                  <td>copy editorial por estado + validador Storyblok plugin</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>Sitemap split + AI manifests</td>
+                  <td>~0.5d</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>—</td>
+                  <td>Validador Storyblok plugin (<code>validThrough</code> + <code>status</code> obligatorios) + setup coord editorial</td>
+                  <td>~1d</td>
+                  <td>marketing onboarding</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Total <strong>~10 días de dev</strong>. La primera pasada se quedaba en ~7d ignorando el validador Storyblok plugin, el trigger automático de rotación de estado, el audit de redirect chains y el CI gate de Rich Results — todos pedidos por la crítica técnica. Encaja como V1.5 entre V1 (BFF materializado · doc 06 del proyecto comercios-database) y V2 (geo + branches). No bloquea V1 — lo amplifica con un canal de adquisición estacional fuerte.</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap">
+              <canvas id="impact-chart" aria-label="Impacto estimado en authority transfer por movida — score 0 a 10" role="img"></canvas>
+            </div>
+            <noscript>
+              <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla — authority transfer score (fallback sin JavaScript)">
+                <table class="data-table">
+                  <caption>Authority transfer score por movida (fallback no-JS)</caption>
+                  <thead>
+                    <tr><th scope="col">Movida</th><th scope="col">Score (0-10)</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>5 · cross-link a hubs</td><td>9</td></tr>
+                    <tr><td>3 · SaleEvent + Offer @id</td><td>8</td></tr>
+                    <tr><td>6 · pre-warm + countdown + evergreen</td><td>6</td></tr>
+                    <tr><td>1+2 · URL evergreen + slot rename</td><td>5</td></tr>
+                    <tr><td>4 · 301 versionadas viejas</td><td>4</td></tr>
+                    <tr><td>7 · sitemap split + manifests</td><td>3</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </noscript>
+            <figcaption>Impacto estimado en authority transfer a hubs <code>/comercios/[slug]</code> por movida. La movida 5 (cross-link estructural) es la que más mueve la aguja porque convierte intent estacional en navegación al hub canonical. La 3 (JSON-LD <code>SaleEvent</code>) habilita el rich result genérico de <code>Event</code> en SERP de Google (no hay rich result dedicado para <code>SaleEvent</code>).</figcaption>
+          </figure>
+        </section>
+
+        <section id="riesgos">
+          <h2>Riesgos y métricas</h2>
+
+          <p>Las trampas más probables del híbrido evergreen, agrupadas por severidad. La columna derecha marca que el riesgo de regresión está acotado porque el patrón es aditivo:</p>
+
+          <div class="gap-columns">
+            <div class="gap-col gap-col-crit">
+              <h3>Críticos · 2</h3>
+              <ul>
+                <li><strong>Contenido vencido visible</strong>. Si el estado <code>post</code> no se activa automáticamente cuando vence <code>validThrough</code>, la URL queda mostrando "Hot Sale del 11 al 17 de mayo" en pleno julio. Trust se rompe en 5 segundos. Necesitás trigger automático via composer o Storyblok plugin que rote <code>status: live → post</code> al expirar.</li>
+                <li><strong>Backlinks externos perdidos</strong>. Si activás la URL evergreen sin redirigir las versionadas (movida 4), Google ve duplicate content y los backlinks externos a <code>/cyber-monday-2025</code> riegan una URL muerta. La movida 4 es barata pero crítica — sin ella perdés equity acumulada.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-mid">
+              <h3>Importantes · 2</h3>
+              <ul>
+                <li><strong>Schema <code>SaleEvent</code> rechazado por Rich Results</strong>. Google es estricto con <code>SaleEvent</code> — pide <code>location</code> (que para evento online es <code>VirtualLocation</code>) y <code>organizer</code>. Sin esos campos el rich result no aparece. Validar con Rich Results Test antes del primer push.</li>
+                <li><strong>Coord editorial</strong>. El equipo de marketing está acostumbrado al patrón "armo slot nuevo cada edición". Pasar a "actualizo el slot evergreen por dentro" requiere ritual nuevo y validador en Storyblok que exija <code>validThrough</code> + <code>status</code> antes de publish.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-ok">
+              <h3>Lo que está bien · 3</h3>
+              <ul>
+                <li>El patrón es <em>aditivo</em>: URL evergreen convive con versionadas viejas via 301. No hay big-bang.</li>
+                <li>El componente <code>TextHeader</code> ya es candidato a refactor (hardcoding de assets es deuda conocida). Esta R&amp;D le da una razón concreta de negocio para sacar la deuda.</li>
+                <li>El hub <code>/comercios/[slug]</code> ya está shipeado a preprod. La capa que falta es de integración, no de construcción.</li>
+              </ul>
+            </div>
+          </div>
+
+          <p>Las métricas de éxito mapean a los KPIs del doc 04 del proyecto comercios-database, con un horizonte de un ciclo completo (la próxima edición de cada evento):</p>
+
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Tabla — KPIs objetivo por edición">
+            <table class="data-table">
+              <caption>KPIs objetivo · baseline edición previa vs próxima edición</caption>
+              <thead>
+                <tr>
+                  <th scope="col">KPI</th>
+                  <th scope="col">Baseline (edición previa)</th>
+                  <th scope="col">Próxima edición</th>
+                  <th scope="col">Cómo se mide</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sessions semana del evento · landings temáticas</td>
+                  <td>tracking actual</td>
+                  <td>+30%</td>
+                  <td>Amplitude · filter por URL evergreen</td>
+                </tr>
+                <tr>
+                  <td>Click-through a hubs <code>/comercios/[slug]</code> desde landing</td>
+                  <td>0 (no existe link)</td>
+                  <td>≥15% sessions</td>
+                  <td>Amplitude · evento <code>themed_landing_to_hub</code></td>
+                </tr>
+                <tr>
+                  <td>Rich Results <code>SaleEvent</code> en SERP Google</td>
+                  <td>0%</td>
+                  <td>100% URLs evergreen</td>
+                  <td>GSC URL Inspection + Rich Results Test</td>
+                </tr>
+                <tr>
+                  <td>Citation rate LLMs (Perplexity + ChatGPT, sample ≥50 prompts/sem)</td>
+                  <td>establecer baseline sprint 1</td>
+                  <td>+15 pp absolutos sobre baseline en edición N+1</td>
+                  <td>script bash + manual review · objetivo exploratorio sin benchmark previo</td>
+                </tr>
+                <tr>
+                  <td>URLs versionadas con CTR &gt; 0% (residual)</td>
+                  <td>~5-10 URLs activas</td>
+                  <td>0 (todas 301)</td>
+                  <td>GSC export semanal</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="callout callout-warn">
+            <strong>Dependencia load-bearing:</strong> esta R&amp;D asume que el hub <code>/comercios/[slug]</code> está vivo en prod para cuando arranca el ciclo del primer evento que aplique el patrón. Si V1 del proyecto comercios-database se patea, la movida 5 (cross-link estructural) pierde destino. Coordinación con el track <em>Base de Comercios</em> (IE-136) es deseable; coordinación con el squad SEO para wireear <code>/llms.txt</code> + AI manifests es necesaria.
+          </p>
+        </section>
+
+        <section id="proximo">
+          <h2>Próximo paso · RFC</h2>
+
+          <p>Este research llegó a estado <em>síntesis</em> con una propuesta concreta y dimensionada. El siguiente paso es promover esto a la colección RFCs como propuesta formal, con tres entregables:</p>
+
+          <ol>
+            <li>OpenSpec change <code>openspec/changes/comercios-themed-landings-evergreen/</code> con 7 tasks atómicas (una por movida), <code>design.md</code> documentando decisiones de schema JSON-LD <code>SaleEvent</code>, y plan de rollout por entorno (preprod → prod canary → prod full).</li>
+            <li>Tickets en Jira board COENXT-4716 encadenados a la épica IE-15 (Modelo de Comercios) y a la épica de Marketing/Eventos. Estimación inicial ~10 días dev, slot en V1.5 entre las olas Q2 y Q3 del roadmap comercios.</li>
+            <li>Coordinación cruzada con tres frentes: (a) <em>Base de Comercios</em> (Mariana Perez, IE-136) para confirmar shape de <code>brand</code> en JSON-LD; (b) squad SEO para wireear <code>/llms.txt</code> + AI manifests; (c) marketing/Storyblok para el ritual editorial nuevo del slot evergreen + validador <code>validThrough</code> + <code>status</code>.</li>
+          </ol>
+
+          <p>El siguiente paso es <strong>promover esto a la colección RFCs como propuesta formal</strong> (ver <a href="../rfcs/">rfcs/</a>). El RFC va a heredar la estructura de movidas de esta R&amp;D, sumar plan de rollout por entorno, definir el calendario por evento (Hot Sale mayo, Día Madre octubre, Cyber Monday noviembre, Navidad diciembre, Día Padre junio), y dejar trazado el plan de medición semanal en <code>#seo-modo</code>.</p>
+        </section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-28">2026-05-28</time>
+          </p>
+          <p class="article-disclaimer">
+            Esta R&amp;D referencia features con estado mixto. <strong>Shipeado a preprod</strong>: hub <code>/comercios/[slug]</code> (MVP) y los lineamientos del doc 04 del proyecto <em>comercios-database</em>. <strong>Propuesta no shipeada</strong>: URL evergreen por evento, slot rename, JSON-LD <code>SaleEvent</code> denso, KV de redirects 301, sitemap split, AI manifests apuntando al evento, validador Storyblok plugin, trigger automático de rotación <code>pre/live/post</code>. Las estimaciones de effort asumen Claude Code + skills MODO. Las cifras de tráfico estacional vienen de tracking interno y varían con calendario / banking promotions; el target de citation rate LLMs es exploratorio sin benchmark previo y exige establecer baseline en sprint 1 antes de comprometerse a un delta absoluto.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof Chart === 'undefined') return;
+
+  function getCss(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  var ctx = document.getElementById('impact-chart');
+  if (!ctx) return;
+
+  var accent = getCss('--accent-ink', '#00471B');
+  var mid = getCss('--rfc-fg', '#1F4FA8');
+  var draft = getCss('--draft-fg', '#8a5a00');
+  var muted = getCss('--muted', '#6B6B6B');
+  var ink = getCss('--ink', '#1A1A1A');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        '5 · cross-link a hubs',
+        '3 · SaleEvent + Offer @id',
+        '6 · pre-warm + countdown',
+        '1+2 · URL evergreen + slot rename',
+        '4 · 301 versionadas viejas',
+        '7 · sitemap split + manifests'
+      ],
+      datasets: [{
+        label: 'Authority transfer estimado',
+        data: [9, 8, 6, 5, 4, 3],
+        backgroundColor: [accent, accent, mid, mid, draft, draft],
+        borderRadius: 8,
+        borderSkipped: false,
+        maxBarThickness: 60
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (c) { return 'Score ' + c.parsed.x + '/10'; }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          max: 10,
+          ticks: { color: muted, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12 } },
+          grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false }
+        },
+        y: {
+          ticks: { color: ink, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12, weight: '500' } },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>
