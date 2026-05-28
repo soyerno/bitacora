@@ -10,7 +10,7 @@
 
 ---
 
-## Resumen para los apurados
+## TLDR
 
 Hoy las páginas de MODO que más tráfico capturan son las landings estacionales (Hot Sale, Cyber Monday, Navidad). El cliente entra, mira la promo del mes, y la página muere a fin de mes cuando rota el calendario. Cada vez que esto pasa, tiramos a la basura la reputación que esa página acumuló en Google y en ChatGPT/Perplexity/Claude. **Plata gastada en autoridad, que en lugar de capitalizarse, se evapora.**
 
