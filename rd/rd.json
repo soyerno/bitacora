@@ -3,7 +3,12 @@
     "generated": "2026-05-21",
     "category": "R&D",
     "format": "HTML long-form articles with inline SVG diagrams and Chart.js visualizations",
-    "workflow": ["exploración", "síntesis", "completo", "archivado"],
+    "workflow": [
+      "exploración",
+      "síntesis",
+      "completo",
+      "archivado"
+    ],
     "notes": "Investigaciones técnicas que preceden a un RFC formal. Mapeos, descubrimientos, análisis de superficie. Más cortas que un RFC, más profundas que un comentario en Slack."
   },
   "items": [
@@ -13,7 +18,12 @@
       "title": "MODO Developers Portal · Mapeo de API y gaps de DX",
       "summary": "Qué hostea developers.modo.com.ar (un viewer auth-gated, no la API), dónde vive la API real (merchants.playdigital.com.ar), modelo de auth (JWT HS256 / 7d) y heatmap de 9 gaps críticos + 7 importantes para mover esto a DX moderna.",
       "status": "exploración",
-      "tags": ["dx", "api", "portal", "developers"],
+      "tags": [
+        "dx",
+        "api",
+        "portal",
+        "developers"
+      ],
       "area": "platform",
       "date": "2026-05-20",
       "href": "developers-portal-mapping.html",
@@ -33,7 +43,12 @@
       "title": "MODO Govern · análisis de influencias",
       "summary": "Genealogía de un proyecto interno: qué prior art declarada (Paperclip, OpenClaw, Spotify Engineering, Zettelkasten/Obsidian, HRIS, MCP) e implícita (sigstore/SLSA, OPA, Backstage, Vanta, n8n/Temporal, JumpCloud, Supabase, Lovable) lo formó, y por qué los docs cuentan dos historias que todavía no terminan de cerrar.",
       "status": "exploración",
-      "tags": ["interno", "agentes", "compliance", "genealogía"],
+      "tags": [
+        "interno",
+        "agentes",
+        "compliance",
+        "genealogía"
+      ],
       "area": "platform",
       "date": "2026-05-21",
       "href": "modo-govern-influencias.html",
@@ -55,7 +70,12 @@
       "title": "R&D Infrastructure ship · skill canónico + validación de catálogo",
       "summary": "24 horas después de abrir la categoría R&D con RD01, cómo quedó armada la infra para que el siguiente research no requiera reinventar nada: skill modo-research-article que enforce el pattern + validate_rd() en el sync diario + post-mortem del swarm de ruflo que se cayó mid-flight (1 socket disconnect + 1 rate limit, 0 trabajos completos).",
       "status": "decisión",
-      "tags": ["meta", "infra", "swarm", "post-mortem"],
+      "tags": [
+        "meta",
+        "infra",
+        "swarm",
+        "post-mortem"
+      ],
       "area": "platform",
       "date": "2026-05-21",
       "href": "rd-infrastructure-ship.html",
@@ -74,7 +94,13 @@
       "title": "Landings temáticas evergreen + /comercios canonical hub para SEO/GEO MODO",
       "summary": "Cómo recuperar el tráfico estacional que hoy muere cada año en /hotsale-2026, /cyber2025, /navidad-2025: URL evergreen por evento + JSON-LD SaleEvent + cross-link estructural a hubs /comercios/[slug] para que la equity de cada edición se acumule en vez de empezar de cero el año siguiente. Patrón híbrido sin big-bang, ~7 días de dev, encaja como V1.5 del roadmap comercios-database.",
       "status": "síntesis",
-      "tags": ["seo", "geo", "comercios", "storyblok", "json-ld"],
+      "tags": [
+        "seo",
+        "geo",
+        "comercios",
+        "storyblok",
+        "json-ld"
+      ],
       "area": "seo",
       "date": "2026-05-28",
       "href": "promos-hub-seo-geo-bridge.html",
@@ -89,6 +115,34 @@
         "modo-landing/src/pages/[[...slug]].jsx",
         "Google Search Console export 28d · 2026-05 (queries modo+comercio + URLs /promos/*-mes)",
         "https://schema.org/SaleEvent"
+      ]
+    },
+    {
+      "number": "RD05",
+      "slug": "publicar-frontend-modo-k8s",
+      "title": "Publicar un frontend MODO en Kubernetes",
+      "summary": "Runbook de cero a producción para un front MODO en k8s: imagen modo-base + entrypoint.sh, config runtime SOPS→AWS SSM, chart compartido vía ci-ms/cd-ms@v1, subdominio por exposeName+dnsAliasRecord+istio.external, basePath/assetPrefix para embeber bajo modo.com.ar/<path>, integración de modo-landing-web-ui-lib, y los seis tickets canónicos del JSM (HD-1404 repo · CYBS-1576/1577 team+miembros · PEA-10936 plataforma · OFFSEC-14111 GRC gate · CYBS-1042 1Password) generados con el skill hermano modo-jsm-ticket. Tres casos: promos-hub (molde vivo), modo-landing (apex con deuda) y aprendeatumodo (pre-infra).",
+      "status": "decisión",
+      "tags": [
+        "platform",
+        "k8s",
+        "deploy",
+        "jsm",
+        "dx"
+      ],
+      "area": "platform",
+      "date": "2026-05-27",
+      "href": "publicar-frontend-modo-k8s.html",
+      "reading_minutes": 11,
+      "diagrams": 3,
+      "charts": 1,
+      "sources": [
+        "promos-hub-site (helm/values.yaml, next.config.mjs, entrypoint.sh, .github/workflows/, .sops.yaml)",
+        "modo-landing (helm/values.yaml, docs/deployment.md, Dockerfile)",
+        "aprendeatumodo (vite.config.ts, openspec/changes/migrate-to-next16, COENXT-308)",
+        "modo-landing/docs/runbook-publish-modo-frontend-k8s.md (source of truth)",
+        "skill modo-frontend-deploy (~/.claude/skills/modo-frontend-deploy/)",
+        "~/.claude/skills/modo-jsm-ticket/reference/catalog.md (sd/rt validados)"
       ]
     }
   ]
