@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-27",
+    "generated": "2026-05-28",
     "updated_by": "erno-modo-sync-all",
     "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
   },
@@ -9,8 +9,8 @@
       "name": "modo-deck",
       "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
       "filename": "modo-deck.zip",
-      "sha256_prefix": "8209d533712c2990",
-      "size_kb": 112.3,
+      "sha256_prefix": "381e0429ed7e9f50",
+      "size_kb": 117.4,
       "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
     },
     {
@@ -89,8 +89,8 @@
       "name": "modo-planner",
       "description": "MODO Planning Framework (MPF). Orquesta planificación end-to-end para cualquier feature/change en MODO combinando brainstorming → discovery → SDD → Jira → swarm orchestration → verify → archive. Auto-",
       "filename": "modo-planner.zip",
-      "sha256_prefix": "9347322ab8171374",
-      "size_kb": 11.1,
+      "sha256_prefix": "5430227c3e5494f4",
+      "size_kb": 16.8,
       "install_hint": "unzip modo-planner.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-planner.skill ~/.claude/skills/modo-planner"
     },
     {
@@ -105,16 +105,16 @@
       "name": "modo-frontend-onboarding",
       "description": "Playbook end-to-end para llevar un frontend (SPA Vite/Lovable o app Next) a producción en la infra MODO (EKS + Istio) bajo el org playsistemico. Cubre migración a Next 16 server-rendered, subida limpi",
       "filename": "modo-frontend-onboarding.zip",
-      "sha256_prefix": "6e05c8db3973c0ef",
-      "size_kb": 15.7,
+      "sha256_prefix": "f4aed3a58bbe40dc",
+      "size_kb": 18.4,
       "install_hint": "unzip modo-frontend-onboarding.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-frontend-onboarding.skill ~/.claude/skills/modo-frontend-onboarding"
     },
     {
       "name": "modo-seo-geo-audit",
       "description": "SEO/GEO/JSON-LD audit + fix workflow for MODO frontends (Vite SPAs, Next.js, Astro). Audits canonical signals, robots/sitemap/llms.txt, Open Graph, Schema.org JSON-LD against Google Rich Results, AI c",
       "filename": "modo-seo-geo-audit.zip",
-      "sha256_prefix": "9c693c52cb2c1059",
-      "size_kb": 30.3,
+      "sha256_prefix": "c0473f18c2f01832",
+      "size_kb": 32.6,
       "install_hint": "unzip modo-seo-geo-audit.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-seo-geo-audit.skill ~/.claude/skills/modo-seo-geo-audit"
     },
     {
@@ -169,8 +169,8 @@
       "name": "modo-research-article",
       "description": "Generate long-form HTML R&D articles for the erno-modo bitácora (https://soyernomodo.github.io/erno-modo/rd/) using the canonical research-article.css pattern (SVG diagrams theme-aware, Chart.js with ",
       "filename": "modo-research-article.zip",
-      "sha256_prefix": "fbf1c9735675b1d7",
-      "size_kb": 22.7,
+      "sha256_prefix": "08f8b2104ced298d",
+      "size_kb": 36.4,
       "install_hint": "unzip modo-research-article.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-research-article.skill ~/.claude/skills/modo-research-article"
     },
     {
@@ -193,8 +193,8 @@
       "name": "modo-nocturno",
       "description": ">-",
       "filename": "modo-nocturno.zip",
-      "sha256_prefix": "43aa71abd995b1c5",
-      "size_kb": 26.6,
+      "sha256_prefix": "88ac5602292c729a",
+      "size_kb": 34.4,
       "install_hint": "unzip modo-nocturno.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-nocturno.skill ~/.claude/skills/modo-nocturno"
     }
   ]
