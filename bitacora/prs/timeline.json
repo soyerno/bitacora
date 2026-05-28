@@ -1,0 +1,1862 @@
+{
+  "_meta": {
+    "generated": "2026-05-28",
+    "category": "Bitácora · PRs",
+    "format": "Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Recurrente a las 09:00 y 16:30 vía LaunchAgent.",
+    "author": "Hernán De Souza · Sr AI Engineer",
+    "repos_tracked": [
+      "playsistemico/modo-landing",
+      "playsistemico/promos-hub-site",
+      "playsistemico/modo-landing-sdk-ui-lib",
+      "playsistemico/modo-ui-lib-web",
+      "playsistemico/aprendeatumodo"
+    ],
+    "source": "gh pr list --author @me + body parsing",
+    "schedule": "0 9,16:30 * * * (UTC-3 ART)"
+  },
+  "items": [
+    {
+      "date": "2026-05-28",
+      "number": 1510,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1510",
+      "title": "chore(EXA): log app name + version en browser console al cargar",
+      "type": "chore",
+      "state": "OPEN",
+      "que_hace": "Cada carga del site logea `modo-landing v<version>` en console (`console.info`, build-time inject desde package.json vía next.config.js env block).",
+      "dolor": "Soporte y debugging cross-env sin pegar release-notes a mano — el user pega screenshot y vemos exacto qué versión sirve. Deja la puerta abierta a correlation con Datadog RUM.",
+      "tags": [
+        "observability",
+        "soporte",
+        "build-time-env"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1509,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1509",
+      "title": "refactor(EXA): styles → Tailwind 4 · Wave 0+1 (TW upgrade + Emotion)",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Arranca consolidación de 3 sistemas de styling (Tailwind 3.3.3 + Styled Components 5.2.3 + Emotion 11.x) en Tailwind v4. Wave 0: TW upgrade con @config backward-compat. Wave 1: Emotion eliminado (3 files). Wave 2: SC → Tailwind progress 17/179 (batches A1+A2+A3).",
+      "dolor": "~120KB runtime CSS-in-JS evitable; ServerStyleSheet de styled-components es incompatible con App Router (bloquea Next 16+); mantener 3 sistemas paralelos dispara fricción cognitiva por componente tocado.",
+      "tags": [
+        "styles",
+        "tailwind-v4",
+        "tech-debt",
+        "stacked-on-1489"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1508,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1508",
+      "title": "refactor(EXA): TS migration wave unified · post Next 16 + ui-lib absorb",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "PR único que consolida los 18 sub-PRs de la wave TS migration (ondas A/B/C/D/E) sobre la rama #1489. 27 commits ahead, 1125 files modificados, `tsc --noEmit` = 294 errors (baseline 46 + delta +248 residual). Hard gate: sale de DRAFT cuando tsc=46.",
+      "dolor": "Wave estaba 5 días stalled mientras main absorbía Next 12→16 (#1482) + ui-lib (#1476) + workflow gate (#1492). Re-baseado en bloque para destrabar review/merge sin perder los 5 días de trabajo; backups `ts-rebase-backup/*` + anchor tag `ts-rebase-anchor-2026-05-28` preservan SHAs originales.",
+      "tags": [
+        "typescript",
+        "migration",
+        "stacked-on-1489",
+        "wave-revival"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1507,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1507",
+      "title": "perf(EXA): image pipeline quick wins · SSR transform + quality 75 + preconnect + priority prop",
+      "type": "perf",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Quick wins del R&D RD06 (perf Next12 vs Next16+SSR): (1) CMSImage.tsx calcula createImageUrl en SSR-time, default quality=75, prop priority con fetchpriority=high; (2) _document.js preconnect a a.storyblok.com; (3) self-host Red Hat Display + Quicksand vía next/font/google (44 files refactor a CSS vars).",
+      "dolor": "LCP home mobile 13.5s baseline. Doble fetch de imágenes por useEffect-post-hydration + quality=95 hardcoded + Google Fonts external + DNS handshake al primer asset = pipeline imágenes/fonts es la palanca dominante del LCP. Targets: LCP -1.5 a -4s, bytes -25-35%, TTFB -200-500ms.",
+      "tags": [
+        "performance",
+        "lcp",
+        "fonts",
+        "images",
+        "stacked-on-1489"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1506,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1506",
+      "title": "feat(COENXT-320): blog hero soporta imagen mobile con fallback al desktop",
+      "type": "feat",
+      "state": "OPEN",
+      "que_hace": "Field opcional image_mobile en los 2 content types del blog hero (BlogPost flat + BlogHero block dentro de LandingPage+SectionBlog). Render con <figure><picture> + sources AVIF mobile/desktop + <img> fallback con dims, fetchPriority=high, objectFit/objectPosition del block. Schema Storyblok aplicado vía Management API en space 244835.",
+      "dolor": "/blog/[slug] renderea único hero_image desktop-crop a todas las resoluciones — en composiciones distintas para mobile el crop queda mal. AVIF -60% peso + dims explícitos previenen CLS + signal LCP correcto para image crawlers (vs el ambiguo doble-Image que rankea peor SEO/GEO).",
+      "tags": [
+        "blog",
+        "storyblok",
+        "responsive-images",
+        "seo-geo"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1504,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1504",
+      "title": "fix(EXA): usar distDir default .next/ y alinear build con upstream CI",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Remueve `distDir: 'dist'` de next.config.js (vestigial Next 12), limpia scripts de package.json que apuntaban a dist/, revierte el workaround de #1501. Next 16 escribe en .next/ (default) → tar del CI alpha encuentra el directorio donde lo busca.",
+      "dolor": "Fix real al `tar: .next: Cannot stat: No such file or directory` que rompió el CI alpha. PR #1501 (override extra-content) y PR #1503 (symlink) intentaron workarounds; este es el fix de fondo. El reusable hardcodea .next/ ignorando overrides; alineamos el output del build a la expectativa upstream.",
+      "tags": [
+        "ci",
+        "next16",
+        "build",
+        "root-cause-fix"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1503,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1503",
+      "title": "ci(EXA): symlink .next → dist post-build para destrabar CI alpha",
+      "type": "ci",
+      "state": "CLOSED",
+      "que_hace": "Symlink `ln -sfn dist .next` al final del script build en package.json. El tar `.next/` con trailing slash sigue el symlink y archiva el contenido real de dist/.",
+      "dolor": "Workaround intermedio mientras #1504 (fix de fondo) estaba en review. Closed porque #1504 mergeó primero. Documentado para referencia: el composite playsistemico/gh-cd-builder@v1 inyecta .next/ al EXTRA_CONTENT cuando detecta next.config.* y no respeta distDir.",
+      "tags": [
+        "ci",
+        "workaround",
+        "superseded"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1502,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1502",
+      "title": "fix(EXA): inline sr-only en _document para evitar FOUC del skip-link",
+      "type": "fix",
+      "state": "OPEN",
+      "que_hace": "Inline las reglas `.sr-only` + `.focus:not-sr-only` en <Head> de _document.js. SSR devuelve el <style> en el HTML inicial; el browser tiene la regla antes de pintar el <a> skip-link. ~400 bytes minificados, cero impacto en JS bundle.",
+      "dolor": "FOUC (flash of unstyled content) en el skip-link de a11y. La utility sr-only viaja en el bundle Tailwind; en la ventana entre HTML parseado y bundle aplicado, el <a> 'Saltar al contenido principal' queda visible como botón verde un tick. Detectado en revisión visual.",
+      "tags": [
+        "a11y",
+        "fouc",
+        "skip-link",
+        "ssr-styles"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1501,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1501",
+      "title": "ci(EXA): incluir dist/ en extra-content del CI alpha",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Override extra-content en .github/workflows/ci-alpha.yaml para incluir dist/ explícito, evitando la heurística del reusable upstream.",
+      "dolor": "Primer intento de fix del run roto `tar: .next: Cannot stat`. El reusable playsistemico/workflows/ci-ms.yaml@v1 cambió la heurística entre 2026-05-27 (success) y 2026-05-28 (fail). Insuficiente como fix (ver cadena #1503/#1504) pero necesario para desbloquear el siguiente diagnóstico.",
+      "tags": [
+        "ci",
+        "workaround",
+        "intermediate-fix"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1500,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1500",
+      "title": "ci(COENXT-319): mostrar ambiente destino en CI alpha",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Expone el target env (develop/qa/preprod) en 3 niveles redundantes: (1) run-name top-level 'Frontend CI alpha → <env> (by @<actor>)', (2) job sidecar announce-target con tabla en GITHUB_STEP_SUMMARY, (3) job sidecar done con link a cd.yaml.",
+      "dolor": "No se podía saber a qué ambiente apunta un run sin abrir cada uno y revisar el input — todos se veían idénticos en la lista de Actions. Con varios alphas en cola antes de un release había riesgo de promover el alpha equivocado al CD. Triple redundancia intencional cubre 3 momentos.",
+      "tags": [
+        "ci",
+        "dx",
+        "visibility",
+        "actions-ui"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 1497,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1497",
+      "title": "feat(EXA): logger MODO-core client browser-safe + Datadog Browser Logs",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Logger MODO-core lado cliente (src/utils/logger/) con misma API que @playsistemico/core server (debug/info/warn/trace/error + TraceableError.from()). Obfuscación de keys sensibles. Forwardea a Datadog Browser Logs cuando NEXT_PUBLIC_DD_CLIENT_TOKEN está seteado (env-gated). Wire en _app.js mount.",
+      "dolor": "modo-landing no tenía logger estructurado client-side. Regla MODO: todo front = logger MODO-core + Amplitude + analytics baseline. El logger de @playsistemico/core es server-only (pino + async_hooks, no bundlea client). Server-side queda follow-up (arrastra dd-trace nativo al deploy image).",
+      "tags": [
+        "observability",
+        "logger",
+        "datadog",
+        "modo-baseline"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 1496,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1496",
+      "title": "perf(EXA): bajar peso de imágenes CMS — quality 75 + AVIF",
+      "type": "perf",
+      "state": "OPEN-DRAFT",
+      "que_hace": "CMSImage.tsx quality 95 → 75; next.config.js formats ['image/avif', 'image/webp'] (antes solo webp). Aplica a todo next/image del sitio.",
+      "dolor": "Home = 17.5MB / LCP 13.5s mobile (baseline Unlighthouse 2026-05-21). Todas las rutas fallan target LCP < 2.5s. quality=95 hardcodeado era el desperdicio más directo (95 casi sin pérdida; 75 corta ~40-55% del peso). AVIF -60% vs JPG en browsers modernos.",
+      "tags": [
+        "performance",
+        "lcp",
+        "images",
+        "draft"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 7,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/7",
+      "title": "build(COENXT-308): infra · Dockerfile + entrypoint",
+      "type": "build",
+      "state": "MERGED",
+      "que_hace": "Imagen del contenedor (clon promos-hub).\nDockerfile: FROM modo-base:node22, EXPOSE 3000, entrypoint\nentrypoint.sh: require PROJECT_NAME+ENVIRONMENT, SSM get-parameters-by-path --with-decryption → export → exec pnpm start (next start :3000). exec para propagar SIGTERM\n.dockerignore: excluye .github/parameters/helm/catal…",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "build"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 6,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/6",
+      "title": "ci(COENXT-308): infra · workflows CD",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Workflows CD (delegan cd-ms.yaml@v1).\ncd.yaml (rollout EKS), production.yaml (manual prod)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "ci"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 5,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/5",
+      "title": "ci(COENXT-308): infra · workflows CI + sonar",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Workflows CI (delegan @v1).\nci.yaml (push main → build+publish, develop+qa auto-deploy), ci-alpha.yaml, pr.yaml\nextra-content: \"dist/\" (loaderNextImage no aplica), node 22\nsonar-project.properties (projectKey playsistemico_aprendeatumodo)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "ci"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 4,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/4",
+      "title": "chore(COENXT-308): infra · parameters + .sops",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Pipeline de secrets/config → SSM (clon promos-hub).\nparameters/<env>/configurations.yaml: contrato NEXT_PUBLIC_* (STORYBLOK_VERSION, SITE_URL por env, DD_SERVICE/ENV, APP_VERSION, Amplitude)\nparameters/<env>/secrets.yaml: placeholder\n.sops.yaml + .github/workflows/ssm.yaml",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "chore"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 3,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/3",
+      "title": "chore(COENXT-308): infra · helm (values + namespace)",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "helm/ (clon promos-hub adaptado al contrato Next 16).\nexposeName: aprendeatumodo, app.name: aprendeatumodo, containerPort: 3000\n🔴 probes liveness/readiness a /aprende-a-tu-modo (NO / — da 404 por basePath; el pod nunca quedaría Ready)\nhelm/namespace.yaml templated + istio-injection",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "chore"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 2,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/2",
+      "title": "chore(COENXT-308): infra · catalog (IAM/ECR/EKS)",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "catalog/ (clon promos-hub) — provisiona IAM/ECR/EKS vía catalog.yaml@v1. Aplica primero (las otras partes dependen de esto).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "chore"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "number": 1,
+      "repo": "aprendeatumodo",
+      "url": "https://github.com/playsistemico/aprendeatumodo/pull/1",
+      "title": "feat(COENXT-308): aprendeatumodo · migración Vite → Next 16 App Router server-rendered",
+      "type": "feat",
+      "state": "OPEN",
+      "que_hace": "Import de aprendeatumodo al org playsistemico, migrado de Vite 5 SPA → Next 16 App Router server-rendered, listo para la infra MODO (EKS + Istio, next start, next-runtime-env) clonando el patrón de promos-hub-site.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "aprendeatumodo",
+        "feat"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 1495,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1495",
+      "title": "ci(EXA): add bundle-size guard with size-limit",
+      "type": "ci",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Agrega guard de bundle-size con size-limit (file-based, mide los chunks de Next en dist/static/chunks). Cierra uno de los 4 gaps del review de modo-landing-web-ui-lib#41.",
+      "dolor": "_app pesa 222 kB gzip y se carga en todas las rutas — es el principal lever de los problemas de perf (LCP 8-17s, ~780 kB unused JS cross-rutas de la baseline 2026-05-21). El guard congela ese techo: cualquier regresión bloquea. No baja el número hoy, pero evita que empeore PR-a-PR mientras se trabaja el code-splitting.",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 1494,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1494",
+      "title": "ci(EXA): hard-fail audit on critical vulns",
+      "type": "ci",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Promueve pnpm audit --audit-level=critical de warning-only a blocking gate\nMantiene --audit-level=high como warning (no bloquea PRs por vulns aceptables)\nBumpea pnpm action de v8 → v9 (parity con package manager local)",
+      "dolor": "Review interno de PR #41 (modo-landing-web-ui-lib) detectó que pr-audit.yml tenía continue-on-error: true en ambos niveles (high + critical). Resultado: el workflow nunca falla, solo loguea. Un CVE critical en una dep puede mergear sin friction.",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 1493,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1493",
+      "title": "docs(EXA): plan CI quality harness rollout (4 PR families)",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Plan para cerrar los 4 gaps detectados en el review de modo-landing-web-ui-lib#41:",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 594,
+      "repo": "promos-hub-site",
+      "url": "https://github.com/playsistemico/promos-hub-site/pull/594",
+      "title": "ci: add bundle-size guard with size-limit",
+      "type": "ci",
+      "state": "OPEN",
+      "que_hace": "Agrega guard de bundle-size con size-limit (file-based). Next 15 app router, mide los chunks de dist/static/chunks. Cierra uno de los 4 gaps del review de modo-landing-web-ui-lib#41.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "promos-hub-site"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 592,
+      "repo": "promos-hub-site",
+      "url": "https://github.com/playsistemico/promos-hub-site/pull/592",
+      "title": "ci: add pr-audit workflow with critical hard-fail",
+      "type": "ci",
+      "state": "OPEN",
+      "que_hace": "Promueve pnpm audit --audit-level=critical de warning-only a blocking gate\nMantiene --audit-level=high como warning (no bloquea PRs por vulns aceptables)\nBumpea pnpm action de v8 → v9 (parity con package manager local)",
+      "dolor": "Review interno de PR #41 (modo-landing-web-ui-lib) detectó que pr-audit.yml tenía continue-on-error: true en ambos niveles (high + critical). Resultado: el workflow nunca falla, solo loguea. Un CVE critical en una dep puede mergear sin friction.",
+      "tags": [
+        "ci",
+        "promos-hub-site"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 180,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/180",
+      "title": "ci: add a11y check (axe + WCAG 2.2 AA)",
+      "type": "ci",
+      "state": "OPEN",
+      "que_hace": "Agrega a11y check automatizado: itera las stories del Storybook estático y corre axe-core (WCAG 2.2 AA) contra cada una. Bloquea violaciones serious/critical.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 179,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/179",
+      "title": "ci: add bundle-size guard with size-limit",
+      "type": "ci",
+      "state": "OPEN",
+      "que_hace": "Agrega guard de bundle-size con size-limit (esbuild, tree-shaken). Mide el costo real que paga un consumer importando componentes, ignorando peerDeps.",
+      "dolor": "La lib usa preserveModules: true (rollup) → es tree-shakeable. El guard mide con esbuild lo que un consumer realmente importa, no el dist/ entero. Sin esto, un cambio en un componente shared puede inflar el bundle de modo-landing sin warning.",
+      "tags": [
+        "ci",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "number": 178,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/178",
+      "title": "ci: hard-fail audit on critical vulns",
+      "type": "ci",
+      "state": "OPEN",
+      "que_hace": "Promueve pnpm audit --audit-level=critical de warning-only a blocking gate\nMantiene --audit-level=high como warning (no bloquea PRs por vulns aceptables)\nBumpea pnpm action de v8 → v9 (parity con package manager local)",
+      "dolor": "Review interno de PR #41 (modo-landing-web-ui-lib) detectó que pr-audit.yml tenía continue-on-error: true en ambos niveles (high + critical). Resultado: el workflow nunca falla, solo loguea. Un CVE critical en una dep puede mergear sin friction.",
+      "tags": [
+        "ci",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1492,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1492",
+      "title": "ci(EXA): expand PR workflows trigger a integration branch · destraba CI cadena Next 16 + TS migration",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "(auto) ci(EXA): expand PR workflows trigger a integration branch · destraba CI cadena Next 16 + TS migration",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1491,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1491",
+      "title": "[no-merge] fix(faqs): redirigir links legacy (Freshdesk + SF Community) → FAQ",
+      "type": "chore",
+      "state": "OPEN-DRAFT",
+      "que_hace": "rescatar links de contenido legacy (Freshdesk + SF Community) a la FAQ interna",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1490,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1490",
+      "title": "chore(EXA): add @types/testing-library__jest-dom · -275 tsc errors",
+      "type": "chore",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) chore(EXA): add @types/testing-library__jest-dom · -275 tsc errors",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1489,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1489",
+      "title": "feat(EXA): SSR del body CMS con Cache-Control CDN (Next 16)",
+      "type": "feat",
+      "state": "OPEN",
+      "que_hace": "1. SSR del body CMS en pages CMS-driven ([[...slug]], FAQ, blog, T&C, comercios, hubs): DynamicCMSComponent({ssr: true}), Navbar/Footer aislados con ssr:false. Crawlers (Googlebot, GPTBot, ClaudeBot, preview cards) ven el body completo en el HTML inicial.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "main-content",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1488,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1488",
+      "title": "feat(EXA): Sub-PR #06 · Turbopack default · CIERRA Next 12 → 16",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Sub-PR #06 · Turbopack default · CIERRA Next 12 → 16",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1487,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1487",
+      "title": "feat(EXA): Sub-PR #05 · React 18 → 19.2 + Document Metadata API",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Sub-PR #05 · React 18 → 19.2 + Document Metadata API",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1486,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1486",
+      "title": "feat(EXA): Sub-PR #04 · codemod Next.js 15 → 16 (Pages + webpack)",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Sub-PR #04 · codemod Next.js 15 → 16 (Pages Router · webpack)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "number": 1485,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1485",
+      "title": "feat(EXA): Sub-PR #03 · codemod Next.js 14 → 15 (React 18 kept)",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Sub-PR #03 · codemod Next.js 14 → 15 (React 18 preservado)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-21",
+      "number": 1484,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1484",
+      "title": "feat(EXA): Sub-PR #02 · codemod Next.js 13 → 14 (Pages Router)",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Sub-PR #02 · codemod Next.js 13 → 14 (Pages Router)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-21",
+      "number": 1483,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1483",
+      "title": "feat(EXA): Sub-PR #01 · codemod Next.js 12 → 13 (Pages Router)",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Sub-PR #01 · codemod Next.js 12 → 13 (Pages Router intacto)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-21",
+      "number": 1482,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1482",
+      "title": "feat(EXA): Next.js 12 → 16 migration · integration branch",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Integration branch feat/EXA-nextjs-12-to-16-migration para evolución incremental de Next.js 12.3.5 + React 18.2 → Next.js 16 + React 19.2 (Pages Router intacto). Cada step va por sub-PR independiente que mergea a esta branch; QA continuo via ci-alpha; merge final integration → main solo cuando todo está verde.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-21",
+      "number": 1481,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1481",
+      "title": "docs(EXA): SDD master · lint cleanup post-#1476 + TS migration",
+      "type": "docs",
+      "state": "CLOSED",
+      "que_hace": "SDD master del programa lint cleanup post-#1476: llevar pnpm lint de 52 warnings → 0 con metodología MODO (SDD por hito + TDD red/green + PRs atómicos).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-21",
+      "number": 1480,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1480",
+      "title": "ci(security): Frontend Security workflow (SAST + audit + headers)",
+      "type": "ci",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Suma .github/workflows/security.yml como gate de seguridad pre-deploy para modo-landing (front + BFF de Next.js). Operacionaliza la checklist OWASP que ya teníamos como skill (frontend-security-checklist) y la ejecuta automáticamente en cada PR, push a main y antes de promote a preprod/prod.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-17",
+      "number": 1477,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1477",
+      "title": "feat(EXA-comercios): MVP /comercios production-ready",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "MVP de /comercios listo para producción. Branch validada en preprod, alpha tag a2.414.1-1779036507.0.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 1476,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1476",
+      "title": "feat(EXA): Phase 02a · absorb modo-ui-lib-web + fixes + snap removal",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Phase 02a · absorb modo-ui-lib-web + risk fixes + snapshot removal + SDD futuro",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 1475,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1475",
+      "title": "feat(comercios): MVP /comercios/[slug] canonical pages con SDD+TDD",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Páginas canónicas /comercios/[slug] programáticas (no editorial, no Storyblok) que ingiestan data del map-handler API + promo-backoffice y generan JSON-LD denso para SEO/GEO. Reemplaza el patrón /promos/[slug]-[mes] que rota mensualmente (validado top 1-3 en GSC para queries \"modo [comercio]\").",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 1474,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1474",
+      "title": "feat(faqs): exponer categorías de FAQ por query string ?categoria=<slug>",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Permite pre-seleccionar y compartir vistas filtradas por categoría en /ayuda/preguntas-frecuentes vía query string. Útil para deep-linking desde campañas, ayuda contextual y Google sitelinks. El botón \"atrás\" del navegador restaura el filtro previo.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 1472,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1472",
+      "title": "fix(EXA): ajustar changefreq del sitemap a cadencia real",
+      "type": "fix",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Ajuste de changefreq en sitemap.xml para reflejar la cadencia real de actualización de cada sección. Valores altos sin cambio real son señal ruidosa para crawlers y pueden ser ignorados (Google ya desestima changefreq cuando no condice con lastmod observado).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 1471,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1471",
+      "title": "fix(EXA): API_BASE_URL prod usar hostname canónico con www",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "API_BASE_URL en parameters/production/configurations.yaml apunta a https://modo.com.ar (sin www). El hostname canónico del sitio en prod es https://www.modo.com.ar — el non-www hace 301 al canónico.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 1470,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1470",
+      "title": "fix(EXA): usar www.modo.com.ar en PROMOS_URL para sitemap y canonical",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "GSC reporta ~4697 URLs /promos/* como \"Page with redirect\" en el reporte de sitemap → no indexadas.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-15",
+      "number": 578,
+      "repo": "promos-hub-site",
+      "url": "https://github.com/playsistemico/promos-hub-site/pull/578",
+      "title": "chore: remove unused @playsistemico/modo-ui-lib-web dependency",
+      "type": "chore",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Remueve @playsistemico/modo-ui-lib-web@^1.32.1 de package.json (sin imports en el código).\nLimpia entradas correspondientes en pnpm-lock.yaml (3 bloques, 20 líneas).\nLos componentes V3 (HubCardPromo/HubCardCoupon) que se consumen actualmente vienen de @playsistemico/modo-sdk-web-ui-lib, no de la lib removida.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "promos-hub-site"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "number": 1469,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1469",
+      "title": "chore(EXA): bump @playsistemico/modo-ui-lib-web 1.32.1 to 1.32.2",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Bump del lib @playsistemico/modo-ui-lib-web 1.32.1 → 1.32.2 (release notes).",
+      "dolor": "PR #1466 habilita SSR completo del body CMS para crawlers (SEO/GEO). Eso destapó un hydration mismatch en componentes del lib (HeroPrimary, SectionCarousel) que consumen el hook viejo:",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "number": 1468,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1468",
+      "title": "fix(EXA): restaurar Quicksand global por regresión visual en títulos",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "PR #1459 sacó Quicksand del <link> global de _document.js y la dejó page-scoped solo en /comercios/tiendas-online, basándose en un audit estático que asumía a TextHeader como único consumidor.\nEn develop se detectó regresión visual en títulos: Quicksand no carga en páginas que sí la usan (probable styled-components inl…",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "number": 177,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/177",
+      "title": "fix(EXA): Pill avoid SSR hydration mismatch from random initial scale",
+      "type": "fix",
+      "state": "OPEN",
+      "que_hace": "Pill renderizaba el motion.div interno con initial={{ scale: getRandomValue(1.3, 1.6) }}. Math.random() produce un valor distinto en server y en el primer render del cliente, así que framer-motion emite un transform: scale(...) inline distinto en el SSR vs la hidratación, disparando:",
+      "dolor": "modo-landing PR #1466 habilita SSR completo del body CMS para crawlers (SEO/GEO). HeroPrimary ya no se renderiza con dynamic({ ssr: false }), y el Pill se SSRea — destapando este mismatch que antes pasaba desapercibido.",
+      "tags": [
+        "fix",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "number": 176,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/176",
+      "title": "ci: add PR validation workflows from modo-landing",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Backport de 3 workflows de validación en PR desde playsistemico/modo-landing para paridad de higiene de revisión.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "number": 175,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/175",
+      "title": "ci: bump node to 22.22.2 via .nvmrc to satisfy semantic-release",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "El workflow Release (main) falla con:",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "number": 174,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/174",
+      "title": "fix(EXA-1465): useMediaQuery initial state to avoid SSR hydration mismatch",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "useMediaQuery inicializaba useState con getMatches(query), que devuelve true cuando window es undefined (SSR) y el valor real de matchMedia en el primer render del cliente. Cuando una app host SSRea subtrees que consumen el hook (ej. HeroPrimary, SectionCarousel), el markup del servidor difiere del cliente y React 18 l…",
+      "dolor": "Origen: modo-landing PR #1466 — habilita SSR completo del body CMS para crawlers (SEO/GEO).\nEn esa PR se intentó parchear el hook via pnpm patch, pero rompía el CI de modo-landing: re-resolver el lockfile en macOS pierde las keys libc: [glibc|musl] que los runners Alpine necesitan.\nFix upstream → no requiere patch en c…",
+      "tags": [
+        "fix",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1466,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1466",
+      "title": "feat(EXA): SSR completo del body CMS + overlay anti-flicker (SEO/GEO)",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Habilita SSR completo del body de todas las pages CMS (catch-all [[...slug]], FAQs, blog, T&C, comercios/tiendas-online, contratos, políticas, hubs de promos) para que crawlers sin JS — Googlebot lite, GPTBot, ClaudeBot, preview cards de WhatsApp/Slack/LinkedIn — vean el body completo en el HTML inicial. Hoy ven sólo \"…",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1465,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1465",
+      "title": "perf(EXA): overlay blanco anti-flicker en primera carga",
+      "type": "perf",
+      "state": "CLOSED",
+      "que_hace": "Agrega un overlay blanco a pantalla completa que cubre todo el contenido durante la primera carga (~1s) y luego se disuelve con un fade-out de 300ms. Objetivo: evitar que los usuarios vean los flickers visuales típicos entre el primer paint del HTML SSR y la hidratación + montaje completo de los componentes de React.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "perf"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1464,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1464",
+      "title": "perf(EXA): preload hero images en pages estáticas (PreloadImage)",
+      "type": "perf",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Las pages /comercios/tiendas-online/{plugin,boton-de-pago} renderean HeroSaleOnlineInternal, que muestra la imagen del hero como background-image: url(...) en CSS. El browser no descubre la URL hasta parsear el CSS, perdiendo la ventana donde JS/CSS están descargándose en paralelo.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "este",
+        "modo-landing",
+        "perf"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1463,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1463",
+      "title": "perf(EXA): diferir init Firebase via dynamic import (-7.3KB gzip _app)",
+      "type": "perf",
+      "state": "OPEN-DRAFT",
+      "que_hace": "firebase/app y firebase/analytics se importaban eager en src/config/analytics.ts y src/utils/analytics/firebase.js. Eso significa que ambos SDKs quedaban en _app.js y entraban en el critical path de toda page, aunque firebase analytics no es necesario hasta después del primer paint.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "perf"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1462,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1462",
+      "title": "perf(EXA): drop framer-motion dep (motion() → CSS)",
+      "type": "perf",
+      "state": "OPEN-DRAFT",
+      "que_hace": "PR #1457 reemplazó los 7 useInView por un hook nativo. Quedaban 5 archivos usando styled(motion.X) — auditándolos descubrí que ninguno usaba features reales de framer-motion (no hay animate, initial, exit, variants, whileInView en los consumers), excepto un único caso (BankContent accordion).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "perf"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1461,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1461",
+      "title": "fix(EXA): eliminar flicker del MobileMenu en /blog/[slug]",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "(auto) fix(EXA): eliminar flicker del MobileMenu en /blog/[slug]",
+      "dolor": "En /blog/[slug] se ve un parpadeo del menú mobile (el sidebar/overlay) durante los primeros ms del primer paint — único lugar del sitio donde pasa.",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1460,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1460",
+      "title": "chore(EXA): eliminar modalYoutube.css huérfano",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Elimina src/constants/modalYoutube.css (125 LOC) y su import en src/pages/_app.js. El CSS quedó huérfano desde la remoción de react-modal-video en el commit 3917cdd05 \"Delete unused libs\": la lib se sacó del package.json, pero el CSS companion sobrevivió al cleanup y seguía cargándose en cada navegación.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1459,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1459",
+      "title": "perf(EXA): consolidar y reducir Google Fonts request (-66% CSS inlineado)",
+      "type": "perf",
+      "state": "MERGED",
+      "que_hace": "(auto) perf(EXA): consolidar y reducir Google Fonts request (-66% CSS inlineado)",
+      "dolor": "Fase 3 de 3 del plan de first-render improvements:",
+      "tags": [
+        "este",
+        "modo-landing",
+        "perf"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1458,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1458",
+      "title": "refactor(EXA): named imports en firebase/app para consistency y prep Firebase 11",
+      "type": "refactor",
+      "state": "CLOSED",
+      "que_hace": "(auto) refactor(EXA): named imports en firebase/app para consistency y prep Firebase 11",
+      "dolor": "Fase 2 de 3 del plan de first-render improvements (sigue al PR #1457 — useInView + carousel cleanup).",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1457,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1457",
+      "title": "perf(EXA): drop framer-motion useInView + react-responsive-carousel",
+      "type": "perf",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Parte de un plan para mejorar first render",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "perf"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "number": 1456,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1456",
+      "title": "chore(EXA): eliminar react-joyride y cadena de OnBoarding SearchIA (dead code)",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "(auto) chore(EXA): eliminar react-joyride y cadena de OnBoarding SearchIA (dead code)",
+      "dolor": "react-joyride figuraba en package.json desde hace tiempo, pero su único punto de entrada era OnBoardingSearch, importado solo por HeaderPromotionsSearchIA → promotionsListSearchIA → HubApp. Auditando la cadena, HubApp no está importado por ninguna page del Next: el flujo /promos se rutea por Istio a promoshub antes de …",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-12",
+      "number": 1453,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1453",
+      "title": "feat(EXA): mejoras SEO/GEO + fixes indexación post auditoría GSC",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Conjunto de fixes de SEO técnico, introducción de GEO (Generative Engine Optimization) y refactor del módulo de sitemap para hacerlo testeable, basados en una auditoría de Google Search Console sobre sc-domain:modo.com.ar (28 días, 2026-04-14 → 2026-05-12) y validación contra el código del repo.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-11",
+      "number": 1450,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1450",
+      "title": "fix(EXA): eliminar flicker del sidebar mobile en /blog",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "Elimina el flicker visible del drawer mobile (sidebar) en la primera carga de /blog/* y demás rutas que renderizan CMSNavbar.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-11",
+      "number": 1448,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1448",
+      "title": "fix(EXA): re-aplicar SSR completo de NavFooterLayout (sidebar/Nav flicker en /blog)",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "(auto) fix(EXA): re-aplicar SSR completo de NavFooterLayout (sidebar/Nav flicker en /blog)",
+      "dolor": "En https://www.modo.com.ar/blog/como-pagar-con-pix-en-brasil-siendo-argentino-en-2026 (y todas las pages que usan NavFooterLayout — FAQs, legales, blog, premiación) se ve el flicker del Navbar/sidebar al primer paint y al cambiar de ruta.",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-08",
+      "number": 1444,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1444",
+      "title": "fix(EXA): habilitar SSR de Nav/body/Footer y eliminar flicker del navbar",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "Este PR consolida dos trabajos relacionados sobre el chrome navegacional:",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-07",
+      "number": 1439,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1439",
+      "title": "fix(EXA): agregar dominios Botmaker y LinkedIn a CSP",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Resuelve violations de CSP detectadas auditando https://www.preprod.modo.com.ar/ con Playwright (Chromium real captura los console.error del navegador que el MCP browser-extension no expone).\r\nAgrega los dominios faltantes a las directivas correspondientes en next.config.js.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "number": 1435,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1435",
+      "title": "feat(COENXT-280): CollectionPage + ItemList en /blog",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Extiende la capa src/utils/cms-seo/ (introducida por PR #1421) con un schema CollectionPage + ItemList para /blog index. Refuerza autoridad temática del blog para motores de IA (Mention Rate / Share of Voice) y comprensión del crawler sobre la relación index ↔ detalle.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing",
+        "website"
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "number": 1434,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1434",
+      "title": "chore: remove unused NEW_PROMOHUB_REDIRECT_URL env var",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Limpieza de referencias muertas a NEW_PROMOHUB_REDIRECT_URL. La variable ya no se consume en código (el routing de /promos lo maneja istio antes del pod, y los enlaces internos usan NEXT_PUBLIC_PROMOS_APP_URL o paths relativos).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "number": 1432,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1432",
+      "title": "fix(EXA): cerrar memory leak del listener keydown en CMSModal",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "(auto) fix(EXA): cerrar memory leak del listener keydown en CMSModal",
+      "dolor": "CMSModal/index.tsx registraba el listener keydown para cerrar con Escape dentro del cuerpo del componente, sin useEffect y sin cleanup:",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "number": 1431,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1431",
+      "title": "chore: eliminar ruta /promos",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Elimina src/pages/promos/[[...data]].jsx (host iframe legacy).\nIstio intercepta /promos y la rutea a otro servicio — el route file de Next nunca se ejecutaba en runtime; era código muerto a nivel pod.\n/promos-banco se mantiene intacto.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-04",
+      "number": 1427,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1427",
+      "title": "fix(EXA): renderizar tablas GFM en posts del blog",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Las tablas estilo pipe (GFM) en posts del blog se imprimían como texto plano en lugar de renderizarse como <table>.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-30",
+      "number": 1425,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1425",
+      "title": "fix(EXA): evitar que el subtitle del blog pise el body en desktop",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "(auto) fix(EXA): evitar que el subtitle del blog pise el body en desktop",
+      "dolor": "En /blog/[slug] con viewports desktop (>=1280px), el subtitle del BlogHero queda renderizado encima del primer párrafo del body (BlogContent). Visualmente parece que dos paragrafos están \"solapados\" / pisándose.",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-30",
+      "number": 1424,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1424",
+      "title": "fix(EXA): corregir espaciado de párrafos y overlap del hero en /blog/[slug]",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Consolida dos bugs visuales en /blog/[slug] reportados en QA, ambos con síntoma percibido como \"el texto se pisa\" pero con causas raíz distintas. Cada fix vive en su propio commit para mantener trazabilidad y permitir revert independiente.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-29",
+      "number": 1423,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1423",
+      "title": "chore(EXA): allow Atlassian getJiraIssue MCP in Claude settings",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Agrega mcp__claude_ai_Atlassian__getJiraIssue al allow list del proyecto en .claude/settings.json para que Claude Code pueda leer tickets de Jira sin pedir aprobación en cada llamada.\nSolo se habilita la lectura (getJiraIssue). Operaciones que modifican Jira (createJiraIssue, editJiraIssue, transitionJiraIssue, etc.) s…",
+      "dolor": "Trabajos como COENXT-274/275, COE-272 o EXA-* arrancan típicamente leyendo el ticket en Jira para entender alcance y criterios de aceptación. Hoy cada lectura interrumpe el flujo con un permission prompt; este cambio reduce esa fricción manteniendo el principio de read-only sin riesgo.",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-29",
+      "number": 1422,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1422",
+      "title": "chore(EXA): install 12 agent skills via skills registry",
+      "type": "chore",
+      "state": "CLOSED",
+      "que_hace": "Instala 12 skills nuevas para agentes (Claude Code, Cline, Continue, etc.) bajo .agents/skills/ (contenido canónico) con symlinks de Claude Code en .claude/skills/. Las skills cubren Next.js, React, Node.js, TypeScript, Tailwind, accesibilidad, SEO, frontend design y composition patterns.\nAgrega skills-lock.json con la…",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-29",
+      "number": 1421,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1421",
+      "title": "feat(COENXT-274/275): cms-seo — JSON-LD configurable por Storyblok con fallbacks",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Introduce la capa src/utils/cms-seo/ que delega a Storyblok los campos editoriales del JSON-LD (lo que marketing necesita editar sin deploy) manteniendo defaults deterministas en código si el CMS devuelve null o un blok inválido.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-29",
+      "number": 1419,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1419",
+      "title": "fix(EXA): renderizar imágenes de FAQs vía Experience Cloud Site público",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Las imágenes embebidas en respuestas de FAQs (Salesforce Knowledge rtaImage) viven en *.file.force.com, un host que requiere cookie de sesión UI y por eso devolvía 401 / redirect al login cuando se intentaba renderizarlas anónimamente desde el sitio.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-27",
+      "number": 1417,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1417",
+      "title": "feat(EXA): agregar widget Trustpilot al footer",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Implementa el widget de Trustpilot (TrustBox Review Collector) en el footer del CMS, renderizándolo como un item adicional dentro de financialData junto a Data Fiscal y AAIP RNBD.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-27",
+      "number": 1415,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1415",
+      "title": "fix(EXA): SSR completo del body — gatear ThemeProviderSDK solo en SDK mode",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "(auto) fix(EXA): SSR completo del body — gatear ThemeProviderSDK solo en SDK mode",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-27",
+      "number": 1414,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1414",
+      "title": "fix(EXA): formatear import multilínea en AppButton para destrabar CI",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "(auto) fix(EXA): formatear import multilínea en AppButton para destrabar CI",
+      "dolor": "El workflow Frontend CI - Builder falló en main (run 24996630429) tras el merge de #1413, dejando main sin imagen buildable.",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-24",
+      "number": 1411,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1411",
+      "title": "feat(EXA): SSR-safe SEO slot PageSeo + migración /ayuda/preguntas-frecuentes",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "(auto) feat(EXA): SSR-safe SEO slot PageSeo + migración /ayuda/preguntas-frecuentes",
+      "dolor": "PR independiente (no depende de #1408). Introduce:",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-21",
+      "number": 1409,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1409",
+      "title": "fix(EXA): eliminar copiar enlace del accordion de preguntas frecuentes",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Elimina el botón \"Copiar enlace\" y toda su lógica del FaqAccordion\r\nMantiene \"Ver respuesta completa\" como link al detalle",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-21",
+      "number": 1408,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1408",
+      "title": "feat(EXA): consolidar blog — composabilidad, JSON-LD dinámico y cleanup",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Consolidación del sistema de blog: se elimina la implementación vieja (CMSSectionBlog) y se potencia BlogPostPage con composabilidad y JSON-LD dinámico.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-21",
+      "number": 1407,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1407",
+      "title": "fix(EXA): mostrar summary en preguntas relacionadas del detalle FAQ",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Reemplaza el accordion vacío en la sección \"Más preguntas sobre...\" del detalle FAQ por cards con título + summary visible\nCada card es clickeable y lleva a la respuesta completa",
+      "dolor": "El FaqAccordion en el detalle mostraba contenido vacío porque se stripea el content HTML de los artículos relacionados para reducir el peso de page data (>128 kB). Al abrir el accordion, el usuario no veía nada.",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-21",
+      "number": 1406,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1406",
+      "title": "fix(EXA): corregir useRef sin argumento en FaqSearchBar (build fix)",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Fix useRef<T>() sin argumento inicial que rompe el build de Next.js con strict type checking\nuseRef<ReturnType<typeof setTimeout>>() → useRef<ReturnType<typeof setTimeout>>(undefined)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-21",
+      "number": 1405,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1405",
+      "title": "fix(EXA): corregir useRef sin argumento en FaqSearchBar (build fix)",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "Fix useRef<T>() sin argumento inicial que rompe el build de Next.js con strict type checking\nuseRef<ReturnType<typeof setTimeout>>() → useRef<ReturnType<typeof setTimeout>>(undefined)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-20",
+      "number": 1404,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1404",
+      "title": "fix(EXA): agregar dominios Salesforce a CSP connect-src",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Agrega dos dominios Salesforce faltantes a la Content Security Policy en next.config.js.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-20",
+      "number": 1403,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1403",
+      "title": "fix(EXA): mejorar SEO metadata en todas las páginas estáticas",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Actualización integral de metadatos SEO en todas las páginas estáticas del sitio.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-20",
+      "number": 1401,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1401",
+      "title": "feat(EXA): rediseño FAQ con subcategorías Salesforce, SEO y accesibilidad",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Rediseño completo de /ayuda/preguntas-frecuentes con UX mejorada, SEO optimizado y accesibilidad WCAG\nIntegración de subcategorías de Salesforce Knowledge (SubCategoria__c) para reflejar la misma estructura del sitio modocx.my.site.com/Modo/\nCATEGORY_MAP ampliado de 7 a 12 categorías reales de Salesforce (Pagar con MOD…",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-17",
+      "number": 1399,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1399",
+      "title": "fix(EXA): scroll to top en navegación client-side",
+      "type": "fix",
+      "state": "CLOSED",
+      "que_hace": "Los links de navegación (navbar, footer, cards, UI lib) no hacían scroll to top al navegar entre páginas via client-side routing de Next.js. El usuario quedaba a mitad de scroll en la nueva página.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing",
+        "seccion",
+        "section"
+      ]
+    },
+    {
+      "date": "2026-04-17",
+      "number": 1398,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1398",
+      "title": "fix(EXA): habilitar SSR completo (Nav + body + Footer) en NavFooterLayout y stories Storyblok",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "(auto) fix(EXA): habilitar SSR completo (Nav + body + Footer) en NavFooterLayout y stories Storyblok",
+      "dolor": "NavFooterLayout envolvía a sus children dentro de DynamicDefaultLayout con ssr: false, por lo que el contenido de las páginas que lo usan no aparecía en el HTML inicial del servidor.",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1396,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1396",
+      "title": "feat(EXA): rediseño UX, SEO y accesibilidad de preguntas frecuentes",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Rediseño completo de /ayuda/preguntas-frecuentes y sus páginas de detalle, alineado con los patrones visuales de modo.com.ar.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1395,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1395",
+      "title": "feat(EXA): add Safe-chain age validator for pnpm dependencies",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Agrega validación local de la política Safe-chain de los runners de CI. Los runners bloquean paquetes npm publicados hace menos de 168 horas (7 días) via --safe-chain-minimum-package-age-hours=168. Este script atrapa esas violaciones antes de pushear, evitando CI runs fallidos.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1394,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1394",
+      "title": "fix(EXA): regenerate lockfile to clear Safe-chain blocked packages",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "El lockfile regenerado en d619ba0 resolvió dependencias transitivas publicadas hace menos de 168 horas (7 días). Safe-chain (proxy de seguridad en los self-hosted runners) bloquea la descarga de estos paquetes, causando que todos los builds en main fallen desde las 18:44 UTC del 16/04.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1393,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1393",
+      "title": "docs(EXA): 01d/13 — specs funcionales content, analytics & platform",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) docs(EXA): 01d/13 — specs funcionales content, analytics & platform",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1392,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1392",
+      "title": "docs(EXA): 01c/13 — specs funcionales commerce & payments",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) docs(EXA): 01c/13 — specs funcionales commerce & payments",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1391,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1391",
+      "title": "docs(EXA): 01b/13 — specs funcionales promotions (hub + detail)",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) docs(EXA): 01b/13 — specs funcionales promotions (hub + detail)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1390,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1390",
+      "title": "docs(EXA): 01a — core docs + runbook v2 + openspec TS post-Next 16",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) docs(EXA): 01a — core docs + runbook v2 + openspec TS post-Next 16",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1389,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1389",
+      "title": "chore(EXA): bump version a 2.367.0 por releases fallidos",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "(auto) chore(EXA): bump version a 2.367.0 por releases fallidos",
+      "dolor": "Dos runs consecutivos de CI release en main fallaron:\nv2.366.0: push de tag rechazado por race condition (ya corregido en #1387 con concurrency group)\nv2.367.0: build falló por test file en src/pages/ (ya corregido en #1387)",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1388,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1388",
+      "title": "ci(EXA): disable Playwright CI on pull requests",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Se elimina el trigger pull_request del workflow de Playwright para que no corra automáticamente en cada PR\nSe mantiene workflow_dispatch para poder ejecutar la suite manualmente cuando sea necesario\nSe limpia la condición if del job que referenciaba pull_request (ya no aplica)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1387,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1387",
+      "title": "fix(EXA): corregir release CI roto por test file en pages/",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "(auto) fix(EXA): corregir release CI roto por test file en pages/",
+      "dolor": "El release de modo-landing está fallando por dos causas independientes:",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1386,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1386",
+      "title": "refactor(EXA): 13a-iii — TS migration AppList/PromoFilter/CMS/rest",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) refactor(EXA): 13a-iii — TS migration AppList/PromoFilter/CMS/rest",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1385,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1385",
+      "title": "refactor(EXA): 13a-ii — TS migration Layout/Navbar/Footer/stores",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) refactor(EXA): 13a-ii — TS migration Layout/Navbar/Footer/stores",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1384,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1384",
+      "title": "refactor(EXA): 13a-i · TS migration promotionsTS (searchIa, comps)",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) refactor(EXA): 13a-i · TS migration promotionsTS (searchIa, comps)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1383,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1383",
+      "title": "ci(EXA): consolidate GitHub Actions version bumps",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Consolida 5 PRs de dependabot en uno solo, aplicando únicamente los bumps de versión a los workflows existentes sin cambios colaterales.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1382,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1382",
+      "title": "refactor(EXA): remove dead code from tiendas-online list page",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) refactor(EXA): remove dead code from tiendas-online list page",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1381,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1381",
+      "title": "fix(EXA): weight PR size by review effort, not raw line count",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "El workflow pr-size.yml clasificaba PRs por additions + deletions sin distinguir tipo de cambio. Un PR que elimina 2279 líneas de archivos (cleanup) se etiquetaba size/xl con warning de \"dividir el PR\", lo cual es contraproducente.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1380,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1380",
+      "title": "ci(EXA): 03/13 — commitlint, SonarLint y Jest config",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Herramientas de desarrollo: commitlint para validar formato de commits, SonarLint connected mode, y Jest coverage config. No toca código fuente.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1379,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1379",
+      "title": "refactor(EXA): 02/13 — eliminar env var NEW_PROMOHUB_REDIRECT_URL",
+      "type": "refactor",
+      "state": "MERGED",
+      "que_hace": "Elimina NEW_PROMOHUB_REDIRECT_URL de .env.example y las 4 configuraciones por ambiente. Esta variable no tiene referencias en el código fuente.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1378,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1378",
+      "title": "ci(EXA): 00/13 — fix Playwright CI (yarn→pnpm + smoke test)",
+      "type": "ci",
+      "state": "MERGED",
+      "que_hace": "Mergear PRIMERO — desbloquea CI para todos los PRs de la migración.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1377,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1377",
+      "title": "feat(EXA): allow AI crawlers in robots.txt",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Permite explícitamente el crawling de los principales bots de IA en el robots.txt de producción:",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1376,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1376",
+      "title": "feat(EXA): FAQ SSR completo, rutas individuales y mejoras SEO",
+      "type": "feat",
+      "state": "MERGED",
+      "que_hace": "Mejora integral de la sección de preguntas frecuentes para optimizar SEO y visibilidad ante crawlers:",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "number": 1374,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1374",
+      "title": "refactor(EXA): 13b/13 — migración TS pages, cleanup .js y config final",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "(auto) refactor(EXA): 13b/13 — migración TS pages, cleanup .js y config final",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-04-11",
+      "number": 516,
+      "repo": "promos-hub-site",
+      "url": "https://github.com/playsistemico/promos-hub-site/pull/516",
+      "title": "ci: add Dependabot, security audit, commitlint and PR size workflows",
+      "type": "ci",
+      "state": "CLOSED",
+      "que_hace": "Agrega 4 GitHub Actions como quick-wins para mejorar calidad y seguridad del pipeline de CI:",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "ci",
+        "promos-hub-site"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "number": 512,
+      "repo": "promos-hub-site",
+      "url": "https://github.com/playsistemico/promos-hub-site/pull/512",
+      "title": "chore(EXA): update @playsistemico/modo-landing-web-ui-lib to v5.5.6",
+      "type": "chore",
+      "state": "MERGED",
+      "que_hace": "Actualiza @playsistemico/modo-landing-web-ui-lib de v5.5.2 a v5.5.6",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "promos-hub-site"
+      ]
+    },
+    {
+      "date": "2026-03-31",
+      "number": 173,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/173",
+      "title": "fix: shorten online store top tag text",
+      "type": "fix",
+      "state": "MERGED",
+      "que_hace": "Shortens TopTagText.ONLINE_STORE from \"Tienda online\" to \"Online\" in PromotionCard constants",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-ui-lib-web"
+      ]
+    },
+    {
+      "date": "2026-03-31",
+      "number": 172,
+      "repo": "modo-ui-lib-web",
+      "url": "https://github.com/playsistemico/modo-ui-lib-web/pull/172",
+      "title": "docs: tech debt analysis and implementation plan",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Technical Implementation Guide — Gap analysis completo de la librería: 31 componentes inventariados, 6 gaps identificados (2 críticos), comparación de stack con sdk-ui-lib (north star), workflow de implementación con anti-patterns documentados\nSprint Plan — 5 sprints, 22 tasks, 48 story points. Desde documentación fund…",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-ui-lib-web"
+      ]
+    }
+  ]
+}
