@@ -10,7 +10,7 @@
    "number": "R21",
    "slug": "evergreen-geo-promos-hub",
    "title": "Resolver evergreen y presencia en buscadores con IA usando promos-hub",
-   "summary": "Construir páginas evergreen por comercio en promos-hub-site para capturar los ~500 clicks/mes de queries 'modo + nombre de comercio' que hoy se pierden, consolidar la reputación que las landings estacionales tiran a la basura cada año, y ganar citaciones por ChatGPT/Perplexity/Claude (GEO). 7 días de dev con IA, sin coord cross-team. URL bajo /promos/comercio/<slug> con plan de redirección permanente al top-level cuando el track de plataforma esté listo. Captura ~60-70% del impacto vs la opción modo-landing track completo. Audiencia primaria del RFC: Product Owners.",
+   "summary": "Construir páginas evergreen por comercio en promos-hub-site para capturar los ~2.700 clicks/mes de queries 'modo + nombre de comercio' que GSC muestra fragmentados, recuperar los ~18.664 clicks/mes que hoy se evaporan al rotar slugs versionados (verificado vía MCP GSC: 5 URLs que en enero 2026 sumaban 18.664 clicks hoy generan 0), y ganar citaciones por ChatGPT/Perplexity/Claude (GEO). Caso canónico documentado: Changomás con 995+426 clicks/mes en 2 URLs versionadas + 75 clicks de intent evergreen sin destino. 7 días de dev con IA, sin coord cross-team. URL bajo /promos/comercio/<slug> con plan de redirección permanente al top-level. Captura ~60-70% del impacto vs track de plataforma completo. Audiencia: Product Owners.",
    "status": "draft",
    "tags": [
     "seo",

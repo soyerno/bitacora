@@ -12,13 +12,15 @@
 
 ## TLDR
 
-Hoy las páginas de MODO que más tráfico capturan son las landings estacionales (Hot Sale, Cyber Monday, Navidad). El cliente entra, mira la promo del mes, y la página muere a fin de mes cuando rota el calendario. Cada vez que esto pasa, tiramos a la basura la reputación que esa página acumuló en Google y en ChatGPT/Perplexity/Claude. **Plata gastada en autoridad, que en lugar de capitalizarse, se evapora.**
+**Tenemos un problema medido en Google Search Console que cuesta miles de clicks mensuales.** Cada mes Marketing arma URLs nuevas con slug versionado (`coto-mar26`, `combustible-bna-oct25`, `changomas-ene26`). Las URLs capturan tráfico fuerte mientras viven, y cuando el slug rota mueren. **5 URLs estacionales que en enero 2026 sumaban 18.664 clicks/mes hoy generan exactamente 0.** Toda la reputación que esas páginas acumularon en Google se evaporó al rotar el calendario.
 
-A la vez, hay una segunda capa de búsquedas que no estamos atendiendo: cuando el cliente busca "MODO en Coto", "MODO en Farmacity", "MODO en Changomás" — sin importar si hay un Hot Sale o no. Eso son **~500 clicks mensuales en queries por nombre de comercio** que hoy aterrizan en una página índice sin contenido específico y se pierden.
+A la vez, los datos de GSC muestran **~2.700 clicks/mes** de gente que busca "modo coto", "modo farmacity", "modo havanna" — intent por comercio puntual todo el año, no solo en eventos. Esos clicks aterrizan hoy en una página índice con CTR 0,67% y se pierden. La demanda existe. Lo que falta es el destino que la reciba.
 
-**La propuesta** es resolver las dos cosas usando **promos-hub** (que ya está en producción y nos ahorra meses de coordinación cross-team), con una capa nueva de páginas por comercio que sobrevivan a las promociones puntuales. Esfuerzo estimado: **~7 días de desarrollo con IA**. Captura ~60-70% del impacto que tendría hacerlo como track de plataforma desde cero, sin esperar trimestres.
+**La propuesta** es construir, una sola vez, **páginas por comercio que sobrevivan a la rotación de slug y que reciban tanto el intent evergreen como el tráfico de las landings estacionales cuando estas mueran**. Se construye en promos-hub (que ya está en producción), captura ~60-70% del impacto que tendría un track de plataforma completo, en **~7 días de desarrollo con IA** y sin coordinación cross-team.
 
-**El trade-off**: las páginas viven bajo `modo.com.ar/promos/comercio/<nombre>` en vez de `modo.com.ar/comercio/<nombre>` (un nivel de URL más profundo). Estimamos que eso cuesta ~10-15% de ranking versus la versión top-level. Si en seis meses queremos consolidar todo en `/comercio/` puro, hay una redirección permanente que preserva la reputación acumulada.
+**Proyección conservadora a 90 días**: capturar ~7.500 clicks/mes que hoy se pierden o se aterrizan en páginas pobres, consolidados en URLs evergreen que acumulan reputación año a año en lugar de evaporarse.
+
+**El trade-off**: las páginas viven bajo `modo.com.ar/promos/comercio/<nombre>` en vez de `modo.com.ar/comercio/<nombre>` (un nivel de URL más profundo). Estimamos ~10-15% de ranking versus top-level. Si en seis meses consolidamos en `/comercio/` puro, una redirección permanente preserva la reputación acumulada.
 
 ---
 
@@ -33,25 +35,83 @@ MODO tiene dos surfaces principales que el usuario externo encuentra desde Googl
 
 Hay una tercera capa que falta: **páginas por comercio** que vivan todo el año. Hoy no existen como URL canónica.
 
-### Dos dolores concretos que están medidos en Google Search Console
+### Qué estamos resolviendo · en una frase
 
-**Dolor 1 · La autoridad estacional se evapora cada mes.**
+**Cada mes Marketing arma URLs nuevas con slug versionado (`coto-mar26`, `changomas-mar26`, `combustible-bna-oct25`), las URLs capturan tráfico fuerte por unas semanas, y cuando el slug rota al mes siguiente la URL muere y todo el tráfico se evapora.** Más una segunda capa: la gente busca "modo coto", "modo farmacity", "modo havanna" todo el año, no solo durante eventos, y hoy no hay página que reciba ese intent. La propuesta es construir, por una sola vez, la URL que sobrevive a la rotación.
 
-Cuando termina una edición de Hot Sale 2026, la URL `modo.com.ar/hotsale-2026` que durante una semana fue la más visible de MODO en Google deja de tener contenido relevante. Marketing arma una landing nueva el año siguiente con slug `hotsale-2027`, y Google la trata como una página nueva sin historia. **La reputación acumulada en 2026 no se transfiere a 2027.** Lo mismo aplica a Cyber Monday, Navidad y todas las temáticas.
+### Tres dolores concretos · todos verificados en Google Search Console (mayo 2026)
 
-**Dolor 2 · El intent por comercio puntual no se captura.**
+**Dolor 1 · Las URLs estacionales mueren cada pocos meses y se llevan miles de clicks a la tumba.**
 
-Los 28 días de mayo 2026 muestran este patrón:
+Esto no es teoría. Comparo dos períodos reales de la misma propiedad `modo.com.ar`:
 
-| Búsqueda | Clicks/mes | CTR | Posición |
+| URL estacional | Clicks enero 2026 | Clicks mayo 2026 | Diferencia |
 |---|---:|---:|---:|
-| "modo coto" | 215 | 26% | 2.1 |
-| "modo farmacity" | 148 | 25% | 2.4 |
-| "modo carrefour" | 105 | 19% | 3.0 |
-| "modo changomas" | 70 | 22% | 2.6 |
-| ... (otros 30+ queries similares) | ~200 | ~20% | 2-4 |
+| `/promos-banco/30off-combustible-bna-oct25` | **9.357** | **0** | **−9.357 (−100%)** |
+| `/promos-banco/supermayoristavital-oct25` | 5.212 | 0 | −5.212 (−100%) |
+| `/promos-banco/100off-transporte-bna-oct25` | 1.768 | 0 | −1.768 (−100%) |
+| `/promos-banco/30off-mcdonalds-bahiablanca-bna-oct25` | 1.267 | 0 | −1.267 (−100%) |
+| `/promos-banco?ids=macro` | 1.060 | 0 | −1.060 (−100%) |
+| **Total clicks perdidos por slug rotation** | **18.664** | **0** | **−18.664/mes** |
 
-Total estimado: **~500 clicks/mes** de gente que busca "MODO + nombre de comercio" — fuera de evento estacional. Hoy aterrizan en `/comercios` (página índice con CTR 0.72%, posición 6.2) o se pierden porque no hay página específica del comercio. **Estos clicks ya están sucediendo. La demanda existe. Lo que falta es el destino.**
+Cinco URLs que en enero juntaban casi **19.000 clicks al mes** hoy generan cero. Murieron porque el slug rotó (octubre 2025 → noviembre 2025 → diciembre 2025 → fin de la promoción). Marketing armó URLs reemplazo en los meses siguientes (`combustible-bna-mar26`, `combustible-ciudad-ene25`, `transportevqr-mar26`, etc.) pero cada una arranca de cero en Google: la reputación de octubre **no se transfiere**, se pierde.
+
+**Dolor 2 · El intent por comercio existe y mide miles, no cientos.**
+
+Los datos reales de Google Search Console — últimos 28 días, cierre 2026-05-28 — muestran que la demanda por "MODO + nombre de comercio" es masiva:
+
+| Búsqueda | Clicks 28d | CTR | Posición |
+|---|---:|---:|---:|
+| "coto modo" | 283 | 37,7% | 1,9 |
+| "havanna promociones bancarias" | 250 | 13,5% | 4,5 |
+| "modo coto" | 195 | 26,0% | 1,6 |
+| "modo farmacity" | 148 | 25,1% | 1,8 |
+| "disco promociones bancarias" | 132 | 7,2% | 4,5 |
+| "rapanui promociones bancarias" | 114 | 15,8% | 1,7 |
+| "modo fravega" | 99 | 32,9% | 1,3 |
+| "modo carrefour" | 98 | 18,9% | 1,3 |
+| "modo disco" | 97 | 40,4% | 1,8 |
+| "disco modo" | 94 | 53,1% | 1,5 |
+| "modo la anonima" | 93 | 43,9% | 1,6 |
+| "havanna promociones bancarias 2026" | 90 | 21,2% | 2,2 |
+| "jumbo modo" | 85 | 34,6% | 1,4 |
+| "modo jumbo" | 82 | 30,3% | 1,3 |
+| "modo galicia" | 80 | 25,2% | 2,4 |
+| "modo changomas" | 75 | 39,1% | 1,6 |
+| "carrefour modo" | 75 | 18,4% | 1,4 |
+| "modo sporting" | 74 | 26,7% | 1,6 |
+| Otros 40+ queries del mismo tipo | ~700 | promedio 20-30% | 1,5-3,0 |
+| **Total queries "MODO + comercio"** | **~2.700** | — | — |
+
+**~2.700 clicks/mes** entrando por intent merchant evergreen. Hoy aterrizan en la página índice `/comercios` (CTR 0,67%, posición 2,6 — Google la muestra pero el usuario no clickea porque el contenido es genérico) o se pierden contra resultados que no son nuestros. La demanda ya existe en plata.
+
+**Dolor 3 · Hay URLs estacionales que Google sigue mostrando aunque la promo se haya vencido.**
+
+`/promos/changomas-ene26` (Changomás enero 2026) tiene hoy, en mayo 2026, **96.743 impressions/mes** en Google — la página aparece en el resultado de búsqueda. Pero el contenido es de enero y la promo está vencida hace meses. El usuario que clickea encuentra contenido vencido y se va. Resultado: **CTR 0,44%** (muy malo) y **96.743 oportunidades de impresión desperdiciadas** que rompen confianza en MODO como fuente.
+
+### Ejemplo concreto · el caso Changomás
+
+Para que el dolor se vea sin tablas, este es el patrón con un comercio puntual.
+
+**Lo que pasa hoy con Changomás en Google**, según GSC últimos 28 días:
+
+| URL | Clicks 28d | Impressions | CTR | Posición | Estado |
+|---|---:|---:|---:|---:|---|
+| `/promos/changomas-mar26` | 995 | 70.665 | 1,41% | 6,5 | promo activa (muere fin de marzo) |
+| `/promos/changomas-ene26` | 426 | 96.743 | 0,44% | 7,0 | **vencida** desde febrero, sigue indexada |
+| Query "modo changomas" (intent evergreen) | 75 | 192 | 39,1% | 1,6 | aterriza en cualquiera de las dos de arriba |
+| Query "changomas" (no-brand MODO) | 314 | 110.734 | 0,28% | 7,1 | aterriza en URL vencida — usuario no clickea |
+
+Cuento la historia:
+
+1. Marketing arma `/promos/changomas-mar26` para la promoción de marzo. Captura 995 clicks en su mes.
+2. Marketing arma `/promos/changomas-ene26` para enero. Capturó algo similar en su momento. Hoy (mayo) sigue indexada pero muerta: 96.743 impressions sin contenido relevante.
+3. La query "modo changomas" tiene 75 clicks/mes con CTR 39% (intent fuerte, demanda real) pero aterriza en dos URLs que mueren cada pocos meses, **nunca se acumula nada**.
+4. En enero 2027, Marketing armará `/promos/changomas-ene27`. Empezará de cero. La autoridad de las versiones 2026 se perdió.
+
+**Con la propuesta**: existe `/promos/comercio/changomas` que vive todo el año. Captura los 75 clicks/mes de intent evergreen. Lista la promoción activa cuando hay (con su vigencia visible). Cuando la promo de marzo termina, se reemplaza por la próxima sin que la URL muera. Año a año, las 12 ediciones suman reputación sobre la **misma URL**. Backlinks de notas de prensa, newsletters y blogs apuntan al mismo lugar.
+
+**Proyección conservadora**: si solo capturamos el 70% de los 2.700 clicks/mes de intent merchant evergreen + el 30% de los ~19.000 clicks/mes que hoy se evaporan por slug rotation (mediante 301 desde las URLs versionadas al evergreen correspondiente), el delta mensual de tráfico capturado es del orden de **~7.500 clicks/mes** consolidados en URLs evergreen que acumulan reputación. La cifra exacta sale del análisis por comercio una vez definido el top 100.
 
 ### Por qué importa más que nunca
 
@@ -155,12 +215,14 @@ Si Producto + Marketing prefieren no comprometerse con la URL larga por riesgo d
 
 Cuatro indicadores claros, medibles a 90 días de la primera publicación:
 
-| Indicador | Hoy | Objetivo a 90 días |
+| Indicador | Hoy (GSC mayo 2026, 28d) | Objetivo a 90 días |
 |---|---|---|
-| Clicks mensuales en queries "MODO + nombre de comercio" | ~500 fragmentados en página índice | 1.500-2.000 capturados en páginas de comercio |
+| Clicks mensuales en queries "MODO + nombre de comercio" capturados por URL específica | ~2.700 fragmentados en página índice + URLs estacionales | 1.800-2.200 capturados en páginas de comercio (≥70% recuperación) |
+| Clicks recuperados de URLs versionadas que hoy mueren (vía 301 a URL evergreen) | 0 (se evaporan al rotar slug) | 5.000-6.000 consolidados |
 | URLs de comercio indexadas en Google | 0 | 100+ |
 | Resultado enriquecido con logo/promos en SERP | 0% | 100% de las URLs publicadas |
 | Citación por buscadores IA (Perplexity sample 50 prompts/sem) | Baseline a establecer en sprint 1 | +15 puntos porcentuales absolutos sobre baseline |
+| Clicks totales mensuales consolidados en URLs evergreen | 0 | ~7.500 |
 
 El cuarto indicador es **exploratorio** — no tenemos baseline previo para citation rate en buscadores con IA y la metodología de medición todavía está en desarrollo. Sería el primer experimento medido de MODO en este frente y nos da datos para todos los próximos.
 
