@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-28",
+    "generated": "2026-05-29",
     "category": "Bitácora · PRs",
     "format": "Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Recurrente a las 09:00 y 16:30 vía LaunchAgent.",
     "author": "Hernán De Souza · Sr AI Engineer",
@@ -17,6 +17,97 @@
     "seeded": "Curado manualmente para 2026-05-27/28. Updates posteriores via cron auto-extraen qué/dolor del body."
   },
   "items": [
+    {
+      "date": "2026-05-28",
+      "number": 1516,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1516",
+      "title": "chore(cookies): SDD scaffold cookies-auth-httponly [DRAFT]",
+      "type": "chore",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Scaffold-only PR · Auth token a cookie HttpOnly. P2 · security hardening (XSS exfil).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "l8-l16",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1515,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1515",
+      "title": "feat(cookies): SDD scaffold cookies-device-id [DRAFT]",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Scaffold-only PR · Cookie __Host-device_id para correlación BFF↔analytics. P3 · analytics.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1514,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1514",
+      "title": "feat(cookies): SDD scaffold cookies-ab-server-bucketed [DRAFT]",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Scaffold-only PR · A/B bucketing server-side. P1 · LCP/CLS + SEO.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1513,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1513",
+      "title": "feat(cookies): SDD scaffold cookies-is-sdk-flag [DRAFT]",
+      "type": "feat",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Scaffold-only PR · Cookie is_sdk server-side. P1 · WebView UX.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1512,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1512",
+      "title": "chore(cookies): SDD scaffold cookies-cmp-consent + master plan [DRAFT]",
+      "type": "chore",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Scaffold-only PR · CMP first-party + consent gate. P0 · legal blocker.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "number": 1511,
+      "repo": "modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1511",
+      "title": "fix(cookies): SDD scaffold cookies-preview-name-filter [DRAFT]",
+      "type": "fix",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Scaffold-only PR · SDD docs para iniciativa cookies-preview-name-filter (FIX defensive hardening).",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
     {
       "date": "2026-05-28",
       "number": 1510,
