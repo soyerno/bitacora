@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'" />
   <title>Timeline de PRs · Bitácora · Erno × MODO</title>
   <meta name="description" content="Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Refrescado dos veces al día desde la GitHub API." />
   <meta name="theme-color" content="#008859" />
@@ -351,6 +352,17 @@
     });
   }
 
+  // URL scheme allowlist · only https GitHub PR links can render as <a href>.
+  // Anything else (javascript:, data:, file:, ftp:, etc.) falls back to '#'
+  // so a tampered timeline.json cannot create clickable XSS vectors.
+  function safeHref(u) {
+    var str = String(u || '');
+    if (/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/pull\/\d+(?:[/?#].*)?$/.test(str)) {
+      return str;
+    }
+    return '#';
+  }
+
   function stateClass(state) {
     var s = String(state || '').toLowerCase();
     if (s.indexOf('draft') !== -1) return 'draft';
@@ -412,7 +424,7 @@
         var st = String(it.state || '').toUpperCase();
         var stClass = stateClass(it.state);
         var typeLabel = TYPE_LABELS[it.type] || (it.type || '').toUpperCase();
-        html += '<a class="prs-card" href="' + escapeHtml(it.url) + '" target="_blank" rel="noopener">';
+        html += '<a class="prs-card" href="' + escapeHtml(safeHref(it.url)) + '" target="_blank" rel="noopener noreferrer">';
         html += '  <div class="prs-card-head">';
         html += '    <span class="prs-num">#' + it.number + '</span>';
         if (typeLabel) html += '    <span class="prs-type">' + escapeHtml(typeLabel) + '</span>';
