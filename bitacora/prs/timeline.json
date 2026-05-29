@@ -1228,6 +1228,38 @@
       ]
     },
     {
+      "date": "2026-04-13",
+      "number": 1346,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1346",
+      "title": "refactor(EXA): Remove /promos and /promos-app routes and dead code",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Limpieza completa de código dead y dependencias de las rutas /promos y /promos-app que ya no existen en modo-landing. Istio maneja el routing a promoshub de forma transparente. Solo queda /promos-banco como ruta local.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-03-19",
+      "number": 1313,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1313",
+      "title": "refactor(EXA): replace CMS Nav/Footer with modo-landing-web-ui-lib",
+      "type": "refactor",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Reemplazo de CMSNavbar + CMSFooter (Storyblok CMS-driven) por componentes self-contained de @playsistemico/modo-landing-web-ui-lib.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
       "date": "2026-03-19",
       "number": 1308,
       "repo": "modo-landing",
