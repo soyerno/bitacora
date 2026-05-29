@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-28",
+    "generated": "2026-05-29",
     "updated_by": "erno-modo-sync-all",
     "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
   },
@@ -17,8 +17,8 @@
       "name": "modo-design-system",
       "description": "SDK/skill MODO-específico para generar páginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canónicos). Auto-invocar cuando el usuario pid",
       "filename": "modo-design-system.zip",
-      "sha256_prefix": "40097fa072748796",
-      "size_kb": 54.7,
+      "sha256_prefix": "9dfec36b7e046d8d",
+      "size_kb": 55.9,
       "install_hint": "unzip modo-design-system.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-design-system.skill ~/.claude/skills/modo-design-system"
     },
     {
@@ -97,8 +97,8 @@
       "name": "modo-pr-author",
       "description": "Author MODO-grade pull request descriptions following the repo template + commit conventions + voz rioplatense. Auto-invocable cuando el usuario pide \"armá el PR\", \"creá el PR\", \"describí este PR\", \"i",
       "filename": "modo-pr-author.zip",
-      "sha256_prefix": "cea574c17fa62656",
-      "size_kb": 26.6,
+      "sha256_prefix": "5f5d6546da9084c3",
+      "size_kb": 27.4,
       "install_hint": "unzip modo-pr-author.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-pr-author.skill ~/.claude/skills/modo-pr-author"
     },
     {
@@ -161,8 +161,8 @@
       "name": "modo-ci-quality-harness",
       "description": ">-",
       "filename": "modo-ci-quality-harness.zip",
-      "sha256_prefix": "f1d03983270afb5a",
-      "size_kb": 20.7,
+      "sha256_prefix": "05e8f095b1092f59",
+      "size_kb": 24.3,
       "install_hint": "unzip modo-ci-quality-harness.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-ci-quality-harness.skill ~/.claude/skills/modo-ci-quality-harness"
     },
     {
@@ -193,7 +193,7 @@
       "name": "modo-nocturno",
       "description": ">-",
       "filename": "modo-nocturno.zip",
-      "sha256_prefix": "88ac5602292c729a",
+      "sha256_prefix": "e4f66c0d2906ebb7",
       "size_kb": 34.4,
       "install_hint": "unzip modo-nocturno.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-nocturno.skill ~/.claude/skills/modo-nocturno"
     }
