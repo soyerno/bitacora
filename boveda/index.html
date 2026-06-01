@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bóveda · Erno × MODO</title>
+  <meta name="description" content="Feed unificado de IA aplicada a fintech desde adentro de MODO. Decks, RFCs, R&D, postmans, skills, proyectos y bitácora — todo en una sola superficie buscable. Voz rioplatense, sin humo." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Erno × MODO" />
+  <meta property="og:title" content="Bóveda · Erno × MODO" />
+  <meta property="og:description" content="Feed unificado de IA aplicada a fintech desde adentro de MODO. Buscable, sin humo, voz rioplatense." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/boveda/" />
+  <meta property="og:locale" content="es_AR" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/166544665?v=4&s=460" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/boveda.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/boveda/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Bóveda · Erno × MODO",
+    "description": "Feed unificado de IA aplicada a fintech desde adentro de MODO. Decks, RFCs, R&D, postmans, skills, proyectos y bitácora.",
+    "url": "https://soyernomodo.github.io/erno-modo/boveda/",
+    "inLanguage": "es-AR",
+    "isPartOf": { "@type": "WebSite", "name": "Erno × MODO", "url": "https://soyernomodo.github.io/erno-modo/" },
+    "author": { "@type": "Person", "name": "Hernán De Souza", "jobTitle": "Sr AI Engineer", "url": "https://github.com/SoyErnoModo" },
+    "publisher": { "@type": "Organization", "name": "Erno × MODO", "url": "https://soyernomodo.github.io/erno-modo/" },
+    "about": [
+      { "@type": "Thing", "name": "Fintech" },
+      { "@type": "Thing", "name": "IA aplicada" },
+      { "@type": "Thing", "name": "Claude Code" },
+      { "@type": "Thing", "name": "Pagos agénticos" },
+      { "@type": "Thing", "name": "SEO/GEO" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Erno × MODO", "item": "https://soyernomodo.github.io/erno-modo/" },
+      { "@type": "ListItem", "position": 2, "name": "Bóveda", "item": "https://soyernomodo.github.io/erno-modo/boveda/" }
+    ]
+  }
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/boveda.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#vault-feed">Saltar al listado</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="./" aria-current="page">Bóveda</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../bitacora/">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Bóveda</span>
+  </nav>
+
+  <section class="vault-hero" aria-labelledby="vault-h">
+    <p class="vault-eyebrow">BÓVEDA</p>
+    <h1 class="vault-heading" id="vault-h">Todo el material de IA aplicada que vamos generando en MODO</h1>
+    <p class="vault-sub">Decks, RFCs, R&amp;D, postmans, skills, proyectos y bitácora — todo en una sola superficie buscable. La descripción de cada card te dice qué es y para qué sirve sin que tengas que abrirla. Si estás armando algo parecido, copiala.</p>
+  </section>
+
+  <section class="vault-controls" aria-label="Filtros de la bóveda">
+    <div class="vault-search-wrap">
+      <svg class="vault-search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+      </svg>
+      <input class="vault-search" id="vault-search" type="search" aria-label="Buscar en la bóveda" placeholder="Buscar por título, descripción o tag…" />
+    </div>
+
+    <div class="vault-pills" role="group" aria-label="Tipo de contenido" id="vault-pills-type">
+      <button type="button" class="vault-pill is-active" data-filter="type" data-value="all">Todo</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="deck">Decks</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="rfc">RFCs</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="rd">R&amp;D</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="postman">Postmans</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="skill">Skills</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="proyecto">Proyectos</button>
+      <button type="button" class="vault-pill" data-filter="type" data-value="bitacora">Bitácora</button>
+    </div>
+
+    <div class="vault-pills" role="group" aria-label="Madurez del contenido" id="vault-pills-maturity">
+      <button type="button" class="vault-pill is-active" data-filter="maturity" data-value="all">Toda madurez</button>
+      <button type="button" class="vault-pill" data-filter="maturity" data-value="draft">Draft</button>
+      <button type="button" class="vault-pill" data-filter="maturity" data-value="en-curso">En curso</button>
+      <button type="button" class="vault-pill" data-filter="maturity" data-value="shipped">Shipped</button>
+      <button type="button" class="vault-pill" data-filter="maturity" data-value="archivado">Archivado</button>
+    </div>
+
+    <p class="vault-count" id="vault-count" aria-live="polite">cargando…</p>
+  </section>
+
+  <section class="vault-list" id="vault-feed" aria-label="Listado de la bóveda">
+    <div class="vault-empty">Cargando bóveda…</div>
+  </section>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  </div>
+</footer>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

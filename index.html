@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Erno × MODO</title>
-  <meta name="description" content="Hernán De Souza · Sr AI Engineer @ MODO — Decks, RFCs, postmans y stack de herramientas que aporto a modo-landing." />
+  <meta name="description" content="Feed de IA aplicada a fintech desde adentro de MODO. Decks, RFCs, R&amp;D, postmans, skills, proyectos y bitácora — todo buscable en una sola bóveda." />
   <meta name="author" content="Hernán De Souza" />
   <meta name="theme-color" content="#008859" />
-  <meta property="og:type" content="profile" />
+  <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Erno × MODO" />
-  <meta property="og:title" content="Erno × MODO" />
-  <meta property="og:description" content="Hernán De Souza · Sr AI Engineer @ MODO — Decks, RFCs y stack de herramientas que aporto a modo-landing." />
+  <meta property="og:title" content="Erno × MODO · feed de IA aplicada a fintech" />
+  <meta property="og:description" content="Decks, RFCs, R&amp;D, postmans, skills y bitácora de IA aplicada en producción dentro de MODO. Buscable, sin humo, voz rioplatense." />
   <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/" />
   <meta property="og:locale" content="es_AR" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/166544665?v=4&s=460" />
@@ -26,25 +26,40 @@
   <meta name="twitter:description" content="Hernán De Souza · Sr AI Engineer @ MODO — Decks, RFCs y stack para modo-landing." />
   <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/166544665?v=4&s=460" />
   <meta name="twitter:image:alt" content="Hernán De Souza — Sr AI Engineer @ MODO" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Hernán De Souza",
-    "givenName": "Hernán",
-    "familyName": "De Souza",
-    "email": "mailto:hernan.desouza@modo.com.ar",
-    "jobTitle": "Sr AI Engineer",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "MODO",
-      "legalName": "Play Digital S.A.",
-      "url": "https://modo.com.ar"
-    },
+    "@type": "WebSite",
+    "name": "Erno × MODO",
+    "alternateName": "Feed de IA aplicada a fintech desde MODO",
     "url": "https://soyernomodo.github.io/erno-modo/",
-    "image": "https://avatars.githubusercontent.com/u/166544665?v=4&s=460",
-    "sameAs": [
-      "https://github.com/SoyErnoModo"
+    "inLanguage": "es-AR",
+    "description": "Feed de IA aplicada a fintech desde adentro de MODO. Decks, RFCs, R&D, postmans, skills, proyectos y bitácora.",
+    "publisher": { "@type": "Organization", "name": "Erno × MODO", "url": "https://soyernomodo.github.io/erno-modo/" },
+    "author": {
+      "@type": "Person",
+      "name": "Hernán De Souza",
+      "givenName": "Hernán",
+      "familyName": "De Souza",
+      "email": "mailto:hernan.desouza@modo.com.ar",
+      "jobTitle": "Sr AI Engineer",
+      "worksFor": { "@type": "Organization", "name": "MODO", "legalName": "Play Digital S.A.", "url": "https://modo.com.ar" },
+      "url": "https://github.com/SoyErnoModo",
+      "image": "https://avatars.githubusercontent.com/u/166544665?v=4&s=460",
+      "sameAs": ["https://github.com/SoyErnoModo"]
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://soyernomodo.github.io/erno-modo/boveda/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    },
+    "about": [
+      { "@type": "Thing", "name": "Fintech" },
+      { "@type": "Thing", "name": "IA aplicada" },
+      { "@type": "Thing", "name": "Claude Code" },
+      { "@type": "Thing", "name": "Pagos agénticos" },
+      { "@type": "Thing", "name": "SEO/GEO" }
     ]
   }
   </script>
@@ -74,10 +89,11 @@
   <div class="container">
   <div class="brand">
     <a class="wordmark" href="./" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
-    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
   </div>
   <nav class="nav" aria-label="Navegación principal">
     <a href="./" aria-current="page">Home</a>
+    <a href="boveda/">Bóveda <span class="nav-count" id="nav-count-boveda">·</span></a>
     <a href="decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
     <a href="rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
     <a href="postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
@@ -97,8 +113,8 @@
 <main>
   <section class="featured-section" aria-labelledby="featured-h" id="featured">
     <p class="section-label">Destacados</p>
-    <h1 class="featured-heading" id="featured-h">Recomendados esta semana</h1>
-    <p class="featured-subtitle">Los decks con storytelling más afilado o decisión más cercana.</p>
+    <h1 class="featured-heading" id="featured-h">Cómo se construye fintech con IA, en castellano</h1>
+    <p class="featured-subtitle">Decks, RFCs, R&amp;D y herramientas reales de lo que vamos probando dentro de MODO: pagos agénticos, SEO/GEO, Claude Code en producción, Storyblok, Next 16. Sin humo, sin buzzwords — lo que funciona, lo que rompe, lo que dejamos en cola.</p>
     <div class="featured-grid" id="featured-grid">
       <div class="state-box">Cargando…</div>
     </div>
@@ -122,6 +138,16 @@
   <section aria-labelledby="explore-h">
     <p class="section-label" id="explore-h">Explorar</p>
     <div class="explore-grid">
+      <a class="explore-card" href="boveda/">
+        <span class="explore-card-eyebrow">Bóveda · todo en un solo lugar</span>
+        <span class="explore-card-title">Bóveda</span>
+        <span class="explore-card-desc">Feed unificado de todo lo armado en MODO desde Claude — decks, RFCs, R&amp;D, postmans, skills, proyectos y bitácora. Búsqueda global y filtros por tipo y madurez. Cada card se basta sola; no hace falta abrir el link para entender qué es.</span>
+        <span class="explore-card-foot">
+          <span><span id="explore-count-boveda">…</span> elementos</span>
+          <span class="explore-card-cta">Abrir →</span>
+        </span>
+      </a>
+
       <a class="explore-card" href="decks/">
         <span class="explore-card-eyebrow">Colección 1</span>
         <span class="explore-card-title">Decks</span>
@@ -211,6 +237,8 @@
   var $exploreRd = document.getElementById('explore-count-rd');
   var $exploreBitacora = document.getElementById('explore-count-bitacora');
   var $exploreProyectos = document.getElementById('explore-count-proyectos');
+  var $exploreBoveda = document.getElementById('explore-count-boveda');
+  var $navBoveda = document.getElementById('nav-count-boveda');
 
   function renderFeatured(decks) {
     var featured = decks
@@ -248,14 +276,17 @@
     fetch('postmans/postmans.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     fetch('rd/rd.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
     fetch('bitacora/bitacora.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
-    fetch('proyectos/proyectos.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    fetch('proyectos/proyectos.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    fetch('skills/skills.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
   ]).then(function (results) {
     var decks = (results[0] && results[0].decks) || [];
     var rfcs = (results[1] && results[1].rfcs) || [];
     var postmans = (results[2] && results[2].postmans) || [];
     var rd = (results[3] && results[3].items) || [];
     var bitacora = (results[4] && results[4].items) || [];
-    var proyectos = (results[5] && results[5].projects) || [];
+    var proyectosCats = (results[5] && results[5].categories) || [];
+    var proyectos = proyectosCats.reduce(function (acc, c) { return acc.concat(c.projects || []); }, []);
+    var skills = (results[6] && results[6].skills) || [];
 
     renderFeatured(decks);
 
@@ -265,6 +296,9 @@
     if ($exploreRd) $exploreRd.textContent = rd.length;
     if ($exploreBitacora) $exploreBitacora.textContent = bitacora.length;
     if ($exploreProyectos) $exploreProyectos.textContent = proyectos.length;
+    var totalBoveda = decks.length + rfcs.length + postmans.length + rd.length + bitacora.length + proyectos.length + skills.length;
+    if ($exploreBoveda) $exploreBoveda.textContent = totalBoveda;
+    if ($navBoveda) $navBoveda.textContent = totalBoveda;
   });
 
   /* Stats from locally generated profile.json (refreshed by GitHub Action,
