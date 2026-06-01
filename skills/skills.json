@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-29",
+    "generated": "2026-05-31",
     "updated_by": "erno-modo-sync-all",
     "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
   },
@@ -97,8 +97,8 @@
       "name": "modo-pr-author",
       "description": "Author MODO-grade pull request descriptions following the repo template + commit conventions + voz rioplatense. Auto-invocable cuando el usuario pide \"armá el PR\", \"creá el PR\", \"describí este PR\", \"i",
       "filename": "modo-pr-author.zip",
-      "sha256_prefix": "5f5d6546da9084c3",
-      "size_kb": 27.4,
+      "sha256_prefix": "e63c7741d30e2661",
+      "size_kb": 33.8,
       "install_hint": "unzip modo-pr-author.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-pr-author.skill ~/.claude/skills/modo-pr-author"
     },
     {
@@ -193,7 +193,7 @@
       "name": "modo-nocturno",
       "description": ">-",
       "filename": "modo-nocturno.zip",
-      "sha256_prefix": "e4f66c0d2906ebb7",
+      "sha256_prefix": "9aa8eda374ebcd4e",
       "size_kb": 34.4,
       "install_hint": "unzip modo-nocturno.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-nocturno.skill ~/.claude/skills/modo-nocturno"
     }

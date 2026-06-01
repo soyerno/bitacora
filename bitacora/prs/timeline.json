@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-29",
+    "generated": "2026-05-31",
     "category": "Bitácora · PRs",
     "format": "Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Recurrente a las 09:00 y 16:30 vía LaunchAgent.",
     "author": "Hernán De Souza · Sr AI Engineer",
@@ -17,6 +17,54 @@
     "seeded": "Curado manualmente para 2026-05-27/28. Updates posteriores via cron auto-extraen qué/dolor del body."
   },
   "items": [
+    {
+      "date": "2026-05-30",
+      "number": 1520,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1520",
+      "title": "docs(sdd): bitacora-mcp — bitacora erno-modo como app nativa Claude",
+      "type": "docs",
+      "state": "CLOSED",
+      "que_hace": "SDD del proyecto bitacora-mcp — Remote MCP server con OAuth GitHub para exponer la bitácora erno-modo (https://soyernomodo.github.io/erno-modo) como app nativa Claude cross-device. Single-tenant MVP (SoyErnoModo), dominio bitacora.konsor.com.ar, deploy Vercel Functions.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-29",
+      "number": 1519,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1519",
+      "title": "fix(COENXT-363): fallback de íconos rotos en /pagar (AppList + disabled apps)",
+      "type": "fix",
+      "state": "OPEN",
+      "que_hace": "(auto) fix(COENXT-363): fallback de íconos rotos en /pagar (AppList + disabled apps)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-05-29",
+      "number": 1518,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1518",
+      "title": "docs(IE-191): evaluación WebMCP en modo-landing — veredicto NO adopt",
+      "type": "docs",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Spec de decisión que documenta la evaluación de WebMCP (MCP server embebido en página, consumido por browser-agents tipo Claude extension / ChatGPT Atlas / Comet / Dia) como capability para modo-landing.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "docs",
+        "modo-landing"
+      ]
+    },
     {
       "date": "2026-05-29",
       "number": 1517,
@@ -181,7 +229,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1507",
       "title": "perf(EXA): image pipeline quick wins · SSR transform + quality 75 + preconnect + priority prop",
       "type": "perf",
-      "state": "OPEN-DRAFT",
+      "state": "OPEN",
       "que_hace": "Quick wins del R&D RD06 (perf Next12 vs Next16+SSR): (1) CMSImage.tsx calcula createImageUrl en SSR-time, default quality=75, prop priority con fetchpriority=high; (2) _document.js preconnect a a.storyblok.com; (3) self-host Red Hat Display + Quicksand vía next/font/google (44 files refactor a CSS vars).",
       "dolor": "LCP home mobile 13.5s baseline. Doble fetch de imágenes por useEffect-post-hydration + quality=95 hardcoded + Google Fonts external + DNS handshake al primer asset = pipeline imágenes/fonts es la palanca dominante del LCP. Targets: LCP -1.5 a -4s, bytes -25-35%, TTFB -200-500ms.",
       "tags": [
@@ -199,7 +247,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1506",
       "title": "feat(COENXT-320): blog hero soporta imagen mobile con fallback al desktop",
       "type": "feat",
-      "state": "OPEN",
+      "state": "OPEN-DRAFT",
       "que_hace": "Field opcional image_mobile en los 2 content types del blog hero (BlogPost flat + BlogHero block dentro de LandingPage+SectionBlog). Render con <figure><picture> + sources AVIF mobile/desktop + <img> fallback con dims, fetchPriority=high, objectFit/objectPosition del block. Schema Storyblok aplicado vía Management API en space 244835.",
       "dolor": "/blog/[slug] renderea único hero_image desktop-crop a todas las resoluciones — en composiciones distintas para mobile el crop queda mal. AVIF -60% peso + dims explícitos previenen CLS + signal LCP correcto para image crawlers (vs el ambiguo doble-Image que rankea peor SEO/GEO).",
       "tags": [
@@ -299,7 +347,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1497",
       "title": "feat(EXA): logger MODO-core client browser-safe + Datadog Browser Logs",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "OPEN",
       "que_hace": "Logger MODO-core lado cliente (src/utils/logger/) con misma API que @playsistemico/core server (debug/info/warn/trace/error + TraceableError.from()). Obfuscación de keys sensibles. Forwardea a Datadog Browser Logs cuando NEXT_PUBLIC_DD_CLIENT_TOKEN está seteado (env-gated). Wire en _app.js mount.",
       "dolor": "modo-landing no tenía logger estructurado client-side. Regla MODO: todo front = logger MODO-core + Amplitude + analytics baseline. El logger de @playsistemico/core es server-only (pino + async_hooks, no bundlea client). Server-side queda follow-up (arrastra dd-trace nativo al deploy image).",
       "tags": [
@@ -453,7 +501,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1494",
       "title": "ci(EXA): hard-fail audit on critical vulns",
       "type": "ci",
-      "state": "OPEN-DRAFT",
+      "state": "OPEN",
       "que_hace": "Promueve pnpm audit --audit-level=critical de warning-only a blocking gate\nMantiene --audit-level=high como warning (no bloquea PRs por vulns aceptables)\nBumpea pnpm action de v8 → v9 (parity con package manager local)",
       "dolor": "Review interno de PR #41 (modo-landing-web-ui-lib) detectó que pr-audit.yml tenía continue-on-error: true en ambos niveles (high + critical). Resultado: el workflow nunca falla, solo loguea. Un CVE critical en una dep puede mergear sin friction.",
       "tags": [
