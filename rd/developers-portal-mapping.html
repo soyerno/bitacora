@@ -101,7 +101,7 @@
       <p class="tldr-label">TL;DR</p>
       <ul>
         <li><strong><code>developers.modo.com.ar</code> no hostea API.</strong> Es un viewer auth-gated que renderea el espacio Confluence "Developers". La API real vive en <code>merchants.playdigital.com.ar</code>.</li>
-        <li>El modelo de auth es <strong>username/password → JWT HS256 con TTL de 1 semana</strong>. No es OAuth2 client_credentials. No hay scopes. El onboarding pasa por la app MODO con SMS hardcodeado <code>000000</code> en preprod.</li>
+        <li>El modelo de auth es <strong>username/password → JWT HS256 con TTL de 1 semana</strong>. No es OAuth2 client_credentials. No hay scopes. El onboarding pasa por la app MODO con SMS con código fijo conocido por el equipo en preprod.</li>
         <li>Hay <strong>5 endpoints documentados</strong> (auth, crear intención, obtener pago, split, JWKS). El resto (devoluciones, multi-merchant, V2) son páginas Confluence parciales o procedimientos manuales en paneles externos.</li>
         <li>Los gaps de DX que faltan para mover esto a un portal moderno son <strong>9 críticos</strong> (OpenAPI, sandbox público, SDKs versionados, self-service signup, etc.) y <strong>7 importantes</strong> (playground, webhook tester, dashboard del integrador, etc.).</li>
       </ul>
@@ -284,7 +284,7 @@
             <figcaption>El JWT vale 7 días. La doc pide explícitamente reutilizarlo. El payload trae el listado de <code>stores[]</code> del integrador con <code>paymentMethods[]</code> y <code>acquirer</code> (DECIDIR, DECIDIR_PLUS, IPG).</figcaption>
           </figure>
 
-          <p>El onboarding de credenciales es atípico: el integrador <strong>se da de alta como usuario en la app MODO</strong>, y cuando llega el SMS de verificación, en preprod completa con <code>000000</code> porque ese código no se envía. Es un hack documentado, no un mecanismo de self-service. No hay panel de credenciales para integradores externos.</p>
+          <p>El onboarding de credenciales es atípico: el integrador <strong>se da de alta como usuario en la app MODO</strong>, y cuando llega el SMS de verificación, en preprod completa con un código de verificación fijo (conocido internamente) porque ese código no se envía. Es un hack documentado, no un mecanismo de self-service. No hay panel de credenciales para integradores externos.</p>
 
           <p>Los webhooks van por carril aparte: MODO firma con <strong>JWS Flat (RFC-7515 §7.2.2)</strong>, el integrador verifica contra el JWKS público en <code>/.well-known/jwks.json</code>. Esto sí es ortodoxo — la única recomendación de la doc que es security-grade.</p>
         </section>

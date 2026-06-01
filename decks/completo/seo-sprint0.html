@@ -225,7 +225,7 @@
         <div class="stat">
           <span class="stat__label">Subdominios staging indexados</span>
           <span class="num num--md stat__value" style="color: var(--red-warn);">5</span>
-          <p class="muted">intra · merchants.develop · docs.develop · status.develop · promoshub.qa · GSC confirmado</p>
+          <p class="muted">varios subdominios internos quedaron indexados en Google · GSC confirmado</p>
         </div>
       </div>
       <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por que juntos</strong>: el SEO tecnico ya esta bien implementado (Organization · BreadcrumbList · FAQPage · Service · sitemap). El cuello de botella real es editorial (titles en Storyblok) mas los staging leaks que consumen crawl budget. Sprint 0 desbloquea los sprints de contenido que duplican el trafico.</p>
@@ -257,11 +257,11 @@
         </div>
         <div class="stack-block">
           <h4>Staging leaks (seguridad + SEO)</h4>
-          <div class="row-item"><span class="label">intra.modo.com.ar</span><span class="value"><span class="dot dot--bad"></span> Indexed · 75 impresiones/28d</span></div>
-          <div class="row-item"><span class="label">merchants.develop.modo.com.ar</span><span class="value"><span class="dot dot--bad"></span> Indexed · robots.txt 404</span></div>
-          <div class="row-item"><span class="label">docs.develop.modo.com.ar</span><span class="value"><span class="dot dot--bad"></span> Indexed · 4 impresiones</span></div>
-          <div class="row-item"><span class="label">status.develop.modo.com.ar</span><span class="value"><span class="dot dot--warn"></span> Indexed though blocked by robots</span></div>
-          <div class="row-item"><span class="label">promoshub.qa.modo.com.ar</span><span class="value"><span class="dot dot--warn"></span> Indexed though blocked by robots</span></div>
+          <div class="row-item"><span class="label">intranet interna</span><span class="value"><span class="dot dot--bad"></span> Indexed · 75 impresiones/28d</span></div>
+          <div class="row-item"><span class="label">merchants en develop</span><span class="value"><span class="dot dot--bad"></span> Indexed · robots.txt 404</span></div>
+          <div class="row-item"><span class="label">docs en develop</span><span class="value"><span class="dot dot--bad"></span> Indexed · 4 impresiones</span></div>
+          <div class="row-item"><span class="label">status page en develop</span><span class="value"><span class="dot dot--warn"></span> Indexed though blocked by robots</span></div>
+          <div class="row-item"><span class="label">promoshub en QA</span><span class="value"><span class="dot dot--warn"></span> Indexed though blocked by robots</span></div>
         </div>
       </div>
     </div>
@@ -285,7 +285,7 @@
         <div class="card">
           <span class="card__index">Riesgo seguridad</span>
           <h3 class="subheading">Contenido interno visible en Search</h3>
-          <p class="body" style="margin: 0;"><span class="mono">intra.modo.com.ar</span> tiene 75 impresiones en GSC en 28 dias. <span class="mono">merchants.develop.modo.com.ar</span> no tiene robots.txt (HTTP 404) lo que Google interpreta como "indexable": crawlea el contenido completo. Cualquier persona puede encontrar estas paginas en Google hoy.</p>
+          <p class="body" style="margin: 0;">La <span class="mono">intranet interna</span> tiene 75 impresiones en GSC en 28 dias. <span class="mono">Merchants en develop</span> no tiene robots.txt (HTTP 404) lo que Google interpreta como "indexable": crawlea el contenido completo. Cualquier persona puede encontrar estas paginas en Google hoy.</p>
         </div>
         <div class="card">
           <span class="card__index">Impacto SEO directo</span>
@@ -443,7 +443,7 @@
           <span class="phase__num">00</span>
           <span class="phase__weeks">Esta semana · 1-2 dias</span>
           <h3 class="phase__title">Cerrar los leaks de staging</h3>
-          <p class="phase__body">X-Robots-Tag noindex en staging. robots.txt en merchants.develop. Restriccion de IP en intra. Solicitud de deindexacion en GSC. Bloquear subdominios legacy con 301 a www.</p>
+          <p class="phase__body">X-Robots-Tag noindex en staging. robots.txt en los subdominios de develop expuestos. Restriccion de IP en la intranet interna. Solicitud de deindexacion en GSC. Bloquear subdominios legacy con 301 a www.</p>
         </div>
         <div class="phase">
           <span class="phase__num">01</span>
@@ -560,7 +560,7 @@
       <p class="eyebrow">Para el TL y el Manager</p>
       <h2 class="heading">Sprint 0 es 1 dia de trabajo con cero riesgo de regresion.</h2>
       <div class="grid-3" style="margin-top: 24px;">
-        <div class="card"><span class="card__index">Sprint 0 (urgente)</span><div class="num num--md" style="margin: 8px 0;">1 dia</div><p class="body" style="margin: 0; font-size: 17px;">Headers en staging + robots.txt en merchants.develop. No toca codigo de produccion. Owner: TL + SRE.</p></div>
+        <div class="card"><span class="card__index">Sprint 0 (urgente)</span><div class="num num--md" style="margin: 8px 0;">1 dia</div><p class="body" style="margin: 0; font-size: 17px;">Headers en staging + robots.txt en los subdominios de develop expuestos. No toca codigo de produccion. Owner: TL + SRE.</p></div>
         <div class="card"><span class="card__index">Sprint 1 (esta semana)</span><div class="num num--md" style="margin: 8px 0;">3-5 dias</div><p class="body" style="margin: 0; font-size: 17px;">Bugs sitemap.jsx + titles Storyblok + fix SSR /aprende-con-modo. Owner: TL + equipo contenido.</p></div>
         <div class="card"><span class="card__index">Sprint 2-3 (4 semanas)</span><div class="num num--md" style="margin: 8px 0;">4 semanas</div><p class="body" style="margin: 0; font-size: 17px;">llms.txt + paginas por banco + queries no atendidas. Owner: TL + PM + contenido + promos-hub team.</p></div>
       </div>
@@ -628,7 +628,7 @@
       <div class="card" style="max-width: 640px; margin-top: 32px;">
         <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 16px;">Equipos que deberian opinar antes de avanzar</h4>
         <ul class="checks">
-          <li><strong>SRE / Infra</strong>: headers X-Robots-Tag en staging + acceso a robots.txt de merchants.develop.</li>
+          <li><strong>SRE / Infra</strong>: headers X-Robots-Tag en staging + acceso a robots.txt de los subdominios de develop expuestos.</li>
           <li><strong>Marketing / Contenido</strong>: validar nuevos titles y descriptions para paginas clave.</li>
           <li><strong>Promos-hub-site team</strong>: coordinar canibalizacion de brand "modo" en Sprint 2.</li>
           <li><strong>Legal</strong>: revisar que las nuevas paginas por banco no generen compromisos implicitos.</li>
