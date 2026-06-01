@@ -158,8 +158,38 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 ├── skills/
 │   ├── skills.json          # Manifest de skills custom descargables
 │   └── <name>.zip           # Bundle de cada skill custom MODO
+├── openspec/
+│   ├── config.yaml          # Reglas SDD (Spec-Driven Development)
+│   ├── specs/               # Una capability por archivo (Given/When/Then)
+│   └── changes/             # Carpeta por cambio: proposal + design + tasks
+├── tests/
+│   ├── helpers/             # load-asset.js + setup.js (Storage polyfill)
+│   └── specs/               # *.test.js — drift + DOM + controller + theme
+├── package.json             # devDeps: vitest + happy-dom
+├── vitest.config.js
 └── README.md
 ```
+
+## Specs + tests
+
+El sitio tiene specs en `openspec/specs/` (formato Given/When/Then, palabras RFC 2119) y un suite Vitest en `tests/specs/` que las valida. 5 capabilities especificadas, 57 tests cubriendo data integrity, DOM contracts y el controller `MODO.createCollection`.
+
+```bash
+pnpm install         # primera vez
+pnpm test            # corre el suite completo (vitest run)
+pnpm test:watch      # modo watch
+```
+
+Workflow TDD para agregar comportamiento nuevo:
+
+1. **Spec** — agregá un escenario Given/When/Then a la capability en `openspec/specs/<capability>.md`.
+2. **Red** — escribí el test en `tests/specs/<capability>.test.js` y confirmá que falla (`pnpm test`).
+3. **Green** — implementá la mínima cantidad de código para que pase. No refactores en este paso.
+4. **Refactor** — si el código necesita limpieza, hacelo ahora con los tests en verde.
+
+Los manifests (`decks/decks.json`, `rfcs/rfcs.json`, `skills/skills.json`) tienen tests de drift: si renombrás un ZIP, rotás un slug, o cambia el sha256 sin sincronizar el manifest, `pnpm test` lo detecta antes del merge. El cron de `erno-modo-sync-all` regenera los manifests; este suite verifica que el output sea consistente con disco.
+
+CI (`.github/workflows/test.yml`) corre el suite en cada PR y push a `main`.
 
 ## Cómo sumar contenido
 
