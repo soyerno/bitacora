@@ -173,6 +173,30 @@
         "modo-landing PR #1496 (CMSImage quality 95→75 + AVIF, draft)",
         "Web Vitals targets (LCP ≤2.5s, CLS ≤0.1)"
       ]
+    },
+    {
+      "number": "RD07",
+      "slug": "motd-status-monitor",
+      "title": "MOTD service status monitor · 12 servicios en el arranque del terminal",
+      "summary": "Panel de status de 12 servicios (GitHub, Claude, OpenAI, Datadog, Cloudflare, Google Cloud, npm, Vercel + MODO Landing/Promos/Merchants/Developers) renderizado al final del MOTD. Cache-first ~50ms + BG refresh paralelo ~800ms · contrato statuspage.io v2 dominante · HEAD probe para hosts sin status page · trap zsh con local en loops.",
+      "status": "decisión",
+      "tags": [
+        "tooling",
+        "shell",
+        "monitoring",
+        "zsh"
+      ],
+      "area": "devex",
+      "date": "2026-05-22",
+      "href": "motd-status-monitor.html",
+      "reading_minutes": 5,
+      "diagrams": 0,
+      "charts": 0,
+      "sources": [
+        "~/.config/motd-status.sh (librería)",
+        "~/.zshrc (wire-up)",
+        "https://www.githubstatus.com/api/v2/status.json (contrato statuspage.io v2 canónico)"
+      ]
     }
   ]
 }
