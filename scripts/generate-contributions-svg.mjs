@@ -22,8 +22,8 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-const OUTPUT_SVG = process.env.OUTPUT_SVG || 'assets/contributions.svg';
-const OUTPUT_JSON = process.env.OUTPUT_JSON || 'assets/profile.json';
+const OUTPUT_SVG = process.env.OUTPUT_SVG || 'public/assets/contributions.svg';
+const OUTPUT_JSON = process.env.OUTPUT_JSON || 'public/assets/profile.json';
 
 const query = `query {
   viewer {

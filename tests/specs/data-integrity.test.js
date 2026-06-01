@@ -8,8 +8,15 @@ import { dirname, resolve, basename } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..', '..');
 
+// Post-Next-16 migration: static assets live under public/. Probe public/ first, fall back to root.
+function resolveContent(rel) {
+  const inPublic = resolve(repoRoot, 'public', rel);
+  if (existsSync(inPublic)) return inPublic;
+  return resolve(repoRoot, rel);
+}
+
 function loadJSON(rel) {
-  return JSON.parse(readFileSync(resolve(repoRoot, rel), 'utf8'));
+  return JSON.parse(readFileSync(resolveContent(rel), 'utf8'));
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -55,7 +62,7 @@ describe('SPEC-DECKS-001 — decks.json fields', () => {
 
   it('every href resolves on disk', () => {
     for (const d of decks) {
-      const p = resolve(repoRoot, d.href);
+      const p = resolveContent(d.href);
       expect(existsSync(p), `missing file for deck "${d.id}": ${d.href}`).toBe(true);
     }
   });
@@ -92,7 +99,7 @@ describe('SPEC-RFCS-001 — rfcs.json fields', () => {
   it('linked deck files exist when referenced', () => {
     for (const r of rfcs) {
       if (!r.deck) continue;
-      const p = resolve(repoRoot, r.deck);
+      const p = resolveContent(r.deck);
       expect(existsSync(p), `RFC ${r.slug} references missing deck ${r.deck}`).toBe(true);
     }
   });
@@ -122,14 +129,14 @@ describe('SPEC-DATA-002 — skills.json fields + on-disk hashes', () => {
 
   it('every skill ZIP exists on disk', () => {
     for (const s of skills) {
-      const p = resolve(repoRoot, 'skills', s.filename);
+      const p = resolveContent(`skills/${s.filename}`);
       expect(existsSync(p), `missing zip for skill "${s.name}": skills/${s.filename}`).toBe(true);
     }
   });
 
   it('sha256_prefix matches the first 16 hex chars of the on-disk zip', () => {
     for (const s of skills) {
-      const p = resolve(repoRoot, 'skills', s.filename);
+      const p = resolveContent(`skills/${s.filename}`);
       if (!existsSync(p)) continue; // covered by previous test
       const hash = createHash('sha256').update(readFileSync(p)).digest('hex').slice(0, 16);
       expect(hash, `sha256_prefix mismatch for ${s.name}`).toBe(s.sha256_prefix);
@@ -138,7 +145,7 @@ describe('SPEC-DATA-002 — skills.json fields + on-disk hashes', () => {
 
   it('size_kb is within 1 KB of the on-disk size', () => {
     for (const s of skills) {
-      const p = resolve(repoRoot, 'skills', s.filename);
+      const p = resolveContent(`skills/${s.filename}`);
       if (!existsSync(p)) continue;
       const actualKb = statSync(p).size / 1024;
       expect(Math.abs(actualKb - s.size_kb)).toBeLessThan(1);

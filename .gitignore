@@ -5,3 +5,12 @@ coverage/
 .vitest-cache/
 .bug-hunter/
 *.log
+
+# Next.js
+/.next/
+/node_modules
+next-env.d.ts
+tsconfig.tsbuildinfo
+.env*.local
+.vercel
+gh-pages-redirects/

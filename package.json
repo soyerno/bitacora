@@ -1,15 +1,35 @@
 {
   "name": "erno-modo",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Static site (erno-modo) — specs + tests for the vanilla-JS catalog.",
+  "description": "Bitácora MODO — Hernán De Souza · Sr AI Engineer. Migrada a Next.js 16 App Router.",
   "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/check-visibility.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:specs": "vitest run tests/specs"
+    "test:specs": "vitest run tests/specs",
+    "check:visibility": "node scripts/check-visibility.mjs"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "vitest": "^2.1.9",
-    "happy-dom": "^15.11.7"
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "happy-dom": "^15.11.7",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.9"
   }
 }

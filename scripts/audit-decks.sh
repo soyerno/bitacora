@@ -20,7 +20,7 @@
 set -euo pipefail
 
 REPO_ROOT="${REPO_ROOT:-/Users/hernan.desouza/Documents/Proyectos/modo/erno-modo}"
-CATALOG="${CATALOG:-$REPO_ROOT/decks/decks.json}"
+CATALOG="${CATALOG:-$REPO_ROOT/public/decks/decks.json}"
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-/Users/hernan.desouza/Documents/Proyectos/modo}"
 
 # Scan roots — repos to inspect for deck HTML files
