@@ -196,6 +196,14 @@
       "sha256_prefix": "9aa8eda374ebcd4e",
       "size_kb": 34.4,
       "install_hint": "unzip modo-nocturno.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-nocturno.skill ~/.claude/skills/modo-nocturno"
+    },
+    {
+      "name": "session-recall",
+      "description": "Retomá tus conversaciones con Claude Code por tema. Mina los .jsonl locales, rankea por hits + recencia, comprime sin perder señal (drop sintéticos/dups, keep decisions/files/pending/errors). Boolean queries (--and/--not/--regex), --repo-only filter, ~/.cache mtime+size cache (9x speedup), permisos 0600 contra leak de tokens, vacuum opcional. Repo: github.com/SoyErnoModo/session-recall.",
+      "filename": "session-recall.zip",
+      "sha256_prefix": "502b772c6110df2a",
+      "size_kb": 9.6,
+      "install_hint": "unzip session-recall.zip -d ~/.claude/skills/ && mv ~/.claude/skills/session-recall.skill ~/.claude/skills/session-recall"
     }
   ]
 }
