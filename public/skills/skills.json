@@ -186,7 +186,7 @@
       "description": "Construir plugins Claude Code para el ecosistema MODO siguiendo el patrón triple-layer (skill auto-invocable + agent worktree-delegable + slash commands explícitos) con symlink architecture para no du",
       "filename": "modo-plugin-builder.zip",
       "sha256_prefix": "f229b9c755219656",
-      "size_kb": 12.0,
+      "size_kb": 12,
       "install_hint": "unzip modo-plugin-builder.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-plugin-builder.skill ~/.claude/skills/modo-plugin-builder"
     },
     {
@@ -212,6 +212,14 @@
       "sha256_prefix": "4f777ebd2700280f",
       "size_kb": 18.3,
       "install_hint": "unzip frontend-storage-audit.zip -d ~/.claude/skills/ && mv ~/.claude/skills/frontend-storage-audit.skill ~/.claude/skills/frontend-storage-audit"
+    },
+    {
+      "name": "modo-landing-page-builder",
+      "description": "Orquesta crear una página Storyblok-managed en modo-landing de punta a punta — diseño SDD + design system, autoría de story, wiring del blok al registry CMS_COMPONENTS, TDD red→green, los 4 gates (cod",
+      "filename": "modo-landing-page-builder.zip",
+      "sha256_prefix": "eedfabcec312b99a",
+      "size_kb": 7.8,
+      "install_hint": "unzip modo-landing-page-builder.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-landing-page-builder.skill ~/.claude/skills/modo-landing-page-builder"
     }
   ]
 }
