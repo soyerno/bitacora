@@ -209,7 +209,7 @@
       "name": "frontend-storage-audit",
       "description": "Auditá la capa de almacenamiento client-side en frontends MODO (cookies vs sessionStorage vs localStorage). Mapea cada dato a su capa actual, identifica candidatos a mover, detecta gaps legales (CMP/consent), de seguridad (auth token en sessionStorage = XSS exfil), UX (flash A/B, WebView chrome mismatch) y observability (device_id correlation BFF), y produce SDD scaffolds + master plan + PRs draft fan-out con sección dolor explícita. Auto-invocar cuando el usuario diga (ES/EN) \"auditá las cookies\", \"validá las cookies\", \"cookies vs localStorage\", \"dónde guardamos X\", \"auth token storage\", \"GDPR cookies\", \"consent banner\", \"cookies layer hardening\", \"/frontend-storage-audit\", \"/cookies-audit\", \"/storage-audit\", o cuando edite archivos que tocan `document.cookie`, `setPreviewData`, `sessionStorage`, `localStorage`, `useCookie`, `js-cookie`, `nookies`, `cookies-next`. Aplica cross-property: modo-landing (Next 12), aprendeatumodo (Vite SPA), promos-hub-site (Next 15), modo-landing-astro (Astro), promos-hub-site, cualquier MODO front.",
       "filename": "frontend-storage-audit.zip",
-      "sha256_prefix": "eb110c6002014754",
+      "sha256_prefix": "4f777ebd2700280f",
       "size_kb": 18.3,
       "install_hint": "unzip frontend-storage-audit.zip -d ~/.claude/skills/ && mv ~/.claude/skills/frontend-storage-audit.skill ~/.claude/skills/frontend-storage-audit"
     }
