@@ -1,0 +1,15 @@
+{
+  "slug": "jsm-cyber-tickets",
+  "title": "Armar tickets en el JSM de MODO (Cyber/IAM incluido)",
+  "subtitle": "Del pedido al payload, con el agente modo-jsm-ticket",
+  "lessons": [
+    {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
+    {"id":"00","num":"00","title":"El JSM de MODO","eyebrow":"Lección 00 · El portal","path":"00-el-jsm-modo.md","file":"00-el-jsm-modo.md"},
+    {"id":"01","num":"01","title":"Descubrir el portal","eyebrow":"Lección 01 · service desk + request type","path":"01-descubrir-portal.md","file":"01-descubrir-portal.md"},
+    {"id":"02","num":"02","title":"Mapear campos","eyebrow":"Lección 02 · Requeridos + aprobador","path":"02-mapear-campos.md","file":"02-mapear-campos.md"},
+    {"id":"03","num":"03","title":"Payload + POST","eyebrow":"Lección 03 · REST API","path":"03-payload-post.md","file":"03-payload-post.md"},
+    {"id":"04","num":"04","title":"Casos canónicos","eyebrow":"Lección 04 · GitHub · 1Password · GRC","path":"04-casos-canonicos.md","file":"04-casos-canonicos.md"},
+    {"id":"05","num":"05","title":"Confirmación + tracking","eyebrow":"Lección 05 · Antes de crear","path":"05-confirmacion-tracking.md","file":"05-confirmacion-tracking.md"},
+    {"id":"lab","num":"🧪","title":"Lab: armar un ticket","eyebrow":"Lab integrador","path":"exercises/README.md"}
+  ]
+}

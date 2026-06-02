@@ -6,6 +6,7 @@ import { config } from "@/bitacora.config";
 const VISIBLE_NAV: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Bitácora", href: "/bitacora" },
+  { label: "Capacitaciones", href: "/capacitaciones" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Herramientas", href: "/herramientas" },
 ];

@@ -1,0 +1,15 @@
+{
+  "slug": "deploy-playsistemico",
+  "title": "Deploy de un frontend MODO a playsistemico (EKS)",
+  "subtitle": "De repo a subdominio.modo.com.ar en k8s",
+  "lessons": [
+    {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
+    {"id":"00","num":"00","title":"Prerrequisitos","eyebrow":"Lección 00 · Harness: modo-frontend-onboarding","path":"00-prerequisitos.md","file":"00-prerequisitos.md"},
+    {"id":"01","num":"01","title":"Tickets JSM","eyebrow":"Lección 01 · Harness: modo-jsm-ticket","path":"01-tickets-jsm.md","file":"01-tickets-jsm.md"},
+    {"id":"02","num":"02","title":"PRs de infra","eyebrow":"Lección 02 · Harness: clonar promos-hub","path":"02-infra-prs.md","file":"02-infra-prs.md"},
+    {"id":"03","num":"03","title":"Subdominio + basePath","eyebrow":"Lección 03 · Istio + DNS","path":"03-subdominio-basepath.md","file":"03-subdominio-basepath.md"},
+    {"id":"04","num":"04","title":"Deploy + verify","eyebrow":"Lección 04 · SOPS→SSM + probes","path":"04-deploy-verify.md","file":"04-deploy-verify.md"},
+    {"id":"05","num":"05","title":"Gate de prod","eyebrow":"Lección 05 · GRC / OFFSEC","path":"05-gate-prod.md","file":"05-gate-prod.md"},
+    {"id":"lab","num":"🧪","title":"Lab: publicar un front","eyebrow":"Lab integrador","path":"exercises/README.md"}
+  ]
+}

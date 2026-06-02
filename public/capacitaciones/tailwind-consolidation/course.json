@@ -1,0 +1,15 @@
+{
+  "slug": "tailwind-consolidation",
+  "title": "Consolidar el styling a Tailwind",
+  "subtitle": "De 3 sistemas CSS-in-JS a Tailwind-only",
+  "lessons": [
+    {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
+    {"id":"00","num":"00","title":"Los 3 sistemas","eyebrow":"Lección 00 · El problema","path":"00-tres-sistemas.md","file":"00-tres-sistemas.md"},
+    {"id":"01","num":"01","title":"Estrategia","eyebrow":"Lección 01 · Component-by-component","path":"01-estrategia.md","file":"01-estrategia.md"},
+    {"id":"02","num":"02","title":"CSS-in-JS → utilities","eyebrow":"Lección 02 · Mapeo","path":"02-css-in-js-a-utilities.md","file":"02-css-in-js-a-utilities.md"},
+    {"id":"03","num":"03","title":"Tokens + design system","eyebrow":"Lección 03 · Sin hex","path":"03-tokens-design-system.md","file":"03-tokens-design-system.md"},
+    {"id":"04","num":"04","title":"Tailwind 3 → 4","eyebrow":"Lección 04 · Migración mayor","path":"04-tailwind-3-a-4.md","file":"04-tailwind-3-a-4.md"},
+    {"id":"05","num":"05","title":"Verify","eyebrow":"Lección 05 · Visual regression","path":"05-verify.md","file":"05-verify.md"},
+    {"id":"lab","num":"🧪","title":"Lab: migrar un componente","eyebrow":"Lab integrador","path":"exercises/README.md"}
+  ]
+}

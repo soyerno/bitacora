@@ -131,6 +131,20 @@ export interface BitacoraEntry {
   status?: string;
 }
 
+export interface Capacitacion {
+  id: string;
+  title: string;
+  desc: string;
+  href: string;
+  status?: string;
+  audience?: string;
+  date?: string;
+  lessons?: number;
+  topics?: string[];
+  harness?: string[];
+  featured?: boolean;
+}
+
 /** Count genérico de un feed por (section, key) — para el índice template-driven. */
 export async function countFeed(section: string, key: string): Promise<number> {
   return (await readFeed<unknown>(section, key)).length;
@@ -170,3 +184,5 @@ export const getPostmans = () => readFeed<Postman>("postmans", "postmans");
 export const getBitacora = () => readFeed<BitacoraEntry>("bitacora", "items");
 export const getHerramientas = () =>
   readFeed<HerramientaCategory>("herramientas", "categories");
+export const getCapacitaciones = () =>
+  readFeed<Capacitacion>("capacitaciones", "capacitaciones");

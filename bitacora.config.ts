@@ -166,5 +166,17 @@ export const config: BitacoraConfig = {
         "Skills MODO empaquetadas como ZIP descargable — instalar en ~/.claude/skills/ y disponibles en Claude Code.",
       countSuffix: "skills",
     },
+    {
+      type: "capacitaciones",
+      label: "Capacitaciones",
+      feed: "/capacitaciones/capacitaciones.json",
+      key: "capacitaciones",
+      href: "/capacitaciones",
+      visibility: "public",
+      eyebrow: "Cursos",
+      description:
+        "Cursos interactivos Claude-Code con los agentes MODO como harness: Storyblok, deploy a playsistemico, Next 16, SEO/GEO, Tailwind y tickets JSM. Sidebar con progreso y checklists que se guardan solos.",
+      countSuffix: "cursos",
+    },
   ],
 };

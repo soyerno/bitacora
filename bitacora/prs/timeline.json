@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-05-31",
+    "generated": "2026-06-01",
     "category": "Bitácora · PRs",
     "format": "Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Recurrente a las 09:00 y 16:30 vía LaunchAgent.",
     "author": "Hernán De Souza · Sr AI Engineer",
@@ -17,6 +17,38 @@
     "seeded": "Curado manualmente para 2026-05-27/28. Updates posteriores via cron auto-extraen qué/dolor del body."
   },
   "items": [
+    {
+      "date": "2026-06-01",
+      "number": 1522,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1522",
+      "title": "refactor(COENXT-360): TS migration wave unified · post Next 16 + ui-lib absorb",
+      "type": "refactor",
+      "state": "OPEN",
+      "que_hace": "(auto) refactor(COENXT-360): TS migration wave unified · post Next 16 + ui-lib absorb",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
+    {
+      "date": "2026-06-01",
+      "number": 1521,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1521",
+      "title": "refactor(COENXT-361): styles → Tailwind 4 · Wave 0+1+2 (TW upgrade + Emotion + 39 SC files)",
+      "type": "refactor",
+      "state": "OPEN",
+      "que_hace": "(auto) refactor(COENXT-361): styles → Tailwind 4 · Wave 0+1+2 (TW upgrade + Emotion + 39 SC files)",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "modo-landing",
+        "refactor"
+      ]
+    },
     {
       "date": "2026-05-30",
       "number": 1520,
@@ -41,7 +73,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1519",
       "title": "fix(COENXT-363): fallback de íconos rotos en /pagar (AppList + disabled apps)",
       "type": "fix",
-      "state": "OPEN",
+      "state": "OPEN-DRAFT",
       "que_hace": "(auto) fix(COENXT-363): fallback de íconos rotos en /pagar (AppList + disabled apps)",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -73,7 +105,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1517",
       "title": "ci(EXA): add branch-name convention check on PRs",
       "type": "ci",
-      "state": "OPEN",
+      "state": "MERGED",
       "que_hace": "Agrega un workflow que rechaza PRs cuyo branch no sigue <type>/<slug>, alineado con la commit convention (feat|fix|refactor|style|perf|docs|test|ci|build|chore|revert|merge).",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -195,7 +227,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1509",
       "title": "refactor(EXA): styles → Tailwind 4 · Wave 0+1 (TW upgrade + Emotion)",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Arranca consolidación de 3 sistemas de styling (Tailwind 3.3.3 + Styled Components 5.2.3 + Emotion 11.x) en Tailwind v4. Wave 0: TW upgrade con @config backward-compat. Wave 1: Emotion eliminado (3 files). Wave 2: SC → Tailwind progress 17/179 (batches A1+A2+A3).",
       "dolor": "~120KB runtime CSS-in-JS evitable; ServerStyleSheet de styled-components es incompatible con App Router (bloquea Next 16+); mantener 3 sistemas paralelos dispara fricción cognitiva por componente tocado.",
       "tags": [
@@ -212,7 +244,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1508",
       "title": "refactor(EXA): TS migration wave unified · post Next 16 + ui-lib absorb",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "PR único que consolida los 18 sub-PRs de la wave TS migration (ondas A/B/C/D/E) sobre la rama #1489. 27 commits ahead, 1125 files modificados, `tsc --noEmit` = 294 errors (baseline 46 + delta +248 residual). Hard gate: sale de DRAFT cuando tsc=46.",
       "dolor": "Wave estaba 5 días stalled mientras main absorbía Next 12→16 (#1482) + ui-lib (#1476) + workflow gate (#1492). Re-baseado en bloque para destrabar review/merge sin perder los 5 días de trabajo; backups `ts-rebase-backup/*` + anchor tag `ts-rebase-anchor-2026-05-28` preservan SHAs originales.",
       "tags": [
@@ -229,7 +261,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1507",
       "title": "perf(EXA): image pipeline quick wins · SSR transform + quality 75 + preconnect + priority prop",
       "type": "perf",
-      "state": "OPEN",
+      "state": "MERGED",
       "que_hace": "Quick wins del R&D RD06 (perf Next12 vs Next16+SSR): (1) CMSImage.tsx calcula createImageUrl en SSR-time, default quality=75, prop priority con fetchpriority=high; (2) _document.js preconnect a a.storyblok.com; (3) self-host Red Hat Display + Quicksand vía next/font/google (44 files refactor a CSS vars).",
       "dolor": "LCP home mobile 13.5s baseline. Doble fetch de imágenes por useEffect-post-hydration + quality=95 hardcoded + Google Fonts external + DNS handshake al primer asset = pipeline imágenes/fonts es la palanca dominante del LCP. Targets: LCP -1.5 a -4s, bytes -25-35%, TTFB -200-500ms.",
       "tags": [
@@ -297,7 +329,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1502",
       "title": "fix(EXA): inline sr-only en _document para evitar FOUC del skip-link",
       "type": "fix",
-      "state": "OPEN",
+      "state": "MERGED",
       "que_hace": "Inline las reglas `.sr-only` + `.focus:not-sr-only` en <Head> de _document.js. SSR devuelve el <style> en el HTML inicial; el browser tiene la regla antes de pintar el <a> skip-link. ~400 bytes minificados, cero impacto en JS bundle.",
       "dolor": "FOUC (flash of unstyled content) en el skip-link de a11y. La utility sr-only viaja en el bundle Tailwind; en la ventana entre HTML parseado y bundle aplicado, el <a> 'Saltar al contenido principal' queda visible como botón verde un tick. Detectado en revisión visual.",
       "tags": [
@@ -636,7 +668,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1490",
       "title": "chore(EXA): add @types/testing-library__jest-dom · -275 tsc errors",
       "type": "chore",
-      "state": "OPEN-DRAFT",
+      "state": "MERGED",
       "que_hace": "(auto) chore(EXA): add @types/testing-library__jest-dom · -275 tsc errors",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -835,7 +867,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1475",
       "title": "feat(comercios): MVP /comercios/[slug] canonical pages con SDD+TDD",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Páginas canónicas /comercios/[slug] programáticas (no editorial, no Storyblok) que ingiestan data del map-handler API + promo-backoffice y generan JSON-LD denso para SEO/GEO. Reemplaza el patrón /promos/[slug]-[mes] que rota mensualmente (validado top 1-3 en GSC para queries \"modo [comercio]\").",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -899,7 +931,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1466",
       "title": "feat(EXA): SSR completo del body CMS + overlay anti-flicker (SEO/GEO)",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Habilita SSR completo del body de todas las pages CMS (catch-all [[...slug]], FAQs, blog, T&C, comercios/tiendas-online, contratos, políticas, hubs de promos) para que crawlers sin JS — Googlebot lite, GPTBot, ClaudeBot, preview cards de WhatsApp/Slack/LinkedIn — vean el body completo en el HTML inicial. Hoy ven sólo \"…",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -931,7 +963,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1463",
       "title": "perf(EXA): diferir init Firebase via dynamic import (-7.3KB gzip _app)",
       "type": "perf",
-      "state": "OPEN-DRAFT",
+      "state": "OPEN",
       "que_hace": "firebase/app y firebase/analytics se importaban eager en src/config/analytics.ts y src/utils/analytics/firebase.js. Eso significa que ambos SDKs quedaban en _app.js y entraban en el critical path de toda page, aunque firebase analytics no es necesario hasta después del primer paint.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -979,7 +1011,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1417",
       "title": "feat(EXA): agregar widget Trustpilot al footer",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Implementa el widget de Trustpilot (TrustBox Review Collector) en el footer del CMS, renderizándolo como un item adicional dentro de financialData junto a Data Fiscal y AAIP RNBD.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -995,7 +1027,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1393",
       "title": "docs(EXA): 01d/13 — specs funcionales content, analytics & platform",
       "type": "docs",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) docs(EXA): 01d/13 — specs funcionales content, analytics & platform",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1011,7 +1043,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1392",
       "title": "docs(EXA): 01c/13 — specs funcionales commerce & payments",
       "type": "docs",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) docs(EXA): 01c/13 — specs funcionales commerce & payments",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1027,7 +1059,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1391",
       "title": "docs(EXA): 01b/13 — specs funcionales promotions (hub + detail)",
       "type": "docs",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) docs(EXA): 01b/13 — specs funcionales promotions (hub + detail)",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1043,7 +1075,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1390",
       "title": "docs(EXA): 01a — core docs + runbook v2 + openspec TS post-Next 16",
       "type": "docs",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) docs(EXA): 01a — core docs + runbook v2 + openspec TS post-Next 16",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1059,7 +1091,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1386",
       "title": "refactor(EXA): 13a-iii — TS migration AppList/PromoFilter/CMS/rest",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 13a-iii — TS migration AppList/PromoFilter/CMS/rest",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1075,7 +1107,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1385",
       "title": "refactor(EXA): 13a-ii — TS migration Layout/Navbar/Footer/stores",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 13a-ii — TS migration Layout/Navbar/Footer/stores",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1091,7 +1123,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1384",
       "title": "refactor(EXA): 13a-i · TS migration promotionsTS (searchIa, comps)",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 13a-i · TS migration promotionsTS (searchIa, comps)",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1107,7 +1139,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1382",
       "title": "refactor(EXA): remove dead code from tiendas-online list page",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): remove dead code from tiendas-online list page",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1123,7 +1155,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1374",
       "title": "refactor(EXA): 13b/13 — migración TS pages, cleanup .js y config final",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 13b/13 — migración TS pages, cleanup .js y config final",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1139,7 +1171,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1372",
       "title": "refactor(EXA): 12/13 — migración TS promotions, reducers y hooks acoplados",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 12/13 — migración TS promotions, reducers y hooks acoplados",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1155,7 +1187,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1371",
       "title": "refactor(EXA): 11/13 — migración TS CMS, contratos y test infrastructure",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 11/13 — migración TS CMS, contratos y test infrastructure",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1171,7 +1203,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1370",
       "title": "refactor(EXA): 10/13 — migración TS hooks, utils, constants, services",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 10/13 — migración TS hooks, utils, constants, services",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1187,7 +1219,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1369",
       "title": "refactor(EXA): 09/13 — store.ts con tipos RootState y AppDispatch",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 09/13 — store.ts con tipos RootState y AppDispatch",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1203,7 +1235,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1368",
       "title": "refactor(EXA): 07/13 — migración TSX componentes independientes restantes",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 07/13 — migración TSX componentes independientes restantes",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1219,7 +1251,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1367",
       "title": "refactor(EXA): 06/13 — migración TSX Hero, Generic, Integrations, Connections",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 06/13 — migración TSX Hero, Generic, Integrations, Connections",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1235,7 +1267,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1366",
       "title": "refactor(EXA): 05/13 — migración TSX Shared components",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 05/13 — migración TSX Shared components",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1251,7 +1283,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1365",
       "title": "refactor(EXA): 04/13 — migración TSX módulo AppList",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(EXA): 04/13 — migración TSX módulo AppList",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -1299,7 +1331,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1313",
       "title": "refactor(EXA): replace CMS Nav/Footer with modo-landing-web-ui-lib",
       "type": "refactor",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Reemplazo de CMSNavbar + CMSFooter (Storyblok CMS-driven) por componentes self-contained de @playsistemico/modo-landing-web-ui-lib.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [

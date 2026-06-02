@@ -1,0 +1,69 @@
+{
+  "slug": "seo-geo-modo",
+  "title": "SEO / GEO / JSON-LD para fronts MODO",
+  "subtitle": "Visible a Google y a los AI crawlers",
+  "lessons": [
+    {
+      "id": "intro",
+      "num": "·",
+      "title": "Introducción",
+      "eyebrow": "Capacitación interactiva",
+      "path": "README.md"
+    },
+    {
+      "id": "00",
+      "num": "00",
+      "title": "SEO vs GEO",
+      "eyebrow": "Lección 00 · El qué y el porqué",
+      "path": "00-seo-vs-geo.md",
+      "file": "00-seo-vs-geo.md"
+    },
+    {
+      "id": "01",
+      "num": "01",
+      "title": "Canonical · robots · sitemap",
+      "eyebrow": "Lección 01 · Señales base",
+      "path": "01-canonical-robots-sitemap.md",
+      "file": "01-canonical-robots-sitemap.md"
+    },
+    {
+      "id": "02",
+      "num": "02",
+      "title": "JSON-LD Schema.org",
+      "eyebrow": "Lección 02 · Rich Results",
+      "path": "02-jsonld-schema.md",
+      "file": "02-jsonld-schema.md"
+    },
+    {
+      "id": "03",
+      "num": "03",
+      "title": "AI crawlers",
+      "eyebrow": "Lección 03 · GEO",
+      "path": "03-ai-crawlers.md",
+      "file": "03-ai-crawlers.md"
+    },
+    {
+      "id": "04",
+      "num": "04",
+      "title": "URL-as-state",
+      "eyebrow": "Lección 04 · Filtros indexables",
+      "path": "04-url-as-state.md",
+      "file": "04-url-as-state.md"
+    },
+    {
+      "id": "05",
+      "num": "05",
+      "title": "Audit + fix",
+      "eyebrow": "Lección 05 · Harness: modo-seo-geo-audit",
+      "path": "05-audit-fix.md",
+      "file": "05-audit-fix.md"
+    },
+    {
+      "id": "lab",
+      "num": "🧪",
+      "title": "Lab: auditar una page",
+      "eyebrow": "Lab integrador",
+      "path": "exercises/README.md"
+    }
+  ]
+}
