@@ -37,5 +37,14 @@ jobs:
       - name: Typecheck (tsc --noEmit)
         run: pnpm typecheck
 
+      - name: Arch gate (size de componentes)
+        run: pnpm check:arch
+
+      # Informativo: el gate real de lint es lint-staged (solo lo tocado).
+      # En CI no bloquea para no frenar PRs de contenido por deuda no relacionada.
+      - name: Lint (ESLint)
+        run: pnpm lint
+        continue-on-error: true
+
       - name: Next build (incluye prebuild check-visibility)
         run: pnpm build

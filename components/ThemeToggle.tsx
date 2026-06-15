@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Theme = "auto" | "light" | "dark";
 const ORDER: Theme[] = ["auto", "light", "dark"];
 const KEY = "modo-decks-theme"; // misma key que el sitio estático (assets/common.js)
 const LABEL: Record<Theme, string> = { auto: "Auto", light: "Claro", dark: "Oscuro" };
 
-export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>("auto");
+function readStoredTheme(): Theme {
+  if (typeof window === "undefined") return "auto";
+  return (localStorage.getItem(KEY) as Theme) || "auto";
+}
 
-  useEffect(() => {
-    const stored = (localStorage.getItem(KEY) as Theme) || "auto";
-    setTheme(stored);
-  }, []);
+export default function ThemeToggle() {
+  // Init perezoso desde localStorage (sin setState-en-effect). En SSR no hay
+  // localStorage → "auto"; el label se reconcilia en la hidratación, por eso
+  // suppressHydrationWarning (la diferencia server/client es esperada).
+  const [theme, setTheme] = useState<Theme>(readStoredTheme);
 
   const cycle = () => {
     const next = ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length];
@@ -33,6 +36,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={cycle}
       aria-label={`Tema: ${LABEL[theme]}`}
+      suppressHydrationWarning
       className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-ink-soft transition-colors hover:border-accent"
     >
       {LABEL[theme]}

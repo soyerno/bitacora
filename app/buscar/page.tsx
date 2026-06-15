@@ -11,10 +11,7 @@ export default function BuscarPage() {
 
   useEffect(() => {
     const term = q.trim();
-    if (!term) {
-      setHits([]);
-      return;
-    }
+    if (!term) return; // sin query: no fetch ni setState (los hits se derivan abajo)
     const ctrl = new AbortController();
     const t = setTimeout(async () => {
       setLoading(true);
@@ -36,6 +33,9 @@ export default function BuscarPage() {
     };
   }, [q]);
 
+  // Derivado: con la query vacía no mostramos hits viejos (sin limpiar estado en el effect).
+  const visible = q.trim() ? hits : [];
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
       <h1 className="font-display text-3xl font-bold text-ink">Buscar</h1>
@@ -53,10 +53,10 @@ export default function BuscarPage() {
 
       <div className="mt-6 space-y-3">
         {loading && <p className="text-sm text-muted">Buscando…</p>}
-        {!loading && q.trim() && hits.length === 0 && (
+        {!loading && q.trim() && visible.length === 0 && (
           <p className="text-sm text-muted">Sin resultados para “{q}”.</p>
         )}
-        {hits.map((h, i) => {
+        {visible.map((h, i) => {
           const ext = isExternal(h.href);
           return (
             <a
