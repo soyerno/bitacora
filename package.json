@@ -9,12 +9,15 @@
     "prebuild": "node scripts/check-visibility.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:specs": "vitest run tests/specs",
-    "check:visibility": "node scripts/check-visibility.mjs"
+    "check:visibility": "node scripts/check-visibility.mjs",
+    "check:arch": "node scripts/check-arch.mjs",
+    "validate": "pnpm typecheck && pnpm check:arch && pnpm check:visibility && pnpm test",
+    "prepare": "husky"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -27,7 +30,11 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.9",
     "happy-dom": "^15.11.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.9"
