@@ -119,7 +119,7 @@
     inner.appendChild(foot);
 
     renderSidebar(); renderProgress();
-    document.title = lesson.title + ' · Capacitación Storyblok MODO';
+    document.title = lesson.title + ' · ' + (document.querySelector('.brand-title')?.textContent || 'Capacitación MODO');
     window.scrollTo(0, 0);
   }
 
