@@ -17,6 +17,234 @@
   },
   "items": [
     {
+      "date": "2026-06-15",
+      "slug": "2026-06-15",
+      "title": "15 de junio · la oficina cobró vida: de maqueta a tablero, y el roster contrató gerencia",
+      "tldr": "La entrada del 14 cerró con \"lo vivo quedó pendiente\". El 15 lo cablé: la oficina dejó de ser teatro (animación con setTimeout) y pasó a tablero — reescrita en React, alimentada por eventos reales que escriben los hooks, todo en el mismo origin. El roster creció de 16 a 20: sumó una capa de gerencia (PO, PM, coach y un CEO con freno de mano). Aprendí que hasta el tooling local que dispara comandos es superficie de ataque (CSRF contra localhost). Y que el entorno crecía más rápido que su documentación: refresqué el mapa y catalogué el patrón para que otros lo adapten.",
+      "stories": [
+        {
+          "title": "De teatro a tablero",
+          "summary": "El 14 la oficina era una animación con setTimeout — el ritmo del loop, no su latido. El 15 cablé lo real: los hooks de sesión escriben un NDJSON de eventos (SubagentStop, cambio de fase del Workflow) que la oficina pollea. La reescribí en React (Vite + TS + Tailwind v4, atomic design, tokens de marca) y la sirve office-serve en el mismo origin que los datos, así el fetch es siempre relativo. Un puente Workflow→oficina enciende cada puesto con eventos de verdad. La regla de la casa se cumplió al revés: lo que el 14 era teatro, el 15 dejó de serlo.",
+          "tags": [
+            "agentes",
+            "visualización",
+            "honestidad"
+          ]
+        },
+        {
+          "title": "El roster contrató gerencia",
+          "summary": "Los 16 agentes ejecutaban (front, back, ux, branding…) pero nadie decidía el qué ni custodiaba el estándar. Sumé cuatro: el PO escribe la propuesta OpenSpec antes de codear y parte el trabajo en historias verificables; el PM custodia los metadatos de cada PR y el roadmap; el coach es un meta-agente que mejora a los otros agentes; y el CEO conduce el conjunto. Pasó de roster a empresa, todo atado a un North Star: WALM (Weekly Active Lost-found Matches).",
+          "tags": [
+            "agentes",
+            "management",
+            "north-star"
+          ]
+        },
+        {
+          "title": "El CEO con freno de mano",
+          "summary": "Autonomía no es autonomía sin freno. El firu-ceo conduce el roster en nombre del humano pero solo dentro de un mandato revocable: nunca cruza una acción irreversible —merge, deploy, gasto, borrado— sin OK explícito, y un kill-switch en la oficina lo apaga al instante. Es el mismo principio del 27 de mayo —autonomía con freno de mano— ahora con cara de agente: delegar el volante sin soltar el freno.",
+          "tags": [
+            "autonomía",
+            "honestidad"
+          ]
+        },
+        {
+          "title": "Hasta el tooling local necesita defensa",
+          "summary": "El server de la oficina corre gh y claude en sus POST. Mi primer instinto fue \"es localhost, está a salvo\". Falso: el atacante es el browser del propio dev — un sitio malicioso abierto en otra pestaña puede pegarle a localhost. El fix es entender el modelo del navegador: exigir Content-Type application/json (un POST cross-origin con JSON dispara preflight CORS, que sin permiso falla antes de salir) y validar el Origin. Lección: cualquier superficie que ejecute comandos es superficie de ataque, aunque diga 'solo local'.",
+          "tags": [
+            "seguridad",
+            "gotcha"
+          ]
+        },
+        {
+          "title": "El mapa atrasado",
+          "summary": "El entorno crecía más rápido que su documentación: el README canónico describía 13 de 20 agentes y ni mencionaba la oficina React. Un entorno sin su mapa al día no es reusable —ni por vos en tres semanas, ni por la comunidad. Así que refresqué el README y catalogué el patrón (un equipo de agentes como entorno de trabajo, adaptable a cualquier repo) como herramienta pública. Es el LLM Wiki Pattern de Karpathy aplicado al propio andamiaje: escribir lo aprendido para no re-aprenderlo, y para que otro pueda partir de ahí.",
+          "tags": [
+            "documentación",
+            "comunidad",
+            "karpathy"
+          ]
+        }
+      ],
+      "tags": [
+        "agentes",
+        "orquestación",
+        "oficina",
+        "seguridad",
+        "documentación",
+        "comunidad",
+        "firulapp",
+        "karpathy"
+      ],
+      "area": "platform",
+      "href": "2026-06-15.html",
+      "reading_minutes": 7,
+      "counts": {
+        "commits": 6,
+        "learnings": 5,
+        "prs": 1
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-06-14",
+      "slug": "2026-06-14",
+      "title": "14 de junio · ver a los agentes trabajar juntos: el loop ya estaba, faltaba el lienzo",
+      "tldr": "El loop route-request de Firulapp ya estaba guionado; el roster de 16 agentes vivía en main (los agent types se registran al arrancar la sesión); y armé tres niveles de ver el equipo trabajar: plano ASCII, office.html que anima el loop, y /workflows para lo vivo. Cablear eventos reales quedó pendiente.",
+      "stories": [
+        {
+          "title": "Primero leer, después codear",
+          "summary": "El loop route-request.mjs ya existía y bien hecho (3 fases, un agente por lane en su worktree, guardián siempre-on defensivo+ofensivo). El código más barato es el que no escribís porque ya estaba: verificar el estado del mundo antes de actuar.",
+          "tags": [
+            "karpathy",
+            "no-duplicar"
+          ]
+        },
+        {
+          "title": "El roster vive en main y se registra al arrancar",
+          "summary": "Los 16 agentes estaban en origin/main (#454/#455), no en mi branch. git checkout los trajo, pero los agent types se registran al boot de la sesión: materializar .md a mitad de sesión no alcanza, hay que recargar. Mismo patrón que los flags congelados en el WebView.",
+          "tags": [
+            "agentes",
+            "gotcha",
+            "sesión"
+          ]
+        },
+        {
+          "title": "Tres niveles de ver al equipo",
+          "summary": "Plano ASCII (topología), office.html con \"Simular ronda\" que enciende puestos fase por fase sin gastar tokens (+ window.setOfficeState para datos reales), y /workflows para el latido en vivo del Workflow.",
+          "tags": [
+            "visualización",
+            "workflow"
+          ]
+        },
+        {
+          "title": "Lo vivo quedó pendiente",
+          "summary": "No lo vi correr de verdad: trabado en el reload, y la animación es teatro. Sigue cablear eventos del loop (SubagentStop / cambio de fase) a setOfficeState vía hook o archivo de estado. No declarar hecho lo que es teatro.",
+          "tags": [
+            "honestidad",
+            "pendiente"
+          ]
+        }
+      ],
+      "tags": [
+        "agentes",
+        "orquestación",
+        "workflow",
+        "visualización",
+        "firulapp",
+        "karpathy"
+      ],
+      "area": "platform",
+      "href": "2026-06-14.html",
+      "reading_minutes": 6,
+      "counts": {
+        "commits": 0,
+        "learnings": 3,
+        "prs": 0
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-06-13",
+      "slug": "2026-06-13",
+      "title": "13 de junio · destilar Firulapp en skills portables",
+      "tldr": "Saqué de Firulapp 13 aprendizajes que son patrón y no dominio, y los volví skills reutilizables en ~/.claude/skills (sirven en cualquier repo) + catálogo en la bitácora. La idea Karpathy: lo que aprendés una vez no se vuelve a aprender — se vuelve política. Acá la política es un skill.",
+      "stories": [
+        {
+          "title": "Destilar, no copiar",
+          "summary": "El criterio: un aprendizaje viaja si es patrón (gate, helper, disciplina) y no dominio (rutas en español, scrapers OSM, copy de mascotas). Lo portable va a ~/.claude/skills global —usable en MODO, Firulapp o lo que venga—; lo Firulapp-específico se queda. 13 skills salieron de ese filtro.",
+          "tags": [
+            "skills",
+            "destilación",
+            "karpathy"
+          ]
+        },
+        {
+          "title": "Los gates que viajan",
+          "summary": "Cuatro gates de código ya probados en el harness de Firulapp, des-Firulappizados: feature-flag-wiring (feature OFF ⇒ no se ve nada, 4 capas + 2 checks estáticos con sus puntos ciegos), ai-mcp-parity (asistente + agentes MCP nunca desincronizados de las features, tools.ts = fuente de verdad), component-size-gate (archivo UI > 400 líneas falla, grandfathered shrink-only) y precommit-quality-harness (lint-staged + validate, con el truco del tsconfig acotado a src/ para esquivar los tipos generados stale).",
+          "tags": [
+            "feature-flags",
+            "gates",
+            "ci"
+          ]
+        },
+        {
+          "title": "Seguridad que no depende del dominio",
+          "summary": "prompt-injection-hardening: el helper puro untrustedInput (sanitize + wrap en delimitadores), tabla de invisibles en vez de regex literal, y el vector de 2do orden que casi nadie mira —UGC almacenado que después lee un agente MCP externo—. Más la regla de exposición de ai-mcp-parity: una write per-usuario jamás se expone al MCP de token compartido (sería atribuir la acción a un anónimo).",
+          "tags": [
+            "seguridad",
+            "prompt-injection",
+            "mcp"
+          ]
+        },
+        {
+          "title": "El patrón de persistencia optimista",
+          "summary": "optimistic-persist-rq: el triángulo onMutate/onError/onSettled de React Query, key-factory tipo-proof, seed del cache desde props de server, y la separación clave —count en la entidad, membership en un Set por usuario—. Salió de migrar el god-component de Firulapp de useState a mano a un solo patrón uniforme. Rollback honesto, no optimismo ciego.",
+          "tags": [
+            "react-query",
+            "optimistic-ui",
+            "patrón"
+          ]
+        },
+        {
+          "title": "Meta-skills: cómo destilar para el próximo repo",
+          "summary": "Cuatro skills que enseñan a hacer skills: distill-design-system (tokens runtime como fuente de verdad + checklist pass/fail + mapa atomic), distill-brand-voice (persona + say-this-not-that + el guardrail de que caveman jamás toca el copy de la app), distill-ux-a11y-layer (3 pilares anclados al usuario real, números de a11y concretos) y distill-framework-conventions (la regla 'leé los docs locales antes de codear' para frameworks forkeados). El proceso es portable aunque la marca no.",
+          "tags": [
+            "meta-skill",
+            "design-system",
+            "voz"
+          ]
+        },
+        {
+          "title": "Disciplina de proceso embotellada",
+          "summary": "worktree-per-feature (un worktree+branch+PR por tarea, siempre cortado de origin/main fresco; los CONFLICT de squash-merge son falsos positivos), release-on-merge (semantic-release: HUSKY=0 en el job + serializar por la race de merges paralelos) y pr-pain-purpose-how (todo PR abre con Dolor/Para qué/Cómo: el reviewer entiende el porqué antes del qué).",
+          "tags": [
+            "worktrees",
+            "release",
+            "proceso"
+          ]
+        },
+        {
+          "title": "Catalogadas en la bitácora",
+          "summary": "Las 13 quedaron empaquetadas como .skill/ con sha256 real y install_hint en la sección Skills MODO (skills.json), así se instalan desde acá con un unzip. Global = reusables ya; el catálogo = memoria de que existen y de dónde salieron.",
+          "tags": [
+            "catálogo",
+            "skills-modo",
+            "reuso"
+          ]
+        },
+        {
+          "title": "Medir cómo prompteo, no solo qué construyo",
+          "summary": "Analicé 123 sesiones propias de Claude Code: 710 prompts reales, mediana de 19 caracteres, 45,6% delegación vaga (si / merge / completá el trabajo) y apenas 1,9% pidiendo planificar antes de codear — violando mi propio principio #1. La lección no se quedó en el diagnóstico: la volví skill. prompt-coach lee los logs de sesión, puntúa la calidad del prompt (planificar-primero, guardrails de scope, pedidos de verificación vs delegación ciega y encadenar acciones irreversibles), guarda un snapshot con fecha y grafica la tendencia en ASCII + un dashboard HTML offline. Baseline Firulapp: 34/100. La idea Karpathy aplicada al humano del loop: si el contexto es memoria de trabajo, mi prompt es la instrucción que la carga — medible, y por lo tanto mejorable. El score es relativo a uno mismo: importa la pendiente. Después lo iteré de medición pasiva a coach activo: un hook UserPromptSubmit clasifica cada prompt y, solo cuando es flojo, me propone en vivo una versión reescrita de mi propio prompt (con criterio de \"listo\" + qué no tocar) o un checkpoint antes de ir a prod — silencio cuando ya está bien.",
+          "tags": [
+            "prompt-coach",
+            "meta-skill",
+            "karpathy",
+            "medición"
+          ]
+        }
+      ],
+      "tags": [
+        "skills",
+        "destilación",
+        "firulapp",
+        "feature-flags",
+        "seguridad",
+        "react-query",
+        "worktrees",
+        "meta-skill"
+      ],
+      "area": "platform",
+      "href": "2026-06-13.html",
+      "reading_minutes": 7,
+      "counts": {
+        "commits": 0,
+        "learnings": 13,
+        "prs": 0
+      },
+      "status": "publicado"
+    },
+    {
       "date": "2026-05-27",
       "slug": "2026-05-27",
       "title": "27 de mayo · autonomía con freno de mano",

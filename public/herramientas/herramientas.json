@@ -1,10 +1,11 @@
 {
   "_meta": {
     "generated": "2026-05-28",
-    "source": "public/herramientas/index.html",
-    "total_tools": 75,
+    "updated": "2026-06-15",
+    "source": "public/herramientas/herramientas.json (fuente viva — el HTML legacy ya no existe; app/herramientas lo lee directo vía getHerramientas)",
+    "total_tools": 77,
     "total_categories": 8,
-    "notes": "Extraído de la página legacy con scripts/build-herramientas-json.mjs. Editar el HTML fuente, no este JSON."
+    "notes": "Editar este JSON directamente. El generador scripts/build-herramientas-json.mjs y su HTML fuente quedaron deprecados; la page consume el feed JSON."
   },
   "categories": [
     {
@@ -216,6 +217,26 @@
           "external": "https://github.com/JuliusBrussee/caveman",
           "tags": [
             "plugin"
+          ]
+        },
+        {
+          "name": "roster-por-rol",
+          "description": "Patrón: un equipo de agentes por rol (no por tarea) como entorno de trabajo — construcción, especialistas, guardianes de integridad y una capa de gerencia (PO/PM/coach/CEO) atada a un North Star. Cada rol es un .md en .claude/agents/ con su disciplina y skill base. Adaptable a cualquier repo. Writeup completo en la bitácora.",
+          "download": null,
+          "external": "https://soyernomodo.github.io/erno-modo/bitacora/2026-06-15.html",
+          "tags": [
+            "patrón",
+            "agentes"
+          ]
+        },
+        {
+          "name": "oficina-de-agentes",
+          "description": "Patrón: un tablero local para VER al equipo de agentes trabajar. Un loop route-request reparte el pedido a las lanes; los hooks de sesión escriben eventos (SubagentStop / cambio de fase) que una UI React pollea en el mismo origin. Incluye chat con un CEO-agente y kill-switch del mandato. Tooling de dev, no parte del producto.",
+          "download": null,
+          "external": "https://soyernomodo.github.io/erno-modo/bitacora/2026-06-15.html",
+          "tags": [
+            "patrón",
+            "agentes"
           ]
         }
       ]
