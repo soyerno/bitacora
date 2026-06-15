@@ -1,0 +1,20 @@
+{
+  "slug": "coding-con-agentes",
+  "title": "Coding con una flota de agentes",
+  "subtitle": "La metodología Firulapp: principios Karpathy, OpenSpec, worktrees y una oficina de 20 agentes",
+  "lessons": [
+    {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
+    {"id":"00","num":"00","title":"Mentalidad","eyebrow":"Lección 00 · Los 4 principios + honestidad","path":"00-mentalidad.md","file":"00-mentalidad.md"},
+    {"id":"01","num":"01","title":"Contexto = memoria","eyebrow":"Lección 01 · File-memory, destilación, caveman","path":"01-contexto-memoria.md","file":"01-contexto-memoria.md"},
+    {"id":"02","num":"02","title":"Spec-Driven con OpenSpec","eyebrow":"Lección 02 · La propuesta antes de codear","path":"02-openspec.md","file":"02-openspec.md"},
+    {"id":"03","num":"03","title":"Worktree por feature","eyebrow":"Lección 03 · Aislamiento, branch fresco, PR","path":"03-worktrees.md","file":"03-worktrees.md"},
+    {"id":"04","num":"04","title":"La oficina de agentes","eyebrow":"Lección 04 · Roster, CEO/PO/PM, loop-runner","path":"04-oficina-agentes.md","file":"04-oficina-agentes.md"},
+    {"id":"05","num":"05","title":"Destilar skills","eyebrow":"Lección 05 · Conocimiento durable reusable","path":"05-skills.md","file":"05-skills.md"},
+    {"id":"06","num":"06","title":"Feature flags","eyebrow":"Lección 06 · OFF ⇒ no se ve ni se alcanza nada","path":"06-feature-flags.md","file":"06-feature-flags.md"},
+    {"id":"07","num":"07","title":"Harness de gates","eyebrow":"Lección 07 · Pre-commit, size-gate, parity, release","path":"07-gates.md","file":"07-gates.md"},
+    {"id":"08","num":"08","title":"Pipeline de PRs","eyebrow":"Lección 08 · Pain/Purpose/How + no perder trabajo","path":"08-pipeline-prs.md","file":"08-pipeline-prs.md"},
+    {"id":"09","num":"09","title":"Seguridad por defecto","eyebrow":"Lección 09 · Prompt-injection, rules, PII","path":"09-seguridad.md","file":"09-seguridad.md"},
+    {"id":"10","num":"10","title":"Loop por objetivos","eyebrow":"Lección 10 · Criterios verificables + honestidad","path":"10-loop-objetivos.md","file":"10-loop-objetivos.md"},
+    {"id":"lab","num":"🧪","title":"Lab: una feature end-to-end","eyebrow":"Lab integrador","path":"exercises/README.md"}
+  ]
+}

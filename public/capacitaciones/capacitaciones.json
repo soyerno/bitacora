@@ -6,6 +6,42 @@
   },
   "capacitaciones": [
     {
+      "id": "coding-con-agentes",
+      "title": "Coding con una flota de agentes",
+      "desc": "La metodología que forjé construyendo Firulapp con Claude Code, destilada y transferible a cualquier repo: los 4 principios Karpathy + honestidad, contexto como memoria de trabajo (file-memory + destilación), Spec-Driven con OpenSpec, worktree por feature, una oficina de 20 agentes especializados (CEO/PO/PM + roster), destilar skills, el contrato de feature flags (OFF ⇒ nada), el harness de gates, el pipeline de PRs (Pain/Purpose/How + no perder trabajo), seguridad por defecto y el loop de ejecución por objetivos. Incluye lab integrador end-to-end.",
+      "href": "capacitaciones/coding-con-agentes/index.html",
+      "status": "draft",
+      "audience": "Dev que codea con agentes (Claude Code) y quiere una metodología completa",
+      "date": "2026-06-15",
+      "lessons": 13,
+      "topics": [
+        "agentes",
+        "metodologia",
+        "openspec",
+        "worktrees",
+        "skills",
+        "feature-flags",
+        "tdd",
+        "seguridad"
+      ],
+      "harness": [
+        "firu-ceo",
+        "firu-po",
+        "firu-pm",
+        "openspec",
+        "caveman",
+        "engram",
+        "worktree-per-feature",
+        "precommit-quality-harness",
+        "component-size-gate",
+        "feature-flag-wiring",
+        "ai-mcp-parity",
+        "release-on-merge",
+        "prompt-injection-hardening"
+      ],
+      "featured": true
+    },
+    {
       "id": "storyblok-pages-modo-landing",
       "title": "Crear páginas Storyblok-managed en modo-landing",
       "desc": "Del setup de ambiente al deploy alpha en playsistemico, pasando por diseño SDD + design system, autoría de story + wiring del blok al registry CMS_COMPONENTS, TDD red→green y los 4 gates (code review+SDD · performance+CSP · a11y+SEO). Incluye lab integrador y el triple-layer skill modo-landing-page-builder.",
