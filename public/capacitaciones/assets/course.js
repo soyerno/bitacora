@@ -19,6 +19,76 @@
     set: function (k, v) { try { localStorage.setItem(LS + k, JSON.stringify(v)); } catch (e) {} }
   };
 
+  // Glosario de tooltips: siglas/términos que piden interpretación → definición corta.
+  // La primera aparición de cada término en una lección se envuelve en <abbr class="term">.
+  var GLOSSARY = {
+    'JSON-LD': 'Datos estructurados que le explican a Google y a los buscadores con IA de qué trata la página.',
+    'modo-landing': 'El repo del sitio modo.com.ar (la landing principal de MODO).',
+    'Storyblok': 'El CMS donde vive el contenido del sitio. No se edita a mano: Claude lo actualiza por MCP.',
+    'WCAG': 'Estándar de accesibilidad web (Web Content Accessibility Guidelines).',
+    'a11y': 'Accesibilidad: que la página la pueda usar todo el mundo, incluida gente con discapacidad.',
+    'SEO': 'Search Engine Optimization: que Google encuentre y muestre la página.',
+    'GEO': 'Generative Engine Optimization: que los buscadores con IA encuentren y citen la página.',
+    'CSP': 'Content Security Policy: reglas que limitan de dónde puede cargar contenido la página (seguridad).',
+    'MCP': 'La conexión que enchufa a Claude con herramientas externas (como Storyblok) para que actúe por vos.',
+    'CMS': 'Gestor de contenido: la herramienta donde vive el contenido del sitio (acá, Storyblok).',
+    'SDD': 'Spec-Driven Development: definir la especificación verificable antes de escribir código.',
+    'TDD': 'Test-Driven Development: escribir el test que falla antes que el código que lo hace pasar.',
+    'RTL': 'React Testing Library: testear componentes como los usa la persona, no por detalles internos.',
+    'SSR': 'Server-Side Rendering: la página llega ya armada desde el servidor (mejor para SEO).',
+    'ISR': 'Incremental Static Regeneration: regenerar páginas estáticas cada cierto tiempo.',
+    'LCP': 'Largest Contentful Paint: cuánto tarda en aparecer lo principal de la página.',
+    'CLS': 'Cumulative Layout Shift: cuánto se mueve la página sola mientras carga.',
+    'GRC': 'Governance, Risk & Compliance: gobierno, riesgo y cumplimiento.',
+    'alpha': 'Un ambiente de prueba interno, idéntico al real pero no público.',
+    'blok': 'Un bloque reutilizable de una página en Storyblok.',
+    'story': 'Una página en Storyblok.',
+    'slug': 'La parte de la URL que identifica la página (lo que va después de la barra).',
+    'token': 'Una llave de acceso: el permiso para que una herramienta actúe en tu nombre.'
+  };
+  var GLOSS_TERMS = Object.keys(GLOSSARY).sort(function (a, b) { return b.length - a.length; });
+  var GLOSS_RX = '(?<![\\w-])(' + GLOSS_TERMS.map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')(?![\\w-])';
+
+  function glossify(root) {
+    if (!('createTreeWalker' in document)) return;
+    var used = {};
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        var p = n.parentNode;
+        while (p && p !== root) {
+          if (p.tagName && /^(PRE|CODE|A|ABBR|H1|H2|H3|BUTTON)$/.test(p.tagName)) return NodeFilter.FILTER_REJECT;
+          p = p.parentNode;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function (node) {
+      var text = node.nodeValue, rx = new RegExp(GLOSS_RX, 'g'), m, last = 0, frag = null;
+      while ((m = rx.exec(text))) {
+        var term = m[1];
+        if (used[term]) continue;
+        used[term] = true;
+        frag = frag || document.createDocumentFragment();
+        frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        var ab = document.createElement('abbr');
+        ab.className = 'term';
+        ab.setAttribute('data-tip', GLOSSARY[term]);
+        ab.setAttribute('aria-label', term + ': ' + GLOSSARY[term]);
+        ab.setAttribute('tabindex', '0');
+        ab.textContent = term;
+        frag.appendChild(ab);
+        last = m.index + term.length;
+      }
+      if (frag) {
+        frag.appendChild(document.createTextNode(text.slice(last)));
+        node.parentNode.replaceChild(frag, node);
+      }
+    });
+  }
+
   function lessonDone(id) { return store.get('done:' + id, false); }
   function setLessonDone(id, v) { store.set('done:' + id, v); renderSidebar(); renderProgress(); }
 
@@ -120,6 +190,8 @@
         a.removeAttribute('href'); a.style.borderBottom = '1px dotted var(--text-soft)'; a.title = 'Ruta en el repo modo-landing';
       }
     });
+    // Tooltips de glosario (primera aparición de cada sigla/término)
+    glossify(root);
   }
 
   var lastId = null;

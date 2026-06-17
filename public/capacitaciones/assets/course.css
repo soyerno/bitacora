@@ -126,6 +126,28 @@ body {
 .content-inner h2:hover .heading-anchor, .content-inner h3:hover .heading-anchor,
 .heading-anchor:focus { opacity: 1; }
 @media (max-width: 860px) { .heading-anchor { position: static; opacity: .6; margin-right: 4px; } }
+
+/* Tooltips de glosario — siglas/términos con definición al hover/focus */
+.content-inner abbr.term {
+  text-decoration: none; font-style: normal; cursor: help; position: relative;
+  border-bottom: 1px dashed var(--modo-green);
+}
+.content-inner abbr.term:focus-visible { outline: 2px solid var(--modo-green); outline-offset: 2px; }
+.content-inner abbr.term::after {
+  content: attr(data-tip);
+  position: absolute; left: 0; bottom: calc(100% + 6px); z-index: 40;
+  width: max-content; max-width: 260px;
+  background: var(--code-bg); color: var(--code-text);
+  padding: 8px 11px; border-radius: 8px;
+  font-family: var(--font-body); font-size: 12.5px; font-weight: 400; line-height: 1.45; letter-spacing: 0; text-transform: none;
+  box-shadow: var(--shadow);
+  opacity: 0; transform: translateY(4px); pointer-events: none;
+  transition: opacity .12s ease, transform .12s ease;
+}
+.content-inner abbr.term:hover::after, .content-inner abbr.term:focus-visible::after { opacity: 1; transform: translateY(0); }
+@media (max-width: 860px) { .content-inner abbr.term::after { max-width: 220px; } }
+@media print { .content-inner abbr.term::after { display: none; } .content-inner abbr.term { border-bottom: none; } }
+
 .content-inner p { margin: 12px 0; }
 .content-inner a { color: var(--modo-green); text-decoration: none; border-bottom: 1px solid transparent; }
 .content-inner a:hover { border-bottom-color: var(--modo-green); }
