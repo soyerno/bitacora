@@ -52,7 +52,7 @@ El pre-commit no reemplaza al CI; lo **adelanta** para los errores baratos de at
 | Gate | Qué prueba |
 |------|-----------|
 | `check:feature-coverage` / `-citations` | El contrato de flags ([Lección 06](06-feature-flags.md)) |
-| `check:ai-parity` | El asistente Firu + los agentes MCP cubren toda funcionalidad nueva |
+| `check:ai-parity` | El asistente IA + los agentes MCP cubren toda funcionalidad nueva |
 | `pr-lint` | El PR tiene Pain/Purpose/How + metadata + 🏁 Hito |
 | `commit-lint` | Conventional Commits |
 | `release-on-merge` | semantic-release: cada merge a `main` → bump + tag + GitHub Release + CHANGELOG |

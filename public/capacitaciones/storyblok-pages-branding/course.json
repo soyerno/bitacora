@@ -4,6 +4,7 @@
   "subtitle": "Sin código y con las manos en la masa: creá, editá y publicá páginas de modo.com.ar vos mismo. La marca y la calidad juegan de tu lado.",
   "lessons": [
     {"id":"intro","num":"·","title":"Empezá acá","eyebrow":"Curso sin código · te empodera a hacerlo vos","path":"README.md"},
+    {"id":"00","num":"00","title":"Prepará a Claude (una vez)","eyebrow":"Setup único · API key + MCP + herramientas","path":"00-preparar.md","file":"00-preparar.md"},
     {"id":"01","num":"01","title":"Tu material de trabajo","eyebrow":"Lección 01 · Página, bloque, dirección","path":"01-pagina-que-es.md","file":"01-pagina-que-es.md"},
     {"id":"02","num":"02","title":"Le pedís a Claude","eyebrow":"Lección 02 · Dirigís el armado · Claude lo hace por MCP","path":"02-storyblok.md","file":"02-storyblok.md"},
     {"id":"03","num":"03","title":"La marca juega para vos","eyebrow":"Lección 03 · El sistema te respalda","path":"03-marca.md","file":"03-marca.md"},
