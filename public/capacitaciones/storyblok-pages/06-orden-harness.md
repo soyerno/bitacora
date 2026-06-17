@@ -25,6 +25,24 @@ La invitación de este curso: resolvé el **diseño** apoyándote en agents/skil
 
 > **Entrenados (2026-06-17).** Los agents `modo-branding`, `modo-ux` y `modo-frontend` ya existen en `~/.claude/agents/`, aterrizados en las reglas reales de `modo-landing` (branding oficial, `src/CMS/`, bloks reales). Se apoyan en el skill **`modo-design-system`** (reglas de marca) y en **`impeccable`** / **`ui-ux-pro-max`** (diseño/UX). El panel de evaluación es **`modo-design-review`** y el orquestador full es **`modo-page-pipeline`**.
 
+### El proceso, paso a paso
+
+“Diseñar con Claude” no es pedirle “hacé una página linda”. Es un **loop corto y dirigido**: vos das el brief, cada agente aporta su capa, vos revisás y ajustás. Cada agente corre como **subagente** (contexto propio) para no ensuciar el hilo principal — patrón de Anthropic *use subagents for investigation*.
+
+1. **Brief.** Arrancá con el qué y el porqué, no con el cómo. Dejá que Claude te entreviste si falta info: *“Quiero una landing de pagos agénticos. Entrevistame con `AskUserQuestion` sobre audiencia, mensaje y edge cases, y escribí un brief.”* (Anthropic *let Claude interview you*.)
+2. **Marca → `modo-branding`.** *“Usá `modo-branding` para la dirección de marca de esta página.”* Devuelve tokens del branding oficial, tipografía y tono. Sin hex a mano.
+3. **UX → `modo-ux`.** *“Pasá el brief + la dirección de marca a `modo-ux`.”* Devuelve estructura (orden de bloks), jerarquía, un CTA principal, requisitos de a11y y copy.
+4. **Frontend → `modo-frontend`.** *“Con eso, `modo-frontend`: qué bloks reuso del CMS y cuál creo.”* Devuelve el plan técnico: reuse-vs-create sobre `CMS_COMPONENTS`, responsive y performance.
+5. **Evaluación → `modo-design-review`.** *“Evaluá el diseño con `modo-design-review`.”* Un panel en contexto fresco (Brand Guardian + Accessibility Auditor + `impeccable`) intenta refutarlo y emite **APROBADO / RECHAZADO** con findings. Si rechaza, volvés al agente que corresponda.
+6. **Gate humano.** Vos mirás el veredicto y aprobás. Recién ahí pasás a integración (`modo-storyblok`).
+
+**Tips para que rinda:**
+
+- **Encadenás la salida**, no repetís el contexto: la dirección de marca alimenta a UX, UX alimenta a frontend. El resultado es una mini-spec de diseño lista para `sdd-spec` y `modo-storyblok`.
+- **Iterá corto.** Si algo no cierra, corregí en el acto (*“el hero compite con el CTA, bajale jerarquía”*) en vez de acumular vueltas. Anthropic *course-correct early and often*.
+- **No saltees la evaluación.** Es la diferencia entre “se ve bien” y “probado”: un revisor que no hizo el diseño lo juzga sin sesgo.
+- **El atajo:** `modo-page-pipeline` corre este loop completo (brief → marca → UX → frontend → evaluación) parando en los gates humanos — útil cuando ya tenés el flujo internalizado.
+
 ## El principio que ordena todo: el context window
 
 La restricción base de Claude Code es el **context window**: se llena rápido y el rendimiento cae a medida que se llena. De ahí se derivan: **skills on-demand** (no meter todo en `CLAUDE.md`), **subagentes para investigar** (leer muchos archivos en contexto aparte) y **`/clear` entre fases**. Base: *Claude Code 101* y *Claude Code in Action* en [Anthropic Academy](https://anthropic.skilljar.com/).
