@@ -44,7 +44,10 @@
     'blok': 'Un bloque reutilizable de una página en Storyblok.',
     'story': 'Una página en Storyblok.',
     'slug': 'La parte de la URL que identifica la página (lo que va después de la barra).',
-    'token': 'Una llave de acceso: el permiso para que una herramienta actúe en tu nombre.'
+    'token': 'Una llave de acceso: el permiso para que una herramienta actúe en tu nombre.',
+    'marketplace': 'La tienda de skills/plugins de Claude — desde ahí instalás y actualizás las herramientas MODO.',
+    'skill': 'Una herramienta o conocimiento reutilizable que Claude usa cuando aplica.',
+    'plugin': 'Un paquete de skills/herramientas que instalás de una vez desde el marketplace.'
   };
   var GLOSS_TERMS = Object.keys(GLOSSARY).sort(function (a, b) { return b.length - a.length; });
   var GLOSS_RX = '(?<![\\w-])(' + GLOSS_TERMS.map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')(?![\\w-])';
