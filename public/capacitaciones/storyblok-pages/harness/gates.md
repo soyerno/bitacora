@@ -31,15 +31,31 @@ Workflow({
 ## Flujo del Workflow
 
 ```
-TDD ──► Gates (3 en paralelo) ──► Barrier ──► Deploy (solo si todos passed)
-                                     │
-                            failed > 0 → status: "blocked" (fix + re-correr)
+TDD ─► Gates (3 en paralelo) ─► Barrier ─► Eval (LLM-judge) ─► Deploy (gates+eval ok)
+                                  │              │
+                         failed>0 → blocked   under-threshold → blocked (fix + re-correr)
 ```
 
 - **TDD** corre primero (gate liviano, local).
 - **Gates** (code-review+SDD ‖ perf+CSP ‖ a11y+SEO) corren en `parallel()` — barrier natural.
 - **Barrier** consolida. Si algún `passed:false` → `status: "blocked"` con findings + evidencia. NO deploy.
+- **Eval** (capa 6.5): un LLM-judge puntúa el **entregable** 1-5 por dimensión de la rúbrica MODO. Pass/fail dice "¿pasa?"; el eval dice "¿cuán bien quedó?".
 - **Deploy** solo **prepara** el comando alpha (no lo dispara sin confirmación). Prod siempre fuera.
+
+## El eval del entregable (capa 6.5)
+
+Los gates son binarios; el eval **puntúa calidad** en lo que el binario no ve. Rúbrica (1-5, `parallel()` un judge por dimensión, schema `EVAL_SCHEMA`):
+
+| Dimensión | Mide | `blocking` si… |
+|---|---|---|
+| `brand-voice` | copy en voz MODO + tokens/fidelidad de marca | hex hardcodeado o copy fuera de voz |
+| `ux-clarity` | jerarquía, flujo, carga cognitiva, mobile | hay una barrera de uso real |
+| `content-seo-quality` | calidad del contenido + completitud SEO/GEO | falta JSON-LD o metadata core |
+| `simplicity-scope` | mínimo que resuelve, diff quirúrgico (Principio 2) | un senior lo llamaría sobre-complicado |
+
+**Barrier del eval**: deploy solo si **cada dimensión ≥ 3 Y promedio ≥ 4**. Si no → `status: "blocked"` con los blockers + razones (los gates pasaron, pero la calidad no llega).
+
+> Calibración (Lección 10): comparar el score del eval contra tu veredicto humano 1-5. Cuando divergen, ahí está el aprendizaje. Para review adversarial más duro, cambiá el judge plano por el skill `judgment-day` (dual blind) o los agents `review-risk/readability/reliability/resilience`.
 
 ## Por qué evidencia obligatoria
 

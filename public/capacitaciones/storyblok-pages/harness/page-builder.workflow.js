@@ -16,12 +16,13 @@
 
 export const meta = {
   name: 'modo-landing-page-builder',
-  description: 'Corre los 4 gates de una página Storyblok modo-landing en paralelo (code-review+SDD · perf+CSP · a11y+SEO) con barrier antes del deploy alpha',
+  description: 'Corre los 4 gates de una página Storyblok modo-landing en paralelo (code-review+SDD · perf+CSP · a11y+SEO), un eval LLM-judge del entregable (rúbrica MODO 1-5), con doble barrier antes del deploy alpha',
   phases: [
     { title: 'TDD', detail: 'verificar tests red→green del blok' },
     { title: 'Gates', detail: 'code-review+SDD · perf+CSP · a11y+SEO en paralelo' },
     { title: 'Barrier', detail: 'consolidar veredictos — bloquear si alguno falla' },
-    { title: 'Deploy', detail: 'proponer deploy alpha solo si todos pasan' },
+    { title: 'Eval', detail: 'LLM-judge: puntúa el entregable 1-5 por dimensión (rúbrica MODO)' },
+    { title: 'Deploy', detail: 'proponer deploy alpha solo si gates pasan y el eval supera el umbral' },
   ],
 };
 
@@ -39,6 +40,21 @@ const VERDICT_SCHEMA = {
     passed: { type: 'boolean' },
     findings: { type: 'array', items: { type: 'string' } },
     evidence: { type: 'string', description: 'comando corrido + salida/links que prueban el veredicto' },
+  },
+};
+
+// Eval del entregable (LLM-judge): score cualitativo 1-5 por dimensión, complementa
+// los gates pass/fail. Captura calidad que el binario no ve (voz de marca, claridad UX,
+// simplicidad/scope). Barrier propio: umbral por dimensión + promedio.
+const EVAL_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['dimension', 'score', 'reasons', 'blocking'],
+  properties: {
+    dimension: { type: 'string' },
+    score: { type: 'integer', minimum: 1, maximum: 5 },
+    reasons: { type: 'array', items: { type: 'string' } },
+    blocking: { type: 'boolean', description: 'true si score < 3 o hay un fallo que bloquea el deploy' },
   },
 };
 
@@ -96,10 +112,61 @@ if (failed.length > 0) {
   };
 }
 
-// ── Deploy alpha (solo si todos pasan) ─────────────────────────────────────────
+// ── Fase Eval (LLM-judge sobre el entregable) ──────────────────────────────────
+// Los gates dijeron pass/fail. El eval puntúa CUÁN BIEN quedó el entregable en las
+// dimensiones que el binario no captura. Barrier propio: cada dimensión ≥ MIN y
+// promedio ≥ AVG. Capa 6.5 del stack (entre gates y deploy). Ver Lección 10 (deliver-eval).
+phase('Eval');
+const EVAL_THRESHOLD = { min: 3, avg: 4 };
+const EVAL_DIMENSIONS = [
+  {
+    key: 'brand-voice',
+    prompt: `Evaluá (1-5) la FIDELIDAD DE MARCA del entregable de la página ${slug} en modo-landing (${repo}).
+Mirá: copy en voz MODO (voseo rioplatense, claro, humano — nunca robótico ni telegráfico), uso de tokens del design system (sin hex hardcodeado), fidelidad a @playsistemico/modo-ui-lib-web. 5 = indistinguible de una página MODO de producción; 1 = se va de marca. blocking:true si hay hex hardcodeado o copy fuera de voz. Justificá con ejemplos concretos (líneas/archivos).`,
+  },
+  {
+    key: 'ux-clarity',
+    prompt: `Evaluá (1-5) la CLARIDAD UX del entregable de la página ${slug} en modo-landing (${repo}).
+Mirá: jerarquía visual, flujo, carga cognitiva, mobile-first (no rompe en 375px), que el usuario entienda qué hacer sin esfuerzo. 5 = obvio y limpio; 1 = confuso/abrumador. blocking:true si hay una barrera de uso real. Justificá concreto.`,
+  },
+  {
+    key: 'content-seo-quality',
+    prompt: `Evaluá (1-5) la CALIDAD DE CONTENIDO + SEO/GEO del entregable de la página ${slug} (más allá del pass/fail del gate).
+Mirá: calidad/utilidad del contenido editorial, completitud y corrección del JSON-LD, metadata (seo[0]), URL-as-state para filtros, descubribilidad por crawlers/IA. 5 = completo y de alta calidad; 1 = mínimo/pobre. blocking:true si falta JSON-LD o metadata core. Justificá concreto.`,
+  },
+  {
+    key: 'simplicity-scope',
+    prompt: `Evaluá (1-5) la SIMPLICIDAD Y EL SCOPE del entregable de la página ${slug} en modo-landing (${repo}) — Principio 2 del método.
+Mirá: ¿es el mínimo que resuelve el pedido? ¿hay features no pedidas, abstracciones de un solo uso, manejo de errores/config especulativo? ¿el diff es quirúrgico? 5 = mínimo y quirúrgico; 1 = sobre-construido. blocking:true si un senior lo llamaría sobre-complicado. Justificá con el diff.`,
+  },
+];
+
+const evalScores = (await parallel(
+  EVAL_DIMENSIONS.map((d) => () =>
+    agent(d.prompt, { label: `eval:${d.key}`, phase: 'Eval', schema: EVAL_SCHEMA })
+  )
+)).filter(Boolean);
+
+const evalAvg = evalScores.length
+  ? evalScores.reduce((s, e) => s + e.score, 0) / evalScores.length
+  : 0;
+const evalBlockers = evalScores.filter((e) => e.blocking || e.score < EVAL_THRESHOLD.min);
+log(`Eval: avg ${evalAvg.toFixed(1)}/5 · ${evalScores.map((e) => `${e.dimension}:${e.score}`).join(' ')}${evalBlockers.length ? ` — BLOQUEADO por: ${evalBlockers.map((b) => b.dimension).join(', ')}` : ''}`);
+
+if (evalBlockers.length > 0 || evalAvg < EVAL_THRESHOLD.avg) {
+  return {
+    status: 'blocked',
+    reason: `Eval del entregable por debajo del umbral (cada dimensión ≥ ${EVAL_THRESHOLD.min}, promedio ≥ ${EVAL_THRESHOLD.avg}). Gates pasaron, pero la calidad no llega — fix + re-correr.`,
+    gates: all.map((v) => ({ gate: v.gate, passed: v.passed })),
+    eval: { avg: Number(evalAvg.toFixed(2)), scores: evalScores },
+    blockers: evalBlockers.map((b) => ({ dimension: b.dimension, score: b.score, reasons: b.reasons })),
+  };
+}
+
+// ── Deploy alpha (solo si gates pasan Y el eval supera el umbral) ────────────────
 phase('Deploy');
 const deploy = await agent(
-  `Todos los gates pasaron para ${slug}. Preparás (NO disparás sin confirmación del humano) el deploy alpha de modo-landing:
+  `Todos los gates pasaron y el eval del entregable superó el umbral (avg ${evalAvg.toFixed(1)}/5) para ${slug}. Preparás (NO disparás sin confirmación del humano) el deploy alpha de modo-landing:
 comando: gh workflow run ci-alpha.yaml -f environment=develop --ref <rama>.
 Devolvé el comando exacto con la rama real, el smoke esperado (curl 200 a /${slug}) y el recordatorio de cerrar perf+CSP contra el alpha. Prod queda FUERA (gate GRC + decisión de equipo).`,
   { label: 'deploy:alpha-prep', phase: 'Deploy' }
@@ -108,6 +175,7 @@ Devolvé el comando exacto con la rama real, el smoke esperado (curl 200 a /${sl
 return {
   status: 'ready-for-alpha',
   gates: all.map((v) => ({ gate: v.gate, passed: v.passed, evidence: v.evidence })),
+  eval: { avg: Number(evalAvg.toFixed(2)), scores: evalScores.map((e) => ({ dimension: e.dimension, score: e.score })) },
   deployPlan: deploy,
-  note: 'Deploy alpha preparado, NO disparado. Prod fuera de scope.',
+  note: 'Deploy alpha preparado, NO disparado. Gates + eval OK. Prod fuera de scope.',
 };
