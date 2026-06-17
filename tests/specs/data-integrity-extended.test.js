@@ -59,6 +59,17 @@ describe('SPEC-RD-002 — rd.json entry fields', () => {
       expect(existsSync(p), `missing file for rd "${item.slug}": rd/${item.href}`).toBe(true);
     }
   });
+
+  it('every status is declared in _meta.workflow', () => {
+    const doc = loadJSON('rd/rd.json');
+    const workflow = new Set(doc._meta.workflow);
+    for (const item of doc.items) {
+      expect(
+        workflow.has(item.status),
+        `rd '${item.slug}' has undeclared status '${item.status}'`,
+      ).toBe(true);
+    }
+  });
 });
 
 // ── capacitaciones.json ───────────────────────────────────────────────────────
@@ -98,6 +109,13 @@ describe('SPEC-CAP-002 — capacitaciones.json entry fields', () => {
     for (const item of items) {
       const p = resolveContent(item.href);
       expect(existsSync(p), `missing file for capacitacion "${item.id}": ${item.href}`).toBe(true);
+    }
+  });
+
+  it('every entry has a string status field', () => {
+    for (const item of items) {
+      expect(typeof item.status).toBe('string');
+      expect(item.status.length).toBeGreaterThan(0);
     }
   });
 });

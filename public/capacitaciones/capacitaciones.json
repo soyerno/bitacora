@@ -77,6 +77,7 @@
       "desc": "La versión sin código y hands-on del recorrido de páginas Storyblok, para que cualquiera del equipo arme páginas por su cuenta: pensar la página como bloques que combinás, crear/editar/previsualizar/publicar en Storyblok paso a paso, cómo la marca te respalda (no te podés salir de MODO), cómo llegar en verde a los 4 controles de calidad (tres jugadas las hacés vos), y cómo publicar con confianza. Cierra con una práctica guiada: armás tu primera landing de producto (pagos agénticos en ChatGPT) de cero, más glosario técnico→humano.",
       "href": "capacitaciones/storyblok-pages-branding/index.html",
       "audience": "Cualquiera del equipo, sin escribir código — contenido, diseño, marketing",
+      "status": "draft",
       "date": "2026-06-17",
       "lessons": 9,
       "topics": [
