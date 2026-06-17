@@ -143,4 +143,4 @@ curl -sS -X POST -u "$EMAIL:$TOKEN" \
 
 ---
 
-> Volvé al [README](README.md) o hacé el [Lab integrador](exercises/README.md).
+> Volvé al [README](#intro) o hacé el [Lab integrador](exercises/README.md).

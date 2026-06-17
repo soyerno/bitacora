@@ -68,4 +68,4 @@ Ese curso cubre:
 
 > Curso completo de deploy: [../deploy-playsistemico/README.md](../deploy-playsistemico/README.md)
 >
-> Volver al [inicio](README.md) o hacer el [Lab integrador](exercises/README.md).
+> Volver al [inicio](#intro) o hacer el [Lab integrador](exercises/README.md).

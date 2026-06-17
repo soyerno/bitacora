@@ -8,7 +8,7 @@
     {
       "id": "coding-con-agentes",
       "title": "Coding con una flota de agentes",
-      "desc": "La metodología que forjé construyendo Firulapp con Claude Code, destilada y transferible a cualquier repo: los 4 principios Karpathy + honestidad, contexto como memoria de trabajo (file-memory + destilación), Spec-Driven con OpenSpec, worktree por feature, una oficina de 20 agentes especializados (CEO/PO/PM + roster), destilar skills, el contrato de feature flags (OFF ⇒ nada), el harness de gates, el pipeline de PRs (Pain/Purpose/How + no perder trabajo), seguridad por defecto y el loop de ejecución por objetivos. Incluye lab integrador end-to-end.",
+      "desc": "La metodología que forjé construyendo una app real con Claude Code, destilada y transferible a cualquier repo: los 4 principios Karpathy + honestidad, contexto como memoria de trabajo (file-memory + destilación), Spec-Driven con OpenSpec, worktree por feature, una oficina de 20 agentes especializados (CEO/PO/PM + roster), destilar skills, el contrato de feature flags (OFF ⇒ nada), el harness de gates, el pipeline de PRs (Pain/Purpose/How + no perder trabajo), seguridad por defecto y el loop de ejecución por objetivos. Incluye lab integrador end-to-end.",
       "href": "capacitaciones/coding-con-agentes/index.html",
       "status": "draft",
       "audience": "Dev que codea con agentes (Claude Code) y quiere una metodología completa",
@@ -25,9 +25,9 @@
         "seguridad"
       ],
       "harness": [
-        "firu-ceo",
-        "firu-po",
-        "firu-pm",
+        "agent-ceo",
+        "agent-po",
+        "agent-pm",
         "openspec",
         "caveman",
         "engram",

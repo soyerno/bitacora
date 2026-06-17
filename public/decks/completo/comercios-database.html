@@ -94,7 +94,7 @@
   .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
   .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
   .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
-  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col .meta__label { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
   .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
   .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
   @media print { body { background: white; } .deck { display: block; height: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
@@ -197,9 +197,9 @@
       <p class="muted" style="margin-top: 16px; padding: 10px 14px; background: var(--gray-3); border-radius: 8px; max-width: 70ch;"><span class="sigil"></span><strong>Asume MVP releasado a prod</strong> (decisiones del deck <em>comercios-mvp</em> resueltas: release POC + 301 legacy /comercios → /modo-en-tu-comercio + migracion scope EXA → COENXT).</p>
     </div>
     <div class="meta">
-      <div class="meta__col"><h4>Audiencia</h4><p>Comite mixto · PM · TL · Manager</p></div>
-      <div class="meta__col"><h4>Autor</h4><p>Hernan De Souza · COENXT board</p></div>
-      <div class="meta__col"><h4>Fecha</h4><p>2026-05-20 · base: branch feat/comercios-mvp-2026-05-15 (MVP)</p></div>
+      <div class="meta__col"><p class="meta__label">Audiencia</p><p>Comite mixto · PM · TL · Manager</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernan De Souza · COENXT board</p></div>
+      <div class="meta__col"><p class="meta__label">Fecha</p><p>2026-05-20 · base: branch feat/comercios-mvp-2026-05-15 (MVP)</p></div>
     </div>
   </section>
 
@@ -646,9 +646,9 @@
       </div>
     </div>
     <div class="meta">
-      <div class="meta__col"><h4>Docs</h4><p>modo-landing/docs/comercios-database/ · 9 docs + schemas + seeds</p></div>
-      <div class="meta__col"><h4>Board</h4><p>COENXT · play-sistemico.atlassian.net · sprint backlog pre-cargado</p></div>
-      <div class="meta__col"><h4>Branch</h4><p>base MVP: feat/comercios-mvp-2026-05-15 · V1/V2/V3 abren branches propias (feat/comercios-db-v1, etc.) al arrancar</p></div>
+      <div class="meta__col"><p class="meta__label">Docs</p><p>modo-landing/docs/comercios-database/ · 9 docs + schemas + seeds</p></div>
+      <div class="meta__col"><p class="meta__label">Board</p><p>COENXT · play-sistemico.atlassian.net · sprint backlog pre-cargado</p></div>
+      <div class="meta__col"><p class="meta__label">Branch</p><p>base MVP: feat/comercios-mvp-2026-05-15 · V1/V2/V3 abren branches propias (feat/comercios-db-v1, etc.) al arrancar</p></div>
     </div>
   </section>
 
