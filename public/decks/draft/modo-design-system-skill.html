@@ -549,7 +549,7 @@ $ scripts/validate-tokens.sh &lt;generated&gt;
         <tr><th>Regla</th><th>Detecta</th><th>Fix</th></tr>
       </thead>
       <tbody>
-        <tr><td><span class="chip chip--red">HEX_HARDCODED</span></td><td>hex literal fuera de allowlist <span class="mono">rgba(...)</span> / <span class="mono">var(--...)</span></td><td>usar token Tailwind (<span class="mono">sdk-*</span>, <span class="mono">primary-*</span>)</td></tr>
+        <tr><td><span class="chip chip--red">HEX_HARDCODED</span></td><td>hex literal fuera de allowlist <span class="mono">rgba(...)</span> / <span class="mono">var(--...)</span></td><td>usar token canónico (<span class="mono">primary-*</span>, <span class="mono">brand-*</span>, <span class="mono">var(--green-*)</span>)</td></tr>
         <tr><td><span class="chip chip--red">FONT_BANNED</span></td><td><span class="mono">Inter</span>, <span class="mono">Roboto</span>, <span class="mono">Arial</span>, <span class="mono">system-ui</span>, <span class="mono">Geist</span>, <span class="mono">Space Grotesk</span></td><td><span class="mono">font-quicksand</span> o <span class="mono">font-red-hat</span></td></tr>
         <tr><td><span class="chip chip--red">TW_DEFAULT_COLOR</span></td><td><span class="mono">bg-green-500</span>, <span class="mono">text-gray-500</span>, etc.</td><td>tokens MODO equivalentes</td></tr>
         <tr><td><span class="chip chip--yellow">MISSING_LAYOUT</span></td><td>page sin <span class="mono">NavFooterLayout</span></td><td>wrap content en layout canónico</td></tr>

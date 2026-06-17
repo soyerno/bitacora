@@ -7,7 +7,7 @@
 1. **Claude** abierto en tu compu.
 2. Tu **llave de Storyblok** (un token).
 3. La **conexión Claude ↔ Storyblok** (el “MCP”).
-4. Las **herramientas MODO** (skills) que Claude usa.
+4. Las **herramientas MODO** (skills), instaladas desde el marketplace.
 
 ## 1 · Claude
 
@@ -33,15 +33,19 @@ El **MCP** es el “cable” que enchufa a Claude con Storyblok para que pueda c
 
 Sabés que quedó bien cuando le pedís a Claude “mostrame las páginas del espacio” y te las lista.
 
-## 4 · Las herramientas MODO
+## 4 · Las herramientas MODO (desde el marketplace)
 
-Para que todo salga on-brand y pase los controles, Claude usa unas **skills** MODO. Dejá activas en tu Claude:
+Para que todo salga on-brand y pase los controles, Claude usa unas **skills** MODO. **No las creás vos**: las publica el equipo en un **marketplace** y vos las instalás (y actualizás) desde ahí. Las que vas a querer:
 
-- **`modo-storyblok`** — el que habla con Storyblok (crea y actualiza páginas).
+- **`modo-storyblok`** — habla con Storyblok (crea y actualiza páginas).
 - **`modo-design-system`** — la marca MODO (colores, tipografías, tono).
 - Las skills de **calidad** (los 4 controles de la lección 04).
 
-Si no sabés si están, preguntale a Claude “¿qué skills MODO tenés activas?” o pedí que te las dejen puestas.
+**Instalarlas (una vez):** en Claude Code escribí **`/plugin`**, buscá el marketplace **MODO** e instalá el pack. Si no aparece, pedile a tu equipo que te agregue el marketplace MODO — después instalás vos.
+
+**Mantenerlas al día:** las skills **mejoran con el tiempo**. Cuando hay versión nueva, volvés a **`/plugin`** y **actualizás** — no quedás clavado en una vieja. Ese es el único lugar de donde salen y se actualizan.
+
+> ¿Dudás si están puestas? Preguntale a Claude: “¿qué skills MODO tenés activas?”.
 
 ## Checklist de salida
 
@@ -49,6 +53,7 @@ Si no sabés si están, preguntale a Claude “¿qué skills MODO tenés activas
 - [ ] Token de Storyblok generado y guardado
 - [ ] Space ID a mano
 - [ ] MCP de Storyblok conectado (Claude lista las páginas)
-- [ ] Skills MODO activas (`modo-storyblok`, `modo-design-system`, calidad)
+- [ ] Skills MODO instaladas desde el marketplace (`/plugin`) y activas (`modo-storyblok`, `modo-design-system`, calidad)
+- [ ] Sé que se actualizan desde `/plugin` cuando hay versión nueva
 
 > Esto se hace **una vez**, no se repite. Listo esto, ya podés armar. Siguiente: [01 · Tu material de trabajo](#01)
