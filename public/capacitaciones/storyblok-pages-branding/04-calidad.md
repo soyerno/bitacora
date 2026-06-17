@@ -1,6 +1,6 @@
 # 04 · Hacé que pase los controles
 
-> Toda página pasa por cuatro controles antes de salir. No son un examen que te toman: son una red de seguridad. Y vos podés llegar a cada uno con el OK puesto, porque sabés qué mira y cómo darle lo que pide.
+> Toda página pasa por cuatro controles antes de salir: una red de seguridad que cuida tu trabajo. Llegás a cada uno con el OK puesto, porque sabés qué mira y cómo darle lo que pide.
 
 Pensalos como el repaso antes de salir de casa: ¿llaves, billetera, teléfono? Cuatro chequeos, y arrancás tranquilo.
 

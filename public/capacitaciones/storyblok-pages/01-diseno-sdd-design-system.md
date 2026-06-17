@@ -36,7 +36,7 @@ sed -n '/export const CMS_COMPONENTS/,/^};/p' src/CMS/utils/availableComponents.
 
 Bloks actuales (no exhaustivo): `HeroPrimary`, `HeroSecondary`, `SectionBannerWithImage`, `SectionBannerWithoutImage`, `SectionGrid`, `SectionRounded`, `SectionBannerIcon`, `SectionCarousel`, `SectionCarouselGroup`, `SectionDualInfo`, `SectionDualList`, `SectionVideo`, `SectionBankList`, `SectionBlog`, `SectionCollapsible`, `Download`, `Navbar`, `Footer`.
 
-**Regla:** si un blok existente cubre el caso, **reusalo** (solo autorás la story). Creás componente nuevo solo si ningún blok encaja.
+**Regla:** en lo posible, **reusá un blok del CMS** que ya exista (solo autorás la story). Creás componente nuevo solo si ninguno encaja — y ese blok nuevo **se integra al CMS** (registro en los 3 puntos, lección 02) y **pasa por todos los gates** (TDD · review+SDD · perf+CSP · a11y+SEO, lección 04) antes de quedar disponible para reusar.
 
 ## Harness · design system MODO
 
