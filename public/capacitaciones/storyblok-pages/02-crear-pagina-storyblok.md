@@ -38,7 +38,7 @@ const { data } = await Storyblok.get(`cdn/stories/${slug}`, {
 
 ### Autorar con el harness
 
-Con `modo-storyblok` podés crear/editar la story por MCP o curl. Mínimo para una página:
+La story se autora **vía Claude + el MCP de Storyblok** (skill `modo-storyblok`), no editando a mano en el panel: le pedís en lenguaje normal y Claude crea/actualiza la story por la API (curl JSON-RPC queda como fallback). Mínimo para una página:
 
 1. Crear la story con `full_slug` = tu ruta.
 2. Setear `content.body` con los bloks (cada uno con su `component` válido).

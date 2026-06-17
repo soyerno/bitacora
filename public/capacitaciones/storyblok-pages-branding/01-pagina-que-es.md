@@ -16,7 +16,7 @@ Cada página se construye apilando **bloques** de arriba hacia abajo. Tu caja de
 - **listado de bancos**;
 - **carrusel**, **video**, **preguntas frecuentes**.
 
-Estas piezas ya están construidas y probadas. Tu poder está en **elegirlas, ordenarlas y cargarles contenido** para contar lo que querés contar. Dos personas con la misma caja de bloques arman páginas distintas: la diferencia es tu criterio.
+Estas piezas ya están construidas y probadas. Tu poder está en **elegirlas, ordenarlas y darles contenido** para contar lo que querés — se lo pedís a Claude y él las arma. Dos personas con la misma caja de bloques arman páginas distintas: la diferencia es tu criterio.
 
 ### Lo que armás solo (que es casi todo)
 
@@ -35,4 +35,4 @@ Lo primero siempre es **mirar qué piezas ya existen y reusarlas**: la mayoría 
 
 Lo que va después de `modo.com.ar/` lo elegís vos al crear la página. Por ejemplo `modo.com.ar/pagos-agenticos`. Conviene que sea **clara y estable**: es lo que vas a compartir en campañas y lo que ayuda a que te encuentren en buscadores (lección 04). Cambiarla después rompe los links que ya circularon, así que elegila pensando a futuro.
 
-> Siguiente: [02 · Manos a Storyblok](#02) — pasamos a la acción.
+> Siguiente: [02 · Le pedís a Claude](#02) — pasamos a la acción.

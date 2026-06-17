@@ -28,16 +28,16 @@ Pensá una página como una **construcción con bloques** (estilo LEGO):
 
 - La **página** es lo que armás: una landing de producto, una campaña, una sección.
 - Los **bloques** son las piezas: un encabezado grande, una grilla de logos, un banner con botón, un listado de bancos. Ya están hechas y probadas; vos las **elegís, las ordenás y las llenás de contenido**.
-- Vos **diseñás la página** combinando esas piezas: elegís, ordenás, cargás y publicás.
+- Vos **diseñás la página**: elegís las piezas, el orden y el contenido, y se lo pedís a Claude, que la arma y la actualiza por vos.
 
-Lo mejor: **experimentás libre.** Borrador y vista previa para probar todo lo que quieras, y la marca ya viene incorporada en cada pieza, así que siempre sale prolijo. Probá, mové, publicá.
+Lo mejor: **experimentás libre.** Borrador y vista previa para probar todo lo que quieras, y la marca ya viene incorporada en cada pieza, así que siempre sale prolijo. Pedí, mirá, ajustá, publicá.
 
 ## El recorrido
 
 | # | Lección | Lo que te llevás |
 |---|---------|------------------|
 | 01 | [Tu material de trabajo](#01) | Pensar la página como bloques que combinás |
-| 02 | [Manos a Storyblok](#02) | El paso a paso para crear y editar, en serio |
+| 02 | [Le pedís a Claude](#02) | Cómo dirigís el armado (Claude lo hace por vos) |
 | 03 | [La marca juega para vos](#03) | La marca ya viene en las piezas — siempre on-brand |
 | 04 | [Hacé que pase los controles](#04) | Qué mira cada control y cómo darle el OK |
 | 05 | [Publicá con confianza](#05) | Llevar tu página a la gente, sin sustos |

@@ -5,7 +5,7 @@
   "lessons": [
     {"id":"intro","num":"·","title":"Empezá acá","eyebrow":"Curso sin código · te empodera a hacerlo vos","path":"README.md"},
     {"id":"01","num":"01","title":"Tu material de trabajo","eyebrow":"Lección 01 · Página, bloque, dirección","path":"01-pagina-que-es.md","file":"01-pagina-que-es.md"},
-    {"id":"02","num":"02","title":"Manos a Storyblok","eyebrow":"Lección 02 · El paso a paso para crear y editar","path":"02-storyblok.md","file":"02-storyblok.md"},
+    {"id":"02","num":"02","title":"Le pedís a Claude","eyebrow":"Lección 02 · Dirigís el armado · Claude lo hace por MCP","path":"02-storyblok.md","file":"02-storyblok.md"},
     {"id":"03","num":"03","title":"La marca juega para vos","eyebrow":"Lección 03 · El sistema te respalda","path":"03-marca.md","file":"03-marca.md"},
     {"id":"04","num":"04","title":"Hacé que pase los controles","eyebrow":"Lección 04 · Llegá en verde, vos manejás","path":"04-calidad.md","file":"04-calidad.md"},
     {"id":"05","num":"05","title":"Publicá con confianza","eyebrow":"Lección 05 · Del borrador a producción, al mando","path":"05-publicar.md","file":"05-publicar.md"},
