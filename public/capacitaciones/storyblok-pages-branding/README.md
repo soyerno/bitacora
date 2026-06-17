@@ -1,16 +1,16 @@
 # Armá páginas de modo.com.ar — sí, vos
 
-> **Esto no es un curso para mirar de afuera.** Al terminar vas a saber crear, editar y publicar páginas de modo.com.ar por tu cuenta, sin depender de desarrollo para cada cambio y sin escribir una línea de código. La marca y la calidad ya están de tu lado: vos ponés el contenido y las decisiones.
+> **Al terminar, armás páginas de modo.com.ar de punta a punta.** Crear, editar y publicar, a tu ritmo, sin escribir una línea de código. La marca y la calidad ya vienen resueltas en las piezas: vos ponés el contenido y las decisiones, y la página sale.
 
 ## Esto es tuyo
 
-Las páginas del sitio no son “territorio de desarrollo donde vos pedís y esperás”. Una parte enorme del trabajo —qué secciones tiene la página, en qué orden, con qué textos, qué imágenes, qué contenido, cuándo sale— **la manejás vos**. Este curso te da las llaves.
+Una parte enorme de cada página —qué secciones tiene, en qué orden, con qué textos, qué imágenes, qué contenido, cuándo sale— **la manejás vos**. Este curso te da las llaves para hacerlo.
 
 ## Para quién
 
 - **Branding y diseño** que quiere ver su criterio reflejado en el sitio sin intermediarios.
 - **Contenido y marketing** que escribe, arma campañas y necesita publicar a tiempo.
-- Cualquiera que hasta hoy “pedía una página” y de ahora en más **la va a armar**.
+- Cualquiera que quiera **armar y publicar** una página a su ritmo.
 
 ## Qué vas a SABER HACER al terminar
 
@@ -28,9 +28,9 @@ Pensá una página como una **construcción con bloques** (estilo LEGO):
 
 - La **página** es lo que armás: una landing de producto, una campaña, una sección.
 - Los **bloques** son las piezas: un encabezado grande, una grilla de logos, un banner con botón, un listado de bancos. Ya están hechas y probadas; vos las **elegís, las ordenás y las llenás de contenido**.
-- Vos sos quien **diseña la página** combinando esas piezas. No estás pidiendo: estás construyendo.
+- Vos **diseñás la página** combinando esas piezas: elegís, ordenás, cargás y publicás.
 
-Lo mejor: **no te podés equivocar de forma grave.** Hay borrador y vista previa para experimentar, y la marca está protegida por un sistema que no te deja salirte de los colores ni las tipografías. Podés probar sin miedo.
+Lo mejor: **experimentás libre.** Borrador y vista previa para probar todo lo que quieras, y la marca ya viene incorporada en cada pieza, así que siempre sale prolijo. Probá, mové, publicá.
 
 ## El recorrido
 
@@ -38,7 +38,7 @@ Lo mejor: **no te podés equivocar de forma grave.** Hay borrador y vista previa
 |---|---------|------------------|
 | 01 | [Tu material de trabajo](#01) | Pensar la página como bloques que combinás |
 | 02 | [Manos a Storyblok](#02) | El paso a paso para crear y editar, en serio |
-| 03 | [La marca juega para vos](#03) | Por qué no te podés “salir de MODO” aunque quieras |
+| 03 | [La marca juega para vos](#03) | La marca ya viene en las piezas — siempre on-brand |
 | 04 | [Hacé que pase los controles](#04) | Qué mira cada control y cómo darle el OK |
 | 05 | [Publicá con confianza](#05) | Llevar tu página a la gente, sin sustos |
 | 🚀 | [Práctica: tu primera página](#practica) | Armala de cero, guiado paso a paso |

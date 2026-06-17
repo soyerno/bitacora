@@ -18,7 +18,7 @@ Cada página se construye apilando **bloques** de arriba hacia abajo. Tu caja de
 
 Estas piezas ya están construidas y probadas. Tu poder está en **elegirlas, ordenarlas y cargarles contenido** para contar lo que querés contar. Dos personas con la misma caja de bloques arman páginas distintas: la diferencia es tu criterio.
 
-### Tu zona de poder (es enorme) y cuándo sumás a alguien
+### Lo que armás solo (que es casi todo)
 
 | Lo hacés vos, solo | Sumás a diseño/desarrollo |
 |--------------------|---------------------------|
@@ -27,7 +27,7 @@ Estas piezas ya están construidas y probadas. Tu poder está en **elegirlas, or
 | Elegir la dirección de la página | — |
 | Previsualizar y publicar | — |
 
-La mayoría de las páginas se arman **enteras con piezas que ya existen**. Solo cuando tu idea pide algo visualmente inédito entra desarrollo. Saber dónde está esa línea te hace autónomo: pedís ayuda cuando de verdad hace falta, no “por las dudas”.
+La mayoría de las páginas se arman **enteras con piezas que ya existen** — eso lo hacés solo, hoy. Para una pieza visual totalmente nueva sumás a diseño y ganás algo a medida. Conocer esa línea te deja avanzar rápido con todo lo que ya tenés a mano.
 
 > Truco para saber si lo podés hacer solo: describí tu página en voz alta. “Encabezado, después grilla de 6 logos, después banner con botón.” Si suena así, son piezas que ya tenés. Si decís “quiero un efecto que nunca vimos”, ahí sí convocás a diseño.
 

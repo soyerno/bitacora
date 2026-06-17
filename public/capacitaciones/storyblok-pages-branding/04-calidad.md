@@ -40,6 +40,6 @@ Dos cosas:
 | 3 · Rápida y segura | Carga ágil, contenido confiable | Imágenes livianas |
 | 4 · Accesible y encontrable | Para todos + visible en buscadores | Texto alternativo + título/descripción |
 
-Tres de las cuatro jugadas son cosas que **hacés vos directamente**. No estás a merced del control: lo manejás.
+Tres de las cuatro jugadas las **hacés vos directamente** — llegás al control con el OK puesto y la página avanza.
 
 > Siguiente: [05 · Publicá con confianza](#05)

@@ -73,11 +73,10 @@
     },
     {
       "id": "storyblok-pages-branding",
-      "title": "Armá páginas de modo.com.ar — para branding",
-      "desc": "La versión sin código y hands-on del recorrido de páginas Storyblok, pensada para que branding y contenido las armen por su cuenta: pensar la página como bloques que combinás, crear/editar/previsualizar/publicar en Storyblok paso a paso, cómo la marca te respalda (no te podés salir de MODO), cómo llegar en verde a los 4 controles de calidad (tres jugadas las hacés vos), y cómo publicar con confianza. Cierra con una práctica guiada: armás tu primera landing de promo de cero, más glosario técnico→humano.",
+      "title": "Armá páginas de modo.com.ar — sin código",
+      "desc": "La versión sin código y hands-on del recorrido de páginas Storyblok, para que cualquiera del equipo arme páginas por su cuenta: pensar la página como bloques que combinás, crear/editar/previsualizar/publicar en Storyblok paso a paso, cómo la marca te respalda (no te podés salir de MODO), cómo llegar en verde a los 4 controles de calidad (tres jugadas las hacés vos), y cómo publicar con confianza. Cierra con una práctica guiada: armás tu primera landing de producto (pagos agénticos en ChatGPT) de cero, más glosario técnico→humano.",
       "href": "capacitaciones/storyblok-pages-branding/index.html",
-      "status": "draft",
-      "audience": "Branding, diseño y contenido (no técnico) que quiere armar páginas por su cuenta",
+      "audience": "Cualquiera del equipo, sin escribir código — contenido, diseño, marketing",
       "date": "2026-06-17",
       "lessons": 8,
       "topics": [

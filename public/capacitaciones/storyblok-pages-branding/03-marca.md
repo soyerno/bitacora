@@ -4,11 +4,11 @@
 
 ## Un sistema que te cuida
 
-Los colores (el verde MODO), las tipografías (Quicksand y Red Hat Display), los espacios y las formas viven en un **sistema de diseño** único. Cada bloque toma su estilo de ahí automáticamente. ¿Qué significa para vos? Que **no te podés salir de la marca aunque quieras**: no hay un campo donde elijas un color al azar y arruines la coherencia. Armás con tranquilidad sabiendo que el resultado va a estar prolijo y on-brand.
+Los colores (el verde MODO), las tipografías (Quicksand y Red Hat Display), los espacios y las formas viven en un **sistema de diseño** único. Cada bloque toma su estilo de ahí automáticamente. ¿Qué significa para vos? Que **la marca ya viene incorporada en cada pieza**: elijas lo que elijas, sale on-brand. Armás con tranquilidad sabiendo que el resultado va a estar prolijo.
 
 Pensalo como una cancha con líneas pintadas: jugás libre adentro, y las líneas se encargan de que nunca te vayas afuera.
 
-## Por qué esto es una ventaja, no una jaula
+## Lo que esto te habilita
 
 - **Consistencia gratis.** Tu página va a convivir perfecto con el resto del sitio sin que tengas que medir nada.
 - **A prueba de futuro.** Si mañana la marca ajusta un tono, cambia en todas las páginas de una vez. Tu trabajo no envejece.
