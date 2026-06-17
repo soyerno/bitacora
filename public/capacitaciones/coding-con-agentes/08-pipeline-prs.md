@@ -35,7 +35,7 @@ Cada PR trae, no negociable:
 - **assignee**.
 - una sección **🏁 Hito** que lo ata a un hito real del producto.
 
-> **Caso Firulapp**: auditamos el historial completo —479 PRs— y los retrofiteamos a 479/479 con milestone + labels + assignee + título Conventional + las secciones con 🏁 Hito. La metadata no es burocracia: es lo que hace navegable el roadmap meses después.
+> **Caso real**: auditamos el historial completo —479 PRs— y los retrofiteamos a 479/479 con milestone + labels + assignee + título Conventional + las secciones con 🏁 Hito. La metadata no es burocracia: es lo que hace navegable el roadmap meses después.
 
 Los commits siguen Conventional Commits (`commit-lint`); el merge a `main` dispara el release ([Lección 07](07-gates.md)).
 

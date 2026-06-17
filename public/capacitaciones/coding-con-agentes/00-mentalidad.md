@@ -8,7 +8,7 @@
 
 Un agente codea rápido. Eso es el problema, no la solución. Sin una mentalidad impuesta, un agente te entrega features que nadie pidió, abstracciones de un solo uso, manejo de errores especulativo, y un "listo" que no verificó. La velocidad sin criterio es deuda que entra más rápido.
 
-Estos principios salieron de [Andrej Karpathy](https://karpathy.ai/) sobre coding con agentes y los endurecí construyendo Firulapp. En el repo viven en `AGENTS.md` —el archivo que el agente carga en **cada** sesión—. Esa es la jugada clave: la mentalidad no se pide por mensaje, se cablea en el contexto permanente.
+Estos principios salieron de [Andrej Karpathy](https://karpathy.ai/) sobre coding con agentes y los endurecí en un proyecto propio (fuera de MODO), construido enteramente con Claude Code. En el repo viven en `AGENTS.md` —el archivo que el agente carga en **cada** sesión—. Esa es la jugada clave: la mentalidad no se pide por mensaje, se cablea en el contexto permanente.
 
 ---
 
@@ -26,7 +26,7 @@ Explicitá los supuestos. Si algo es ambiguo, **preguntá o presentá las interp
             Arranco por el ranking si confirmás."
 ```
 
-> **Caso Firulapp**: el pedido "mejorá el feed vs TikTok/IG" era ambiguo. En vez de copiar watch-time (la señal de ellos), explicité que *nuestra* señal es proximidad + urgencia (reunir mascotas perdidas). Ese supuesto, nombrado en voz alta, cambió todo el diseño.
+> **Caso real**: el pedido "mejorá el feed vs TikTok/IG" era ambiguo. En vez de copiar watch-time (la señal de ellos), explicité que *nuestra* señal es proximidad + urgencia (reunir mascotas perdidas). Ese supuesto, nombrado en voz alta, cambió todo el diseño.
 
 ---
 
@@ -53,7 +53,7 @@ git diff --stat
 # ¿Hay archivos tocados que no tienen que ver con el pedido? Revertilos.
 ```
 
-> **Caso Firulapp**: una auditoría marcó `useMemo`/`useCallback` como "faltantes" en varios componentes. Falso positivo: el repo tiene `reactCompiler: true` —memoizar a mano es ruido—. Verificar el contexto antes de "mejorar" evitó un diff inútil de 14 archivos.
+> **Caso real**: una auditoría marcó `useMemo`/`useCallback` como "faltantes" en varios componentes. Falso positivo: el repo tiene `reactCompiler: true` —memoizar a mano es ruido—. Verificar el contexto antes de "mejorar" evitó un diff inútil de 14 archivos.
 
 ---
 
@@ -84,7 +84,7 @@ Es la regla que más fácil se viola y la que más caro sale. Un agente entrenad
     (timezone). Los pego acá. ¿Los arreglo o era esperado?"
 ```
 
-> **Caso Firulapp**: la consola de loops de la oficina dispara jobs reales — pero sin `APP_URL` + `CRON_SECRET` no dispara nada. En vez de venderla como "automatización lista", el gate quedó documentado honesto: "no dispara hasta que el owner configure las creds". El usuario sabe exactamente qué tiene y qué falta.
+> **Caso real**: la consola de loops de la oficina dispara jobs reales — pero sin `APP_URL` + `CRON_SECRET` no dispara nada. En vez de venderla como "automatización lista", el gate quedó documentado honesto: "no dispara hasta que el owner configure las creds". El usuario sabe exactamente qué tiene y qué falta.
 
 ---
 

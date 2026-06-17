@@ -37,13 +37,13 @@ metadata:
   type: project
 ---
 
-El feed de Firulapp ordena por proximidad + urgencia (North Star = reunir
+El feed del proyecto ordena por proximidad + urgencia (North Star = reunir
 mascotas), no por watch-time como TikTok. Ver [[nearby-services-map-deeplink]].
 ```
 
 Un `MEMORY.md` índice (una línea por memoria) es lo único que entra en contexto cada sesión. El cuerpo se recupera solo cuando es relevante.
 
-> **Caso Firulapp**: el índice tiene ~70 memorias —cada feature, cada gotcha de merge, cada falso positivo descartado—. Antes de construir algo "nuevo", el agente busca si ya lo resolvimos. Evita re-aprender lo aprendido (que es lo más caro que hay).
+> **Caso real**: el índice tiene ~70 memorias —cada feature, cada gotcha de merge, cada falso positivo descartado—. Antes de construir algo "nuevo", el agente busca si ya lo resolvimos. Evita re-aprender lo aprendido (que es lo más caro que hay).
 
 ---
 

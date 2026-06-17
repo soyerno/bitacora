@@ -4,17 +4,21 @@
 
 ---
 
-## Skill vs memoria vs agente
+## Skill vs memoria vs agente (vs rol vs loop)
 
-Tres cosas distintas, fácil de confundir:
+Cinco cosas distintas, fácil de confundir. El [mapa de las 5 piezas](#intro) las cruza entero; acá las separás por **qué son** y **cuándo entran en juego**:
 
-| | Qué es | Cuándo se carga |
+| | Qué es | Cuándo entra |
 |---|---|---|
-| **Memoria** | Un hecho ("el feed ordena por cercanía") | Cuando es relevante a lo que estás por hacer |
-| **Agente** | Un rol con tools acotadas ("firu-front") | Cuando delegás trabajo de ese dominio |
-| **Skill** | Un procedimiento/criterio reusable ("cómo diseñar on-brand") | Cuando la tarea matchea su `description` |
+| **Rol** | Una *función* de conducción (decidir / priorizar / custodiar) | Cuando hay que decidir el qué, el por qué o cuidar el proceso |
+| **Agente** | Una *entidad* con system-prompt + tools acotadas ("front") | Cuando delegás trabajo de ese dominio |
+| **Skill** | Un *procedimiento/criterio* reusable ("cómo diseñar on-brand") | Cuando la tarea matchea su `description` |
+| **Memoria** | Un *hecho* ("el feed ordena por cercanía") | Cuando es relevante a lo que estás por hacer |
+| **Loop** | El *motor de cadencia* (criterios → iterar → verificar) | Mientras se ejecuta, hasta cumplir los criterios |
 
-Una skill no es documentación para leer: es un **gate de comportamiento**. "Antes de escribir copy de UI, cargá `firulapp-voz`" hace que el copy salga en voz de marca por defecto, sin que lo pidas.
+La distinción que más se equivoca: una **skill** es el *cómo* (un procedimiento), una **memoria** es el *qué* (un hecho). No metas hechos en una skill ni procedimientos en memoria.
+
+Una skill no es documentación para leer: es un **gate de comportamiento**. "Antes de escribir copy de UI, cargá `app-voz`" hace que el copy salga en voz de marca por defecto, sin que lo pidas.
 
 ---
 
@@ -23,7 +27,7 @@ Una skill no es documentación para leer: es un **gate de comportamiento**. "Ant
 Una carpeta con un `SKILL.md` (front-matter con `name` + `description` que decide el trigger) y los archivos de apoyo (checklists, tablas, ejemplos):
 
 ```
-.claude/skills/firulapp-design/
+.claude/skills/app-design/
   SKILL.md              # qué es + cuándo dispara + cómo aplicar
   BRAND_CHECKLIST.md    # pass/fail verificable
   tokens.md             # fuente de verdad de colores/tipos
@@ -38,21 +42,21 @@ Lo que hace buena a una skill (no un README disfrazado):
 
 ---
 
-## Las skills de Firulapp
+## Las skills del proyecto
 
 ```
-firulapp-design          # diseño fiel al Design System (empieza por BRAND_CHECKLIST)
-firulapp-ux              # mobile-first, usuario 40+, simple/no abrumar
-firulapp-voz             # voz y tono (voseo Rioplatense)
-firulapp-component       # autor de componentes (atomic design)
-firulapp-next16          # convenciones de ESTE Next.js modificado
-firulapp-feature-flags   # cablear/auditar features detrás de flags
+app-design          # diseño fiel al Design System (empieza por BRAND_CHECKLIST)
+app-ux              # mobile-first, usuario 40+, simple/no abrumar
+app-voz             # voz y tono (voseo Rioplatense)
+app-component       # autor de componentes (atomic design)
+app-next16          # convenciones de ESTE Next.js modificado
+app-feature-flags   # cablear/auditar features detrás de flags
 ```
 
 Cada una encapsula un dominio donde el agente, sin ella, deriva mal:
-sin `firulapp-next16` escribe APIs de un Next.js que no es éste; sin `firulapp-voz` el copy sale robótico.
+sin `app-next16` escribe APIs de un Next.js que no es éste; sin `app-voz` el copy sale robótico.
 
-> **Caso load-bearing**: el repo corre un Next.js 16 + React 19 + Tailwind v4 modificado, con APIs que difieren del training data del modelo. La skill `firulapp-next16` impone una regla dura: **leé los docs locales antes de escribir código de framework**. Sin eso, el agente shippea código de memoria stale.
+> **Caso load-bearing**: el repo corre un Next.js 16 + React 19 + Tailwind v4 modificado, con APIs que difieren del training data del modelo. La skill `app-next16` impone una regla dura: **leé los docs locales antes de escribir código de framework**. Sin eso, el agente shippea código de memoria stale.
 
 ---
 
@@ -80,7 +84,7 @@ Destilá cuando:
 
 No destiles un one-off. Una skill de un solo uso es la versión skill de una abstracción especulativa ([Lección 00, Principio 2](00-mentalidad.md)).
 
-> Las skills de calidad de Firulapp —`precommit-quality-harness`, `component-size-gate`, `feature-flag-wiring`, `prompt-injection-hardening`, `release-on-merge`, `worktree-per-feature`— se destilaron de la app de producción y son **framework-agnósticas**: las llevás a otro repo y siguen valiendo.
+> Las skills de calidad del proyecto —`precommit-quality-harness`, `component-size-gate`, `feature-flag-wiring`, `prompt-injection-hardening`, `release-on-merge`, `worktree-per-feature`— se destilaron de la app de producción y son **framework-agnósticas**: las llevás a otro repo y siguen valiendo.
 
 ---
 

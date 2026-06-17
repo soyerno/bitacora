@@ -1,7 +1,7 @@
 {
   "slug": "coding-con-agentes",
   "title": "Coding con una flota de agentes",
-  "subtitle": "La metodología Firulapp: principios Karpathy, OpenSpec, worktrees y una oficina de 20 agentes",
+  "subtitle": "Una metodología de campo: principios Karpathy, OpenSpec, worktrees y una oficina de 20 agentes",
   "lessons": [
     {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
     {"id":"00","num":"00","title":"Mentalidad","eyebrow":"Lección 00 · Los 4 principios + honestidad","path":"00-mentalidad.md","file":"00-mentalidad.md"},
@@ -15,6 +15,7 @@
     {"id":"08","num":"08","title":"Pipeline de PRs","eyebrow":"Lección 08 · Pain/Purpose/How + no perder trabajo","path":"08-pipeline-prs.md","file":"08-pipeline-prs.md"},
     {"id":"09","num":"09","title":"Seguridad por defecto","eyebrow":"Lección 09 · Prompt-injection, rules, PII","path":"09-seguridad.md","file":"09-seguridad.md"},
     {"id":"10","num":"10","title":"Loop por objetivos","eyebrow":"Lección 10 · Criterios verificables + honestidad","path":"10-loop-objetivos.md","file":"10-loop-objetivos.md"},
+    {"id":"11","num":"11","title":"El stack ordenado","eyebrow":"Lección 11 · Qué capa tocar y en qué orden","path":"11-stack-herramientas.md","file":"11-stack-herramientas.md"},
     {"id":"lab","num":"🧪","title":"Lab: una feature end-to-end","eyebrow":"Lab integrador","path":"exercises/README.md"}
   ]
 }

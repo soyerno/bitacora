@@ -68,7 +68,7 @@ if (!isFeatureEnabled('zoonosis')) return new Response(null, { status: 404 });
 
 Un flag puede tener `defaultEnabled: true` (una feature que ya es parte del producto) o `false` (en construcción / vision). El default es parte del contrato.
 
-> **Caso Firulapp**: features enteras —`zoonosis`, `walks`, `twoFactorAuth`, `ads`, `marketplace`— se construyeron 0→completa **detrás de su flag OFF**, sin filtrarse a usuarios. Cuando estaban listas, el admin prendía el flag. El gate `sharedCare` sobre toda la ficha médica resultó intencional (flag = paraguas "Salud y cuidado"), no un bug —verificar el diseño antes de "arreglar" un gate—.
+> **Caso real**: features enteras —`zoonosis`, `walks`, `twoFactorAuth`, `ads`, `marketplace`— se construyeron 0→completa **detrás de su flag OFF**, sin filtrarse a usuarios. Cuando estaban listas, el admin prendía el flag. El gate `sharedCare` sobre toda la ficha médica resultó intencional (flag = paraguas "Salud y cuidado"), no un bug —verificar el diseño antes de "arreglar" un gate—.
 
 ---
 

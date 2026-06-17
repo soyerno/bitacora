@@ -66,7 +66,7 @@ from recipients and SHALL NOT disclose the reporter's phone number.
 
 Por qué importa el `#### Scenario:`: **es el criterio de aceptación**. Mapea 1:1 a un test. "El sistema notifica" no es verificable; "WHEN caso dentro de la zona THEN el usuario recibe el alerta" sí —lo escribís como test y sabés cuándo está hecho.
 
-> **Caso Firulapp**: el ejemplo de arriba es real (capability `lost-found`). Cada escenario se convirtió en un test del trigger de alertas por zona. La spec vive en `openspec/specs/lost-found/spec.md` y describe lo que el sistema YA hace —no lo que algún día haría—.
+> **Caso real**: el ejemplo de arriba es real (capability `lost-found`). Cada escenario se convirtió en un test del trigger de alertas por zona. La spec vive en `openspec/specs/lost-found/spec.md` y describe lo que el sistema YA hace —no lo que algún día haría—.
 
 ---
 

@@ -45,7 +45,7 @@ git fetch origin main
 git worktree add /tmp/wt-x -b feat/x origin/main
 ```
 
-> **Caso Firulapp**: `main` ya había traducido todas las rutas a español en un PR previo. Una branch basada en un árbol stale mostraba el diff como si re-inglesara las rutas —un revert falso—. Basar en `origin/main` fresco lo arregla.
+> **Caso real**: `main` ya había traducido todas las rutas a español en un PR previo. Una branch basada en un árbol stale mostraba el diff como si re-inglesara las rutas —un revert falso—. Basar en `origin/main` fresco lo arregla.
 
 ---
 

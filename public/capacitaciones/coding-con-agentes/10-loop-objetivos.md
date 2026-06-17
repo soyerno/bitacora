@@ -39,15 +39,15 @@ Con criterios así, el agente sabe cuándo parar y vos sabés si terminó. Sin e
 
 ---
 
-## firu-ux muerde TODO el frontend
+## El agente de UX muerde TODO el frontend
 
 Regla dura: **toda solución de frontend pasa por la crítica del agente de UX antes de cerrarla**.
 
 ```
-construir → firu-ux critica → arreglar → iterar → recién ahí se cierra
+construir → ux critica → arreglar → iterar → recién ahí se cierra
 ```
 
-> **Caso Firulapp**: el primer intento del deep-link "Servicios cerca tuyo" estaba mal; `firu-ux` lo cazó antes del PR. El agente que construye y el que critica la usabilidad **no son el mismo** —el constructor está enamorado de su solución—.
+> **Caso real**: el primer intento del deep-link "Servicios cerca tuyo" estaba mal; el agente de UX lo cazó antes del PR. El agente que construye y el que critica la usabilidad **no son el mismo** —el constructor está enamorado de su solución—.
 
 ---
 
@@ -91,4 +91,4 @@ Un loop que miente sobre su estado no converge: itera sobre una realidad falsa. 
 - [ ] Reportás los resultados como son; no declarás "done" sin verify
 - [ ] Al cerrar, destilás el aprendizaje durable a memoria ([Lección 01](01-contexto-memoria.md))
 
-> Cerraste la teoría. Ahora corré el [🧪 Lab integrador](exercises/README.md): una feature chica end-to-end con la metodología completa.
+> Siguiente: [11 · El stack de herramientas, ordenado](11-stack-herramientas.md) — el mapa completo de qué capa tocar y cuándo.
