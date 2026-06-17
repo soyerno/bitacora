@@ -55,7 +55,25 @@ Los gates son binarios; el eval **puntúa calidad** en lo que el binario no ve. 
 
 **Barrier del eval**: deploy solo si **cada dimensión ≥ 3 Y promedio ≥ 4**. Si no → `status: "blocked"` con los blockers + razones (los gates pasaron, pero la calidad no llega).
 
-> Calibración (Lección 10): comparar el score del eval contra tu veredicto humano 1-5. Cuando divergen, ahí está el aprendizaje. Para review adversarial más duro, cambiá el judge plano por el skill `judgment-day` (dual blind) o los agents `review-risk/readability/reliability/resilience`.
+> Para review adversarial más duro, cambiá el judge plano por el skill `judgment-day` (dual blind) o los agents `review-risk/readability/reliability/resilience`.
+
+## Calibración del eval (Lección 10)
+
+Un eval sin calibrar es una opinión más. La calibración mide **si el judge coincide con tu veredicto humano** a lo largo del tiempo —cuando divergen, ahí está el aprendizaje—. El Workflow corre sin filesystem, así que esto vive en un helper standalone: [`calibration.mjs`](calibration.mjs).
+
+```bash
+# después del eval + tu review, registrá la corrida (judge = scores del eval; self = auto-score del agente; human = tu 1-5)
+node calibration.mjs add --slug "promos/black-friday" \
+  --judge '{"brand-voice":4,"ux-clarity":5,"content-seo-quality":4,"simplicity-scope":3}' \
+  --self 4 --human 3 --note "copy genérico en el hero"
+
+# ver la calibración acumulada (error abs medio judge↔human; ✓ si ≤0.5)
+node calibration.mjs stats
+```
+
+- Dataset append-only `calibration.jsonl` (local, gitignored — no se versiona).
+- `stats` reporta el error abs medio judge↔human y self↔human, y lista las divergencias ≥1.
+- Si el judge diverge sistemático del humano → ajustá la rúbrica o el umbral. Esa es la mejora del propio eval.
 
 ## Por qué evidencia obligatoria
 
