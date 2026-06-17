@@ -7,7 +7,9 @@
 - **Página / “story”** — Una pantalla completa del sitio (la home, una landing de producto, una sección). En la herramienta de contenido se la llama *story*.
 - **Bloque / “blok”** — Una sección reutilizable de la página: encabezado, grilla, banner, listado. Se construye una vez y se reusa en muchas páginas.
 - **Dirección / URL / “slug”** — Lo que va después de `modo.com.ar/`. Identifica la página y es lo que compartís.
-- **CMS / Storyblok** — La herramienta donde se carga y edita el contenido sin programar.
+- **CMS / Storyblok** — Donde vive el contenido del sitio. No lo editás a mano: Claude lo genera y actualiza por vos.
+- **Claude** — El asistente con el que dirigís el armado. Le pedís en lenguaje normal y crea/actualiza la página.
+- **MCP** — La conexión que enchufa a Claude con Storyblok (y otras herramientas), para que pueda crear y actualizar el contenido por vos.
 - **Borrador / “draft”** — Versión visible solo para el equipo, todavía no publicada.
 - **Publicar** — Dejar el contenido visible para el público.
 
