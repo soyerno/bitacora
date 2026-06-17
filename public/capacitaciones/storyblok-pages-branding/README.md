@@ -36,6 +36,7 @@ Lo mejor: **experimentás libre.** Borrador y vista previa para probar todo lo q
 
 | # | Lección | Lo que te llevás |
 |---|---------|------------------|
+| 00 | [Prepará a Claude](#00) | Setup de una vez: token de Storyblok + MCP + herramientas |
 | 01 | [Tu material de trabajo](#01) | Pensar la página como bloques que combinás |
 | 02 | [Le pedís a Claude](#02) | Cómo dirigís el armado (Claude lo hace por vos) |
 | 03 | [La marca juega para vos](#03) | La marca ya viene en las piezas — siempre on-brand |
