@@ -18,6 +18,59 @@
   "items": [
     {
       "date": "2026-06-15",
+      "slug": "2026-06-15-erno-cli",
+      "title": "15 de junio · dos cuentas Max en una Mac: una CLI propia, y por qué la publiqué a medias",
+      "tldr": "Tengo dos cuentas Claude Max en la misma Mac y Claude Code no tiene multi-cuenta nativo: la credencial de subscription vive en el Keychain, compartida, así que estás logueado a una a la vez. Armé erno-cli, una CLI personal mínima en bash, que guarda el token OAuth de la segunda cuenta y la corre aislada — para usarla como worker headless sin acceso por API. Antes corregí el supuesto que disparó todo: los planes de subscription no acumulan tokens que se pierdan en la renovación; son tarifa plana con rate limits que se resetean. Lo que rescaté fue capacidad ya paga que quedaba ociosa. Y al publicar elegí frenar: repo privado, así que publiqué la lección, no el código.",
+      "stories": [
+        {
+          "title": "Dos cuentas, una Mac, sin API",
+          "summary": "Claude Code en macOS guarda la credencial de subscription en el Keychain, y es una sola: estás logueado a una cuenta a la vez. Para usar la segunda en paralelo —sin API— el camino es el token OAuth largo (claude setup-token) pasado por variable de entorno en cada terminal. Pero antes de codear corregí el supuesto que lo disparó: no hay un saldo de tokens que se pierda en la renovación. La subscription es tarifa plana con rate limits que se resetean por ventana; lo único que perdés es capacidad ociosa que ya pagaste. Nombrar la confusión antes de avanzar evitó construir para un problema que no existía.",
+          "tags": [
+            "claude-code",
+            "multi-cuenta",
+            "honestidad"
+          ]
+        },
+        {
+          "title": "El primer comando justifica la CLI, no al revés",
+          "summary": "erno-cli es bash puro, sin dependencias: un dispatcher y dos comandos. account-setup guarda el token de la segunda cuenta en el Keychain con input silencioso —nunca toca disco ni el historial del shell—; el comando b corre Claude Code con esa identidad y la config aislada en su propio directorio. Validé mis scripts sueltos y subí solo los genéricos —la orquestación multi-cuenta—; los scripts de build de la bitácora se quedaron afuera porque no son reutilizables. La CLI es un contenedor que va a crecer, pero la versión uno resuelve un caso real, no una abstracción especulativa.",
+          "tags": [
+            "cli",
+            "simplicidad",
+            "seguridad"
+          ]
+        },
+        {
+          "title": "Publicar a medias, a propósito",
+          "summary": "Publicar la CLI en la bitácora chocó con una decisión que era mía: elegí repo privado. Un catálogo público que linkea a un repo privado da 404, y empaquetar el código como zip público contradecía esa elección. Así que reconcilié: publiqué la historia —compartible— y omití el código. De paso, el harness me frenó dos veces por seguridad: no me dejó tocar el .zshrc ni crear el repo público sin pedido explícito. Guardrails que no confían en lo inferido: el mismo principio del freno de mano, ahora aplicado a mí. La doc puede ser pública aunque el código no lo sea.",
+          "tags": [
+            "comunidad",
+            "seguridad",
+            "honestidad"
+          ]
+        }
+      ],
+      "tags": [
+        "claude-code",
+        "cli",
+        "multi-cuenta",
+        "orquestación",
+        "seguridad",
+        "honestidad",
+        "karpathy"
+      ],
+      "area": "platform",
+      "href": "2026-06-15-erno-cli.html",
+      "reading_minutes": 4,
+      "counts": {
+        "commits": 1,
+        "learnings": 3,
+        "prs": 1
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-06-15",
       "slug": "2026-06-15",
       "title": "15 de junio · la oficina cobró vida: de maqueta a tablero, y el roster contrató gerencia",
       "tldr": "La entrada del 14 cerró con \"lo vivo quedó pendiente\". El 15 lo cablé: la oficina dejó de ser teatro (animación con setTimeout) y pasó a tablero — reescrita en React, alimentada por eventos reales que escriben los hooks, todo en el mismo origin. El roster creció de 16 a 20: sumó una capa de gerencia (PO, PM, coach y un CEO con freno de mano). Aprendí que hasta el tooling local que dispara comandos es superficie de ataque (CSRF contra localhost). Y que el entorno crecía más rápido que su documentación: refresqué el mapa y catalogué el patrón para que otros lo adapten.",
