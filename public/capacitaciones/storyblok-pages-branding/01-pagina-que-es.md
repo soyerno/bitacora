@@ -1,0 +1,38 @@
+# 01 · Tu material de trabajo
+
+> Con tres ideas ya estás listo para construir: **página**, **bloque** y **dirección**. Dominás esto y dominás el 80% del trabajo.
+
+## La página la armás vos
+
+Una página es una pantalla completa de modo.com.ar: una landing de producto, una página de campaña, una sección del sitio. Armarla es decidir qué secciones la componen, en qué orden, y con qué contenido. Esa decisión —el armado— **es tu trabajo creativo**, no un pedido a otro.
+
+## Los bloques son tus piezas
+
+Cada página se construye apilando **bloques** de arriba hacia abajo. Tu caja de piezas incluye, entre otras:
+
+- **encabezado** grande con título, bajada e imagen;
+- **grilla** de logos o tarjetas;
+- **banner** con su botón;
+- **listado de bancos**;
+- **carrusel**, **video**, **preguntas frecuentes**.
+
+Estas piezas ya están construidas y probadas. Tu poder está en **elegirlas, ordenarlas y cargarles contenido** para contar lo que querés contar. Dos personas con la misma caja de bloques arman páginas distintas: la diferencia es tu criterio.
+
+### Tu zona de poder (es enorme) y cuándo sumás a alguien
+
+| Lo hacés vos, solo | Sumás a diseño/desarrollo |
+|--------------------|---------------------------|
+| Elegir qué bloques y en qué orden | Inventar una pieza visual que **nunca existió** en el sitio |
+| Cargar textos, imágenes, botones, contenido | Sumar un color nuevo a la marca |
+| Elegir la dirección de la página | — |
+| Previsualizar y publicar | — |
+
+La mayoría de las páginas se arman **enteras con piezas que ya existen**. Solo cuando tu idea pide algo visualmente inédito entra desarrollo. Saber dónde está esa línea te hace autónomo: pedís ayuda cuando de verdad hace falta, no “por las dudas”.
+
+> Truco para saber si lo podés hacer solo: describí tu página en voz alta. “Encabezado, después grilla de 6 logos, después banner con botón.” Si suena así, son piezas que ya tenés. Si decís “quiero un efecto que nunca vimos”, ahí sí convocás a diseño.
+
+## La dirección es tu decisión
+
+Lo que va después de `modo.com.ar/` lo elegís vos al crear la página. Por ejemplo `modo.com.ar/pagos-agenticos`. Conviene que sea **clara y estable**: es lo que vas a compartir en campañas y lo que ayuda a que te encuentren en buscadores (lección 04). Cambiarla después rompe los links que ya circularon, así que elegila pensando a futuro.
+
+> Siguiente: [02 · Manos a Storyblok](#02) — pasamos a la acción.

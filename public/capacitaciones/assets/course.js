@@ -9,6 +9,11 @@
   LESSONS.forEach(function (l) { if (l.file) fileToId[l.file] = l.id; });
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+  var slug = function (s) {
+    return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
+  };
   var store = {
     get: function (k, d) { try { var v = localStorage.getItem(LS + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
     set: function (k, v) { try { localStorage.setItem(LS + k, JSON.stringify(v)); } catch (e) {} }
@@ -23,6 +28,14 @@
     var fill = $('#progress-fill'); var label = $('#progress-label');
     if (fill) fill.style.width = pct + '%';
     if (label) label.textContent = done + '/' + LESSONS.length + ' lecciones · ' + pct + '%';
+    var bar = $('.progress-bar');
+    if (bar) {
+      bar.setAttribute('role', 'progressbar');
+      bar.setAttribute('aria-valuemin', '0');
+      bar.setAttribute('aria-valuemax', '100');
+      bar.setAttribute('aria-valuenow', String(pct));
+      bar.setAttribute('aria-label', 'Progreso del curso: ' + pct + '%');
+    }
   }
 
   function renderSidebar() {
@@ -34,13 +47,20 @@
       var a = document.createElement('a');
       a.href = '#' + l.id;
       a.className = (l.id === cur ? 'active ' : '') + (lessonDone(l.id) ? 'ln-done' : '');
-      a.innerHTML = '<span class="ln-num">' + (lessonDone(l.id) ? '✓' : l.num) + '</span><span class="ln-title">' + l.title + '</span>';
+      if (l.id === cur) a.setAttribute('aria-current', 'page');
+      var state = lessonDone(l.id) ? ' (completada)' : '';
+      a.setAttribute('aria-label', l.title + state);
+      a.innerHTML = '<span class="ln-num" aria-hidden="true">' + (lessonDone(l.id) ? '✓' : l.num) + '</span><span class="ln-title">' + esc(l.title) + '</span>';
       li.appendChild(a); nav.appendChild(li);
     });
+    var active = nav.querySelector('a.active');
+    if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest' });
   }
 
+  // hash puede ser '#<lessonId>' o '#<lessonId>::<seccion>'. El lessonId es la parte previa a '::'.
+  function hashLessonPart() { return (location.hash || '').replace('#', '').split('::')[0]; }
   function currentId() {
-    var h = (location.hash || '').replace('#', '');
+    var h = hashLessonPart();
     return fileToId[h] ? fileToId[h] : (LESSONS.some(function (l) { return l.id === h; }) ? h : LESSONS[0].id);
   }
 
@@ -74,6 +94,20 @@
         li.classList.toggle('checked', cb.checked);
       });
     });
+    // Heading anchors — secciones deep-linkables y copiables (#lesson::heading)
+    var seen = {};
+    root.querySelectorAll('h2, h3').forEach(function (h) {
+      var base = slug(h.textContent) || 'sec';
+      seen[base] = (seen[base] || 0) + 1;
+      var hid = lessonId + '::' + base + (seen[base] > 1 ? '-' + seen[base] : '');
+      h.id = hid;
+      var a = document.createElement('a');
+      a.className = 'heading-anchor';
+      a.href = '#' + hid;
+      a.setAttribute('aria-label', 'Enlace a esta sección');
+      a.textContent = '#';
+      h.insertBefore(a, h.firstChild);
+    });
     // Rewrite internal lesson links (.md → hash) + neutralize repo placeholders
     root.querySelectorAll('a[href]').forEach(function (a) {
       var href = a.getAttribute('href');
@@ -88,13 +122,25 @@
     });
   }
 
+  var lastId = null;
+  function scrollToSection() {
+    var h = (location.hash || '').replace('#', '');
+    if (h.indexOf('::') === -1) { window.scrollTo(0, 0); return; }
+    var el = document.getElementById(h);
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+    else window.scrollTo(0, 0);
+  }
+
   function render() {
     var id = currentId();
+    // Salto dentro de la misma lección (deep-link a sección): no re-render, solo scroll.
+    if (id === lastId) { renderSidebar(); scrollToSection(); return; }
+    lastId = id;
     var lesson = LESSONS.filter(function (l) { return l.id === id; })[0] || LESSONS[0];
     var idx = LESSONS.indexOf(lesson);
     var inner = $('#content-inner');
-    var html = '<span class="lesson-eyebrow">' + (lesson.eyebrow || ('Lección ' + lesson.num)) + '</span>';
-    html += window.marked ? marked.parse(lesson.md) : '<pre>' + lesson.md + '</pre>';
+    var html = '<span class="lesson-eyebrow">' + esc(lesson.eyebrow || ('Lección ' + lesson.num)) + '</span>';
+    html += window.marked ? marked.parse(lesson.md) : '<pre class="md-fallback">' + esc(lesson.md) + '</pre>';
     inner.innerHTML = html;
     enhance(inner, lesson.id);
 
@@ -114,28 +160,61 @@
     var foot = document.createElement('div'); foot.className = 'lesson-foot';
     var prev = LESSONS[idx - 1], next = LESSONS[idx + 1];
     foot.innerHTML =
-      (prev ? '<a class="foot-btn prev" href="#' + prev.id + '"><span class="foot-dir">← Anterior</span><span class="foot-name">' + prev.title + '</span></a>' : '<span class="foot-btn" hidden></span>') +
-      (next ? '<a class="foot-btn next" href="#' + next.id + '"><span class="foot-dir">Siguiente →</span><span class="foot-name">' + next.title + '</span></a>' : '<span class="foot-btn" hidden></span>');
+      (prev ? '<a class="foot-btn prev" href="#' + prev.id + '" rel="prev"><span class="foot-dir">← Anterior</span><span class="foot-name">' + esc(prev.title) + '</span></a>' : '<span class="foot-btn" hidden></span>') +
+      (next ? '<a class="foot-btn next" href="#' + next.id + '" rel="next"><span class="foot-dir">Siguiente →</span><span class="foot-name">' + esc(next.title) + '</span></a>' : '<span class="foot-btn" hidden></span>');
     inner.appendChild(foot);
 
     renderSidebar(); renderProgress();
     document.title = lesson.title + ' · ' + (document.querySelector('.brand-title')?.textContent || 'Capacitación MODO');
-    window.scrollTo(0, 0);
+    scrollToSection();
   }
 
   // Theme
+  function syncThemeBtn(btn) {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀ Tema claro' : '🌙 Tema oscuro';
+    btn.setAttribute('aria-pressed', String(dark));
+    btn.setAttribute('aria-label', dark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  }
   function initTheme() {
     var saved = store.get('theme', null);
     if (saved) document.documentElement.setAttribute('data-theme', saved);
     var btn = $('#theme-toggle');
-    if (btn) btn.addEventListener('click', function () {
+    if (!btn) return;
+    btn.addEventListener('click', function () {
       var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', cur); store.set('theme', cur);
-      btn.textContent = cur === 'dark' ? '☀ Tema claro' : '🌙 Tema oscuro';
+      syncThemeBtn(btn);
     });
-    if (btn) btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀ Tema claro' : '🌙 Tema oscuro';
+    syncThemeBtn(btn);
+  }
+
+  // Navegación por teclado: ← / → entre lecciones (ignora si el foco está en un campo).
+  function initKeyboardNav() {
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) || t.isContentEditable)) return;
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var idx = LESSONS.indexOf(LESSONS.filter(function (l) { return l.id === currentId(); })[0]);
+      var dest = e.key === 'ArrowLeft' ? LESSONS[idx - 1] : LESSONS[idx + 1];
+      if (dest) { e.preventDefault(); location.hash = '#' + dest.id; }
+    });
+  }
+
+  // Si marked no llegó a cargar (CDN/asset caído), avisar y degradar a texto plano legible.
+  function noteIfNoMarked() {
+    if (window.marked) return;
+    var inner = $('#content-inner');
+    if (!inner) return;
+    var n = document.createElement('p');
+    n.className = 'md-warn';
+    n.textContent = 'No se pudo cargar el renderizador Markdown — mostrando texto plano.';
+    inner.insertBefore(n, inner.firstChild);
   }
 
   window.addEventListener('hashchange', render);
-  document.addEventListener('DOMContentLoaded', function () { initTheme(); render(); });
+  document.addEventListener('DOMContentLoaded', function () {
+    initTheme(); render(); initKeyboardNav(); noteIfNoMarked();
+  });
 })();

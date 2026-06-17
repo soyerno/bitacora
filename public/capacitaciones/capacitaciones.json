@@ -48,8 +48,8 @@
       "href": "capacitaciones/storyblok-pages/index.html",
       "status": "draft",
       "audience": "Dev frontend que se suma a modo-landing",
-      "date": "2026-06-01",
-      "lessons": 10,
+      "date": "2026-06-17",
+      "lessons": 12,
       "topics": [
         "cms",
         "storyblok",
@@ -70,6 +70,27 @@
         "modo-landing-page-builder"
       ],
       "featured": true
+    },
+    {
+      "id": "storyblok-pages-branding",
+      "title": "Armá páginas de modo.com.ar — para branding",
+      "desc": "La versión sin código y hands-on del recorrido de páginas Storyblok, pensada para que branding y contenido las armen por su cuenta: pensar la página como bloques que combinás, crear/editar/previsualizar/publicar en Storyblok paso a paso, cómo la marca te respalda (no te podés salir de MODO), cómo llegar en verde a los 4 controles de calidad (tres jugadas las hacés vos), y cómo publicar con confianza. Cierra con una práctica guiada: armás tu primera landing de promo de cero, más glosario técnico→humano.",
+      "href": "capacitaciones/storyblok-pages-branding/index.html",
+      "status": "draft",
+      "audience": "Branding, diseño y contenido (no técnico) que quiere armar páginas por su cuenta",
+      "date": "2026-06-17",
+      "lessons": 8,
+      "topics": [
+        "branding",
+        "contenido",
+        "storyblok",
+        "no-codigo",
+        "hands-on",
+        "marca",
+        "calidad"
+      ],
+      "harness": [],
+      "featured": false
     },
     {
       "id": "deploy-playsistemico",
