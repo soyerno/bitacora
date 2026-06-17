@@ -1,6 +1,6 @@
 # 03 · La marca juega para vos
 
-> La marca no es una lista de reglas que te frenan. Es un sistema que te respalda: armes lo que armes, va a verse MODO. Eso te libera para enfocarte en el contenido.
+> La marca es un sistema que te respalda: armes lo que armes, va a verse MODO. Te libera para enfocarte en el contenido.
 
 ## Un sistema que te cuida
 
@@ -16,9 +16,9 @@ Pensalo como una cancha con líneas pintadas: jugás libre adentro, y las línea
 
 ## Cómo aprovecharlo al máximo
 
-- **Pensá por intención, no por valor.** “Quiero que este banner se sienta principal / secundario” — el sistema ya tiene la variante correcta y vos la elegís. No necesitás saber ningún código de color.
+- **Pensá por intención.** “Quiero que este banner se sienta principal / secundario” — el sistema ya tiene la variante correcta y vos la elegís. Te alcanza con eso.
 - **Las imágenes son tu lienzo libre.** Ahí mandás vos: elegí fotos que convivan con el verde MODO y respiren la marca.
-- **Si una campaña pide un color que no existe en MODO**, eso es una **decisión de marca**, no un retoque: se suma al sistema primero, charlándolo con diseño. No es un “no”, es un paso previo.
+- **Si una campaña pide un color que no existe en MODO**, eso es una **decisión de marca**: se suma al sistema primero, charlándolo con diseño. Es un paso previo, y deja una variante nueva lista para todos.
 
 ## Verse bien = verse para todos
 

@@ -4,7 +4,7 @@
 
 ## La página la armás vos
 
-Una página es una pantalla completa de modo.com.ar: una landing de producto, una página de campaña, una sección del sitio. Armarla es decidir qué secciones la componen, en qué orden, y con qué contenido. Esa decisión —el armado— **es tu trabajo creativo**, no un pedido a otro.
+Una página es una pantalla completa de modo.com.ar: una landing de producto, una página de campaña, una sección del sitio. Armarla es **tu trabajo creativo**: elegís qué secciones la componen, en qué orden y con qué contenido.
 
 ## Los bloques son tus piezas
 
@@ -27,7 +27,7 @@ Estas piezas ya están construidas y probadas. Tu poder está en **elegirlas, or
 | Elegir la dirección de la página | — |
 | Previsualizar y publicar | — |
 
-La mayoría de las páginas se arman **enteras con piezas que ya existen** — eso lo hacés solo, hoy. Para una pieza visual totalmente nueva sumás a diseño y ganás algo a medida. Conocer esa línea te deja avanzar rápido con todo lo que ya tenés a mano.
+Lo primero siempre es **mirar qué piezas ya existen y reusarlas**: la mayoría de las páginas se arman enteras así, y eso lo hacés solo, hoy. Si tu idea necesita una pieza nueva, se diseña y se suma al kit pasando por las validaciones del equipo — y queda lista para que cualquiera la reuse después. Reusar primero te deja avanzar rápido con todo lo que ya tenés a mano.
 
 > Truco para saber si lo podés hacer solo: describí tu página en voz alta. “Encabezado, después grilla de 6 logos, después banner con botón.” Si suena así, son piezas que ya tenés. Si decís “quiero un efecto que nunca vimos”, ahí sí convocás a diseño.
 
