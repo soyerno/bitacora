@@ -87,6 +87,7 @@ El resto del curso es cada pieza en detalle. Volvé a esta tabla cuando te pierd
 | 09 | [Seguridad por defecto](09-seguridad.md) | Prompt-injection · rules por SDK · AI access gate · PII/consent |
 | 10 | [Loop por objetivos](10-loop-objetivos.md) | Criterios verificables · iterar hasta cumplir · medir el producto, no el prompt |
 | 11 | [El stack ordenado](11-stack-herramientas.md) | Qué capa tocar y cuándo · escalá solo cuando hace falta · recursos Anthropic |
+| 12 | [Evals del entregable](12-evals-entregable.md) | Gate vs eval · rúbrica + LLM-judge · calibración judge↔humano |
 | 🧪 | [Lab integrador](exercises/README.md) | Una feature chica end-to-end con la metodología completa |
 
 > Empezá por [00 · Mentalidad](00-mentalidad.md).

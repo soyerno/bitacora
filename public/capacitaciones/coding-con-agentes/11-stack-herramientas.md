@@ -91,4 +91,4 @@ Cada capa tiene un curso gratis de Anthropic y un artículo de ingeniería detr�
 - [ ] Encima de todo hay un gate verificable (6): no aceptás "done" sin evidencia
 - [ ] Lo que corre en paralelo está aislado (7): worktree, no coordinación a mano
 
-> Cerraste la teoría con el mapa completo. Ahora corré el [🧪 Lab integrador](exercises/README.md): una feature chica end-to-end con la metodología completa.
+> Siguiente: [12 · Evals del entregable](12-evals-entregable.md) — la capa que puntúa cuán bien quedó, no solo si pasa.
