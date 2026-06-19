@@ -72,6 +72,20 @@ describe('SPEC-RD-002 — rd.json entry fields', () => {
   });
 });
 
+describe('SPEC-RD-003 — no orphan rd HTML files on disk', () => {
+  it('every .html file in public/rd/ has a manifest entry in rd.json', () => {
+    const rdDir = resolve(repoRoot, 'public', 'rd');
+    const diskFiles = readdirSync(rdDir).filter((f) => f.endsWith('.html'));
+    const manifestHrefs = new Set(loadJSON('rd/rd.json').items.map((i) => i.href));
+    for (const file of diskFiles) {
+      expect(
+        manifestHrefs.has(file),
+        `orphan rd HTML file on disk with no manifest entry: rd/${file}`,
+      ).toBe(true);
+    }
+  });
+});
+
 // ── capacitaciones.json ───────────────────────────────────────────────────────
 
 describe('SPEC-CAP-001 — capacitaciones.json top-level shape', () => {
@@ -97,6 +111,7 @@ describe('SPEC-CAP-002 — capacitaciones.json entry fields', () => {
       expect(item.id.length).toBeGreaterThan(0);
       expect(typeof item.title).toBe('string');
       expect(typeof item.href).toBe('string');
+      expect(item.date).toMatch(ISO_DATE);
     }
   });
 
@@ -190,6 +205,11 @@ describe('SPEC-HERR-002 — herramientas.json entry fields', () => {
       }
     }
   });
+
+  it('_meta.total_tools matches actual tool count across all categories', () => {
+    const actual = doc.categories.reduce((sum, cat) => sum + cat.tools.length, 0);
+    expect(doc._meta.total_tools).toBe(actual);
+  });
 });
 
 // ── postmans.json ─────────────────────────────────────────────────────────────
@@ -224,6 +244,13 @@ describe('SPEC-POST-002 — postmans.json entry fields', () => {
   it('ids are unique', () => {
     const ids = items.map((i) => i.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('every entry has a valid ISO date field', () => {
+    for (const item of items) {
+      expect(typeof item.date).toBe('string');
+      expect(item.date).toMatch(ISO_DATE);
+    }
   });
 });
 
