@@ -6,7 +6,7 @@ Pensalos como el repaso antes de salir de casa: ¿llaves, billetera, teléfono? 
 
 ## Control 1 · Que funcione
 
-Se prueba que la página haga lo suyo: que el botón aparezca cuando corresponde, que la lista muestre lo correcto, que nada se rompa. Son pruebas automáticas que quedan guardadas, así que tu trabajo queda protegido para siempre.
+Se prueba que la página haga lo suyo: que el botón aparezca cuando corresponde, que la lista muestre lo correcto, que nada se rompa. Son pruebas automáticas que quedan guardadas en el repo, así que tu trabajo queda cubierto contra regresiones futuras.
 
 **Tu parte:** describir bien qué tiene que pasar (“el botón solo si hay link”). Cuanto más claro lo dejás, más fácil pasa.
 

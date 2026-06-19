@@ -1,6 +1,6 @@
 # Harness · Los 4 gates
 
-Referencia ejecutable de [`page-builder.workflow.js`](page-builder.workflow.js). Cada gate retorna `{ gate, passed, findings, evidence }`. **El deploy alpha es un barrier: solo procede si todos `passed`.** Sin evidencia ≠ passed.
+Referencia ejecutable de [`page-builder.workflow.js`](harness/page-builder.workflow.js). Cada gate retorna `{ gate, passed, findings, evidence }`. **El deploy alpha es un barrier: solo procede si todos `passed`.** Sin evidencia ≠ passed.
 
 | Gate | Skill / herramienta | Comando | Passed cuando | Evidencia |
 |------|---------------------|---------|---------------|-----------|
@@ -59,7 +59,7 @@ Los gates son binarios; el eval **puntúa calidad** en lo que el binario no ve. 
 
 ## Calibración del eval (Lección 10)
 
-Un eval sin calibrar es una opinión más. La calibración mide **si el judge coincide con tu veredicto humano** a lo largo del tiempo —cuando divergen, ahí está el aprendizaje—. El Workflow corre sin filesystem, así que esto vive en un helper standalone: [`calibration.mjs`](calibration.mjs).
+Un eval sin calibrar es una opinión más. La calibración mide **si el judge coincide con tu veredicto humano** a lo largo del tiempo —cuando divergen, ahí está el aprendizaje—. El Workflow corre sin filesystem, así que esto vive en un helper standalone: [`calibration.mjs`](harness/calibration.mjs).
 
 ```bash
 # después del eval + tu review, registrá la corrida (judge = scores del eval; self = auto-score del agente; human = tu 1-5)

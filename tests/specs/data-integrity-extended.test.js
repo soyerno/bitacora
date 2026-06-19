@@ -293,3 +293,64 @@ describe('SPEC-PROY-002 — proyectos.json entry fields', () => {
     expect(new Set(repos).size).toBe(repos.length);
   });
 });
+
+// ── bitacora.json ─────────────────────────────────────────────────────────────
+
+describe('SPEC-BITACORA-001 — bitacora.json top-level shape', () => {
+  const doc = loadJSON('bitacora/bitacora.json');
+
+  it('has _meta with ISO generated date', () => {
+    expect(doc).toHaveProperty('_meta');
+    expect(doc._meta.generated).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty items array', () => {
+    expect(Array.isArray(doc.items)).toBe(true);
+    expect(doc.items.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-BITACORA-002 — bitacora.json entry fields', () => {
+  const items = loadJSON('bitacora/bitacora.json').items;
+
+  it('every entry has required fields', () => {
+    for (const item of items) {
+      expect(item.date).toMatch(ISO_DATE);
+      expect(typeof item.slug).toBe('string');
+      expect(item.slug.length).toBeGreaterThan(0);
+      expect(typeof item.title).toBe('string');
+      expect(item.title.length).toBeGreaterThan(0);
+      expect(typeof item.href).toBe('string');
+      expect(item.href.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('slugs are unique', () => {
+    const slugs = items.map((i) => i.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('every href resolves on disk (relative to bitacora/)', () => {
+    for (const item of items) {
+      const p = resolveContent(`bitacora/${item.href}`);
+      expect(existsSync(p), `missing file for bitacora entry "${item.slug}": bitacora/${item.href}`).toBe(true);
+    }
+  });
+});
+
+describe('SPEC-BITACORA-003 — no orphan bitacora HTML files on disk', () => {
+  it('every .html file in public/bitacora/ (except _template.html) has a manifest entry', () => {
+    const bitacoraDir = resolve(repoRoot, 'public', 'bitacora');
+    const EXCLUDED = new Set(['_template.html']);
+    const diskFiles = readdirSync(bitacoraDir).filter(
+      (f) => f.endsWith('.html') && !EXCLUDED.has(f),
+    );
+    const manifestHrefs = new Set(loadJSON('bitacora/bitacora.json').items.map((i) => i.href));
+    for (const file of diskFiles) {
+      expect(
+        manifestHrefs.has(file),
+        `orphan bitacora HTML file on disk with no manifest entry: bitacora/${file}`,
+      ).toBe(true);
+    }
+  });
+});
