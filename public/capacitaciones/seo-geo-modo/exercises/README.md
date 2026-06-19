@@ -174,4 +174,4 @@ Si detectaste un anti-pattern nuevo o un trap que no está documentado:
 
 ---
 
-> Terminaste el curso. Volvé al [índice](../README.md) cuando necesites repasar una lección.
+> Terminaste el curso. Volvé al [índice](#intro) cuando necesites repasar una lección.

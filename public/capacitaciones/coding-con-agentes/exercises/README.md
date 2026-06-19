@@ -1,6 +1,6 @@
 # Lab · Una feature chica end-to-end con la metodología completa
 
-> Lab integrador del curso [Coding con una flota de agentes](../README.md).
+> Lab integrador del curso [Coding con una flota de agentes](#intro).
 >
 > Duración estimada: 60-90 min con Claude Code abierto, sobre **tu propio repo**.
 
@@ -150,4 +150,4 @@ git worktree remove /tmp/wt-lab-feature
 - [ ] Me auto-evalué honesto (self-score + qué quedó afuera + salida real)
 - [ ] Destilé el aprendizaje durable a memoria
 
-> Volvé al [inicio del curso](../README.md). Esto no se aprende leyéndolo: se aprende corriéndolo. Repetí el loop con la próxima feature.
+> Volvé al [inicio del curso](#intro). Esto no se aprende leyéndolo: se aprende corriéndolo. Repetí el loop con la próxima feature.

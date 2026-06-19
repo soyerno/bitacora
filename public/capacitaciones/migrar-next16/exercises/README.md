@@ -1,6 +1,6 @@
 # Lab · Migrar una page a server-rendered y verificar el contrato
 
-> Lab integrador del curso [Migrar a Next.js 16](../README.md).
+> Lab integrador del curso [Migrar a Next.js 16](#intro).
 >
 > Duracion estimada: 45-60 min con Claude Code abierto.
 
@@ -187,4 +187,4 @@ git worktree remove /private/tmp/wt-lab-next16
 git branch -d feat/lab-next16-page-migration
 ```
 
-> Volver al [inicio del curso](../README.md) · Ver [04 · Build + test + smoke](../04-build-test-smoke.md) para referencia de comandos.
+> Volver al [inicio del curso](#intro) · Ver [04 · Build + test + smoke](../04-build-test-smoke.md) para referencia de comandos.

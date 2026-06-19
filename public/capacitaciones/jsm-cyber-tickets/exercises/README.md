@@ -166,4 +166,4 @@ Casos relacionados si el usuario no es miembro de la org GitHub todavía:
 
 ---
 
-> Volvé al [README del curso](../README.md)
+> Volvé al [README del curso](#intro)

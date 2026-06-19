@@ -105,6 +105,16 @@ describe('SPEC-CAP-002 — capacitaciones.json entry fields', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it('each id matches the directory component of its href', () => {
+    for (const item of items) {
+      const dirFromHref = item.href.split('/')[1];
+      expect(
+        item.id,
+        `capacitacion id "${item.id}" does not match directory in href "${item.href}" (expected "${dirFromHref}")`,
+      ).toBe(dirFromHref);
+    }
+  });
+
   it('every href resolves on disk (relative to public/)', () => {
     for (const item of items) {
       const p = resolveContent(item.href);

@@ -42,7 +42,7 @@
       "featured": true
     },
     {
-      "id": "storyblok-pages-modo-landing",
+      "id": "storyblok-pages",
       "title": "Crear páginas Storyblok-managed en modo-landing",
       "desc": "Del setup de ambiente al deploy alpha en playsistemico, pasando por diseño SDD + design system, autoría de story + wiring del blok al registry CMS_COMPONENTS, TDD red→green y los 4 gates (code review+SDD · performance+CSP · a11y+SEO). Incluye lab integrador y el triple-layer skill modo-landing-page-builder.",
       "href": "capacitaciones/storyblok-pages/index.html",
