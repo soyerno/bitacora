@@ -1,6 +1,6 @@
 /* @vitest-environment node */
 import { describe, it, expect } from 'vitest';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -116,6 +116,23 @@ describe('SPEC-CAP-002 — capacitaciones.json entry fields', () => {
     for (const item of items) {
       expect(typeof item.status).toBe('string');
       expect(item.status.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('no orphan course directories on disk (every dir maps to a manifest entry)', () => {
+    const capDir = resolve(repoRoot, 'public', 'capacitaciones');
+    const EXCLUDED = new Set(['assets']);
+    const diskDirs = readdirSync(capDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && !EXCLUDED.has(d.name))
+      .map((d) => d.name);
+    const manifestDirSet = new Set(
+      items.map((item) => item.href.split('/')[1]),
+    );
+    for (const dir of diskDirs) {
+      expect(
+        manifestDirSet.has(dir),
+        `orphan course directory found on disk with no manifest entry: capacitaciones/${dir}`,
+      ).toBe(true);
     }
   });
 });

@@ -46,7 +46,7 @@ No mergear el sub-PR a integration si:
 
 La migración produce un build que la infra arrancar con `next start`. El setup completo de infra (SOPS, SSM, Helm, ingress ALB, tickets JSM) está en el curso dedicado:
 
-> Ver **[Curso: Deploy a playsistemico](../deploy-playsistemico/README.md)** para el workflow completo de infra MODO EKS.
+> Ver **[Curso: Deploy a playsistemico](https://soyernomodo.github.io/erno-modo/capacitaciones/deploy-playsistemico/)** para el workflow completo de infra MODO EKS.
 
 Ese curso cubre:
 - Clonar la infra de `promos-hub-site` como base.
@@ -66,6 +66,6 @@ Ese curso cubre:
 - [ ] Deep links y rewrites verificados
 - [ ] Sub-PR mergeado a integration (squash)
 
-> Curso completo de deploy: [../deploy-playsistemico/README.md](../deploy-playsistemico/README.md)
+> Curso completo de deploy: [deploy-playsistemico](https://soyernomodo.github.io/erno-modo/capacitaciones/deploy-playsistemico/)
 >
 > Volver al [inicio](#intro) o hacer el [Lab integrador](exercises/README.md).
