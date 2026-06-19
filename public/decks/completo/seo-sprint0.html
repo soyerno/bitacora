@@ -95,7 +95,7 @@
   .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
   .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
   .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
-  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col .meta__label { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
   .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
   .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
   @media print { body { background: white; } .deck { display: block; height: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
@@ -202,9 +202,9 @@
       <p class="lede">Hay subdominios de staging indexados en Google hoy. Es un problema de seguridad y SEO combinado. Propongo aprobarlo esta semana.</p>
     </div>
     <div class="meta">
-      <div class="meta__col"><h4>Audiencia</h4><p>Comite mixto · PM · TL · Manager</p></div>
-      <div class="meta__col"><h4>Autor</h4><p>Hernan De Souza</p></div>
-      <div class="meta__col"><h4>Fecha</h4><p>2026-05-20 · RFC SEO-2026-05-01</p></div>
+      <div class="meta__col"><p class="meta__label">Audiencia</p><p>Comite mixto · PM · TL · Manager</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernan De Souza</p></div>
+      <div class="meta__col"><p class="meta__label">Fecha</p><p>2026-05-20 · RFC SEO-2026-05-01</p></div>
     </div>
   </section>
 
@@ -642,9 +642,9 @@
       </div>
     </div>
     <div class="meta">
-      <div class="meta__col"><h4>RFC fuente</h4><p>docs/seo/RFC-SEO-2026-05-01.md · decision target 2026-05-30</p></div>
-      <div class="meta__col"><h4>Autor</h4><p>Hernan De Souza</p></div>
-      <div class="meta__col"><h4>Feedback hasta</h4><p>2026-05-26 · 2 semanas</p></div>
+      <div class="meta__col"><p class="meta__label">RFC fuente</p><p>docs/seo/RFC-SEO-2026-05-01.md · decision target 2026-05-30</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernan De Souza</p></div>
+      <div class="meta__col"><p class="meta__label">Feedback hasta</p><p>2026-05-26 · 2 semanas</p></div>
     </div>
   </section>
 

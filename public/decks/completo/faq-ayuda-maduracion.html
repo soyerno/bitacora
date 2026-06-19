@@ -83,7 +83,7 @@
   .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
   .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
   .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
-  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col .meta__label { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
   .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
   .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
   @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
@@ -164,6 +164,7 @@
   <link rel="stylesheet" href="../../assets/deck-bionic.css" />
   <meta property="og:title" content="FAQ + Centro de Ayuda · Maduración Q1-Q2 2026" />
   <meta property="og:description" content="Retrospectiva enero-mayo 2026 del rework de FAQ + centro de ayuda. Topics, FAQPage JSON-LD, search in-page, indexabilidad en AI overviews." />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
   <meta property="og:type" content="article" />
   <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/completo/faq-ayuda-maduracion.html" />
 </head>
@@ -189,9 +190,9 @@
       <p class="lede">Cómo transformamos una página estática con anclas de hash en un centro de ayuda completo: SSR, rutas individuales, Salesforce Knowledge, subcategorías y FAQPage JSON-LD.</p>
     </div>
     <div class="meta">
-      <div class="meta__col"><h4>Audiencia</h4><p>Comité mixto · PM, TL, Manager</p></div>
-      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
-      <div class="meta__col"><h4>Fecha</h4><p>20 mayo 2026</p></div>
+      <div class="meta__col"><p class="meta__label">Audiencia</p><p>Comité mixto · PM, TL, Manager</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><p class="meta__label">Fecha</p><p>20 mayo 2026</p></div>
     </div>
   </section>
 
@@ -538,9 +539,9 @@
       </div>
     </div>
     <div class="meta">
-      <div class="meta__col"><h4>Tickets clave</h4><p>EXA-1297, 1376, 1396, 1401, 1407</p></div>
-      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
-      <div class="meta__col"><h4>Contacto</h4><p>hernan.desouza@modo.com.ar</p></div>
+      <div class="meta__col"><p class="meta__label">Tickets clave</p><p>EXA-1297, 1376, 1396, 1401, 1407</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><p class="meta__label">Contacto</p><p>hernan.desouza@modo.com.ar</p></div>
     </div>
   </section>
 

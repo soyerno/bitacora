@@ -160,6 +160,20 @@ describe('SPEC-CAP-002 — capacitaciones.json entry fields', () => {
       ).toBe(true);
     }
   });
+
+  it('lessons count matches numbered lessons in course.json (excludes intro and lab)', () => {
+    for (const item of items) {
+      const courseJsonPath = `capacitaciones/${item.id}/course.json`;
+      const cj = loadJSON(courseJsonPath);
+      const numbered = (cj.lessons ?? []).filter(
+        (l) => !['intro', 'lab'].includes(l.id),
+      );
+      expect(
+        item.lessons,
+        `capacitacion '${item.id}': manifest lessons=${item.lessons} but course.json has ${numbered.length} numbered lessons`,
+      ).toBe(numbered.length);
+    }
+  });
 });
 
 // ── herramientas.json ─────────────────────────────────────────────────────────
