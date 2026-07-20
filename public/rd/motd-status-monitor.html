@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MOTD service status monitor · RD04 · Erno × MODO</title>
+  <meta name="description" content="Panel de status de 12 servicios (GitHub, Claude, OpenAI, Datadog, Cloudflare, Google Cloud, npm, Vercel + MODO Landing/Promos/Merchants/Developers) renderizado al final del MOTD del terminal. Cache-first + refresh paralelo en background." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="MOTD service status monitor" />
+  <meta property="og:description" content="Cómo armé un monitor de status en el MOTD del terminal sin que enlentezca el arranque: cache-first, BG refresh paralelo, statuspage.io contract." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/motd-status-monitor.html" />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-22" />
+  <meta property="article:section" content="R&D" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "MOTD service status monitor",
+    "description": "Panel de status de 12 servicios (GitHub, Claude, OpenAI, Datadog, Cloudflare, Google Cloud, npm, Vercel + MODO Landing/Promos/Merchants/Developers) renderizado al final del MOTD del terminal. Cache-first + refresh paralelo en background.",
+    "url": "https://soyernomodo.github.io/erno-modo/rd/motd-status-monitor.html",
+    "datePublished": "2026-05-22",
+    "author": {
+      "@type": "Person",
+      "name": "Hernán De Souza"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Erno × MODO"
+    }
+  }
+  </script>
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/rd/motd-status-monitor.html" />
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">Mis contribuciones a MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div></header>
+
+<main id="article-main">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">MOTD status monitor</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Decisión</span>
+        <span class="meta-pill">R&amp;D · RD04</span>
+      </div>
+      <h1 class="article-title">MOTD service status monitor · 12 servicios en el arranque del terminal</h1>
+      <p class="article-deck">Cómo armé un panel de status que se renderiza al final del MOTD sin enlentecer el arranque del shell — cache-first con TTL 5min y refresh paralelo en background.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-22">2026-05-22</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~5 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>El MOTD del terminal ya tenía 9 themes con ASCII animado (cyberpunk, matrix, aurora, etc.) que rotan random. Le agregué un <strong>panel de status de 12 servicios</strong> al final: GitHub, Claude, OpenAI, Datadog, Cloudflare, Google Cloud, npm, Vercel + MODO Landing/Promos/Merchants/Developers.</li>
+        <li><strong>Cache-first, BG refresh on stale</strong>: el shell jamás espera red. Lee <code>~/.cache/motd-status/status.json</code> en ~50ms; si la cache pasó el TTL (5min), muestra los datos viejos + dispara refresh en background con <code>(zsh -c "..." &amp; ) &amp;!</code>. La próxima terminal ve datos frescos.</li>
+        <li>El refresh real corre 12 curls en paralelo (~800ms total, vs ~8s si fuera secuencial). 8 servicios usan el contrato <strong>statuspage.io v2 API</strong> uniforme, GCloud usa <code>incidents.json</code>, y los 4 MODO usan HEAD probe (2xx/3xx/4xx = up, 5xx/000 = down).</li>
+        <li>Tres aprendizajes durables: <strong>(a)</strong> Anthropic redirige a <code>status.claude.com</code> ahora; <strong>(b)</strong> <code>promos.modo.com.ar</code> no resuelve DNS (skip); <strong>(c)</strong> zsh imprime <code>var=value</code> cuando <code>local</code> redeclara variables ya asignadas en un loop — fix con <code>setopt typeset_silent</code>.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#contexto">Contexto</a></li>
+          <li><a href="#diseno">Diseño · cache-first sin bloquear</a></li>
+          <li><a href="#endpoints">Endpoints y contratos</a></li>
+          <li><a href="#aprendizajes">Aprendizajes durables</a></li>
+          <li><a href="#proximo">Próximo paso</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="contexto">
+          <h2>Contexto</h2>
+
+          <p>El MOTD del terminal de mi laptop arranca con uno de 9 themes ASCII animados (cyberpunk, matrix, aurora, vaporwave, fire, ocean, steampunk, retro, default) que se elige al azar y muestra logo MODO + versiones de node/pnpm/bun + branch git + cita de una peli. Bonito, pero <em>no funcional</em>: ningún dato accionable.</p>
+
+          <p>Lo que sí miro varias veces por día es el status de GitHub (¿el push va a fallar?), Claude (¿el rate limit es real o es Anthropic caído?), npm (¿este install está raro porque mi compu o porque el registry?), y los servicios de MODO (¿el landing está respondiendo después del último deploy?). Hoy eso se traduce en abrir 4 pestañas de status pages distintas. La pregunta era simple: <strong>¿por qué no embeber eso en el MOTD que ya se renderiza al abrir terminal?</strong></p>
+
+          <p>Restricción única: el shell tiene que <strong>arrancar instantáneo</strong>. Pegarle 12 curls en serie al abrir terminal lo haría inusable. Por eso el centro del diseño no es "qué servicios" sino "<em>cómo no bloquear nunca</em>".</p>
+        </section>
+
+        <section id="diseno">
+          <h2>Diseño · cache-first sin bloquear</h2>
+
+          <p>Dos archivos solos:</p>
+
+          <ul>
+            <li><code>~/.config/motd-status.sh</code> — librería con funciones <code>motd_status_render</code> + <code>motd_status_refresh</code> + alias <code>motd-refresh</code>.</li>
+            <li><code>~/.zshrc</code> — source de la librería + llamada a <code>motd_status_render</code> después del theme.</li>
+          </ul>
+
+          <p>La separación funcional es clave: <strong>render</strong> y <strong>refresh</strong> son dos cosas distintas.</p>
+
+          <p class="callout callout-info"><strong>Render</strong> (~50ms): lee <code>~/.cache/motd-status/status.json</code>, formatea grid 3 columnas × 4 filas con emojis (🟢 ok · 🟡 minor · 🟠 major · 🔴 critical · ⚪ unknown), muestra footer con conteo y hint del comando refresh. Cero red, cero await. Se llama en cada apertura de terminal.</p>
+
+          <p class="callout callout-info"><strong>Refresh</strong> (~800ms): dispara 12 curls en paralelo (cada uno en un subshell <code>&amp;</code>), espera todos con <code>wait</code>, agrega los resultados ordenados por nombre desde temp files zero-padded (<code>00</code>, <code>01</code>, ... para que el glob los devuelva sortados), y escribe la cache JSON. Se llama solo cuando la cache pasó el TTL (default 5min).</p>
+
+          <p>El pegamento entre ambos es la regla del render: si <code>now - cache.ts &gt; TTL</code>, muestra los datos viejos con badge <code>↻ refreshing</code> y dispara el refresh asíncrono con un fork detachado (<code>(zsh -c "source ... &amp;&amp; motd_status_refresh" &amp; ) &amp;!</code>). La próxima terminal lee la cache nueva. El usuario nunca espera.</p>
+
+          <p>Para el primer arranque sin cache, el render muestra un placeholder <code>fetching...</code> + dispara el refresh inicial. Cuando se abre la segunda terminal, ya hay datos.</p>
+        </section>
+
+        <section id="endpoints">
+          <h2>Endpoints y contratos</h2>
+
+          <p>De los 12 servicios, 11 caen en uno de tres contratos. El doceavo (Google Cloud) tiene su propia forma.</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <caption>MOTD status · contratos por servicio</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Servicio</th>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col">Contrato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>GitHub</td><td><code>www.githubstatus.com/api/v2/status.json</code></td><td>statuspage v2</td></tr>
+                <tr><td>Claude</td><td><code>status.claude.com/api/v2/status.json</code> <em>(antes status.anthropic.com, ahora 302 redirect)</em></td><td>statuspage v2</td></tr>
+                <tr><td>OpenAI</td><td><code>status.openai.com/api/v2/status.json</code></td><td>statuspage v2</td></tr>
+                <tr><td>Datadog</td><td><code>status.datadoghq.com/api/v2/status.json</code></td><td>statuspage v2</td></tr>
+                <tr><td>Cloudflare</td><td><code>www.cloudflarestatus.com/api/v2/status.json</code></td><td>statuspage v2</td></tr>
+                <tr><td>npm</td><td><code>status.npmjs.org/api/v2/status.json</code></td><td>statuspage v2</td></tr>
+                <tr><td>Vercel</td><td><code>www.vercel-status.com/api/v2/status.json</code></td><td>statuspage v2</td></tr>
+                <tr><td>Google Cloud</td><td><code>status.cloud.google.com/incidents.json</code></td><td>incidents · contar <code>end == null</code></td></tr>
+                <tr><td>MODO Landing</td><td><code>modo.com.ar/</code></td><td>HEAD probe</td></tr>
+                <tr><td>MODO Promos</td><td><code>modo.com.ar/promos</code></td><td>HEAD probe</td></tr>
+                <tr><td>MODO Merchants</td><td><code>merchants.playdigital.com.ar/</code></td><td>HEAD probe</td></tr>
+                <tr><td>MODO Developers</td><td><code>developers.modo.com.ar/</code></td><td>HEAD probe</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>El contrato <strong>statuspage.io v2 API</strong> es ridículamente uniforme: pegarle a <code>https://&lt;host&gt;/api/v2/status.json</code> devuelve un JSON con shape <code>{status: {indicator, description}}</code>, donde <code>indicator</code> es uno de <code>none | minor | major | critical | maintenance</code>. Sirve para casi todo SaaS moderno. Primera cosa a probar cuando hay que monitorear cualquier servicio nuevo.</p>
+
+          <p>El <strong>HEAD probe</strong> para MODO funciona porque no hay status page público: <code>curl -sI -L --max-time 4 -o /dev/null -w "%{http_code}"</code> y se trata 2xx/3xx/4xx como UP (host responde, así sea con 404), 5xx como degraded, <code>000</code> como down. Esto es lo que evita que un <code>merchants.playdigital.com.ar</code> que devuelve 404 en root se marque como caído cuando en realidad está vivo y simplemente no tiene ruta raíz.</p>
+
+          <p class="callout callout-warn"><strong>Trap encontrado:</strong> <code>promos.modo.com.ar</code> no resuelve DNS (curl devuelve <code>000</code>). Lo descarté del set y usé <code>modo.com.ar/promos</code> que sí responde 301 vía istio rewrite. <em>No todo dominio MODO existe — verificar antes de agregarlo al monitor.</em></p>
+        </section>
+
+        <section id="aprendizajes">
+          <h2>Aprendizajes durables</h2>
+
+          <p>Tres cosas que valen más que el monitor en sí mismo, porque son re-aplicables a otra cosa mañana.</p>
+
+          <h3>1. statuspage.io es el contrato dominante</h3>
+
+          <p>De los 8 servicios externos del monitor, 7 son statuspage.io y devuelven el mismo JSON shape. Si alguna vez tengo que armar otro monitor (un Slack bot, un widget, un dashboard interno), el primer intento siempre es: <em>"¿este servicio tiene <code>/api/v2/status.json</code>?"</em>. Más útil que cualquier wrapper específico.</p>
+
+          <h3>2. Cache-first + BG refresh es el pattern para "terminal greeting con datos"</h3>
+
+          <p>Cualquier cosa que se renderice al arrancar el shell (system stats, status, notifs, weather) <strong>no puede esperar red</strong>. El pattern es siempre: cache en disco + TTL + render lee cache + render dispara refresh asíncrono si stale. Vale para esto, para un widget de PRs pendientes, para un contador de notificaciones de Slack, para lo que sea.</p>
+
+          <h3>3. zsh imprime <code>var=value</code> cuando <code>local</code> redeclara en loops</h3>
+
+          <p>Bug que me robó 20 minutos: el script imprimía <code>key=github</code>, <code>name=GitHub</code>, etc. a stdout sin un solo <code>echo</code> mío. Causa: <code>local key name url kind</code> sin asignación dentro de un loop, en la segunda iteración esas variables ya tenían valor de la primera, y zsh (sin <code>TYPESET_SILENT</code>) trata <code>local foo</code> sobre variable existente como "mostrame el valor actual". Comportamiento heredado de ksh, no pasa en bash, no pasa en <code>zsh -f</code>.</p>
+
+          <p>Fix combinable: <code>setopt local_options typeset_silent</code> al inicio de la función + inicializar en la declaración (<code>local key="" name="" url="" kind=""</code> fuera del loop, y reset dentro). Síntoma de diagnóstico rápido: si un script zsh imprime líneas <code>name=value</code> que no pusiste, es <em>casi seguro</em> esto, no <code>set -x</code>.</p>
+        </section>
+
+        <section id="proximo">
+          <h2>Próximo paso</h2>
+
+          <p>Hay tres extensiones razonables, todas opcionales:</p>
+
+          <ul>
+            <li><strong>Más servicios MODO</strong>: agregar Central, BO portales, el SDK CDN. La regla es solo agregar lo que efectivamente miro varias veces por día; sino el panel se vuelve ruido.</li>
+            <li><strong>Detalle al click</strong>: si una entrada está 🟡 o 🔴, agregar un comando <code>motd-status &lt;service&gt;</code> que abra la <em>description</em> completa del incident (ya está en la cache, falta solo renderizarla). Útil cuando me importa qué exactamente está roto.</li>
+            <li><strong>Sound/notify</strong>: si un servicio pasa de 🟢 a 🔴 entre refreshes, mandar un <code>terminal-notifier</code>. Cuidadoso con el ruido — solo para los servicios críticos (Claude, GitHub).</li>
+          </ul>
+
+          <p>Por ahora el panel cumple su propósito original — abrir terminal y saber en 1 segundo si lo que voy a hacer va a funcionar o si hay algo down upstream. El resto es feature creep si no aparece una necesidad concreta.</p>
+        </section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-22">2026-05-22</time>
+          </p>
+          <p class="article-disclaimer">
+            Esta R&amp;D documenta tooling personal del shell del autor — no es un producto MODO ni una decisión de plataforma. Los endpoints de MODO consultados (<code>modo.com.ar</code>, <code>merchants.playdigital.com.ar</code>, <code>developers.modo.com.ar</code>) son URLs públicas; el monitor solo hace HEAD probes y no transmite credenciales ni datos sensibles.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge sintesis">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

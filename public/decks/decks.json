@@ -1,0 +1,304 @@
+{
+ "_meta": {
+  "generated": "2026-05-20",
+  "source": "decks/draft/, decks/rfc/, decks/completo/",
+  "notes": "Catálogo curado de los decks HTML versionados en este repo. Featured y urgent se reflejan en la home."
+ },
+ "decks": [
+  {
+   "id": "storyblok-decouple-ai-authoring",
+   "title": "Storyblok: ¿lo sacamos? Authoring AI para branding",
+   "desc": "Build-vs-buy del CMS de modo-landing. Branding sin devs quiere editar el landing por chat estilo Lovable. Tres caminos con costos en días-IA: chat sobre Storyblok (~6-10d), AI-CMS propio full (~20-40d) e híbrido decouple+git+chat (~12-20d). Recomienda el híbrido porque cubre los 4 drivers (costo, control del shape, chat AI, soberanía del dato) reusando git PR + Vercel preview como capa de roles/preview/audit en vez de reconstruir el CMS. Distinción clave: chat de contenido sobre 21 bloques fijos, no generación de código. Track GEO paralelo independiente (catch-all sin cache + body ssr:false, fix ~2-4d). Gate de aprobación no negociable para fintech regulado.",
+   "href": "decks/draft/storyblok-decouple-ai-authoring.html",
+   "status": "draft",
+   "audience": "PM + Tech Lead",
+   "date": "2026-06-01",
+   "slides": 14,
+   "topics": [
+    "cms",
+    "ai",
+    "geo",
+    "modo-landing"
+   ],
+   "featured": true
+  },
+  {
+   "id": "aprendeatumodo-lovable-a-storyblok",
+   "title": "Aprendé a tu MODO · De Lovable a producción",
+   "desc": "Journey aprendeatumodo de SPA generada por Lovable a sitio Storyblok-driven con GEO 7/7 y pattern reusable para fronts MODO. Resuelve CSR trap con 5 JSON-LD inline, 17 AI bots declarados, llms.txt + Course strict 7/7. 42 stories en Storyblok organizadas en folder con is_startpage child pattern. Dos skills nuevas (modo-seo-geo-audit + modo-storyblok) y aprendizajes para aplicar en modo-landing, promos-hub-site y futuros fronts.",
+   "href": "decks/draft/aprendeatumodo-lovable-a-storyblok.html",
+   "status": "draft",
+   "audience": "Comité PM + TL + Manager",
+   "date": "2026-05-25",
+   "slides": 12,
+   "topics": [
+    "seo",
+    "cms",
+    "skills"
+   ],
+   "featured": true
+  },
+  {
+   "id": "aprende-a-tu-modo-ssr-geo-storyblok",
+   "title": "Aprendé a tu MODO · SSR + GEO + Storyblok",
+   "desc": "Estado del programa aprendeatumodo (COENXT-307 a COENXT-326). 17 PRs mergeados a main: GEO P0 (5 LDs ricos inline + 22 AI bots + sitemap + llms.txt + Course strict 7/7) y Storyblok orchestration W1 a W7 (7 cursos viviendo como stories con dual-source fallback). SSR sigue pendiente: Next 16 Pages router para destrabar HTML estático per /curso/[slug] + LD Course scoped + ISR. Pivot consciente de Vike a Next 16. Plan en 4 fases con IA (~3 semanas).",
+   "href": "decks/draft/aprende-a-tu-modo-ssr-geo-storyblok.html",
+   "status": "draft",
+   "audience": "Comité PM + TL + Manager",
+   "date": "2026-05-25",
+   "slides": 15,
+   "topics": [
+    "ssr",
+    "seo",
+    "cms"
+   ],
+   "featured": true
+  },
+  {
+   "id": "url-as-state-cache-ssr-filtros",
+   "title": "URL-as-state + cache SSR para filtros públicos",
+   "desc": "Programa para modo-landing /promos + promos-hub-site. Hoy los filtros viven en useState: crawlers no los ven, no se comparten, no se cachean per estado. Propone moverlos a URL-as-state en 4 fases con IA (~3.5 semanas), habilitando indexación per filtro, JSON-LD scoped al subset, y cache CDN/SSR con cardinality controlada (top 25 combos calientes). Capas: hook useUrlFilter, buildCanonical, sitemap top combos, policy de cache 4 clases, revalidateTag, smoke test pre-merge.",
+   "href": "decks/draft/url-as-state-cache-ssr-filtros.html",
+   "status": "draft",
+   "audience": "Comité PM + TL + Manager",
+   "date": "2026-05-25",
+   "slides": 15,
+   "topics": [
+    "seo",
+    "performance",
+    "arquitectura"
+   ],
+   "featured": true
+  },
+  {
+   "id": "usa-la-bitacora",
+   "title": "Usá la bitácora · invitación al equipo MODO",
+   "desc": "Deck de adopción para fomentar el uso de erno-modo (soyernomodo.github.io/erno-modo) como bitácora pública del equipo: decks, RFCs y skills con URL estable, brand MODO y workflow draft → rfc → completo. Tres pasos para arrancar esta semana.",
+   "href": "decks/draft/usa-la-bitacora.html",
+   "status": "draft",
+   "audience": "Equipo extendido MODO",
+   "date": "2026-05-20",
+   "slides": 10,
+   "topics": [
+    "plataforma",
+    "comunicacion"
+   ],
+   "featured": true
+  },
+  {
+   "id": "accesibilidad-anclajes-mareos",
+   "title": "Modo sereno · anclajes, reduced motion, acelerómetro y navbar A11y",
+   "desc": "Segunda capa del programa de accesibilidad MODO. Punto de anclaje visual + reducción de movimiento + acelerómetro auto-detect en TypeScript + navbar con switch de lectura biónica y dropdown A11y que absorbe dark mode. Incluye demo interactivo con botones que activan las features en vivo. 16 slides, ~3 semanas, sin BE nuevo.",
+   "href": "decks/draft/accesibilidad-anclajes-mareos.html",
+   "status": "draft",
+   "audience": "Comité PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 16,
+   "topics": [
+    "accesibilidad",
+    "frontend"
+   ],
+   "featured": true
+  },
+  {
+   "id": "accesibilidad-lectura-asistida-tdah",
+   "title": "Lectura asistida en MODO · accesibilidad para TDAH y dislexia",
+   "desc": "Propuesta de MVP para sumar dos modos opt-in en Configuración → Personalización: lectura biónica (bold sobre primera mitad de cada palabra) y lectura extendida (control de densidad tipográfica). 4 semanas, sin BE nuevo, target WCAG 2.2 AA en pantallas de texto largo.",
+   "href": "decks/draft/accesibilidad-lectura-asistida-tdah.html",
+   "status": "draft",
+   "audience": "Comité PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 15,
+   "topics": [
+    "accesibilidad",
+    "frontend"
+   ],
+   "featured": true
+  },
+  {
+   "id": "modo-design-system-skill",
+   "title": "modo-design-system · skill/SDK para devs frontend",
+   "desc": "Skill MODO-específico para generar páginas Next/Astro one-shot con tokens canónicos, JSON-LD obligatorio, NavFooterLayout, validación automática. 5 repos · 4 stacks · learning loop.",
+   "href": "decks/draft/modo-design-system-skill.html",
+   "status": "draft",
+   "audience": "Equipo frontend + TL + PM",
+   "date": "2026-05-20",
+   "slides": 15,
+   "topics": [
+    "frontend",
+    "plataforma"
+   ],
+   "featured": true
+  },
+  {
+   "id": "skills-catalog",
+   "title": "Catálogo de skills disponibles · segmentado por categoría",
+   "desc": "Foto del set actual de ~190 skills en Claude Code segmentada en 9 categorías. Propone consolidar el uso a un core diario de ~15 skills + política para marketplaces externos.",
+   "href": "decks/draft/skills-catalog.html",
+   "status": "draft",
+   "audience": "TL + Manager",
+   "date": "2026-05-20",
+   "slides": 14,
+   "topics": [
+    "plataforma",
+    "agents"
+   ]
+  },
+  {
+   "id": "home-imagenes-no-video",
+   "title": "El home no es el video · son las imágenes",
+   "desc": "Por qué el home de modo.com.ar rinde mejor con imágenes que con video: el video pesa el LCP, mete CLS y no aporta a la conversión. Propuesta de reemplazar el hero por imágenes optimizadas (AVIF/WebP) con foco en Core Web Vitals, sin perder identidad MODO.",
+   "href": "decks/draft/home-imagenes-no-video-2026-05-21.html",
+   "status": "draft",
+   "audience": "Comité PM + TL + Manager",
+   "date": "2026-05-21",
+   "slides": 12,
+   "topics": [
+    "performance",
+    "seo",
+    "home"
+   ],
+   "featured": false
+  },
+  {
+   "id": "nextjs-12-to-16-consolidation",
+   "title": "Next 12 → 16 · Stack consolidation",
+   "desc": "Migración del stack de modo-landing (Next.js 12) a Next.js 16 en 7 fases. Contexto técnico, riesgos, cronograma y equipos involucrados.",
+   "href": "decks/completo/nextjs-12-to-16-consolidation.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 15,
+   "topics": [
+    "frontend",
+    "plataforma"
+   ],
+   "featured": true
+  },
+  {
+   "id": "comercios-mvp",
+   "title": "/comercios MVP shipped",
+   "desc": "Resultados del MVP de comercios para modo.com.ar: búsqueda, filtros, MerchantCard con paridad visual a PromoHub, ISR, y próximos pasos.",
+   "href": "decks/completo/comercios-mvp.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 16,
+   "topics": [
+    "comercios",
+    "frontend"
+   ]
+  },
+  {
+   "id": "marketplaces",
+   "title": "Sumar ChatGPT App + Claude Skill al modal 'Usa MODO'",
+   "desc": "Integración de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisición vía el modal existente. Incluye demo del flujo agéntico end-to-end.",
+   "href": "decks/completo/marketplaces.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 9,
+   "topics": [
+    "agents"
+   ]
+  },
+  {
+   "id": "storyblok-cms-build-time",
+   "title": "Storyblok build-time · Navbar/Footer + BFF",
+   "desc": "Lib consume Navbar/Footer desde Storyblok vía BFF en modo-landing (default-layout, revalidate, sync). Cache TTL 5min + SWR 24h, una sola API key. Snapshot embebido, release cascade automático.",
+   "href": "decks/completo/storyblok-cms-build-time.html",
+   "status": "completo",
+   "audience": "Tech Leads + PMs",
+   "date": "2026-05-20",
+   "slides": 10,
+   "topics": [
+    "frontend",
+    "plataforma"
+   ]
+  },
+  {
+   "id": "modo-for-agents",
+   "title": "MODO for Agents · Pagos agénticos",
+   "desc": "POC del hackathon de pagos agénticos: discovery + Intent Mandate + checkout + Cart Mandate + SPT + SDK deeplink + biometric + capture, end-to-end.",
+   "href": "decks/completo/modo-for-agents.html",
+   "status": "completo",
+   "audience": "Comité mixto",
+   "date": "2026-05-20",
+   "slides": 14,
+   "topics": [
+    "agents"
+   ],
+   "featured": true
+  },
+  {
+   "id": "seo-sprint0",
+   "title": "SEO Sprint 0 · Staging leaks + plan 12 semanas",
+   "desc": "5 subdominios non-prod indexados en Google. Bloqueo de seguridad activo. Canibalización subdominios legacy y /aprende-con-modo crawled-not-indexed. Plan 12 semanas.",
+   "href": "decks/completo/seo-sprint0.html",
+   "status": "completo",
+   "audience": "Comité mixto",
+   "date": "2026-05-20",
+   "slides": 13,
+   "topics": [
+    "seo"
+   ],
+   "urgent": true,
+   "featured": true
+  },
+  {
+   "id": "comercios-database",
+   "title": "Comercios Database · De 200 ruidosos a catálogo canónico",
+   "desc": "Roadmap V1-V3 para construir el catálogo canónico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301.",
+   "href": "decks/completo/comercios-database.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 13,
+   "topics": [
+    "comercios"
+   ]
+  },
+  {
+   "id": "seo-geo-maduracion",
+   "title": "SEO + GEO Architecture · Maduración Q1-Q2 2026",
+   "desc": "Retrospectiva enero-mayo 2026 del trabajo de SEO + GEO architecture: Organization, MobileApp, Breadcrumb, FAQ, 37 BankOrCreditUnion, AI crawlers.",
+   "href": "decks/completo/seo-geo-maduracion.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 13,
+   "topics": [
+    "seo",
+    "retro"
+   ]
+  },
+  {
+   "id": "faq-ayuda-maduracion",
+   "title": "FAQ + Centro de Ayuda · Maduración Q1-Q2 2026",
+   "desc": "Retrospectiva enero-mayo 2026 del rework de FAQ + centro de ayuda. Topics, FAQPage JSON-LD, search in-page, indexabilidad en AI overviews.",
+   "href": "decks/completo/faq-ayuda-maduracion.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 11,
+   "topics": [
+    "seo",
+    "retro"
+   ]
+  },
+  {
+   "id": "cicd-dx-maduracion",
+   "title": "CI/CD + DX Hardening · Maduración Q1-Q2 2026",
+   "desc": "Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times.",
+   "href": "decks/completo/cicd-dx-maduracion.html",
+   "status": "completo",
+   "audience": "PM + TL + Manager",
+   "date": "2026-05-20",
+   "slides": 11,
+   "topics": [
+    "plataforma",
+    "retro"
+   ]
+  }
+ ]
+}

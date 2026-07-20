@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MODO Govern · análisis de influencias · R&amp;D · Erno × MODO</title>
+  <meta name="description" content="Lectura genealógica de MODO Govern: qué prior art declarada e implícita lo formó, y dónde el producto tira en dos direcciones distintas según qué doc leas." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="MODO Govern · análisis de influencias" />
+  <meta property="og:description" content="Lectura genealógica de MODO Govern: Paperclip, OpenClaw, Spotify Engineering, Zettelkasten, sigstore, OPA, Vanta, JumpCloud, Supabase. Y la tensión entre dos pitches que el código no termina de elegir." />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/modo-govern-influencias.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-21" />
+  <meta property="article:section" content="R&D" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "MODO Govern · análisis de influencias",
+    "description": "Lectura genealógica de MODO Govern: qué prior art declarada e implícita lo formó, y dónde el producto tira en dos direcciones distintas según qué doc leas.",
+    "url": "https://soyernomodo.github.io/erno-modo/rd/modo-govern-influencias.html",
+    "datePublished": "2026-05-21",
+    "author": { "@type": "Person", "name": "Hernán De Souza" },
+    "publisher": { "@type": "Organization", "name": "Erno × MODO" }
+  }
+  </script>
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/rd/modo-govern-influencias.html" />
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+</svg>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">MODO Govern · análisis de influencias</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge draft">Exploración</span>
+        <span class="meta-pill">R&amp;D · 02</span>
+      </div>
+      <h1 class="article-title">MODO Govern · análisis de influencias</h1>
+      <p class="article-deck">Genealogía de un proyecto interno: qué prior art declarada e implícita lo formó, y por qué los docs cuentan dos historias que todavía no terminan de cerrar.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-21">2026-05-21</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~10 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>El frame de producto sale de <strong>Paperclip + OpenClaw</strong>: "si Paperclip orquesta la empresa y OpenClaw es el empleado, MODO Govern es RRHH + Compliance". Está citado literal en los docs.</li>
+        <li>El modelo organizacional sale de <strong>Spotify Engineering</strong> (Tribes / Squads / Chapters / Guilds con dual reporting). El de conocimiento, de <strong>Zettelkasten + Obsidian</strong> (notas atómicas, wikilinks, graph view).</li>
+        <li>El layer de compliance — hash chain de evidencia, policy-as-code, dashboard de empleados — hereda sin citar de <strong>sigstore/SLSA, OPA/Sentinel y Backstage/Vanta</strong>. Es la parte que más se nota en el código y menos en la doc.</li>
+        <li>La tensión: <strong>dos pitches conviven</strong>. Uno vende "HR + Compliance para empleados IA" (visión grande, regtech B2B). Otro vende "tool interno para auditar repos GitHub con ROI 600x" (DevSecOps interno). Misma base de código.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#encuadre">El objeto de estudio</a></li>
+          <li><a href="#declaradas">Influencias declaradas</a></li>
+          <li><a href="#implicitas">Influencias implícitas</a></li>
+          <li><a href="#mapa">Mapa del genoma</a></li>
+          <li><a href="#peso">Peso por dimensión</a></li>
+          <li><a href="#tension">La tensión narrativa</a></li>
+          <li><a href="#proximo">Qué hago con esto</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="encuadre">
+          <h2>El objeto de estudio</h2>
+          <p>MODO Govern es un proyecto interno (no público, no producto). Se describe a sí mismo como una <em>squad automation platform</em>: contratás empleados IA con credenciales propias, los sometés a policy-as-code y guardás toda su actividad en un log hash-chained.</p>
+
+          <p>Tamaño actual: <strong>23 specs</strong>, la mayoría implementadas; algunas todavía en sprint pendiente (SPEC-112 local install CLI, SPEC-119 JumpCloud SSO foundations). El stack es React 18 + Vite + TypeScript + shadcn/ui en el front, Supabase Edge Functions (Deno) + Postgres 15 con <code>pgvector</code> + <code>pgcrypto</code> + <code>pg_cron</code> + <code>pgsodium</code> en el back. <strong>31 edge functions, 26 migraciones, 28 tools MCP, 12 crons autónomos.</strong></p>
+
+          <p>Este R&amp;D no evalúa si el producto es bueno ni si MODO debería invertir más en él. Hace una sola cosa: <strong>leer la genealogía</strong>. Cada decisión grande del producto tiene un linaje declarado o implícito. Mapearlo sirve para entender qué decisiones se heredaron sin discutirlas y dónde el producto está tirando en direcciones distintas según qué doc leas.</p>
+
+          <p class="callout callout-info"><strong>Fuentes:</strong> análisis read-only sobre el directorio interno <code>modo-govern-source-2026-04-13/</code> (README, CLAUDE.md, 23 specs, ARCHITECTURE, BUSINESS-CASE, PITCH-PRESENTATION, AI-SQUAD-AUTOMATION, SALES-STRATEGY). No incluye conversación con el equipo que lo construyó: es la voz que sale de los docs, no la voz que sale de las personas.</p>
+        </section>
+
+        <section id="declaradas">
+          <h2>Influencias declaradas</h2>
+          <p>Son las que aparecen citadas con nombre y apellido en los docs internos. No hay que adivinarlas: el README las pone, y <code>AI-SQUAD-AUTOMATION.md</code> arranca con la frase guía.</p>
+
+          <h3>Paperclip + OpenClaw — la frase guía</h3>
+          <p>Es la influencia que define el <strong>posicionamiento</strong> del producto. Cita literal de <code>AI-SQUAD-AUTOMATION.md:13</code>:</p>
+          <blockquote>"Si Paperclip orquesta la empresa y OpenClaw es el empleado, MODO Govern es el <strong>departamento de RRHH + Compliance</strong>: contrata, entrena con el conocimiento de tus empleados reales, audita y desbloquea."</blockquote>
+          <p>La diferenciación con Paperclip está en su propia sección de la doc (sección 6). Paperclip vende "corré tu empresa con IA"; MODO Govern vende "contratá IA que cumpla tu compliance". <code>SPEC-106</code> es, literalmente, un <em>bridge</em> MCP para que Paperclip pueda contratar empleados Govern. Es uno de esos productos que <strong>existe por diferenciación</strong>, no en el vacío — vale subrayarlo.</p>
+
+          <h3>Spotify Engineering Culture — modelo organizacional</h3>
+          <p><code>SPEC-113</code> implementa Tribes / Squads / Chapters / Guilds con <em>dual reporting</em> (squad manager para qué se construye, chapter lead para cómo). Es el paper de Henrik Kniberg de 2012, traído al modelo de datos de un producto SaaS. La doc lo dice sin vueltas: <em>"Modelar la cultura de trabajo Spotify-style que usa MODO"</em>.</p>
+          <p>Esto vale señalarlo porque <strong>es el modelo cultural real de MODO</strong>, no decoración. Govern está calzando su ontología sobre la organización que ya existe — no inventando una nueva.</p>
+
+          <h3>Zettelkasten + Obsidian — modelo de conocimiento</h3>
+          <p><code>SPEC-109</code> dice explícito: "Inspiración: Niklas Luhmann's Zettelkasten + Obsidian (markdown + <code>[[wikilinks]]</code> + graph view + tags)". Cada empleado humano puede construir su árbol de conocimiento personal estilo Obsidian, y ese grafo alimenta a su <em>clon IA</em> (<code>SPEC-110</code>) para que tenga el mismo conocimiento tácito.</p>
+          <p>Incluso hay import/export compatible con vault de Obsidian, y mención de un futuro <em>Obsidian plugin: modo-govern remote</em>. Para alguien que tiene a Luhmann en la memoria persistente de su Claude, esto se lee como afinidad real, no como buzzword.</p>
+
+          <h3>Anthropic MCP + Claude Code — el protocolo de interop</h3>
+          <p>Los <strong>28 tools MCP</strong> y el patrón "bring your own orchestrator" salen del modelo Anthropic. <code>ARCHITECTURE.md:19</code> lista como orquestadores externos válidos: Paperclip, Claude Code, Cursor, OpenClaw. La capa de agentes adentro está modelada como procesos, no como funciones — patrón Claude Code / agent SDK.</p>
+
+          <h3>HRIS metáfora — el frame de UX</h3>
+          <p>Toda la UX está framed como recursos humanos, no como agent platform: <em>hire</em>, onboarding wizard de 5 pasos, credential vault, per-employee budget, org chart dashboard. El vibe es Deel / Rippling / Workday — productos que ya enseñaron a un usuario corporativo a pensar "empleados con credenciales y presupuesto" como UI.</p>
+          <p>No está citado como tal en los docs (no dice "inspirado en Deel"), pero <strong>el lenguaje completo del producto es de HRIS</strong>. Lo cuento como declarada porque está en cada label del UI y en cada nombre de tabla, no porque haya un párrafo que lo declare.</p>
+        </section>
+
+        <section id="implicitas">
+          <h2>Influencias implícitas</h2>
+          <p>Las que no aparecen citadas pero son evidentes en el diseño técnico. Son las que más informan <em>cómo</em> está construido — donde están las decisiones de arquitectura que el equipo tomó "por default" porque ya las habían visto en otros productos.</p>
+
+          <h3>sigstore / in-toto / SLSA — el hash chain de evidencia</h3>
+          <p><code>SPEC-107</code> hace exactamente lo que hace la familia sigstore: <strong>log append-only con hash chain</strong>, tamper-proof, verificable. La promesa es la misma — "detecta alteraciones, exportable para compliance regulatorio (SOC 2 / PCI-DSS / SOX)". No se cita, pero el patrón es ese.</p>
+
+          <h3>OPA / HashiCorp Sentinel / AWS Cedar — policy-as-code</h3>
+          <p><code>SPEC-101</code> es policy-as-code 101: rules ejecutables que evalúan cada acción de cada agente antes de dejarla pasar. La sintaxis no es Rego ni HCL, pero la idea de <em>gates</em> que viven al lado del runtime sale directo de ese mundo. Las rules oficiales del producto se generan desde <a href="https://github.com/SoyErnoModo/modo-dev-framework" target="_blank" rel="noopener">modo-dev-framework</a>, mi propio framework — <em>self-influence</em> también cuenta.</p>
+
+          <h3>Backstage / Cortex / OpsLevel — developer portal con org chart</h3>
+          <p>El "Org Chart Dashboard" de <code>SPEC-105</code>, el catálogo de empleados / squads, los <em>service-like</em> entities con dueño y tier — todo esto es genealogía Backstage. Es la forma en que el mundo developer-portal aprendió a representar "personas + servicios + dueños" en una sola vista.</p>
+
+          <h3>Vanta / Drata / Aikido — compliance-as-a-service</h3>
+          <p>El pitch alternativo del producto (<code>PITCH-PRESENTATION.md:36</code>) lo vende como <em>"auditorías automatizadas de seguridad y calidad sobre repos de GitHub con ROI 600x"</em>. Eso es lenguaje 1:1 de Vanta / Drata / Aikido: dashboard de hallazgos, tracking histórico, estandarización de configuraciones, gates automatizados. Volveremos sobre esto en la sección de tensión narrativa.</p>
+
+          <h3>n8n / Temporal — orquestación durable</h3>
+          <p><strong>12 crons autónomos</strong> + workflows + retry policies. El stack es Supabase (no Temporal), pero el modelo mental es el mismo: workflows declarados que sobreviven a reinicios, observables, con UI. Si tuvieran que escalarlo, este es el camino más corto a Temporal.</p>
+
+          <h3>JumpCloud sobre Okta</h3>
+          <p><code>SPEC-119</code> elige <strong>JumpCloud</strong> para SSO + SAML + 2FA Push. No Okta, no Auth0. Es señal interesante de fit con MODO — JumpCloud es más barato y más liviano que Okta para una organización del tamaño de MODO, pero requiere más self-service. El equipo eligió el camino que pide más operativa propia y menos cheque mensual.</p>
+
+          <h3>Supabase como all-in-one</h3>
+          <p>El stack es <strong>Postgres + pgvector + pgcrypto + pg_cron + pgsodium Vault + Edge Functions Deno</strong>. Todo Supabase, nada AWS desnudo. Es la apuesta canónica del que arranca rápido y prefiere PaaS sobre infra propia. Tiene costo en lock-in, pero acelera meses de bootstrapping.</p>
+
+          <h3>Lovable como gateway LLM secundario</h3>
+          <p>En la lista de providers LLM aparece "Lovable AI Gateway" como uno de los multi-provider options. Es <strong>pista de que el primer prototipo nació en Lovable</strong> (la herramienta de prompting-to-app), y después se hardcodeó como gateway estable. No es decisión arquitectónica, es residuo del origen.</p>
+
+          <h3>MODO Dev Framework — la self-influence</h3>
+          <p>El producto cita explícitamente <a href="https://github.com/SoyErnoModo/modo-dev-framework" target="_blank" rel="noopener">SoyErnoModo/modo-dev-framework</a> (mi repo de meta-framework) como fuente de las rules de gobernanza oficiales. <strong>Govern aplica las reglas que yo ya había escrito antes en mi propio framework personal.</strong> Eso es self-influence, y vale anotarlo porque ata el producto a un conjunto de convenciones que no son MODO institucional — son las mías. Cuando me vaya o cambie de área, esa dependencia se va a notar.</p>
+        </section>
+
+        <section id="mapa">
+          <h2>Mapa del genoma</h2>
+          <p>Si agrupamos las influencias por <em>dimensión del producto</em>, queda más claro cómo se reparte la carga:</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 760 460" class="diagram" role="img" aria-labelledby="genome-title genome-desc">
+              <title id="genome-title">Mapa de influencias por dimensión</title>
+              <desc id="genome-desc">Diagrama radial que muestra MODO Govern en el centro y seis dimensiones a su alrededor: identidad de producto (Paperclip, OpenClaw, HRIS), cultura organizacional (Spotify), conocimiento (Zettelkasten, Obsidian), compliance (sigstore, OPA, Vanta), infraestructura (Supabase, JumpCloud, Lovable) y protocolos (MCP, Claude Code, Cursor).</desc>
+
+              <!-- centro -->
+              <g transform="translate(330,200)">
+                <rect width="100" height="60" rx="12" class="dgm-node dgm-node-accent"/>
+                <text x="50" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">MODO</text>
+                <text x="50" y="46" class="dgm-text dgm-text-strong" text-anchor="middle">Govern</text>
+              </g>
+
+              <!-- identidad (top-left) -->
+              <g transform="translate(20,20)">
+                <rect width="200" height="86" rx="10" class="dgm-node"/>
+                <text x="100" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Identidad de producto</text>
+                <text x="100" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">Paperclip · OpenClaw</text>
+                <text x="100" y="58" class="dgm-text dgm-text-muted" text-anchor="middle">HRIS (Deel / Rippling)</text>
+                <text x="100" y="74" class="dgm-text dgm-text-muted" text-anchor="middle">"HR + Compliance"</text>
+              </g>
+
+              <!-- cultura (top-center) -->
+              <g transform="translate(270,20)">
+                <rect width="220" height="86" rx="10" class="dgm-node"/>
+                <text x="110" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Cultura organizacional</text>
+                <text x="110" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">Spotify Engineering</text>
+                <text x="110" y="58" class="dgm-text dgm-text-muted" text-anchor="middle">Tribes / Squads / Chapters</text>
+                <text x="110" y="74" class="dgm-text dgm-text-muted" text-anchor="middle">Dual reporting</text>
+              </g>
+
+              <!-- conocimiento (top-right) -->
+              <g transform="translate(540,20)">
+                <rect width="200" height="86" rx="10" class="dgm-node"/>
+                <text x="100" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Conocimiento</text>
+                <text x="100" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">Luhmann · Zettelkasten</text>
+                <text x="100" y="58" class="dgm-text dgm-text-muted" text-anchor="middle">Obsidian (wikilinks)</text>
+                <text x="100" y="74" class="dgm-text dgm-text-muted" text-anchor="middle">Graph view + embeddings</text>
+              </g>
+
+              <!-- compliance (bottom-left) -->
+              <g transform="translate(20,354)">
+                <rect width="200" height="86" rx="10" class="dgm-node"/>
+                <text x="100" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Compliance</text>
+                <text x="100" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">sigstore / SLSA</text>
+                <text x="100" y="58" class="dgm-text dgm-text-muted" text-anchor="middle">OPA / Sentinel / Cedar</text>
+                <text x="100" y="74" class="dgm-text dgm-text-muted" text-anchor="middle">Vanta / Drata / Aikido</text>
+              </g>
+
+              <!-- infra (bottom-center) -->
+              <g transform="translate(270,354)">
+                <rect width="220" height="86" rx="10" class="dgm-node"/>
+                <text x="110" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Infraestructura</text>
+                <text x="110" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">Supabase (PG + pgvector)</text>
+                <text x="110" y="58" class="dgm-text dgm-text-muted" text-anchor="middle">JumpCloud · Lovable</text>
+                <text x="110" y="74" class="dgm-text dgm-text-muted" text-anchor="middle">Backstage (portal vibe)</text>
+              </g>
+
+              <!-- protocolos (bottom-right) -->
+              <g transform="translate(540,354)">
+                <rect width="200" height="86" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="100" y="22" class="dgm-text dgm-text-strong" text-anchor="middle">Protocolos / interop</text>
+                <text x="100" y="42" class="dgm-text dgm-text-muted" text-anchor="middle">Anthropic MCP</text>
+                <text x="100" y="58" class="dgm-text dgm-text-muted" text-anchor="middle">Claude Code · Cursor</text>
+                <text x="100" y="74" class="dgm-text dgm-text-muted" text-anchor="middle">n8n / Temporal (modelo)</text>
+              </g>
+
+              <!-- arrows hacia el centro -->
+              <path d="M 220 80 L 330 200" class="dgm-arrow"/>
+              <path d="M 380 110 L 380 200" class="dgm-arrow"/>
+              <path d="M 540 80 L 430 200" class="dgm-arrow"/>
+              <path d="M 220 380 L 330 260" class="dgm-arrow"/>
+              <path d="M 380 354 L 380 260" class="dgm-arrow"/>
+              <path d="M 540 380 L 430 260" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>Seis dimensiones del producto, cada una con su lote de prior art. La identidad y la cultura son las dimensiones más declaradas; la infra y el compliance son las más implícitas. La flecha del cuadrante de protocolos está acentuada porque es la única dimensión donde MODO Govern <strong>expone</strong> hacia afuera (MCP), las otras son consumo interno.</figcaption>
+          </figure>
+        </section>
+
+        <section id="peso">
+          <h2>Peso por dimensión</h2>
+          <p>Una forma de chequear si el genoma está balanceado es contar cuántas influencias distintas alimentan cada dimensión. No mide importancia — mide <em>presión</em> de prior art sobre cada decisión:</p>
+
+          <div class="chart-wrap" style="height: 320px; position: relative;">
+            <canvas id="influence-chart" aria-label="Cantidad de influencias por dimensión del producto"></canvas>
+          </div>
+          <p class="callout callout-info"><strong>Lectura del gráfico:</strong> compliance e infraestructura son las dimensiones con más prior art apilada — son las que más decisiones heredan sin discutirlas. Cultura y protocolos tienen menos influencias porque la elección ya está hecha y es muy clara (Spotify, MCP). Identidad es la dimensión más cargada políticamente: es donde se decide qué se vende.</p>
+        </section>
+
+        <section id="tension">
+          <h2>La tensión narrativa</h2>
+          <p>Esto es lo más interesante que apareció leyendo los docs uno al lado del otro. Hay <strong>dos pitches conviviendo</strong> en el mismo repo, con la misma base de código, pero con prior art distinta y objetivos distintos.</p>
+
+          <h3>Narrativa A — "HR + Compliance para empleados IA"</h3>
+          <p>Vive en <code>AI-SQUAD-AUTOMATION.md</code> y en el <code>README</code>. Lenguaje: regtech, audit trail, hash chain, persona library, knowledge graph, clonar humanos. Hereda de <strong>Paperclip + Spotify + Obsidian + sigstore</strong>. Apunta a un mercado B2B grande: vender la pieza de compliance que orquestadores como Paperclip no traen.</p>
+
+          <h3>Narrativa B — "tool interno con ROI 600x"</h3>
+          <p>Vive en <code>PITCH-PRESENTATION.md</code> y <code>SALES-STRATEGY.md</code>. Lenguaje: auditorías automatizadas, scan de repos GitHub, ahorro de horas trimestrales, setup en 15 minutos. Hereda de <strong>Vanta + Backstage + GitHub Actions</strong>. Apunta a MODO mismo como cliente: ROI medible para justificar el costo interno.</p>
+
+          <div class="callout callout-warn"><strong>El choque:</strong> los dos pitches son razonables por separado, pero llevan al producto a lugares distintos. La A pide invertir en marketplace de personas, integraciones con orquestadores externos y certificaciones de auditoría externa. La B pide invertir en cobertura de scanners, integraciones con CI de GitHub y reporting de Slack. <strong>Las dos cosas a la vez es más equipo del que hay.</strong></div>
+
+          <p>No es problema del producto, es etapa. Lo que vale señalar es que <strong>antes de cualquier movimiento de scope grande</strong> conviene elegir cuál narrativa es el norte, porque ese norte va a definir qué influencias se profundizan y cuáles se sueltan. Si gana la A, sigamos mirando a Paperclip y a sigstore. Si gana la B, soltemos eso y profundicemos Vanta.</p>
+        </section>
+
+        <section id="proximo">
+          <h2>Qué hago con esto</h2>
+          <p>Este R&amp;D queda como exploración. No propone roadmap, no pide presupuesto y no marca decisión. Solo deja el mapa servido para que cuando alguien — el dueño del producto, el TL, vos que lo estás leyendo — quiera tomar la decisión grande, no tenga que reconstruir la genealogía desde cero.</p>
+
+          <p>Los movimientos que sí me parece que destrabaría este material:</p>
+          <ul>
+            <li><strong>Pegarle una vuelta al posicionamiento</strong> con el equipo: ¿A o B? ¿Las dos pero con orden? ¿Una primero y la otra después?</li>
+            <li><strong>Auditar dependencias del producto sobre <code>modo-dev-framework</code></strong> (mi repo personal). Si Govern depende de rules que yo mantengo a título individual, eso es deuda de gobernanza propia. Vale moverlas a un repo institucional.</li>
+            <li><strong>Decidir si el knowledge graph sigue siendo Obsidian-compatible</strong> o se desacopla. Hoy es valor (importás tu vault y arrancás); en escala, puede ser ancla.</li>
+          </ul>
+
+          <p>Si el equipo decide alguna de estas tres, lo bajo a RFC formal. Aguardo su feedback.</p>
+        </section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-21">2026-05-21</time>
+          </p>
+          <p class="article-disclaimer">
+            Investigación read-only sobre el directorio interno <code>modo-govern-source-2026-04-13/</code>. No incluye conversación con el equipo que construyó el producto: es la voz que sale de los docs. Cualquier influencia importante que el equipo haya tenido y no esté escrita en los docs queda fuera de este mapa por construcción.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof Chart === 'undefined') return;
+
+  function getCss(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  var ctx = document.getElementById('influence-chart');
+  if (!ctx) return;
+
+  var accent = getCss('--accent-ink', '#00471B');
+  var muted = getCss('--muted', '#6B6B6B');
+  var ink = getCss('--ink', '#1A1A1A');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        'Compliance',
+        'Infraestructura',
+        'Identidad',
+        'Conocimiento',
+        'Cultura',
+        'Protocolos'
+      ],
+      datasets: [{
+        label: 'Influencias distintas',
+        data: [5, 4, 3, 2, 1, 3],
+        backgroundColor: accent,
+        borderRadius: 8,
+        borderSkipped: false,
+        maxBarThickness: 44
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) { return ctx.parsed.x + ' influencias mapeadas'; }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: { color: muted, stepSize: 1, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12 } },
+          grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false }
+        },
+        y: {
+          ticks: { color: ink, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 13, weight: '500' } },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicar un frontend MODO en Kubernetes · R&amp;D · Erno × MODO</title>
+  <meta name="description" content="Runbook de cero a producción para un frontend MODO en k8s: imagen modo-base, config runtime SOPS→SSM, chart compartido, subdominio.modo.com.ar, basePath y la UI lib. Tres casos: promos-hub, modo-landing, aprendeatumodo." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Publicar un frontend MODO en Kubernetes" />
+  <meta property="og:description" content="De repo vacío a subdominio.modo.com.ar: el runbook canónico de deploy de fronts MODO en k8s." />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/publicar-frontend-modo-k8s.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-27" />
+  <meta property="article:section" content="R&D" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/rd/publicar-frontend-modo-k8s.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Publicar un frontend MODO en Kubernetes",
+    "description": "Runbook de cero a producción para un frontend MODO en k8s: imagen modo-base, config runtime SOPS→SSM, chart compartido, subdominio.modo.com.ar, basePath y la UI lib. Tres casos: promos-hub, modo-landing, aprendeatumodo.",
+    "url": "https://soyernomodo.github.io/erno-modo/rd/publicar-frontend-modo-k8s.html",
+    "datePublished": "2026-05-27",
+    "author": {
+      "@type": "Person",
+      "name": "Hernán De Souza"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Erno × MODO"
+    }
+  }
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+</svg>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Publicar un frontend MODO en k8s</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Decisión</span>
+        <span class="meta-pill">R&amp;D · RD05</span>
+      </div>
+      <h1 class="article-title">Publicar un frontend MODO en Kubernetes</h1>
+      <p class="article-deck">De repo vacío a <code>subdominio.modo.com.ar</code> en producción. El runbook canónico reconstruido de los repos vivos: cómo la plataforma compartida de <code>playsistemico</code> convierte un <code>values.yaml</code> en un front desplegado, dónde encaja el basePath, y por qué la config nunca toca un <code>.env</code>.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-27">2026-05-27</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~11 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>Un front MODO no se deploya con <code>kubectl</code> a mano: se <strong>enchufa</strong> a una plataforma compartida. El repo aporta config declarativa; los workflows reusables (<code>ci-ms</code>/<code>cd-ms</code>) traen el Helm chart (v1.15.3) y hacen el resto.</li>
+        <li>La config runtime <strong>no vive en un <code>.env</code></strong>: va cifrada con SOPS en <code>parameters/&lt;env&gt;/</code>, un workflow la empuja a AWS SSM, y el <code>entrypoint.sh</code> la baja al arrancar el container.</li>
+        <li>El subdominio sale de tres líneas de <code>values.yaml</code> — <code>exposeName</code> + <code>dnsAliasRecord.enabled</code> + <code>istio.external</code> → <code>&lt;sub&gt;.modo.com.ar</code>. Sin tocar Route53 ni abrir ticket, si el chart soporta alias DNS.</li>
+        <li>El basePath es la pieza que más se confunde: <code>assetPrefix:"/promos"</code> + un rewrite de <code>_next</code> permite servir el mismo front embebido bajo <code>modo.com.ar/promos</code> <em>y</em> en su subdominio propio a la vez.</li>
+        <li>Tres casos reales lo aterrizan: <strong>promos-hub</strong> (molde vivo, subdominio + subpath), <strong>modo-landing</strong> (apex, deuda de lib vieja) y <strong>aprendeatumodo</strong> (pre-infra: todavía Vite, sin helm/workflows/sops).</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#plataforma">La plataforma, no el repo</a></li>
+          <li><a href="#topologia">Topología de un deploy</a></li>
+          <li><a href="#subdominio">Subdominio y basePath</a></li>
+          <li><a href="#config">Config runtime: SOPS → SSM</a></li>
+          <li><a href="#piezas">Qué aporta cada repo</a></li>
+          <li><a href="#tickets">Tickets JSM que dispara el deploy</a></li>
+          <li><a href="#uilib">La UI lib</a></li>
+          <li><a href="#aprendeatumodo">El caso de cero: aprendeatumodo</a></li>
+          <li><a href="#proximo">Próximo paso</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="plataforma">
+          <h2>La plataforma, no el repo</h2>
+          <p>El error mental al desplegar el primer front MODO es pensar que el repo "contiene el deploy". No. El repo contiene <strong>config declarativa</strong>; el deploy lo hace una plataforma compartida que vive en <code>playsistemico/workflows</code> y trae un Helm chart común. Tu repo no tiene el chart: tiene un <code>helm/values.yaml</code> de ~60 líneas y un <code>helm/namespace.yaml</code> de 6. Todo lo demás —cómo se buildea la imagen, cómo se aplica el chart, cómo se crea el DNS— está afuera, versionado y compartido entre todos los fronts.</p>
+          <p>Esto es bueno: significa que publicar un front nuevo es, en su mayoría, <strong>copiar el molde de uno que ya funciona</strong> (promos-hub) y cambiar tres nombres. Y es la razón por la que este runbook existe: el molde está implícito en los repos vivos, pero nadie lo había escrito de corrido.</p>
+          <p class="callout callout-info">
+            <strong>Las cuatro piezas de la plataforma:</strong> imagen base <code>modo-base:&lt;ver&gt;-node22</code> · config runtime por <code>SOPS → SSM</code> · deploy por workflows reusables <code>@v1</code> + chart compartido · exposición por <code>values.yaml</code> (subdominio/apex/subpath).
+          </p>
+        </section>
+
+        <section id="topologia">
+          <h2>Topología de un deploy</h2>
+          <p>De izquierda a derecha: tu código entra en una imagen sobre <code>modo-base</code>, el container arranca con <code>entrypoint.sh</code> que baja la config de SSM, y el chart compartido expone el service detrás de un gateway Istio externo que resuelve el subdominio.</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 380" class="diagram" role="img" aria-labelledby="topo-title topo-desc">
+              <title id="topo-title">Topología de un deploy de frontend MODO</title>
+              <desc id="topo-desc">El código se empaqueta sobre modo-base, el workflow ci-ms pushea la imagen al registry, cd-ms aplica el chart compartido, el pod arranca con entrypoint.sh que baja config de AWS SSM, y el gateway Istio externo resuelve el subdominio modo.com.ar.</desc>
+
+              <g transform="translate(20,30)">
+                <rect width="150" height="70" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="75" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">Repo</text>
+                <text x="75" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">código + values.yaml</text>
+              </g>
+
+              <g transform="translate(20,160)">
+                <rect width="150" height="70" rx="10" class="dgm-node"/>
+                <text x="75" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">ci-ms.yaml@v1</text>
+                <text x="75" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">build → registry</text>
+              </g>
+
+              <g transform="translate(270,160)">
+                <rect width="170" height="70" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="85" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">cd-ms.yaml@v1</text>
+                <text x="85" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">+ Helm chart v1.15.3</text>
+              </g>
+
+              <g transform="translate(270,30)">
+                <rect width="170" height="70" rx="10" class="dgm-node dgm-node-user"/>
+                <text x="85" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">AWS SSM</text>
+                <text x="85" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">/proj/env/*</text>
+              </g>
+
+              <g transform="translate(270,290)">
+                <rect width="170" height="70" rx="10" class="dgm-node"/>
+                <text x="85" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">Pod (Next)</text>
+                <text x="85" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">entrypoint.sh</text>
+              </g>
+
+              <g transform="translate(540,290)">
+                <rect width="160" height="70" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="80" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">Istio gateway</text>
+                <text x="80" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">external</text>
+              </g>
+
+              <g transform="translate(540,160)">
+                <rect width="160" height="70" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="80" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">&lt;sub&gt;.modo.com.ar</text>
+                <text x="80" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">DNS alias</text>
+              </g>
+
+              <path d="M 95 100 L 95 158" class="dgm-arrow"/>
+              <path d="M 170 195 L 268 195" class="dgm-arrow"/>
+              <path d="M 355 230 L 355 288" class="dgm-arrow dgm-arrow-accent"/>
+              <path d="M 355 160 L 355 102" class="dgm-arrow dgm-arrow-dotted"/>
+              <path d="M 440 325 L 538 325" class="dgm-arrow dgm-arrow-accent"/>
+              <path d="M 620 290 L 620 232" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>La flecha punteada es lo no obvio: el pod no lee un <code>.env</code>, le pide la config a SSM al arrancar. Si SSM devuelve vacío, el container sale con código 127 y no levanta.</figcaption>
+          </figure>
+        </section>
+
+        <section id="subdominio">
+          <h2>Subdominio y basePath</h2>
+          <p>Hay dos maneras de exponerse y conviene no mezclarlas. El <strong>apex</strong> (caso modo-landing) sirve en la raíz: <code>domainName: modo.com.ar</code> + <code>exposeAliases: ['www']</code>, prefijado por env (<code>develop.modo.com.ar</code>, …, <code>modo.com.ar</code>). El <strong>subdominio dedicado</strong> (caso promos-hub) agrega tres líneas:</p>
+
+          <pre><code>exposeName: "promoshub"
+dnsAliasRecord:
+  enabled: true
+istio:
+  enabled: true
+  external: true</code></pre>
+
+          <p>Eso produce <code>promoshub.develop.modo.com.ar</code> … <code>promoshub.modo.com.ar</code>, con el DNS y la regla del gateway creados por la plataforma. No hay que tocar Route53 a mano <em>si el chart soporta <code>dnsAliasRecord</code></em>.</p>
+
+          <p class="callout callout-warn">
+            <strong>Caso borde — ALB legacy.</strong> Fronts viejos sin <code>dnsAliasRecord</code> necesitan una regla manual en <code>payment-k8s-services/misc-alb.yml</code> + un ticket a PE CloudOps (caso PE-3192). Confirmá qué versión de chart te toca antes de asumir que el alias DNS es automático.
+          </p>
+
+          <h3>El doble en promos-hub: subdominio <em>y</em> subpath</h3>
+          <p>Acá está la pieza del basePath. promos-hub se expone <strong>doble</strong>: como subdominio propio (<code>promoshub.modo.com.ar</code>) y embebido dentro del apex en <code>modo.com.ar/promos</code>. Para que los assets resuelvan bajo el prefijo cuando entrás por el path:</p>
+
+          <pre><code>// next.config.mjs
+const nextConfig = {
+  assetPrefix: "/promos",
+  async rewrites() {
+    return [
+      { source: "/promos/_next/:path*", destination: "/_next/:path*" },
+    ];
+  },
+};</code></pre>
+
+          <p>Sin <code>assetPrefix</code>, entrando por <code>/promos</code> el navegador pide <code>/_next/...</code> (sin prefijo), el apex no lo tiene, y la página carga sin CSS ni JS. El rewrite devuelve <code>/promos/_next/*</code> desde <code>/_next/*</code> para cerrar el círculo. Si quisieras que <strong>todas</strong> las rutas vivan bajo el prefijo —incluso en el subdominio— usarías <code>basePath</code> en vez de <code>assetPrefix</code>; promos usa solo <code>assetPrefix</code> porque en su subdominio sigue viviendo en root.</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 230" class="diagram" role="img" aria-labelledby="exp-title exp-desc">
+              <title id="exp-title">Dos caminos al mismo front</title>
+              <desc id="exp-desc">El subdominio promoshub.modo.com.ar sirve la app en root; el apex modo.com.ar/promos rutea por path al mismo service usando assetPrefix y un rewrite de _next.</desc>
+
+              <g transform="translate(30,90)">
+                <rect width="180" height="60" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="90" y="26" class="dgm-text dgm-text-strong" text-anchor="middle">promoshub.modo.com.ar</text>
+                <text x="90" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">subdominio · root</text>
+              </g>
+
+              <g transform="translate(30,10)">
+                <rect width="180" height="60" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="90" y="26" class="dgm-text dgm-text-strong" text-anchor="middle">modo.com.ar/promos</text>
+                <text x="90" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">apex · subpath</text>
+              </g>
+
+              <g transform="translate(320,50)">
+                <rect width="170" height="70" rx="10" class="dgm-node"/>
+                <text x="85" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">assetPrefix /promos</text>
+                <text x="85" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">+ rewrite _next</text>
+              </g>
+
+              <g transform="translate(560,50)">
+                <rect width="140" height="70" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="70" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">Service</text>
+                <text x="70" y="52" class="dgm-text dgm-text-muted" text-anchor="middle">promos-hub-site</text>
+              </g>
+
+              <path d="M 210 40 C 270 40, 280 70, 318 80" class="dgm-arrow dgm-arrow-accent"/>
+              <path d="M 210 120 C 270 120, 280 95, 318 90" class="dgm-arrow"/>
+              <path d="M 490 85 L 558 85" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>El subpath es opcional. Lo usás cuando un front tiene que vivir embebido dentro del apex además de tener su propio subdominio.</figcaption>
+          </figure>
+        </section>
+
+        <section id="config">
+          <h2>Config runtime: SOPS → SSM</h2>
+          <p>Ningún front MODO lee un <code>.env</code> en producción. La config viaja por una cadena de cuatro saltos, y entenderla evita el clásico "puse la variable y el pod no la ve".</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 200" class="diagram" role="img" aria-labelledby="cfg-title cfg-desc">
+              <title id="cfg-title">Flujo de config runtime</title>
+              <desc id="cfg-desc">parameters cifrado con SOPS, el workflow ssm-sops lo descifra con KMS y lo empuja a AWS SSM Parameter Store, y entrypoint.sh lo baja al boot del pod con get-parameters-by-path.</desc>
+
+              <g transform="translate(10,70)">
+                <rect width="150" height="60" rx="25" class="dgm-state dgm-state-init"/>
+                <text x="75" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">parameters/</text>
+                <text x="75" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">SOPS + KMS</text>
+              </g>
+
+              <g transform="translate(225,70)">
+                <rect width="160" height="60" rx="25" class="dgm-state"/>
+                <text x="80" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">ssm-sops@v1</text>
+                <text x="80" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">decrypt → push</text>
+              </g>
+
+              <g transform="translate(450,70)">
+                <rect width="120" height="60" rx="25" class="dgm-state"/>
+                <text x="60" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">AWS SSM</text>
+                <text x="60" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">/proj/env/</text>
+              </g>
+
+              <g transform="translate(620,70)">
+                <rect width="90" height="60" rx="25" class="dgm-state dgm-state-ok"/>
+                <text x="45" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">pod</text>
+                <text x="45" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">env</text>
+              </g>
+
+              <path d="M 160 100 L 223 100" class="dgm-arrow"/>
+              <path d="M 385 100 L 448 100" class="dgm-arrow"/>
+              <path d="M 570 100 L 618 100" class="dgm-arrow dgm-arrow-accent"/>
+            </svg>
+            <figcaption>El push a SSM lo dispara tocar <code>parameters/**</code> en un push a main (workflow <code>ssm.yaml</code>). El último salto lo hace <code>entrypoint.sh</code> con <code>aws ssm get-parameters-by-path --with-decryption</code>.</figcaption>
+          </figure>
+
+          <p>Cada env tiene su propia KMS key declarada en <code>.sops.yaml</code> por <code>path_regex</code>: develop y qa comparten cuenta, preprod y prod tienen cuentas AWS propias. Dentro de <code>parameters/&lt;env&gt;/</code> hay dos archivos: <code>configurations.yaml</code> (no sensible — URLs de BFFs, feature flags, keys públicas de Amplitude/Datadog) y <code>secrets.yaml</code> (tokens privados). Ambos terminan mergeados en <code>process.env</code>; la separación es para claridad y para saber qué rotar.</p>
+
+          <p class="callout callout-warn">
+            <strong>Gotcha de seguridad real (hallado escribiendo este runbook):</strong> un <code>.npmrc</code> con un token <code>ghp_…</code> literal y git-trackeado es un leak. El patrón correcto —el que usa promos— es <code>//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}</code> con el token en variable de entorno (secret <code>MODO_PKG_TOKEN</code> en CI). Nunca el literal en disco.
+          </p>
+        </section>
+
+        <section id="piezas">
+          <h2>Qué aporta cada repo</h2>
+          <p>La matriz cruza los tres fronts contra las piezas de la "anatomía desplegable". Deja en evidencia que promos-hub es el molde completo, modo-landing carga deuda histórica, y aprendeatumodo todavía no tiene casi nada de la infra.</p>
+
+          <div class="matrix-card">
+            <div class="matrix">
+              <div class="matrix-cell matrix-head"></div>
+              <div class="matrix-cell matrix-head">helm/</div>
+              <div class="matrix-cell matrix-head">SOPS + params</div>
+              <div class="matrix-cell matrix-head">workflows</div>
+              <div class="matrix-cell matrix-head">entrypoint</div>
+              <div class="matrix-cell matrix-head">UI lib nueva</div>
+
+              <div class="matrix-cell matrix-row-label">promos-hub</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+
+              <div class="matrix-cell matrix-row-label">modo-landing</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+              <div class="matrix-cell matrix-mid">server.js</div>
+              <div class="matrix-cell matrix-na">lib vieja</div>
+
+              <div class="matrix-cell matrix-row-label">aprendeatumodo</div>
+              <div class="matrix-cell matrix-gap">falta</div>
+              <div class="matrix-cell matrix-gap">falta</div>
+              <div class="matrix-cell matrix-gap">falta</div>
+              <div class="matrix-cell matrix-gap">falta</div>
+              <div class="matrix-cell matrix-ok">✓</div>
+            </div>
+            <div class="matrix-legend">
+              <span><span class="lg-dot lg-ok"></span> Presente</span>
+              <span><span class="lg-dot lg-mid"></span> Variante</span>
+              <span><span class="lg-dot lg-gap"></span> Falta</span>
+              <span><span class="lg-dot lg-na"></span> Deuda / N/A</span>
+            </div>
+          </div>
+
+          <p>El inventario mínimo de un repo desplegable: <code>Dockerfile</code> (FROM <code>modo-base:&lt;ver&gt;-node22</code>), <code>entrypoint.sh</code>, <code>.npmrc</code> con <code>${NODE_AUTH_TOKEN}</code>, <code>helm/{values,namespace}.yaml</code>, <code>.sops.yaml</code>, <code>parameters/&lt;env&gt;/{configurations,secrets}.yaml</code>, y el set de workflows que delegan a <code>playsistemico/workflows/*@v1</code>.</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <caption>Workflows reusables del repo (al 2026-05-27)</caption>
+              <thead>
+                <tr><th scope="col">Local</th><th scope="col">Delega a</th><th scope="col">Trigger</th><th scope="col">Hace</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code class="verb verb-post">ci</code></td><td><code>ci-ms.yaml@v1</code></td><td>push a main</td><td>lint + test + Sonar + build imagen</td></tr>
+                <tr><td><code class="verb verb-post">cd</code></td><td><code>cd-ms.yaml@v1</code></td><td>label deploy / manual</td><td>deploy dev/qa/preprod</td></tr>
+                <tr><td><code class="verb verb-post">prod</code></td><td><code>cd-ms.yaml@v1</code></td><td>manual</td><td>deploy production</td></tr>
+                <tr><td><code class="verb verb-get">ssm</code></td><td><code>ssm-sops.yaml@v1</code></td><td>cambios en parameters/</td><td>params → SSM</td></tr>
+                <tr><td><code class="verb verb-get">pr</code></td><td><code>pr-ms.yaml@v1</code></td><td>PR a main</td><td>checks del PR</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="tickets">
+          <h2>Tickets JSM que dispara el deploy</h2>
+          <p>Una parte del runbook no es código sino tickets. El JSM de MODO (<code>play-sistemico.atlassian.net</code>) tiene los service desks de MODO catalogados; un front nuevo dispara seis canónicos. El skill hermano <code>modo-jsm-ticket</code> arma el payload, muestra preview con la URL del portal, y POSTea con confirmación.</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <caption>Tickets canónicos para un front nuevo en <code>playsistemico</code></caption>
+              <thead>
+                <tr><th scope="col">#</th><th scope="col">Cuándo (fase)</th><th scope="col">Service Desk · Request Type</th><th scope="col">sd / rt</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>Crear repo en <code>playsistemico</code> (fase 1)<sup>†</sup></td><td>HD · ABM de Repositorios de GitHub</td><td><code>1 / 1404</code></td></tr>
+                <tr><td>2</td><td>Crear GitHub team del repo (fase 1)</td><td>CYBS · Github - Creación de Team</td><td><code>24 / 1576</code></td></tr>
+                <tr><td>3</td><td>Agregar miembros al team (fase 1)</td><td>CYBS · Github - Agregar Usuario a Team</td><td><code>24 / 1577</code></td></tr>
+                <tr><td>4</td><td>KMS nuevas / DNS manual / <code>misc-alb.yml</code> legacy / pedido genérico a plataforma (fase 3)</td><td>PEA · Investigar un problema</td><td><code>23 / 10936</code></td></tr>
+                <tr><td>5</td><td><strong>Gate de prod</strong>: review GRC / threat model (fase 5)</td><td>OFFSEC · Cyber &amp; GRC Hub</td><td><code>192 / 14111</code></td></tr>
+                <tr><td>6</td><td>Vault 1Password con <strong>prod</strong> credentials (fase 6)</td><td>CYBS · 1Password</td><td><code>24 / 1042</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p><sup>†</sup> El catálogo expone tres formularios homónimos en HD <code>sd=1</code>: <code>rt=1175</code>, <code>rt=1403</code>, <code>rt=1404</code>. Usar <code>1404</code> — es el validado live por <code>modo-jsm-ticket</code> (caso HD-11623). Los otros dos quedan deprecated.</p>
+
+          <p>El orden importa. Los tres de Fase 1 (#1 → #2 → #3) son secuenciales: sin repo no hay team, sin team no hay miembros. El #4 PEA se dispara solo si el chart no soporta <code>dnsAliasRecord</code> o si los KMS del env todavía no existen. El <strong>#5 GRC es gate de prod</strong>, no verificación post-deploy: si rebota, no hay promoción — abrirlo al entrar a preprod, no el día D. El #6 1Password con prod credentials solo después de prod desplegado.</p>
+
+          <p class="callout callout-info">
+            <strong>Validación y SLAs.</strong> De los seis, sólo HD-1404 y CYBS-1577 están "validados live" en <code>modo-jsm-ticket</code> — los otros cuatro son catalog-only, así que el skill hermano hace fetch de campos fresh contra <code>/rest/servicedeskapi/requesttype/{rt}/field</code> antes de POSTear. SLA Cyber-Solicitudes (CYBS) = 72h hábiles desde aprobación (fuente: <code>modo-jsm-ticket/SKILL.md</code>, no figura en el <code>catalog.md</code>; aplica a #2, #3, #6 + opcionales CYBS). SLA OFFSEC y PEA no declarados en el portal — tratarlos como ≥72h hasta verificar.
+          </p>
+
+          <p class="callout callout-warn">
+            <strong>Anti-patrón.</strong> "Ticket de Cyber para crear repo" no existe — CYBS sólo tiene operaciones de team/access; la creación de repos es HD-1404. Si abrís CYBS para crear repo, te rebotan o te mandan a HD.
+          </p>
+        </section>
+
+        <section id="uilib">
+          <h2>La UI lib</h2>
+          <p>El nombre del paquete importa porque hay dos generaciones y se confunden. Un front nuevo consume <strong><code>@playsistemico/modo-landing-web-ui-lib</code></strong> (v5.x, React 18/19 + Tailwind 4) desde GitHub Packages, junto con <code>@playsistemico/core</code>. La generación vieja —<code>@playsistemico/modo-ui-lib-web@1.32</code>— vive solo en modo-landing, que además vendoreó componentes en <code>src/ui-lib/</code> tras absorber la lib (PR #1476). Eso es deuda específica de modo-landing: un front nuevo <strong>no vendorea</strong>, consume la lib publicada.</p>
+          <p>Instalación: <code>.npmrc</code> con el registry + <code>NODE_AUTH_TOKEN</code> en env, <code>pnpm add @playsistemico/modo-landing-web-ui-lib @playsistemico/core</code>, y el import de los tokens Tailwind 4 en <code>globals.css</code>.</p>
+        </section>
+
+        <section id="aprendeatumodo">
+          <h2>El caso de cero: aprendeatumodo</h2>
+          <p>aprendeatumodo es el ejemplo de "no tengo nada de la infra todavía". Hoy es un export de Lovable en Vite 5 (<code>base: VITE_BASE_PATH</code>), con la migración a Next 16 App Router en curso (branch <code>feat/migrate-to-next16</code>, ticket COENXT-308). Ya trae la UI lib nueva, pero le falta todo lo demás. Clasificado por severidad:</p>
+
+          <div class="gap-columns">
+            <div class="gap-col gap-col-crit">
+              <h3>Críticos · 3</h3>
+              <ul>
+                <li><strong>PAT leak</strong>: <code>.npmrc</code> con <code>ghp_…</code> git-trackeado. Rotar + scrubear history.</li>
+                <li>Sigue en <strong>Vite</strong>: la infra asume <code>next start</code>. Terminar COENXT-308 primero.</li>
+                <li>Sin <code>helm/</code>, <code>.sops.yaml</code> ni <code>parameters/</code>: no es desplegable.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-mid">
+              <h3>Importantes · 2</h3>
+              <ul>
+                <li>Sin <code>Dockerfile</code>/<code>entrypoint.sh</code>/workflows: copiar de promos.</li>
+                <li><strong>Lockfiles mezclados</strong> (bun + npm + pnpm): converger a pnpm.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-ok">
+              <h3>Lo que está bien · 2</h3>
+              <ul>
+                <li>UI lib nueva ya integrada (<code>modo-landing-web-ui-lib@5.5.6</code>).</li>
+                <li>SDD del Next 16 ya escrito (<code>openspec/changes/migrate-to-next16</code>).</li>
+              </ul>
+            </div>
+          </div>
+
+          <figure class="article-figure">
+            <div class="chart-wrap">
+              <canvas id="readiness-chart" aria-label="Piezas de infra presentes por repo: promos-hub 5 de 5, modo-landing 4 de 5, aprendeatumodo 1 de 5" role="img"></canvas>
+            </div>
+            <figcaption>Piezas de la anatomía desplegable presentes por repo. promos-hub es el molde; aprendeatumodo arranca de 1/5.</figcaption>
+          </figure>
+
+          <p>El orden sugerido para aprendeatumodo: terminar Next 16 → clonar la infra de promos (helm + workflows + sops) → cargar params a SSM → primer deploy a develop → smoke → promover. Es exactamente el checklist del runbook, fase por fase.</p>
+        </section>
+
+        <section id="proximo">
+          <h2>Próximo paso</h2>
+          <p>El runbook quedó codificado en tres lugares para que no se pierda: el <strong>markdown source of truth</strong> en <code>modo-landing/docs/runbook-publish-modo-frontend-k8s.md</code>, esta R&amp;D en la bitácora, y un <strong>skill companion triple-layer</strong> —<code>modo-frontend-deploy</code> (skill + agent + slash command <code>/modo-frontend-deploy</code>)— que ejecuta el runbook como agente: audita el repo destino, detecta gaps (incluido el PAT leak), y bootstrapea la infra copiando del molde vivo.</p>
+          <p>El primer trabajo real del agente es obvio: llevar aprendeatumodo de 1/5 a desplegado en <code>aprendeatumodo.modo.com.ar</code>, cuando cierre la migración Next 16. Ese run valida el runbook end-to-end y, si aparecen gaps nuevos, se destilan de vuelta al skill.</p>
+
+          <hr class="article-hr" />
+
+          <footer class="article-footer">
+            <p class="article-credits">
+              Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-27">2026-05-27</time>
+            </p>
+            <p class="article-disclaimer">
+              Reconstruido de los repos vivos <code>promos-hub-site</code> y <code>modo-landing</code> al 2026-05-27; los ARNs de KMS y nombres de secrets se citan como referencia de estructura, no como valores. El caso aprendeatumodo describe trabajo pendiente (migración Next 16 en curso, COENXT-308) — no está desplegado al momento de escribir esto. Versiones de chart (v1.15.3) y de la UI lib pueden haber avanzado; verificá contra el repo antes de copiar.
+            </p>
+          </footer>
+
+        </div>
+      </div>
+    </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof Chart === 'undefined') return;
+
+  function getCss(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  var ctx = document.getElementById('readiness-chart');
+  if (!ctx) return;
+
+  var accent = getCss('--accent-ink', '#00471B');
+  var draft = getCss('--draft-fg', '#8a5a00');
+  var urgent = getCss('--urgent-fg', '#B0001A');
+  var muted = getCss('--muted', '#6B6B6B');
+  var ink = getCss('--ink', '#1A1A1A');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['promos-hub', 'modo-landing', 'aprendeatumodo'],
+      datasets: [{
+        label: 'Piezas de infra (de 5)',
+        data: [5, 4, 1],
+        backgroundColor: [accent, draft, urgent],
+        borderRadius: 8,
+        borderSkipped: false,
+        maxBarThickness: 70
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: function (c) { return c.parsed.y + ' / 5 piezas'; } } }
+      },
+      scales: {
+        x: { ticks: { color: ink, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 13, weight: '500' } }, grid: { display: false } },
+        y: { beginAtZero: true, max: 5, ticks: { color: muted, stepSize: 1, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12 } }, grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false } }
+      }
+    }
+  });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

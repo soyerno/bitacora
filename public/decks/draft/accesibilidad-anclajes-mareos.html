@@ -1,0 +1,1579 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Segunda capa del programa de accesibilidad MODO. Punto de anclaje visual + reducción de movimiento + acelerómetro auto-detect en TypeScript + navbar con switch de lectura biónica y dropdown A11y que absorbe dark mode. Incluye demo interactivo con botones que activan las features en vivo. 16 slides, ~3 semanas, sin BE nuevo." />
+<title>Modo sereno en MODO · anclajes, reduced motion, acelerómetro y navbar de accesibilidad</title>
+<link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/draft/accesibilidad-anclajes-mareos.html" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Modo sereno en MODO · anclajes, reduced motion, acelerómetro y navbar de accesibilidad" />
+<meta property="og:description" content="Segunda capa del programa de accesibilidad MODO. Punto de anclaje visual + reducción de movimiento + acelerómetro auto-detect en TypeScript + navbar con switch de lectura biónica y dropdown A11y que absorbe dark mode. Incluye demo interactivo con botones que activan las features en vivo. 16 slides, ~3 semanas, sin BE nuevo." />
+<meta property="og:url" content="https://soyernomodo.github.io/erno-modo/decks/draft/accesibilidad-anclajes-mareos.html" />
+<meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--gray-8);
+    font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: min(1280px, 100vw);
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    background: var(--paper-warm);
+    position: relative;
+    display: none;
+    padding: 64px 80px;
+    box-shadow: 0 24px 80px rgba(18,18,18,0.08);
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  .slide__chrome-top {
+    position: absolute;
+    top: 28px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
+
+  .slide__chrome-bottom {
+    position: absolute;
+    bottom: 24px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--gray-60);
+  }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress {
+    flex: 1;
+    margin: 0 24px;
+    height: 2px;
+    background: var(--gray-8);
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  .slide__chrome-bottom .progress > i {
+    display: block;
+    height: 100%;
+    background: var(--green-default);
+    width: var(--p, 0%);
+    transition: width 360ms var(--ease);
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 16px;
+  }
+  h1.title {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(36px, 4.4vw, 64px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    color: var(--ink);
+  }
+  h2.heading {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  h3.subheading {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  p.lede {
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--gray-80);
+    margin: 0 0 24px;
+    max-width: 62ch;
+  }
+  p.body {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--gray-80);
+    margin: 0 0 12px;
+    max-width: 68ch;
+  }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted {
+    font-size: 13px;
+    color: var(--gray-60);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .num--xl { font-size: clamp(80px, 9vw, 140px); line-height: 0.95; }
+  .num--lg { font-size: clamp(48px, 5vw, 72px); line-height: 1; }
+  .num--md { font-size: clamp(32px, 3.4vw, 48px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+  }
+  .card__index {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--gray-3);
+    color: var(--gray-80);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .stat__value { color: var(--ink); }
+
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.compare th, table.compare td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-8);
+    vertical-align: top;
+  }
+  table.compare thead th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    background: transparent;
+    border-bottom: 1px solid var(--gray-20);
+  }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+
+  ol.decisions {
+    list-style: none;
+    counter-reset: decisions;
+    padding: 0;
+    margin: 0;
+  }
+  ol.decisions li {
+    counter-increment: decisions;
+    position: relative;
+    padding: 16px 0 16px 56px;
+    border-bottom: 1px solid var(--gray-8);
+  }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before {
+    content: counter(decisions, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 18px;
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+  }
+  ol.decisions h3 { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin-top: 4px;
+  }
+
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li {
+    position: relative;
+    padding: 6px 0 6px 28px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--gray-80);
+  }
+  ul.checks li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 13px;
+    width: 12px; height: 12px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default);
+  }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+
+  .pillar-detail {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 56px;
+    height: 100%;
+    align-items: center;
+  }
+  .pillar-detail__evidence {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .pillar-detail__evidence h4 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 12px;
+  }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 16px;
+    align-items: stretch;
+    margin-top: 24px;
+  }
+  .phase {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .phase__num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--green-default);
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+  }
+  .phase__weeks {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin-bottom: 12px;
+  }
+  .phase__title { font-size: 17px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 13px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total {
+    background: var(--green-10);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 180px;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    background: var(--gray-3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--gray-80);
+  }
+
+  .stack-today {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .stack-block {
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--border-soft);
+    background: var(--paper);
+  }
+  .stack-block h4 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 12px;
+  }
+  .stack-block .row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-8);
+    font-size: 14px;
+    gap: 16px;
+  }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 12px; text-align: right; }
+
+  .slide--cover {
+    background:
+      radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%),
+      var(--paper-warm);
+    padding: 80px;
+  }
+  .slide--cover h1.title {
+    font-size: clamp(48px, 6vw, 80px);
+    max-width: 18ch;
+  }
+  .slide--cover .meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+  }
+  .slide--cover .meta__col h4 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 6px;
+  }
+  .slide--cover .meta__col p { margin: 0; font-size: 15px; color: var(--ink); line-height: 1.4; }
+
+  .sigil {
+    width: 12px;
+    height: 12px;
+    background: var(--green-default);
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  /* Sample con anchor dot a la izquierda */
+  .sample {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 20px 24px 20px 44px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--gray-80);
+    position: relative;
+  }
+  .sample__line {
+    position: relative;
+    padding: 4px 0;
+  }
+  .sample__line--active {
+    background: linear-gradient(90deg, rgba(0,136,89,0.06), transparent 70%);
+    border-radius: 6px;
+  }
+  .sample__line--active::before {
+    content: "";
+    position: absolute;
+    left: -28px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: 0 0 0 4px rgba(0,136,89,0.15);
+  }
+
+  /* Demo interactivo */
+  .demo-sample {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 18px 22px 18px 40px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-80);
+    transition: line-height 200ms var(--ease), letter-spacing 200ms var(--ease);
+  }
+  .demo-sample[data-extendida="on"] {
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    word-spacing: 0.12em;
+  }
+  .demo-sample b { color: var(--ink); font-weight: 700; }
+  .demo-line {
+    position: relative;
+    margin: 0;
+    padding: 4px 0;
+    border-radius: 6px;
+    transition: background 200ms var(--ease);
+  }
+  .demo-sample[data-anchor="on"] .demo-line--current {
+    background: linear-gradient(90deg, rgba(0,136,89,0.08), transparent 70%);
+  }
+  .demo-sample[data-anchor="on"] .demo-line--current::before {
+    content: "";
+    position: absolute;
+    left: -24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: 0 0 0 4px rgba(0,136,89,0.18);
+  }
+  .demo-ambient {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--gray-60);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .demo-shimmer {
+    flex: 1;
+    max-width: 220px;
+    height: 24px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--gray-3) 0%, var(--gray-8) 50%, var(--gray-3) 100%);
+    background-size: 200% 100%;
+    animation: demo-shimmer 1.6s infinite linear;
+  }
+  .demo-shimmer[data-motion="reduce"] {
+    animation: none;
+    background: var(--gray-3);
+  }
+  @keyframes demo-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .demo-phone {
+    width: 28px;
+    height: 36px;
+    border: 2px solid var(--gray-60);
+    border-radius: 6px;
+    position: relative;
+    display: inline-block;
+  }
+  .demo-phone::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 8px; height: 8px;
+    background: var(--gray-60);
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+  }
+  .demo-phone[data-accel="on"] {
+    animation: demo-shake 0.4s infinite;
+    border-color: var(--green-default);
+  }
+  .demo-phone[data-accel="on"]::after { background: var(--green-default); }
+  @keyframes demo-shake {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    20% { transform: translateX(-2px) rotate(-3deg); }
+    50% { transform: translateX(2px) rotate(3deg); }
+    80% { transform: translateX(-1px) rotate(-2deg); }
+  }
+  .demo-status {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--gray-3);
+    font-size: 12px;
+    color: var(--gray-80);
+    line-height: 1.4;
+  }
+  .demo-status strong { color: var(--green-dark); }
+  .demo-status:empty { display: none; }
+  .demo-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: background 180ms var(--ease), border-color 180ms var(--ease);
+  }
+  .demo-btn + .demo-btn { margin-top: 10px; }
+  .demo-btn:hover { background: var(--gray-3); }
+  .demo-btn[aria-pressed="true"] {
+    background: var(--green-10);
+    border-color: var(--green-default);
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+  .demo-btn[aria-pressed="true"] .a11y-switch { background: var(--green-default); }
+  .demo-btn[aria-pressed="true"] .a11y-switch::after { left: 16px; }
+  .demo-btn .label-line { display: flex; align-items: center; gap: 10px; }
+  .demo-btn .icon-square {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: var(--gray-3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--gray-60);
+    flex-shrink: 0;
+  }
+  .demo-btn[aria-pressed="true"] .icon-square {
+    background: var(--green-default);
+    color: white;
+  }
+
+  /* Mockup navbar */
+  .navbar-mock {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .navbar-mock__left { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--ink); font-weight: 600; }
+  .navbar-mock__right { display: flex; align-items: center; gap: 10px; }
+  .navbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--gray-3);
+    font-size: 12px;
+    color: var(--gray-80);
+    font-weight: 500;
+  }
+  .navbar-btn--active { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .a11y-dropdown {
+    margin-top: 12px;
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 8px;
+    max-width: 320px;
+    box-shadow: 0 12px 32px rgba(18,18,18,0.08);
+  }
+  .a11y-dropdown__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .a11y-dropdown__item + .a11y-dropdown__item { border-top: 1px solid var(--gray-8); }
+  .a11y-dropdown__item .label { display: flex; align-items: center; gap: 8px; }
+  .a11y-dropdown__item .icon { width: 18px; height: 18px; border-radius: 999px; background: var(--green-10); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--green-dark); font-weight: 700; }
+  .a11y-switch {
+    width: 32px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--gray-20);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .a11y-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 14px; height: 14px;
+    border-radius: 999px;
+    background: var(--paper);
+    box-shadow: 0 1px 3px rgba(18,18,18,0.2);
+    transition: left 180ms var(--ease);
+  }
+  .a11y-switch--on { background: var(--green-default); }
+  .a11y-switch--on::after { left: 16px; }
+
+  /* Diagrama motion: barras de "movimiento" */
+  .motion-bar {
+    display: grid;
+    grid-template-columns: 120px 1fr 80px;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-8);
+    font-size: 13px;
+  }
+  .motion-bar:last-child { border-bottom: none; }
+  .motion-bar .label { color: var(--ink); font-weight: 500; }
+  .motion-bar .bar { height: 6px; border-radius: 999px; background: var(--gray-8); position: relative; overflow: hidden; }
+  .motion-bar .bar > i { display: block; height: 100%; background: var(--red-warn); }
+  .motion-bar .bar--off > i { background: var(--green-default); width: 6% !important; }
+  .motion-bar .value { color: var(--gray-60); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide {
+      display: flex !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1280px;
+      height: 720px;
+      max-height: 720px;
+    }
+    .deck__nav { display: none !important; }
+  }
+
+  .deck__nav {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 8px;
+    background: var(--paper);
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(18,18,18,0.12);
+    z-index: 100;
+  }
+  .deck__nav button {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    transition: background 180ms var(--ease), color 180ms var(--ease);
+  }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.04em;
+  }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 20px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="modo-logo-solid" viewBox="0 0 107 24">
+    <path d="M2.42202 16.6821C1.80204 16.6818 1.20585 16.45 0.756436 16.0346C0.307025 15.6191 0.0386893 15.0517 0.00679152 14.4495V21.394C-0.000170847 21.7069 0.0571683 22.018 0.175445 22.309C0.293722 22.6001 0.470556 22.8652 0.695573 23.0889C0.92059 23.3125 1.18926 23.4902 1.48582 23.6116C1.78238 23.7329 2.10087 23.7954 2.42259 23.7954C2.74431 23.7954 3.06279 23.7329 3.35936 23.6116C3.65592 23.4902 3.92459 23.3125 4.14961 23.0889C4.37462 22.8652 4.55146 22.6001 4.66973 22.309C4.78801 22.018 4.84535 21.7069 4.83839 21.394V14.4484C4.80622 15.0508 4.53768 15.6183 4.08812 16.0339C3.63855 16.4495 3.04222 16.6815 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M2.42202 16.6821C3.75967 16.6821 4.84404 15.6273 4.84404 14.3262C4.84404 13.025 3.75967 11.9702 2.42202 11.9702C1.08438 11.9702 0 13.025 0 14.3262C0 15.6273 1.08438 16.6821 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M23.1914 4.9321C22.7557 4.93316 22.3277 4.81975 21.9528 4.60384C21.5778 4.38794 21.2697 4.07755 21.0611 3.70545C20.8524 3.33335 20.7509 2.91335 20.7673 2.4898C20.7837 2.06625 20.9174 1.65486 21.1542 1.29907L12.8039 12.6385L14.6679 15.1706C14.9906 15.5483 15.1838 16.0146 15.2205 16.5044C15.2573 16.9941 15.1357 17.4828 14.8728 17.902L20.7728 9.88512V21.2686C20.8028 20.665 21.0705 20.0959 21.5202 19.679C21.97 19.2622 22.5674 19.0297 23.1886 19.0297C23.8098 19.0297 24.4072 19.2622 24.857 19.679C25.3067 20.0959 25.5744 20.665 25.6044 21.2686V2.69834C25.5728 3.30042 25.3049 3.86776 24.8559 4.28338C24.407 4.69899 23.8112 4.93119 23.1914 4.9321Z" fill="#008859"/>
+    <path d="M12.8062 14.3263C13.1625 14.326 13.5144 14.4022 13.8368 14.5495C14.1592 14.6968 14.4442 14.9115 14.6714 15.1784L12.8074 12.6463L4.38688 1.20447C4.20221 0.95356 3.96855 0.740489 3.69922 0.577422C3.4299 0.414355 3.13019 0.304486 2.81721 0.254087C2.50424 0.203687 2.18412 0.213746 1.87514 0.283687C1.56616 0.353628 1.27437 0.482083 1.01643 0.661717C0.758481 0.84135 0.539436 1.06865 0.371797 1.33062C0.204158 1.5926 0.0912076 1.88413 0.0393952 2.18857C-0.0124171 2.49301 -0.00207694 2.8044 0.0698254 3.10495C0.141728 3.40551 0.273784 3.68934 0.458455 3.94025L10.7385 17.9087C10.752 17.9307 10.7668 17.9516 10.7815 17.9725C10.5416 17.6174 10.4051 17.2058 10.3863 16.7813C10.3675 16.3568 10.4672 15.9353 10.6748 15.5614C10.8824 15.1876 11.1901 14.8754 11.5654 14.6579C11.9407 14.4405 12.3694 14.3259 12.8062 14.3263Z" fill="#008859"/>
+    <path d="M12.8062 19.0382C14.1439 19.0382 15.2283 17.9834 15.2283 16.6823C15.2283 15.3811 14.1439 14.3263 12.8062 14.3263C11.4686 14.3263 10.3842 15.3811 10.3842 16.6823C10.3842 17.9834 11.4686 19.0382 12.8062 19.0382Z" fill="#008859"/>
+    <path d="M23.1914 23.7467C24.5291 23.7467 25.6134 22.6919 25.6134 21.3908C25.6134 20.0896 24.5291 19.0348 23.1914 19.0348C21.8538 19.0348 20.7694 20.0896 20.7694 21.3908C20.7694 22.6919 21.8538 23.7467 23.1914 23.7467Z" fill="#008859"/>
+    <path d="M23.1914 4.93202C24.5291 4.93202 25.6134 3.87722 25.6134 2.57606C25.6134 1.27489 24.5291 0.220093 23.1914 0.220093C21.8538 0.220093 20.7694 1.27489 20.7694 2.57606C20.7694 3.87722 21.8538 4.93202 23.1914 4.93202Z" fill="#008859"/>
+    <path d="M39.3658 21.6441C39.3658 21.0192 39.621 20.42 40.0752 19.9782C40.5294 19.5363 41.1455 19.2881 41.7879 19.2881C40.3048 19.2853 38.8558 18.8551 37.6238 18.052C36.3918 17.2488 35.432 16.1087 34.8656 14.7754C34.2992 13.4421 34.1515 11.9755 34.4412 10.5607C34.7309 9.14582 35.445 7.84616 36.4934 6.82574C36.9436 6.38134 37.1939 5.78116 37.1893 5.15724C37.1846 4.53331 36.9253 3.93674 36.4685 3.49877C36.0116 3.0608 35.3946 2.8173 34.7532 2.82184C34.1118 2.82638 33.4985 3.07859 33.0482 3.52299C31.3462 5.18695 30.1833 7.29991 29.7034 9.60028C29.2236 11.9006 29.4478 14.2874 30.3483 16.4651C31.2489 18.6427 32.7862 20.5157 34.77 21.8521C36.7538 23.1884 39.097 23.9295 41.5094 23.9835H41.5207C40.9286 23.9196 40.3815 23.6457 39.984 23.2141C39.5864 22.7825 39.3664 22.2236 39.3658 21.6441Z" fill="#008859"/>
+    <path d="M41.7877 4.71192C43.1253 4.71192 44.2097 3.65712 44.2097 2.35596C44.2097 1.0548 43.1253 0 41.7877 0C40.45 0 39.3657 1.0548 39.3657 2.35596C39.3657 3.65712 40.45 4.71192 41.7877 4.71192Z" fill="#008859"/>
+    <path d="M42.0198 0.0098877C42.626 0.0673384 43.1877 0.344936 43.5928 0.787322C43.9979 1.22971 44.2167 1.80437 44.2056 2.39672C44.1944 2.98907 43.9542 3.55556 43.5327 3.98324C43.1112 4.41092 42.5395 4.66835 41.9316 4.7042C43.8999 4.75011 45.7707 5.54753 47.1396 6.92415C48.5085 8.30077 49.2657 10.146 49.2474 12.0612C49.2291 13.9763 48.4369 15.8076 47.0419 17.1593C45.647 18.5109 43.7613 19.2744 41.7924 19.2847C42.4102 19.2862 43.0041 19.5174 43.4526 19.9308C43.901 20.3443 44.17 20.9088 44.2046 21.5089C44.2391 22.109 44.0366 22.6992 43.6385 23.1588C43.2403 23.6184 42.6767 23.9126 42.0629 23.9812C45.2729 23.8913 48.3202 22.5863 50.5561 20.344C52.7919 18.1016 54.0399 15.099 54.0343 11.9752C54.0287 8.8514 52.77 5.85305 50.5261 3.61831C48.2821 1.38357 45.2302 0.0889181 42.0198 0.0098877Z" fill="#008859"/>
+    <path d="M41.7877 24C43.1253 24 44.2097 22.9452 44.2097 21.644C44.2097 20.3429 43.1253 19.2881 41.7877 19.2881C40.45 19.2881 39.3657 20.3429 39.3657 21.644C39.3657 22.9452 40.45 24 41.7877 24Z" fill="#008859"/>
+    <path d="M75.9179 3.18596C73.686 1.24725 70.654 0.220093 67.1511 0.220093H59.9077C60.5393 0.233393 61.1405 0.486813 61.5824 0.926058C62.0243 1.3653 62.2717 1.95543 62.2717 2.57C62.2717 3.18457 62.0243 3.7747 61.5824 4.21394C61.1405 4.65319 60.5393 4.90661 59.9077 4.91991H67.1511C69.4486 4.91991 71.3681 5.53202 72.6968 6.69018C74.1025 7.9089 74.811 9.69348 74.811 11.9999C74.811 14.3063 74.0991 16.0733 72.6946 17.2843C71.3591 18.4359 69.4418 19.0458 67.1488 19.0458H62.3285V21.1463V21.1518C62.3365 21.23 62.341 21.3082 62.341 21.3885C62.341 22.0135 62.0859 22.6128 61.6317 23.0548C61.1775 23.4968 60.5614 23.7453 59.919 23.7456H67.1511C70.6438 23.7456 73.6702 22.7272 75.9021 20.8006C78.3512 18.688 79.6449 15.6439 79.6449 11.9933C79.6449 8.34266 78.3569 5.30193 75.9179 3.18596Z" fill="#008859"/>
+    <path d="M62.3285 21.1452V9.64066C62.3149 9.02623 62.0543 8.44145 61.6028 8.01161C61.1512 7.58177 60.5445 7.34106 59.9127 7.34106C59.2809 7.34106 58.6743 7.58177 58.2227 8.01161C57.7711 8.44145 57.5106 9.02623 57.497 9.64066V21.3874C57.496 20.783 57.7339 20.2012 58.1615 19.7626C58.5891 19.324 59.1737 19.062 59.7943 19.0309C60.4149 18.9998 61.0241 19.2019 61.4958 19.5955C61.9675 19.989 62.2656 20.5439 62.3285 21.1452Z" fill="#008859"/>
+    <path d="M59.919 23.7435C61.2566 23.7435 62.341 22.6887 62.341 21.3876C62.341 20.0864 61.2566 19.0316 59.919 19.0316C58.5813 19.0316 57.4969 20.0864 57.4969 21.3876C57.4969 22.6887 58.5813 23.7435 59.919 23.7435Z" fill="#008859"/>
+    <path d="M59.9135 4.92223C61.2474 4.92223 62.3287 3.87038 62.3287 2.57287C62.3287 1.27535 61.2474 0.223511 59.9135 0.223511C58.5796 0.223511 57.4982 1.27535 57.4982 2.57287C57.4982 3.87038 58.5796 4.92223 59.9135 4.92223Z" fill="#008859"/>
+    <path d="M92.2632 21.644C92.2632 21.0192 92.5184 20.4199 92.9726 19.9781C93.4268 19.5363 94.0429 19.288 94.6852 19.288C93.2024 19.2847 91.7538 18.8542 90.5221 18.051C89.2905 17.2477 88.331 16.1077 87.7647 14.7746C87.1983 13.4416 87.0505 11.9752 87.3399 10.5606C87.6293 9.1459 88.3429 7.84629 89.3907 6.82566C89.841 6.3817 90.0915 5.78194 90.0871 5.15833C90.0828 4.53471 89.8239 3.93831 89.3675 3.50034C88.9111 3.06237 88.2945 2.8187 87.6534 2.82293C87.0123 2.82716 86.3992 3.07895 85.949 3.52291C84.247 5.18687 83.0841 7.29983 82.6042 9.6002C82.1243 11.9006 82.3485 14.2873 83.2491 16.465C84.1496 18.6427 85.687 20.5156 87.6708 21.852C89.6546 23.1883 91.9978 23.9294 94.4102 23.9834H94.4204C93.828 23.9198 93.2805 23.646 92.8825 23.2144C92.4845 22.7829 92.2641 22.2238 92.2632 21.644Z" fill="#008859"/>
+    <path d="M94.6853 4.71192C96.0229 4.71192 97.1073 3.65712 97.1073 2.35596C97.1073 1.0548 96.0229 0 94.6853 0C93.3476 0 92.2632 1.0548 92.2632 2.35596C92.2632 3.65712 93.3476 4.71192 94.6853 4.71192Z" fill="#008859"/>
+    <path d="M94.9172 0.0098877C95.5234 0.0673384 96.0851 0.344936 96.4902 0.787322C96.8953 1.22971 97.1141 1.80437 97.103 2.39672C97.0918 2.98907 96.8516 3.55556 96.4301 3.98324C96.0086 4.41092 95.4369 4.66835 94.829 4.7042C96.7973 4.75011 98.6681 5.54753 100.037 6.92415C101.406 8.30077 102.163 10.146 102.145 12.0612C102.126 13.9763 101.334 15.8076 99.9393 17.1593C98.5443 18.5109 96.6587 19.2744 94.6898 19.2847C95.3129 19.279 95.9143 19.5071 96.369 19.9217C96.8237 20.3362 97.0966 20.9053 97.131 21.5106C97.1654 22.1158 96.9586 22.7107 96.5537 23.1714C96.1488 23.6322 95.5769 23.9234 94.9569 23.9846C98.1795 23.9125 101.245 22.6154 103.496 20.3711C105.747 18.1268 107.005 15.114 107 11.9784C106.995 8.84276 105.727 5.8339 103.468 3.59666C101.21 1.35942 98.1401 0.0718412 94.9172 0.0098877Z" fill="#008859"/>
+    <path d="M94.6853 24C96.0229 24 97.1073 22.9452 97.1073 21.644C97.1073 20.3429 96.0229 19.2881 94.6853 19.2881C93.3476 19.2881 92.2632 20.3429 92.2632 21.644C92.2632 22.9452 93.3476 24 94.6853 24Z" fill="#008859"/>
+  </symbol>
+</svg>
+
+<main class="deck" id="deck">
+
+  <!-- ============ 01 · COVER ============ -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>accesibilidad · app MODO · draft</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Navbar · Personalización · Auto-detect</p>
+      <h1 class="title">Modo sereno: <span style="color: var(--green-default)">accesibilidad sensorial</span> en un dropdown del navbar.</h1>
+      <p class="lede">Anclajes visuales, reducción de movimiento, acelerómetro auto-detect y dark mode. Todo agrupado en el navbar con TypeScript, opt-in y a un tap del usuario.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>Comité PM + TL + Manager</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Tech Lead</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>2026-05-20</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 · TL;DR ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="64" height="14" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>02 · La recomendación</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">La recomendación</p>
+      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 24ch;">Cuatro palancas, <span style="color: var(--green-default)">un solo dropdown</span> en el navbar.</h1>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat">
+          <span class="stat__label">Población alcanzada</span>
+          <span class="num num--md stat__value">~35%</span>
+          <p class="muted">adultos +40 con sensibilidad vestibular (NIDCD). Sumá pasajeros en colectivo/subte y la cifra se dispara.</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Tap para activar</span>
+          <span class="num num--md stat__value">1</span>
+          <p class="muted">dropdown de accesibilidad en el navbar. No hay que entrar a Settings para apagar el movimiento.</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Esfuerzo</span>
+          <span class="num num--md stat__value">~3 sem</span>
+          <p class="muted">1 dev FE en TypeScript. Reusa persistencia del MVP anterior. Sin BE nuevo.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 90ch;"><strong>Por qué juntas</strong>: anclaje, reduced motion, acelerómetro auto y dark mode comparten un mismo usuario y un mismo gesto. Las agrupamos en un dropdown del navbar (junto al dark mode actual) para que la accesibilidad esté siempre a un tap, no escondida en Settings.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>accesibilidad · modo-landing</span>
+      <div class="progress"><i style="--p: 13%"></i></div>
+      <span class="counter">02 / 16</span>
+    </div>
+  </section>
+
+  <!-- ============ 03 · DIAGNÓSTICO ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>03 · Diagnóstico</span><span>Qué se mueve hoy · sin opt-out</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Estado actual</p>
+      <h2 class="heading">La app tiene movimiento permanente y ningún control para apagarlo.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 8px;">Hoy ignoramos el <span class="mono">prefers-reduced-motion</span> que el OS expone. Si el usuario tiene desactivadas las animaciones a nivel sistema, MODO sigue moviendo igual.</p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>Movimiento sin opt-out hoy</h4>
+          <div class="row-item"><span class="label">Banner home autoplay</span><span class="value">~5s rotación</span></div>
+          <div class="row-item"><span class="label">Parallax en hero scroll</span><span class="value">desktop</span></div>
+          <div class="row-item"><span class="label">Card transitions on tap</span><span class="value">200-300ms</span></div>
+          <div class="row-item"><span class="label">Loading skeletons shimmer</span><span class="value">∞ loop</span></div>
+          <div class="row-item"><span class="label">Scroll snap en carruseles</span><span class="value">promos, comercios</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Síntomas reportados (Soporte)</h4>
+          <div class="row-item"><span class="label">"Me marea el carrusel"</span><span class="value">~12 tickets/mes</span></div>
+          <div class="row-item"><span class="label">"Pierdo la línea en T&amp;C"</span><span class="value">~5 tickets/mes</span></div>
+          <div class="row-item"><span class="label">"Demasiada animación"</span><span class="value">recurring NPS</span></div>
+          <div class="row-item"><span class="label">prefers-reduced-motion</span><span class="value" style="color: var(--red-warn); font-weight: 600;">ignorado</span></div>
+          <div class="row-item"><span class="label">Override manual</span><span class="value" style="color: var(--red-warn); font-weight: 600;">no existe</span></div>
+        </div>
+        <div class="stack-block" style="grid-column: 1 / -1; background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Gap concreto</h4>
+          <p class="body" style="margin: 0; color: var(--green-dark); font-size: 14px;">No tenemos ni opción ni respeto al setting del sistema. Para un usuario con vértigo, migraña con aura o ansiedad visual, abrir MODO en home es entrar a un mosaico que se mueve solo.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 20%"></i></div><span class="counter">03 / 16</span></div>
+  </section>
+
+  <!-- ============ 04 · TIMING ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>04 · Timing</span><span>Por qué junto al MVP anterior</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Por qué ahora</p>
+      <h2 class="heading">Sister feature del MVP de lectura asistida. Mismo motor, otra capa.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">01 · Consistencia</span>
+          <h3 class="subheading">Mismos usuarios, mismo lugar en Settings.</h3>
+          <p class="body" style="margin: 0;">El usuario con TDAH que activa lectura biónica suele también beneficiarse de menos movimiento. Si la card "Lectura asistida" ya existe, sumar 3 toggles cuesta poco y se descubre solo.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">02 · Costo de no hacerlo</span>
+          <h3 class="subheading">Tickets de Soporte y NPS lo nombran solos.</h3>
+          <ul class="checks">
+            <li>~17 tickets/mes reportan mareo o pérdida visual.</li>
+            <li>OS-level reduced-motion ya está prendido en ~6% de devices y crece.</li>
+            <li>Sin esto, fallamos WCAG 2.3.3 en cualquier audit serio.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 32px; padding: 20px 24px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>El framing</strong>: lectura asistida (TDAH + dislexia) y modo sereno (sensibilidad vestibular) son dos capas del mismo programa. Mejor empaquetar las dos antes que un release suelto de cada uno.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 27%"></i></div><span class="counter">04 / 16</span></div>
+  </section>
+
+  <!-- ============ 05 · PILAR 01 · ANCLAJE DE LÍNEA ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>05 · Pilar 01</span><span>Punto de anclaje visual</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 01 · Anclaje de línea</p>
+        <div class="num num--xl num--accent">1 dot</div>
+        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">Un punto verde marca la línea que el usuario está leyendo.</h2>
+        <p class="body" style="max-width: 50ch;">El ojo necesita un punto fijo para no "nadar" en bloques largos. Un dot a la izquierda de la línea activa, que se mueve con el scroll, reduce el efecto de mareo en lectura larga. Misma evidencia que las reglas de lectura tradicionales.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">opt-in</span>
+          <span class="chip">IntersectionObserver</span>
+          <span class="chip">+1kb al bundle</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Cómo se ve</h4>
+          <div class="sample">
+            <div class="sample__line">MODO te permite pagar en cualquier comercio</div>
+            <div class="sample__line">adherido con la tarjeta de tu banco preferido,</div>
+            <div class="sample__line sample__line--active">sin cargar datos nuevos cada vez que pagás.</div>
+            <div class="sample__line">El dato bancario nunca se comparte con el comercio.</div>
+          </div>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Implementación</h4>
+          <p class="body" style="margin: 0;"><span class="mono">IntersectionObserver</span> sobre cada párrafo en pantallas con <span class="mono">data-anchor="yes"</span>. Cuando un párrafo cruza el centro del viewport, se le agrega clase <span class="mono">.is-active</span> que dispara el dot. Sin scroll listeners caros.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 33%"></i></div><span class="counter">05 / 16</span></div>
+  </section>
+
+  <!-- ============ 06 · PILAR 02 · REDUCCIÓN DE MOVIMIENTO + CARRUSELES ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>06 · Pilar 02</span><span>Reducción de movimiento</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 02 · Reducción de movimiento</p>
+        <div class="num num--xl num--accent">0 anim</div>
+        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">Apagamos parallax, shimmer, transitions y autoplays.</h2>
+        <p class="body" style="max-width: 50ch;">Respetamos <span class="mono">prefers-reduced-motion: reduce</span> del sistema, agregamos override manual y propagamos al banner home + carruseles de promos (autoplay → manual).</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">WCAG 2.3.3 + 2.2.2</span>
+          <span class="chip">CSS media query</span>
+          <span class="chip">Swiper .autoplay.stop()</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Qué se apaga vs qué se mantiene</h4>
+          <div class="motion-bar"><span class="label">Parallax hero</span><span class="bar bar--off"><i style="width: 100%"></i></span><span class="value">apagado</span></div>
+          <div class="motion-bar"><span class="label">Banner home autoplay</span><span class="bar bar--off"><i style="width: 100%"></i></span><span class="value">manual</span></div>
+          <div class="motion-bar"><span class="label">Carrusel promos snap</span><span class="bar bar--off"><i style="width: 100%"></i></span><span class="value">manual</span></div>
+          <div class="motion-bar"><span class="label">Shimmer loading</span><span class="bar bar--off"><i style="width: 100%"></i></span><span class="value">apagado</span></div>
+          <div class="motion-bar"><span class="label">Spinner / focus</span><span class="bar"><i style="width: 100%"></i></span><span class="value" style="color: var(--green-default); font-weight: 600;">se queda</span></div>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Regla</h4>
+          <p class="body" style="margin: 0;">Animaciones decorativas se apagan. Animaciones que comunican estado se mantienen. Si no agrega info, fuera.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 40%"></i></div><span class="counter">06 / 16</span></div>
+  </section>
+
+  <!-- ============ 07 · PILAR 03 · ACELERÓMETRO AUTO-DETECT ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>07 · Pilar 03</span><span>Acelerómetro · auto-detect</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 03 · Modo auto en movimiento</p>
+        <div class="num num--xl num--accent">auto</div>
+        <h2 class="heading" style="font-size: 32px; margin-top: 8px;">El celu detecta que estás en movimiento y baja la intensidad solo.</h2>
+        <p class="body" style="max-width: 50ch;">Opt-in. Si el usuario lo activa, la app lee <span class="mono">DeviceMotionEvent</span>. Cuando detecta vibración sostenida (colectivo, subte, auto), entra modo sereno automáticamente y vuelve solo cuando el celu queda quieto.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">opt-in (permiso explícito)</span>
+          <span class="chip">TypeScript · DeviceMotion API</span>
+          <span class="chip">iOS 13+ requestPermission</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Cómo funciona</h4>
+          <ul class="checks">
+            <li>Sample del acelerómetro a 10Hz · ventana rolling de 3s.</li>
+            <li>Si la varianza supera el umbral (≈vehículo en marcha), <span class="mono">setReducedMotion(true)</span>.</li>
+            <li>Si vuelve a quieto sostenido &gt;5s, restaura preferencia base del usuario.</li>
+            <li>Visible: chip discreto en el navbar dice "auto · sereno por movimiento".</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Implementación TS</h4>
+          <p class="body" style="margin: 0;"><span class="mono">useAccelerometerMode()</span> hook custom. Pide permiso solo cuando el usuario activa el toggle (no on mount). Si el browser no soporta DeviceMotion, esconde el toggle (graceful degradation).</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 47%"></i></div><span class="counter">07 / 16</span></div>
+  </section>
+
+  <!-- ============ 08 · NAVBAR UX · DROPDOWN DE ACCESIBILIDAD ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>08 · Navbar UX</span><span>Dropdown de accesibilidad</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Navbar UX · acceso permanente</p>
+      <h2 class="heading">El switch de lectura biónica sube al navbar. Adentro, un dropdown con todo lo demás.</h2>
+      <p class="body" style="max-width: 80ch;">Hoy el dark mode es el único toggle en la navbar. Sumamos un ícono <span class="mono">A11y</span> al lado, que abre un dropdown agrupado con todas las palancas. Acceso 1-tap desde cualquier pantalla, sin entrar a Settings.</p>
+      <div class="grid-2" style="margin-top: 24px; gap: 32px; align-items: flex-start;">
+        <div>
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px;">Navbar (collapsed)</h4>
+          <div class="navbar-mock">
+            <div class="navbar-mock__left">MODO · home</div>
+            <div class="navbar-mock__right">
+              <span class="navbar-btn navbar-btn--active" title="Lectura biónica activa"><span style="font-weight:700;">B</span>iónica</span>
+              <span class="navbar-btn" title="Accesibilidad"><span style="font-weight:700;">A11y ▾</span></span>
+              <span class="navbar-btn" title="Dark mode">🌙</span>
+            </div>
+          </div>
+          <p class="muted" style="margin-top: 12px;">Switch de lectura biónica directo en la navbar (la palanca más usada). El resto vive en el dropdown.</p>
+        </div>
+        <div>
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px;">Dropdown A11y (open)</h4>
+          <div class="a11y-dropdown">
+            <div class="a11y-dropdown__item">
+              <span class="label"><span class="icon">B</span>Lectura biónica</span>
+              <span class="a11y-switch a11y-switch--on"></span>
+            </div>
+            <div class="a11y-dropdown__item">
+              <span class="label"><span class="icon">E</span>Lectura extendida</span>
+              <span class="a11y-switch"></span>
+            </div>
+            <div class="a11y-dropdown__item">
+              <span class="label"><span class="icon">·</span>Punto de anclaje</span>
+              <span class="a11y-switch a11y-switch--on"></span>
+            </div>
+            <div class="a11y-dropdown__item">
+              <span class="label"><span class="icon">M</span>Reducción de movimiento</span>
+              <span class="a11y-switch"></span>
+            </div>
+            <div class="a11y-dropdown__item">
+              <span class="label"><span class="icon">±</span>Auto por acelerómetro</span>
+              <span class="a11y-switch"></span>
+            </div>
+            <div class="a11y-dropdown__item">
+              <span class="label"><span class="icon">🌙</span>Dark mode</span>
+              <span class="a11y-switch"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none; font-size: 14px;">
+        <strong>Patrón</strong>: dark mode pasa de toggle suelto a vivir dentro del dropdown de accesibilidad (es una palanca a11y más). Settings → Personalización sigue existiendo como fallback, pero el centro de gravedad pasa al navbar.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 53%"></i></div><span class="counter">08 / 16</span></div>
+  </section>
+
+  <!-- ============ 09 · DEMO INTERACTIVO ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>09 · Demo en vivo</span><span>click los botones</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Demo · activación con botón</p>
+      <h2 class="heading">Tocá cualquier switch: el sample cambia en tiempo real.</h2>
+      <div class="grid-2" style="margin-top: 20px; gap: 32px; align-items: flex-start;">
+        <div>
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 10px;">Sample (T&amp;C estilo)</h4>
+          <div id="demo-sample" class="demo-sample" data-bionic="off" data-anchor="off" data-extendida="off">
+            <p class="demo-line" data-line>MODO te permite pagar en cualquier comercio adherido del país.</p>
+            <p class="demo-line demo-line--current" data-line>Usás la tarjeta de tu banco preferido sin cargar datos cada vez.</p>
+            <p class="demo-line" data-line>El dato bancario nunca se comparte con el comercio.</p>
+            <p class="demo-line" data-line>Configurá tu cuenta una sola vez y olvidate de la billetera física.</p>
+          </div>
+          <div class="demo-ambient">
+            <span>Movimiento ambiente</span>
+            <div id="demo-shimmer" class="demo-shimmer" data-motion="on"></div>
+            <div id="demo-phone" class="demo-phone" data-accel="off" aria-label="indicador de acelerómetro"></div>
+          </div>
+          <div id="demo-status" class="demo-status" aria-live="polite" aria-atomic="true">Estado: ningún modo activo. Tocá un switch para empezar.</div>
+        </div>
+        <div>
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 10px;">Switches (mismo orden que el navbar)</h4>
+          <button type="button" class="demo-btn" data-feature="bionic" aria-pressed="false">
+            <span class="label-line"><span class="icon-square">B</span>Lectura biónica</span>
+            <span class="a11y-switch" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="demo-btn" data-feature="extendida" aria-pressed="false">
+            <span class="label-line"><span class="icon-square">E</span>Lectura extendida</span>
+            <span class="a11y-switch" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="demo-btn" data-feature="anchor" aria-pressed="false">
+            <span class="label-line"><span class="icon-square">·</span>Punto de anclaje</span>
+            <span class="a11y-switch" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="demo-btn" data-feature="motion" aria-pressed="false">
+            <span class="label-line"><span class="icon-square">M</span>Reducción de movimiento</span>
+            <span class="a11y-switch" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="demo-btn" data-feature="accel" aria-pressed="false">
+            <span class="label-line"><span class="icon-square">±</span>Simular vehículo (acelerómetro)</span>
+            <span class="a11y-switch" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 56%"></i></div><span class="counter">09 / 16</span></div>
+  </section>
+
+  <!-- ============ 10 · PLAN ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>10 · El plan</span><span>3 fases · ~3 semanas</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">El plan en fases</p>
+      <h2 class="heading">Tres semanas con 1 dev FE en TypeScript. Encaja después del MVP de lectura asistida.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">01</span>
+          <span class="phase__weeks">Semana 1</span>
+          <h3 class="phase__title">Motion tokens + navbar component</h3>
+          <p class="phase__body">Auditoría de animaciones. CSS vars para reduced variants. <span class="mono">prefers-reduced-motion</span> global. Componente <span class="mono">&lt;A11yDropdown /&gt;</span> en TS sumado al navbar.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">02</span>
+          <span class="phase__weeks">Semana 2</span>
+          <h3 class="phase__title">Anchor dot + acelerómetro hook</h3>
+          <p class="phase__body"><span class="mono">IntersectionObserver</span> para anchor. Hook <span class="mono">useAccelerometerMode()</span> con permission flow iOS/Android. Swiper autoplay condicional.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">03</span>
+          <span class="phase__weeks">Semana 3</span>
+          <h3 class="phase__title">Persistencia + A/B + rollout</h3>
+          <p class="phase__body">6 booleans en perfil (reusa endpoint del MVP anterior). Rollout 5% → 25% → 100%. A/B en banner home autoplay para medir impacto en CTR.</p>
+        </div>
+        <div class="phase__total">
+          <span class="phase__weeks">Total</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~3</span>
+          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">semanas</span>
+          <span style="font-size: 11px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">1 FE TS + Motion Design pairing</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 24px; gap: 20px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Pre-requisito</h4>
+          <p class="body" style="margin: 0; font-size: 13px; color: var(--green-dark);">MVP de lectura asistida en F2 (render layer + persistencia listos). El acelerómetro requiere prompt de permiso iOS 13+ que hay que UX-revisar con Brand antes.</p>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Lo que necesito antes</h4>
+          <p class="body" style="margin: 0; font-size: 13px;">Lista de animaciones brand-critical con Motion Design. Mockup del dropdown del navbar con Brand. Texto del permission prompt iOS para acelerómetro con Legal.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 63%"></i></div><span class="counter">10 / 16</span></div>
+  </section>
+
+  <!-- ============ 10 · SCOPE ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>11 · Scope</span><span>Qué entra · qué no</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Scope del MVP</p>
+      <h2 class="heading">Un dropdown en el navbar. Seis switches adentro. Cero pantalla nueva.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
+        <div class="card">
+          <h3 class="subheading" style="color: var(--green-default);">Entra en el MVP</h3>
+          <ul class="checks">
+            <li>Switch directo "Lectura biónica" en navbar (palanca más usada).</li>
+            <li>Dropdown navbar <span class="mono">A11y</span> con: extendida, anclaje, reduced motion, acelerómetro auto, dark mode.</li>
+            <li>Hook TS <span class="mono">useAccelerometerMode()</span> con DeviceMotion + permission flow iOS/Android.</li>
+            <li>Respeto a <span class="mono">prefers-reduced-motion</span> del sistema por default.</li>
+            <li>Persistencia perfil MODO + fallback localStorage (6 booleans).</li>
+            <li>A/B en banner home + rollout 5/25/100%.</li>
+          </ul>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--dark-gray);">No entra</h3>
+          <ul class="checks checks--neutral">
+            <li>Rediseño completo del sistema de motion.</li>
+            <li>Animaciones funcionales (spinner, focus, feedback de tap).</li>
+            <li>Apps móviles nativas (sólo web por ahora · acelerómetro vía DeviceMotion del browser).</li>
+            <li>Loading skeletons (siguen, son funcionales).</li>
+            <li>Cambio del flujo transaccional (zero touch en pagos).</li>
+            <li>Pantalla nueva en Settings (sigue existiendo como fallback).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 69%"></i></div><span class="counter">11 / 16</span></div>
+  </section>
+
+  <!-- ============ 11 · VISTA PM ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>12 · Vista PM</span><span>UX, adopción, métricas</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Para el PM</p>
+      <h2 class="heading">Accesibilidad visible: la mueve del fondo del menú al navbar.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead><tr><th style="width: 36%;">Aspecto</th><th>Hoy</th><th>Después</th></tr></thead>
+        <tbody>
+          <tr><td>Tap para activar a11y</td><td class="was">3-4 taps (Home → Menú → Settings → Personalización)</td><td class="now">1 tap desde el navbar</td></tr>
+          <tr><td>Adopción esperada</td><td class="was">0%</td><td class="now">5-8% MAUs activan al menos un toggle (más alta por visibilidad)</td></tr>
+          <tr><td>OS reduced-motion respeto</td><td class="was">ignorado</td><td class="now">respetado por default · ~6% devices auto-activadas</td></tr>
+          <tr><td>Tickets Soporte (mareo / animación)</td><td class="was">~17/mes</td><td class="now">target -50% en 3 meses</td></tr>
+          <tr><td>Acelerómetro auto-mode</td><td class="was">no aplica</td><td class="now">opt-in con permiso explícito · A/B vs manual</td></tr>
+          <tr><td>WCAG 2.3.3 / 2.2.2</td><td class="was">no cubierto</td><td class="now">cubierto en web</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top: 24px;"><span class="sigil"></span>Importante para el PM: subir el switch al navbar aumenta visibilidad pero también ruido visual. Validar con UX research o A/B antes de full rollout.</p>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 75%"></i></div><span class="counter">12 / 16</span></div>
+  </section>
+
+  <!-- ============ 12 · VISTA TL ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>13 · Vista TL</span><span>Scope técnico, riesgo, rollback</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Para el Tech Lead</p>
+      <h2 class="heading">TypeScript estricto, reuso del motor anterior, DeviceMotion con graceful degradation.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead><tr><th style="width: 24%;">Aspecto</th><th>Hoy</th><th>Después</th><th style="width: 24%;">Riesgo + rollback</th></tr></thead>
+        <tbody>
+          <tr><td>Navbar component</td><td class="was">solo dark mode toggle</td><td class="now">+ switch biónica + dropdown <span class="mono">A11y</span></td><td><span class="dot dot--good"></span> bajo · feature flag por componente</td></tr>
+          <tr><td>Motion tokens + reduced</td><td class="was">animaciones ad-hoc</td><td class="now">CSS vars con reduced variants</td><td><span class="dot dot--good"></span> bajo · flag OFF y vuelve</td></tr>
+          <tr><td>DeviceMotion (acelerómetro)</td><td class="was">no usado</td><td class="now">hook <span class="mono">useAccelerometerMode()</span> en TS</td><td><span class="dot dot--warn"></span> medio · iOS 13+ requiere <span class="mono">requestPermission()</span> · degradación si no soporta</td></tr>
+          <tr><td>Anchor dot</td><td class="was">nuevo</td><td class="now"><span class="mono">IntersectionObserver</span> en pantallas marcadas</td><td><span class="dot dot--good"></span> bajo · no afecta render crítico</td></tr>
+          <tr><td>Bundle size</td><td class="was">baseline</td><td class="now">+4-6kb (CSS vars + observer + accel hook)</td><td><span class="dot dot--good"></span> bajo · monitor Lighthouse</td></tr>
+          <tr><td>Persistencia</td><td class="was">reusa del MVP anterior</td><td class="now">6 booleans en perfil + endpoint extendido</td><td><span class="dot dot--good"></span> bajo · fallback localStorage</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top: 16px;"><span class="sigil"></span>Importante para el TL: el acelerómetro abre una nueva permission surface en iOS y agrega un sensor de battery drain leve. Sampleo a 10Hz con dispose en background mitiga ambos.</p>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 81%"></i></div><span class="counter">13 / 16</span></div>
+  </section>
+
+  <!-- ============ 13 · VISTA MANAGER ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>14 · Vista Manager</span><span>Costo, riesgo, ROI</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Para el Manager</p>
+      <h2 class="heading">~3 semanas extra al MVP anterior, mismo motor, doble cobertura.</h2>
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card">
+          <span class="card__index">Costo dev</span>
+          <div class="num num--md" style="margin: 8px 0;">~3 sem</div>
+          <p class="body" style="margin: 0;">1 FE dev + Motion Design pairing. Sin BE nuevo. Sin vendor.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Reduccción Soporte</span>
+          <div class="num num--md" style="margin: 8px 0;">-50%</div>
+          <p class="body" style="margin: 0;">Target sobre los ~17 tickets/mes de mareo o animación a 3 meses post-rollout.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Cobertura agregada</span>
+          <div class="num num--md" style="margin: 8px 0;">~35%</div>
+          <p class="body" style="margin: 0;">Sensibilidad vestibular en adultos +40. Sumado a TDAH/dislexia, cubre ~40% del público real.</p>
+        </div>
+      </div>
+      <table class="compare" style="margin-top: 32px;">
+        <thead><tr><th style="width: 36%;">Dimensión</th><th>Hoy</th><th>Después</th></tr></thead>
+        <tbody>
+          <tr><td>Riesgo de regresión en engagement</td><td class="was">N/A</td><td class="now">medible vía A/B antes de full rollout</td></tr>
+          <tr><td>Compliance WCAG 2.3.3 / 2.2.2</td><td class="was">no cubierto</td><td class="now">cubierto en web</td></tr>
+          <tr><td>Storyline accesibilidad</td><td class="was">una capa (lectura asistida)</td><td class="now">programa completo (cognitiva + vestibular)</td></tr>
+          <tr><td>Costo runtime</td><td class="was">baseline</td><td class="now">$0 · todo cliente</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 88%"></i></div><span class="counter">14 / 16</span></div>
+  </section>
+
+  <!-- ============ 14 · DECISIONES ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>15 · Decisiones</span><span>Lo que necesito del comité</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Decisiones que necesito hoy</p>
+      <h2 class="heading">Cuatro puntos · binarios o con opciones cerradas.</h2>
+      <ol class="decisions" style="margin-top: 32px;">
+        <li>
+          <h3>Aprobar scope del MVP</h3>
+          <p class="body" style="margin: 4px 0 0;">Switch de biónica en navbar + dropdown <span class="mono">A11y</span> + acelerómetro auto-mode. Si hay apetito, abrimos tickets después del MVP de lectura asistida.</p>
+          <p class="ownership">Owner: PM + Manager</p>
+        </li>
+        <li>
+          <h3>Subir el switch al navbar: ¿biónica fija o slot rotativo?</h3>
+          <p class="body" style="margin: 4px 0 0;">Opción A: biónica como switch fijo (palanca más usada). Opción B: slot rotativo que muestra el último toggle activado. Cambia ruido visual del navbar.</p>
+          <p class="ownership">Owner: PM + Brand</p>
+        </li>
+        <li>
+          <h3>Acelerómetro: ¿permission prompt al activarlo o al instalar?</h3>
+          <p class="body" style="margin: 4px 0 0;">iOS 13+ exige <span class="mono">DeviceMotionEvent.requestPermission()</span>. Propongo pedirlo solo cuando el usuario activa el toggle (no on install). Legal y UX deciden el texto del prompt.</p>
+          <p class="ownership">Owner: TL FE + Legal + UX</p>
+        </li>
+        <li>
+          <h3>Dark mode: ¿se queda solo o entra al dropdown A11y?</h3>
+          <p class="body" style="margin: 4px 0 0;">Propongo moverlo al dropdown (es una palanca de a11y más). Si Brand prefiere mantenerlo suelto como hoy, agregamos sólo el ícono A11y al lado.</p>
+          <p class="ownership">Owner: PM + Brand</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom"><span>accesibilidad · modo-landing</span><div class="progress"><i style="--p: 94%"></i></div><span class="counter">15 / 16</span></div>
+  </section>
+
+  <!-- ============ 15 · CIERRE ============ -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>16 · Cierre</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">¿Damos luz verde?</p>
+      <h1 class="title" style="font-size: clamp(44px, 5.5vw, 72px);">Antes de avanzar,<br /><span style="color: var(--green-default)">necesito feedback</span> de cuatro equipos.</h1>
+      <p class="lede" style="max-width: 72ch;">Brand (navbar + dark mode), Motion Design (audit), Legal + UX (prompt del acelerómetro iOS), Mobile (si replicamos en nativo). Si hay apetito en este comité, agendamos los review antes de abrir tickets.</p>
+      <div class="card" style="margin-top: 32px; max-width: 100%;">
+        <span class="card__index">Material de soporte</span>
+        <div class="grid-2" style="gap: 24px;">
+          <ul class="checks" style="margin: 0;">
+            <li>WCAG 2.3.3 (Animation from Interactions, AAA) y 2.2.2 (Pause, Stop, Hide).</li>
+            <li><span class="mono">DeviceMotionEvent</span> spec · iOS 13+ permission flow · degradación si no soporta.</li>
+          </ul>
+          <ul class="checks checks--neutral" style="margin: 0;">
+            <li>Referencias: <span class="mono">prefers-reduced-motion</span> spec, A11y Project, navbars de Apple Accessibility.</li>
+            <li>Sister deck: "Lectura asistida para TDAH y dislexia" (mismo programa).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Tech Lead</p></div>
+      <div class="meta__col"><h4>Tickets</h4><p>COENXT (pendiente · post-MVP lectura asistida)</p></div>
+      <div class="meta__col"><h4>Repo</h4><p>modo-landing · feature/anclajes-mareos</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 16</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); go(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') {
+      e.preventDefault(); go(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(slides.length - 1);
+    } else if (e.key === 'p' || e.key === 'P') {
+      window.print();
+    }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) {
+    go(hash - 1);
+  } else {
+    go(0);
+  }
+})();
+</script>
+
+<script>
+/* Demo interactivo — activación con botón */
+(function () {
+  const sample = document.getElementById('demo-sample');
+  if (!sample) return;
+  const lines = sample.querySelectorAll('[data-line]');
+  const shimmer = document.getElementById('demo-shimmer');
+  const phone = document.getElementById('demo-phone');
+  const status = document.getElementById('demo-status');
+  const state = { bionic: false, extendida: false, anchor: false, motion: false, accel: false };
+
+  lines.forEach(line => { line.dataset.original = line.textContent; });
+
+  function applyBionic(on) {
+    sample.dataset.bionic = on ? 'on' : 'off';
+    lines.forEach(line => {
+      if (on) {
+        const words = line.dataset.original.split(/\s+/);
+        line.innerHTML = words.map(w => {
+          const clean = w.replace(/[.,;:]/g, '');
+          if (clean.length < 3) return w;
+          const half = Math.ceil(clean.length / 2);
+          return '<b>' + w.slice(0, half) + '</b>' + w.slice(half);
+        }).join(' ');
+      } else {
+        line.textContent = line.dataset.original;
+      }
+    });
+  }
+
+  function applyExtendida(on) { sample.dataset.extendida = on ? 'on' : 'off'; }
+  function applyAnchor(on) { sample.dataset.anchor = on ? 'on' : 'off'; }
+  function applyMotion(on) { if (shimmer) shimmer.dataset.motion = on ? 'reduce' : 'on'; }
+  function applyAccel(on) {
+    if (phone) phone.dataset.accel = on ? 'on' : 'off';
+    if (on && !state.motion) {
+      const motionBtn = document.querySelector('.demo-btn[data-feature="motion"]');
+      if (motionBtn) motionBtn.click();
+    }
+  }
+
+  const handlers = {
+    bionic: applyBionic,
+    extendida: applyExtendida,
+    anchor: applyAnchor,
+    motion: applyMotion,
+    accel: applyAccel,
+  };
+
+  function updateStatus() {
+    if (!status) return;
+    const active = Object.keys(state).filter(k => state[k]);
+    if (active.length === 0) {
+      status.innerHTML = 'Estado: ningún modo activo. Toc&aacute; un switch para empezar.';
+      return;
+    }
+    const labels = { bionic: 'lectura bi&oacute;nica', extendida: 'lectura extendida', anchor: 'punto de anclaje', motion: 'reducci&oacute;n de movimiento', accel: 'auto por aceler&oacute;metro' };
+    status.innerHTML = 'Activos: <strong>' + active.map(k => labels[k]).join(' &middot; ') + '</strong>';
+  }
+
+  document.querySelectorAll('.demo-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const feature = btn.dataset.feature;
+      const next = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(next));
+      state[feature] = next;
+      handlers[feature](next);
+      updateStatus();
+    });
+  });
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="accesibilidad-anclajes-mareos"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/modo-decks',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+</body>
+</html>

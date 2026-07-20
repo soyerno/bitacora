@@ -1,0 +1,438 @@
+{
+  "_meta": {
+    "generated": "2026-05-27",
+    "category": "Bitácora",
+    "format": "Digest diario de aprendizajes — una historia por feature/lección del día, voz rioplatense con claridad pedagógica estilo Karpathy",
+    "sources": [
+      "memory files dated",
+      "git/gh workspace activity",
+      "session transcripts",
+      "ruflo obsidian-vault"
+    ],
+    "workflow": [
+      "borrador",
+      "publicado"
+    ],
+    "notes": "Journal append-only. Cada día = una página navegable con TLDR + historias. Inspirado en el LLM Wiki Pattern de Karpathy: escribir lo aprendido para no re-aprenderlo."
+  },
+  "items": [
+    {
+      "date": "2026-06-15",
+      "slug": "2026-06-15-erno-cli",
+      "title": "15 de junio · dos cuentas Max en una Mac: una CLI propia, y por qué la publiqué a medias",
+      "tldr": "Tengo dos cuentas Claude Max en la misma Mac y Claude Code no tiene multi-cuenta nativo: la credencial de subscription vive en el Keychain, compartida, así que estás logueado a una a la vez. Armé erno-cli, una CLI personal mínima en bash, que guarda el token OAuth de la segunda cuenta y la corre aislada — para usarla como worker headless sin acceso por API. Antes corregí el supuesto que disparó todo: los planes de subscription no acumulan tokens que se pierdan en la renovación; son tarifa plana con rate limits que se resetean. Lo que rescaté fue capacidad ya paga que quedaba ociosa. Y al publicar elegí frenar: repo privado, así que publiqué la lección, no el código.",
+      "stories": [
+        {
+          "title": "Dos cuentas, una Mac, sin API",
+          "summary": "Claude Code en macOS guarda la credencial de subscription en el Keychain, y es una sola: estás logueado a una cuenta a la vez. Para usar la segunda en paralelo —sin API— el camino es el token OAuth largo (claude setup-token) pasado por variable de entorno en cada terminal. Pero antes de codear corregí el supuesto que lo disparó: no hay un saldo de tokens que se pierda en la renovación. La subscription es tarifa plana con rate limits que se resetean por ventana; lo único que perdés es capacidad ociosa que ya pagaste. Nombrar la confusión antes de avanzar evitó construir para un problema que no existía.",
+          "tags": [
+            "claude-code",
+            "multi-cuenta",
+            "honestidad"
+          ]
+        },
+        {
+          "title": "El primer comando justifica la CLI, no al revés",
+          "summary": "erno-cli es bash puro, sin dependencias: un dispatcher y dos comandos. account-setup guarda el token de la segunda cuenta en el Keychain con input silencioso —nunca toca disco ni el historial del shell—; el comando b corre Claude Code con esa identidad y la config aislada en su propio directorio. Validé mis scripts sueltos y subí solo los genéricos —la orquestación multi-cuenta—; los scripts de build de la bitácora se quedaron afuera porque no son reutilizables. La CLI es un contenedor que va a crecer, pero la versión uno resuelve un caso real, no una abstracción especulativa.",
+          "tags": [
+            "cli",
+            "simplicidad",
+            "seguridad"
+          ]
+        },
+        {
+          "title": "Publicar a medias, a propósito",
+          "summary": "Publicar la CLI en la bitácora chocó con una decisión que era mía: elegí repo privado. Un catálogo público que linkea a un repo privado da 404, y empaquetar el código como zip público contradecía esa elección. Así que reconcilié: publiqué la historia —compartible— y omití el código. De paso, el harness me frenó dos veces por seguridad: no me dejó tocar el .zshrc ni crear el repo público sin pedido explícito. Guardrails que no confían en lo inferido: el mismo principio del freno de mano, ahora aplicado a mí. La doc puede ser pública aunque el código no lo sea.",
+          "tags": [
+            "comunidad",
+            "seguridad",
+            "honestidad"
+          ]
+        }
+      ],
+      "tags": [
+        "claude-code",
+        "cli",
+        "multi-cuenta",
+        "orquestación",
+        "seguridad",
+        "honestidad",
+        "karpathy"
+      ],
+      "area": "platform",
+      "href": "2026-06-15-erno-cli.html",
+      "reading_minutes": 4,
+      "counts": {
+        "commits": 1,
+        "learnings": 3,
+        "prs": 1
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-06-15",
+      "slug": "2026-06-15",
+      "title": "15 de junio · la oficina cobró vida: de maqueta a tablero, y el roster contrató gerencia",
+      "tldr": "La entrada del 14 cerró con \"lo vivo quedó pendiente\". El 15 lo cablé: la oficina dejó de ser teatro (animación con setTimeout) y pasó a tablero — reescrita en React, alimentada por eventos reales que escriben los hooks, todo en el mismo origin. El roster creció de 16 a 20: sumó una capa de gerencia (PO, PM, coach y un CEO con freno de mano). Aprendí que hasta el tooling local que dispara comandos es superficie de ataque (CSRF contra localhost). Y que el entorno crecía más rápido que su documentación: refresqué el mapa y catalogué el patrón para que otros lo adapten.",
+      "stories": [
+        {
+          "title": "De teatro a tablero",
+          "summary": "El 14 la oficina era una animación con setTimeout — el ritmo del loop, no su latido. El 15 cablé lo real: los hooks de sesión escriben un NDJSON de eventos (SubagentStop, cambio de fase del Workflow) que la oficina pollea. La reescribí en React (Vite + TS + Tailwind v4, atomic design, tokens de marca) y la sirve office-serve en el mismo origin que los datos, así el fetch es siempre relativo. Un puente Workflow→oficina enciende cada puesto con eventos de verdad. La regla de la casa se cumplió al revés: lo que el 14 era teatro, el 15 dejó de serlo.",
+          "tags": [
+            "agentes",
+            "visualización",
+            "honestidad"
+          ]
+        },
+        {
+          "title": "El roster contrató gerencia",
+          "summary": "Los 16 agentes ejecutaban (front, back, ux, branding…) pero nadie decidía el qué ni custodiaba el estándar. Sumé cuatro: el PO escribe la propuesta OpenSpec antes de codear y parte el trabajo en historias verificables; el PM custodia los metadatos de cada PR y el roadmap; el coach es un meta-agente que mejora a los otros agentes; y el CEO conduce el conjunto. Pasó de roster a empresa, todo atado a un North Star: WALM (Weekly Active Lost-found Matches).",
+          "tags": [
+            "agentes",
+            "management",
+            "north-star"
+          ]
+        },
+        {
+          "title": "El CEO con freno de mano",
+          "summary": "Autonomía no es autonomía sin freno. El firu-ceo conduce el roster en nombre del humano pero solo dentro de un mandato revocable: nunca cruza una acción irreversible —merge, deploy, gasto, borrado— sin OK explícito, y un kill-switch en la oficina lo apaga al instante. Es el mismo principio del 27 de mayo —autonomía con freno de mano— ahora con cara de agente: delegar el volante sin soltar el freno.",
+          "tags": [
+            "autonomía",
+            "honestidad"
+          ]
+        },
+        {
+          "title": "Hasta el tooling local necesita defensa",
+          "summary": "El server de la oficina corre gh y claude en sus POST. Mi primer instinto fue \"es localhost, está a salvo\". Falso: el atacante es el browser del propio dev — un sitio malicioso abierto en otra pestaña puede pegarle a localhost. El fix es entender el modelo del navegador: exigir Content-Type application/json (un POST cross-origin con JSON dispara preflight CORS, que sin permiso falla antes de salir) y validar el Origin. Lección: cualquier superficie que ejecute comandos es superficie de ataque, aunque diga 'solo local'.",
+          "tags": [
+            "seguridad",
+            "gotcha"
+          ]
+        },
+        {
+          "title": "El mapa atrasado",
+          "summary": "El entorno crecía más rápido que su documentación: el README canónico describía 13 de 20 agentes y ni mencionaba la oficina React. Un entorno sin su mapa al día no es reusable —ni por vos en tres semanas, ni por la comunidad. Así que refresqué el README y catalogué el patrón (un equipo de agentes como entorno de trabajo, adaptable a cualquier repo) como herramienta pública. Es el LLM Wiki Pattern de Karpathy aplicado al propio andamiaje: escribir lo aprendido para no re-aprenderlo, y para que otro pueda partir de ahí.",
+          "tags": [
+            "documentación",
+            "comunidad",
+            "karpathy"
+          ]
+        }
+      ],
+      "tags": [
+        "agentes",
+        "orquestación",
+        "oficina",
+        "seguridad",
+        "documentación",
+        "comunidad",
+        "firulapp",
+        "karpathy"
+      ],
+      "area": "platform",
+      "href": "2026-06-15.html",
+      "reading_minutes": 7,
+      "counts": {
+        "commits": 6,
+        "learnings": 5,
+        "prs": 1
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-06-14",
+      "slug": "2026-06-14",
+      "title": "14 de junio · ver a los agentes trabajar juntos: el loop ya estaba, faltaba el lienzo",
+      "tldr": "El loop route-request de Firulapp ya estaba guionado; el roster de 16 agentes vivía en main (los agent types se registran al arrancar la sesión); y armé tres niveles de ver el equipo trabajar: plano ASCII, office.html que anima el loop, y /workflows para lo vivo. Cablear eventos reales quedó pendiente.",
+      "stories": [
+        {
+          "title": "Primero leer, después codear",
+          "summary": "El loop route-request.mjs ya existía y bien hecho (3 fases, un agente por lane en su worktree, guardián siempre-on defensivo+ofensivo). El código más barato es el que no escribís porque ya estaba: verificar el estado del mundo antes de actuar.",
+          "tags": [
+            "karpathy",
+            "no-duplicar"
+          ]
+        },
+        {
+          "title": "El roster vive en main y se registra al arrancar",
+          "summary": "Los 16 agentes estaban en origin/main (#454/#455), no en mi branch. git checkout los trajo, pero los agent types se registran al boot de la sesión: materializar .md a mitad de sesión no alcanza, hay que recargar. Mismo patrón que los flags congelados en el WebView.",
+          "tags": [
+            "agentes",
+            "gotcha",
+            "sesión"
+          ]
+        },
+        {
+          "title": "Tres niveles de ver al equipo",
+          "summary": "Plano ASCII (topología), office.html con \"Simular ronda\" que enciende puestos fase por fase sin gastar tokens (+ window.setOfficeState para datos reales), y /workflows para el latido en vivo del Workflow.",
+          "tags": [
+            "visualización",
+            "workflow"
+          ]
+        },
+        {
+          "title": "Lo vivo quedó pendiente",
+          "summary": "No lo vi correr de verdad: trabado en el reload, y la animación es teatro. Sigue cablear eventos del loop (SubagentStop / cambio de fase) a setOfficeState vía hook o archivo de estado. No declarar hecho lo que es teatro.",
+          "tags": [
+            "honestidad",
+            "pendiente"
+          ]
+        }
+      ],
+      "tags": [
+        "agentes",
+        "orquestación",
+        "workflow",
+        "visualización",
+        "firulapp",
+        "karpathy"
+      ],
+      "area": "platform",
+      "href": "2026-06-14.html",
+      "reading_minutes": 6,
+      "counts": {
+        "commits": 0,
+        "learnings": 3,
+        "prs": 0
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-06-13",
+      "slug": "2026-06-13",
+      "title": "13 de junio · destilar Firulapp en skills portables",
+      "tldr": "Saqué de Firulapp 13 aprendizajes que son patrón y no dominio, y los volví skills reutilizables en ~/.claude/skills (sirven en cualquier repo) + catálogo en la bitácora. La idea Karpathy: lo que aprendés una vez no se vuelve a aprender — se vuelve política. Acá la política es un skill.",
+      "stories": [
+        {
+          "title": "Destilar, no copiar",
+          "summary": "El criterio: un aprendizaje viaja si es patrón (gate, helper, disciplina) y no dominio (rutas en español, scrapers OSM, copy de mascotas). Lo portable va a ~/.claude/skills global —usable en MODO, Firulapp o lo que venga—; lo Firulapp-específico se queda. 13 skills salieron de ese filtro.",
+          "tags": [
+            "skills",
+            "destilación",
+            "karpathy"
+          ]
+        },
+        {
+          "title": "Los gates que viajan",
+          "summary": "Cuatro gates de código ya probados en el harness de Firulapp, des-Firulappizados: feature-flag-wiring (feature OFF ⇒ no se ve nada, 4 capas + 2 checks estáticos con sus puntos ciegos), ai-mcp-parity (asistente + agentes MCP nunca desincronizados de las features, tools.ts = fuente de verdad), component-size-gate (archivo UI > 400 líneas falla, grandfathered shrink-only) y precommit-quality-harness (lint-staged + validate, con el truco del tsconfig acotado a src/ para esquivar los tipos generados stale).",
+          "tags": [
+            "feature-flags",
+            "gates",
+            "ci"
+          ]
+        },
+        {
+          "title": "Seguridad que no depende del dominio",
+          "summary": "prompt-injection-hardening: el helper puro untrustedInput (sanitize + wrap en delimitadores), tabla de invisibles en vez de regex literal, y el vector de 2do orden que casi nadie mira —UGC almacenado que después lee un agente MCP externo—. Más la regla de exposición de ai-mcp-parity: una write per-usuario jamás se expone al MCP de token compartido (sería atribuir la acción a un anónimo).",
+          "tags": [
+            "seguridad",
+            "prompt-injection",
+            "mcp"
+          ]
+        },
+        {
+          "title": "El patrón de persistencia optimista",
+          "summary": "optimistic-persist-rq: el triángulo onMutate/onError/onSettled de React Query, key-factory tipo-proof, seed del cache desde props de server, y la separación clave —count en la entidad, membership en un Set por usuario—. Salió de migrar el god-component de Firulapp de useState a mano a un solo patrón uniforme. Rollback honesto, no optimismo ciego.",
+          "tags": [
+            "react-query",
+            "optimistic-ui",
+            "patrón"
+          ]
+        },
+        {
+          "title": "Meta-skills: cómo destilar para el próximo repo",
+          "summary": "Cuatro skills que enseñan a hacer skills: distill-design-system (tokens runtime como fuente de verdad + checklist pass/fail + mapa atomic), distill-brand-voice (persona + say-this-not-that + el guardrail de que caveman jamás toca el copy de la app), distill-ux-a11y-layer (3 pilares anclados al usuario real, números de a11y concretos) y distill-framework-conventions (la regla 'leé los docs locales antes de codear' para frameworks forkeados). El proceso es portable aunque la marca no.",
+          "tags": [
+            "meta-skill",
+            "design-system",
+            "voz"
+          ]
+        },
+        {
+          "title": "Disciplina de proceso embotellada",
+          "summary": "worktree-per-feature (un worktree+branch+PR por tarea, siempre cortado de origin/main fresco; los CONFLICT de squash-merge son falsos positivos), release-on-merge (semantic-release: HUSKY=0 en el job + serializar por la race de merges paralelos) y pr-pain-purpose-how (todo PR abre con Dolor/Para qué/Cómo: el reviewer entiende el porqué antes del qué).",
+          "tags": [
+            "worktrees",
+            "release",
+            "proceso"
+          ]
+        },
+        {
+          "title": "Catalogadas en la bitácora",
+          "summary": "Las 13 quedaron empaquetadas como .skill/ con sha256 real y install_hint en la sección Skills MODO (skills.json), así se instalan desde acá con un unzip. Global = reusables ya; el catálogo = memoria de que existen y de dónde salieron.",
+          "tags": [
+            "catálogo",
+            "skills-modo",
+            "reuso"
+          ]
+        },
+        {
+          "title": "Medir cómo prompteo, no solo qué construyo",
+          "summary": "Analicé 123 sesiones propias de Claude Code: 710 prompts reales, mediana de 19 caracteres, 45,6% delegación vaga (si / merge / completá el trabajo) y apenas 1,9% pidiendo planificar antes de codear — violando mi propio principio #1. La lección no se quedó en el diagnóstico: la volví skill. prompt-coach lee los logs de sesión, puntúa la calidad del prompt (planificar-primero, guardrails de scope, pedidos de verificación vs delegación ciega y encadenar acciones irreversibles), guarda un snapshot con fecha y grafica la tendencia en ASCII + un dashboard HTML offline. Baseline Firulapp: 34/100. La idea Karpathy aplicada al humano del loop: si el contexto es memoria de trabajo, mi prompt es la instrucción que la carga — medible, y por lo tanto mejorable. El score es relativo a uno mismo: importa la pendiente. Después lo iteré de medición pasiva a coach activo: un hook UserPromptSubmit clasifica cada prompt y, solo cuando es flojo, me propone en vivo una versión reescrita de mi propio prompt (con criterio de \"listo\" + qué no tocar) o un checkpoint antes de ir a prod — silencio cuando ya está bien.",
+          "tags": [
+            "prompt-coach",
+            "meta-skill",
+            "karpathy",
+            "medición"
+          ]
+        }
+      ],
+      "tags": [
+        "skills",
+        "destilación",
+        "firulapp",
+        "feature-flags",
+        "seguridad",
+        "react-query",
+        "worktrees",
+        "meta-skill"
+      ],
+      "area": "platform",
+      "href": "2026-06-13.html",
+      "reading_minutes": 7,
+      "counts": {
+        "commits": 0,
+        "learnings": 13,
+        "prs": 0
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-05-27",
+      "slug": "2026-05-27",
+      "title": "27 de mayo · autonomía con freno de mano",
+      "tldr": "Día de darle autonomía a la máquina sin soltarle el volante: un loop nocturno que se automejora pero no aplica nada solo, gates para avisar antes de tocar lo ajeno, analytics nuevo en Aprende a tu MODO y una auditoría adversarial al UI lib.",
+      "stories": [
+        {
+          "title": "El loop que corre mientras dormís",
+          "summary": "Skill modo-nocturno + LaunchAgent com.ernomodo.nocturno a las 03:00 diario, read-only: mina knowledge base/transcripts/PRs/monitores y draftea a una cola _pending/, nunca aplica ni manda nada. El plist usa python3 directo para esquivar el TCC trap de macOS (bash pelado contra ~/Documents devuelve 0 sin error).",
+          "tags": [
+            "launchd",
+            "TCC",
+            "nocturno"
+          ]
+        },
+        {
+          "title": "Por qué el digest no puede ser un script pelado",
+          "summary": "ruflo es MCP session-scoped y la narrativa la escribe un LLM → el cron invoca claude -p headless en vez de un Python pelado. El classifier frenó la persistencia autónoma; entregué el plist como artefacto para prender a mano.",
+          "tags": [
+            "automatización",
+            "seguridad"
+          ]
+        },
+        {
+          "title": "Antes de construir, avisá",
+          "summary": "Skill modo-stakeholder-gate: gate de pregunta-y-espera antes de pasos críticos sobre tracking/infra/código ajeno. Regla dura: no inventar ownership.",
+          "tags": [
+            "stakeholder-gate",
+            "proceso"
+          ]
+        },
+        {
+          "title": "Triage de inbox — action items de mail y Slack",
+          "summary": "Skills slack-mentions-distill + gmail-triage-distill: leen read-only y destilan qué requiere acción mía, no un resumen. Wireados para sumarse como fuentes del nocturno.",
+          "tags": [
+            "slack",
+            "gmail",
+            "productividad"
+          ]
+        },
+        {
+          "title": "Amplitude en Aprende a tu MODO",
+          "summary": "PR #23 en aprendeatumodo (COENXT-318): Amplitude con 5 eventos clave, reusando convenciones de naming y el patrón dual web/WebView de MODO en vez de improvisar.",
+          "tags": [
+            "amplitude",
+            "analytics",
+            "aprendeatumodo"
+          ]
+        },
+        {
+          "title": "Bug hunter sobre la integración Storyblok del UI lib",
+          "summary": "Auditoría adversarial al PR #38 de modo-landing-web-ui-lib: Storyblok vía BFF + cache Navbar/Footer. Vale acá porque Navbar/Footer están en todas las páginas — un bug de cache rompe el sitio entero.",
+          "tags": [
+            "bug-hunter",
+            "storyblok",
+            "ui-lib"
+          ]
+        },
+        {
+          "title": "Contribuciones como aprendizaje por refuerzo",
+          "summary": "Deck directo para una reunión: el destilado al cierre de cada sesión es RL en la práctica — errores como señal negativa, skills como política que no se vuelve a aprender. No es una IA genérica, es un sistema que mejora porque le cierro el loop.",
+          "tags": [
+            "contribuciones",
+            "aprendizaje-por-refuerzo",
+            "deck"
+          ]
+        }
+      ],
+      "tags": [
+        "autonomía",
+        "skills",
+        "nocturno",
+        "amplitude",
+        "bug-hunter",
+        "aprendizaje-por-refuerzo"
+      ],
+      "area": "platform",
+      "href": "2026-05-27.html",
+      "reading_minutes": 9,
+      "counts": {
+        "learnings": 7,
+        "prs": 2,
+        "commits": 1
+      },
+      "status": "publicado"
+    },
+    {
+      "date": "2026-05-26",
+      "slug": "2026-05-26",
+      "title": "26 de mayo · harness de calidad CI y auditoría de skills",
+      "tldr": "Cerramos 4 gaps de CI con el harness de calidad y endurecimos la auditoría de skills tras cazar bugs que el self-review se había comido.",
+      "stories": [
+        {
+          "title": "CI Quality Harness · 4 gates con config por tipo de build",
+          "summary": "Instalamos los gates de audit, bundle-size, visual y a11y en los repos MODO. La clave fue que la config no puede ser genérica: cada tipo de build necesita la suya. Quedó un detect-repo-type.sh + drop-ins validados para no reinventarlo la próxima.",
+          "tags": [
+            "ci",
+            "quality",
+            "bundle-size"
+          ]
+        },
+        {
+          "title": "Auditoría de skills · no claim fix sin verify-grep",
+          "summary": "Un audit independiente cazó 30+ bugs que el self-review había declarado resueltos. Lección dura: antes de escribir 'fixed X' hay que correr el grep contra el archivo real. Si el anti-pattern matchea, el fix está en la prosa, no en el código.",
+          "tags": [
+            "security",
+            "audit",
+            "bash"
+          ]
+        },
+        {
+          "title": "Sync diario de la bitácora · guardas para arrays vacíos",
+          "summary": "El audit-decks.sh en modo --json reventaba con catálogos vacíos. Agregamos guardas para arrays vacíos y el sync volvió a correr limpio. Bug chico, pero rompía todo el pipeline silenciosamente.",
+          "tags": [
+            "erno-modo",
+            "sync",
+            "bugfix"
+          ]
+        }
+      ],
+      "tags": [
+        "ci",
+        "quality",
+        "security",
+        "audit",
+        "erno-modo"
+      ],
+      "area": "platform",
+      "href": "2026-05-26.html",
+      "reading_minutes": 6,
+      "counts": {
+        "learnings": 3,
+        "prs": 2,
+        "commits": 5
+      },
+      "status": "publicado"
+    }
+  ]
+}

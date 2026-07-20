@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R&amp;D Infrastructure ship · RD03 · Erno × MODO</title>
+  <meta name="description" content="24 horas después de abrir la categoría R&D con el primer artículo, cómo quedó armada la infraestructura para que el siguiente research no requiera reinventar nada: skill canónico, validación de catálogo y un post-mortem del swarm de ruflo que se cayó." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="R&D Infrastructure ship · skill canónico + validación de catálogo" />
+  <meta property="og:description" content="Cómo quedó armada la infraestructura R&D 24h después del primer artículo: modo-research-article skill + validate_rd() en sync.py + post-mortem del swarm." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/rd/rd-infrastructure-ship.html" />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-05-21" />
+  <meta property="article:section" content="R&D" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="./research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "R&D Infrastructure ship · skill canónico + validación de catálogo",
+    "description": "Cómo quedó armada la infraestructura R&D 24h después del primer artículo: modo-research-article skill + validate_rd() en sync.py + post-mortem del swarm.",
+    "url": "https://soyernomodo.github.io/erno-modo/rd/rd-infrastructure-ship.html",
+    "datePublished": "2026-05-21",
+    "author": { "@type": "Person", "name": "Hernán De Souza" },
+    "publisher": { "@type": "Organization", "name": "Erno × MODO" }
+  }
+  </script>
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/rd/rd-infrastructure-ship.html" />
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<svg aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute">
+  <defs>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+    </marker>
+  </defs>
+</svg>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="./" aria-current="page">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">R&amp;D</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">R&amp;D Infrastructure ship</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Decisión</span>
+        <span class="meta-pill">R&amp;D · RD03</span>
+      </div>
+      <h1 class="article-title">R&amp;D Infrastructure ship · skill canónico + validación de catálogo</h1>
+      <p class="article-deck">24 horas después de abrir la categoría con RD01, cómo quedó armada la infra para que el siguiente research no requiera reinventar nada — y qué falló del swarm de ruflo que arrancó la última hora.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-05-21">2026-05-21</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~8 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>La categoría R&amp;D abrió el 2026-05-20 con RD01 (developers portal mapping). 24h después: <strong>skill <code>modo-research-article</code></strong> + <strong><code>validate_rd()</code></strong> en el sync diario. Cualquiera (yo mismo, un agente nuevo) puede ahora escribir RDs siguiendo el pattern canónico sin tener que mirar el HTML de RD01 como referencia.</li>
+        <li>El skill enforce reglas duras: CSS único en <code>rd/research-article.css</code>, marker SVG global al body, Chart.js leyendo CSS vars, status workflow oficial, voz rioplatense, byline "Sr AI Engineer", no PR automático.</li>
+        <li><code>validate_rd()</code> chequea drift de <code>rd.json</code> contra disco en cada corrida del sync: <code>href</code> existence, <code>status</code> ∈ workflow oficial, <code>number</code> matchea <code>RD&lt;NN&gt;</code>. Read-only — reporta, no muta.</li>
+        <li><strong>Post-mortem</strong>: disparé un swarm de ruflo con 2 agents en paralelo. <strong>Cero</strong> terminó. Track A (skill) se cayó por socket disconnect después de escribir solo SKILL.md. Track B (sync.py) se quedó sin presupuesto antes de tocar nada. <strong>Lección</strong>: verificar estado real antes de declarar éxito; el sistema de "el agente reportó OK" no aplica cuando hubo crash.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#contexto">Contexto · de RD01 a RD03</a></li>
+          <li><a href="#que-shippeamos">Qué shippeamos</a></li>
+          <li><a href="#arquitectura">Arquitectura · cómo se reparten responsabilidades</a></li>
+          <li><a href="#swarm">Post-mortem del swarm</a></li>
+          <li><a href="#lessons">Lecciones aplicables</a></li>
+          <li><a href="#proximo">Próximo paso</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="contexto">
+          <h2>Contexto · de RD01 a RD03</h2>
+          <p>El 20 de mayo abrimos la categoría R&amp;D en la bitácora con RD01 (mapeo del portal developers). La motivación era simple: hay un tipo de contenido que no es deck, no es RFC, no es entrada de Notion. Es <em>research</em> — long-form técnico con diagramas, que precede a una propuesta formal y vive público para que quede registro.</p>
+
+          <p>El primer artículo definió el pattern visual: hero + TL;DR + TOC sticky + prose ~70ch + diagramas SVG inline theme-aware + Chart.js leyendo CSS vars + matrix grid + gap columns + endpoint table + footer con disclaimer. Tres archivos: <code>rd/index.html</code> (catálogo), <code>rd/rd.json</code> (agent-readable), <code>rd/research-article.css</code> (estilos).</p>
+
+          <p>El problema del pattern de UN artículo: existe solo en la cabeza del que lo escribió. Si mañana lo retomo dos meses después, voy a tener que abrir <code>rd/developers-portal-mapping.html</code> y leer 36 KB de HTML para acordarme cómo se hace un diagrama de topología, qué clase usa el verbo POST en una tabla, o si el callout warning es <code>callout-warn</code> o <code>callout-warning</code>.</p>
+
+          <p>RD02 (genealogía de MODO Govern) ya empezó a forzar ese pattern. Y para que RD04, RD05, RDn no se desvíen, faltaba codificar el pattern en algo más estable que "leelo en RD01".</p>
+        </section>
+
+        <section id="que-shippeamos">
+          <h2>Qué shippeamos</h2>
+
+          <p>Dos cambios, en dos lugares distintos:</p>
+
+          <h3>1. Skill <code>modo-research-article</code></h3>
+
+          <p>Skill nuevo en <code>~/.claude/skills/modo-research-article/</code>. Auto-invocable cuando aparecen frases como "armá un research", "RD nuevo", "mapeo de superficie", o <code>/modo-research-article</code>. La idea es que cualquier agente en cualquier sesión futura entre por acá, no por "fijate cómo está hecho RD01".</p>
+
+          <p>Estructura:</p>
+
+          <div class="table-scroll">
+            <table class="data-table">
+              <caption>modo-research-article · archivos del skill</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Path</th>
+                  <th scope="col">Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>SKILL.md</code></td>
+                  <td>Workflow end-to-end (8 pasos) + 13 reglas duras.</td>
+                </tr>
+                <tr>
+                  <td><code>README.md</code></td>
+                  <td>Quick start + features + anti-patterns + changelog.</td>
+                </tr>
+                <tr>
+                  <td><code>assets/article-template.html</code></td>
+                  <td>Skeleton HTML con placeholders <code>{{...}}</code>, marker SVG global, todos los <code>&lt;head&gt;</code> wired al repo.</td>
+                </tr>
+                <tr>
+                  <td><code>assets/rd-json-entry.template.json</code></td>
+                  <td>Shape canónico del item nuevo en <code>rd.json</code>.</td>
+                </tr>
+                <tr>
+                  <td><code>references/visual-recipes.md</code></td>
+                  <td>Recetas drop-in para 8 visuales: topology, state machine, endpoint table, callouts, matrix, gap columns, Chart.js.</td>
+                </tr>
+                <tr>
+                  <td><code>references/token-system.md</code></td>
+                  <td>Mapeo completo de CSS vars (light/dark) a R&amp;D status workflow + uso en SVG y Chart.js.</td>
+                </tr>
+                <tr>
+                  <td><code>references/publish-workflow.md</code></td>
+                  <td>Worktree → commit firmado → PR → sync → cleanup, con comandos copy-paste.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="callout callout-info"><strong>Regla central:</strong> el CSS canónico vive en <code>rd/research-article.css</code> del repo erno-modo, no en el skill. El skill referencia ese path, no duplica. Si necesitás un pattern visual nuevo, va a research-article.css en un PR aparte — nunca inline en el HTML del artículo.</p>
+
+          <h3>2. <code>validate_rd()</code> en <code>scripts/sync.py</code></h3>
+
+          <p>Función nueva en el sync diario (<code>erno-modo-sync-all</code>, cron 18:00 ART). Read-only: chequea drift del catálogo contra el filesystem y reporta. No muta <code>rd.json</code>.</p>
+
+          <p>Tres validaciones por cada item:</p>
+
+          <ol>
+            <li><strong><code>href</code> existence</strong> · que <code>rd/&lt;href&gt;</code> exista en disco.</li>
+            <li><strong><code>status</code> ∈ workflow</strong> · oficialmente <code>{ exploración, síntesis, decisión, archivado }</code>. Cualquier otro valor es drift.</li>
+            <li><strong><code>number</code> matchea regex</strong> · <code>^RD\d{2,}$</code>. Cubre RD01, RD02, ..., RD99, RD100.</li>
+          </ol>
+
+          <p>Si encuentra drift, el sync lo reporta en el log y suma una línea al commit message (<code>- rd drift: N issue(s)</code>). Si el cron falla en interpretar algo, lo vamos a ver en el log diario; si todo limpio, dice <code>rd: OK</code>.</p>
+        </section>
+
+        <section id="arquitectura">
+          <h2>Arquitectura · cómo se reparten responsabilidades</h2>
+
+          <p>Hay tres piezas en juego, y cada una tiene un rol fijo:</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 320" class="diagram" role="img" aria-labelledby="arch-title arch-desc">
+              <title id="arch-title">Arquitectura de la infraestructura R&amp;D</title>
+              <desc id="arch-desc">modo-research-article genera artículos en el repo erno-modo, que el sync valida vía validate_rd contra rd.json y el filesystem.</desc>
+
+              <!-- modo-research-article skill (autor) -->
+              <g transform="translate(20,110)">
+                <rect width="180" height="100" rx="10" class="dgm-node dgm-node-accent"/>
+                <text x="90" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">modo-research-article</text>
+                <text x="90" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">skill (user scope)</text>
+                <text x="90" y="72" class="dgm-text dgm-text-muted" text-anchor="middle">rol: autor</text>
+                <text x="90" y="88" class="dgm-text dgm-text-muted" text-anchor="middle">enforce pattern + voz</text>
+              </g>
+
+              <!-- erno-modo repo (sustrato) -->
+              <g transform="translate(270,30)">
+                <rect width="200" height="260" rx="10" class="dgm-node"/>
+                <text x="100" y="28" class="dgm-text dgm-text-strong" text-anchor="middle">erno-modo (repo)</text>
+                <text x="100" y="46" class="dgm-text dgm-text-muted" text-anchor="middle">rol: sustrato</text>
+                <line x1="20" y1="56" x2="180" y2="56" stroke="var(--border)" stroke-width="1" />
+
+                <text x="20" y="80" class="dgm-text">rd/</text>
+                <text x="34" y="98" class="dgm-text dgm-text-muted">research-article.css</text>
+                <text x="34" y="114" class="dgm-text dgm-text-muted">rd.json</text>
+                <text x="34" y="130" class="dgm-text dgm-text-muted">index.html</text>
+                <text x="34" y="146" class="dgm-text dgm-text-muted">&lt;slug&gt;.html · 1..N</text>
+
+                <text x="20" y="174" class="dgm-text">assets/</text>
+                <text x="34" y="192" class="dgm-text dgm-text-muted">styles.css</text>
+                <text x="34" y="208" class="dgm-text dgm-text-muted">common.js</text>
+                <text x="34" y="224" class="dgm-text dgm-text-muted">nav-counts.js</text>
+
+                <text x="20" y="252" class="dgm-text">scripts/</text>
+                <text x="34" y="270" class="dgm-text dgm-text-muted">(cuando aplique)</text>
+              </g>
+
+              <!-- erno-modo-sync-all skill (validador) -->
+              <g transform="translate(520,110)">
+                <rect width="180" height="100" rx="10" class="dgm-node dgm-node-mid"/>
+                <text x="90" y="32" class="dgm-text dgm-text-strong" text-anchor="middle">erno-modo-sync-all</text>
+                <text x="90" y="50" class="dgm-text dgm-text-muted" text-anchor="middle">skill + cron 18:00</text>
+                <text x="90" y="72" class="dgm-text dgm-text-muted" text-anchor="middle">rol: validador</text>
+                <text x="90" y="88" class="dgm-text dgm-text-muted" text-anchor="middle">validate_rd() · read-only</text>
+              </g>
+
+              <!-- flechas -->
+              <path d="M 200 145 L 268 145" class="dgm-arrow dgm-arrow-accent"/>
+              <text x="234" y="138" class="dgm-text dgm-text-accent" text-anchor="middle">escribe</text>
+
+              <path d="M 518 165 L 472 165" class="dgm-arrow"/>
+              <text x="495" y="158" class="dgm-text dgm-text-muted" text-anchor="middle">lee</text>
+            </svg>
+            <figcaption>El repo es el sustrato (source of truth del CSS y del catálogo). El skill autor enforce el pattern al escribir. El skill validador chequea drift sin tocar nada. Tres roles, sin solapamiento.</figcaption>
+          </figure>
+
+          <p>La separación importa: si el skill autor mutara <code>rd.json</code> sin validación, un bug del autor entra a producción sin red. Si el validador reescribiera el JSON, perdés la fuente. Con la división actual, un autor compromete pattern; un validador compromete diagnóstico; el repo nunca se rompe de un solo lado.</p>
+        </section>
+
+        <section id="swarm">
+          <h2>Post-mortem del swarm</h2>
+
+          <p>El plan original era usar el swarm de ruflo para ejecutar Track A (skill) y Track B (sync.py) en paralelo. Dos agents foreground con worktree donde aplicara. Lo que pasó:</p>
+
+          <figure class="article-figure">
+            <svg viewBox="0 0 720 300" class="diagram" role="img" aria-labelledby="swarm-title swarm-desc">
+              <title id="swarm-title">Timeline del swarm</title>
+              <desc id="swarm-desc">Track A escribió SKILL.md y se desconectó por socket. Track B no llegó a tocar nada porque agotó el rate limit. Recuperación manual.</desc>
+
+              <!-- línea base -->
+              <line x1="30" y1="150" x2="690" y2="150" stroke="var(--border)" stroke-width="1.5" />
+
+              <!-- Track A -->
+              <g>
+                <text x="30" y="80" class="dgm-text dgm-text-strong">Track A · skill</text>
+                <rect x="30" y="92" width="220" height="36" rx="6" class="dgm-state dgm-state-init"/>
+                <text x="140" y="115" class="dgm-text" text-anchor="middle">SKILL.md (12k tokens)</text>
+                <rect x="250" y="92" width="50" height="36" rx="6" class="dgm-state dgm-state-err"/>
+                <text x="275" y="115" class="dgm-text" text-anchor="middle">crash</text>
+                <text x="335" y="115" class="dgm-text dgm-text-muted">socket disconnect · sin assets/, sin references/, sin README</text>
+              </g>
+
+              <!-- Track B -->
+              <g>
+                <text x="30" y="200" class="dgm-text dgm-text-strong">Track B · sync.py</text>
+                <rect x="30" y="212" width="60" height="36" rx="6" class="dgm-state dgm-state-init"/>
+                <text x="60" y="235" class="dgm-text" text-anchor="middle">setup</text>
+                <rect x="90" y="212" width="50" height="36" rx="6" class="dgm-state dgm-state-err"/>
+                <text x="115" y="235" class="dgm-text" text-anchor="middle">rate</text>
+                <text x="150" y="235" class="dgm-text dgm-text-muted">limit del usuario · branch creado pero código no tocado</text>
+              </g>
+
+              <!-- recovery -->
+              <g>
+                <rect x="500" y="92" width="190" height="156" rx="6" class="dgm-state dgm-state-ok"/>
+                <text x="595" y="135" class="dgm-text dgm-text-strong" text-anchor="middle">Recovery manual</text>
+                <text x="595" y="155" class="dgm-text" text-anchor="middle">verificación + completar</text>
+                <text x="595" y="173" class="dgm-text dgm-text-muted" text-anchor="middle">7 archivos nuevos</text>
+                <text x="595" y="189" class="dgm-text dgm-text-muted" text-anchor="middle">+ memoria + index</text>
+                <text x="595" y="205" class="dgm-text dgm-text-muted" text-anchor="middle">+ sync.py editado</text>
+                <text x="595" y="221" class="dgm-text dgm-text-muted" text-anchor="middle">+ TODO removido de docs</text>
+              </g>
+            </svg>
+            <figcaption>Los dos agents reportaron <code>agentId</code> al fallar — los outputs intermedios no estaban perdidos del todo, pero tampoco eran confiables. Verificar el disco real (qué archivos existen, qué cambió en git) fue lo único definitivo.</figcaption>
+          </figure>
+
+          <p>Tres datos crudos:</p>
+
+          <figure class="article-figure">
+            <div class="chart-wrap">
+              <canvas id="swarm-chart" aria-label="Outcomes del swarm" role="img"></canvas>
+            </div>
+            <figcaption>De 8 entregables del plan (Track A: 6 archivos · Track B: 1 fix + 2 doc updates), el swarm cubrió 1. El resto se hizo a mano post-recovery. <strong>Lección operativa</strong>: no asumir que el agente terminó porque reportó OK; verificar siempre disco.</figcaption>
+          </figure>
+
+          <p>¿Por qué falló cada uno?</p>
+
+          <ul>
+            <li><strong>Track A · socket disconnect</strong>: el agente arrancó bien, escribió SKILL.md completo (11k), y se cayó la conexión antes de llegar a <code>assets/</code>. No es un fallo de planificación — es ruido de red del transporte. Pasa.</li>
+            <li><strong>Track B · rate limit</strong>: el agente recibió el prompt, hizo 15 tool calls de exploración (read sync.py, inspeccionar worktree, etc.) y antes de poder editar agotó la cuota del usuario. El prompt era largo y prescriptivo; eso aumentó tool calls preliminares.</li>
+          </ul>
+
+          <p>El verdadero costo no fue el fallo en sí — fue que el reporting del swarm dijo "ambos agents terminaron" en sentido literal (terminaron de correr), no en sentido útil (terminaron el trabajo). Si yo no verificaba disco, hubiera cerrado la tarea con la mitad sin hacer.</p>
+        </section>
+
+        <section id="lessons">
+          <h2>Lecciones aplicables</h2>
+
+          <div class="gap-columns">
+            <div class="gap-col gap-col-crit">
+              <h3>No repetir · 3</h3>
+              <ul>
+                <li>Disparar swarm cerca del rate limit del usuario. Mirar consumo antes.</li>
+                <li>Prompts largos a un agent foreground para edición de archivo único — mata budget en exploración.</li>
+                <li>Confiar en "el agente reportó OK" sin grep al disco.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-mid">
+              <h3>Hacer · 3</h3>
+              <ul>
+                <li>Para edits chicos (1 archivo, &lt;200 líneas de cambio), edit directo es mejor que delegar.</li>
+                <li>Después de cualquier swarm, primer paso es <code>ls -la</code> + <code>git status</code> + <code>git diff</code>, no leer el reporte.</li>
+                <li>Si vas a delegar, achicar el contexto del prompt al mínimo accionable y dar paths absolutos.</li>
+              </ul>
+            </div>
+            <div class="gap-col gap-col-ok">
+              <h3>Lo que funcionó · 3</h3>
+              <ul>
+                <li>Worktree por track — incluso cuando el agent crasheó, el repo principal quedó limpio.</li>
+                <li>Lista de TODOs explícitos antes de delegar — facilitó la recuperación post-crash.</li>
+                <li>Disciplina de SKILL.md + README + memoria por skill nuevo — replicable sin tener que pensar la estructura.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="proximo">
+          <h2>Próximo paso</h2>
+
+          <p>El skill <code>modo-research-article</code> queda listo para dogfooding. Esta misma R&amp;D fue su primer uso real — y sirvió para detectar dos cosas chicas que ajustar en próximas iteraciones:</p>
+
+          <ul>
+            <li>El template del skill tiene placeholders <code>{{...}}</code> que hay que reemplazar a mano. Sería razonable tener un script chico que tome inputs (title, slug, date, status, etc.) y genere el HTML inicial.</li>
+            <li>La parte de "decidir qué visuales hacen falta" sigue siendo manual y dependiente de criterio. Una checklist tipo "¿esto justifica un research?" → "¿qué visuales usar?" → "¿qué Chart.js corresponde?" ayudaría.</li>
+          </ul>
+
+          <p>Ambas son mejoras incrementales, no estructurales. La infra base está: si alguien (o algún agent) entra mañana a la categoría R&amp;D con la pregunta "cómo se hace esto", la respuesta es <code>/modo-research-article</code> + leer 3 archivos cortos. No 36KB de HTML de ejemplo.</p>
+
+          <p>El siguiente research que vaya a salir es uno temático (no meta como este). Cuando aparezca, va a probar el skill en condiciones reales — con presión de tiempo y sin la frescura del autor que acaba de escribir las reglas.</p>
+        </section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-05-21">2026-05-21</time>
+          </p>
+          <p class="article-disclaimer">
+            Esta R&amp;D documenta infraestructura propia del repo erno-modo (skill <code>modo-research-article</code> + función <code>validate_rd()</code> en sync.py). No describe productos MODO ni decisiones de plataforma. Sirve como dogfooding del skill recién shippeado y como nota operativa sobre el uso del swarm de ruflo cerca de los límites del usuario.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow R&amp;D:</strong>
+    <span class="status-badge draft">Exploración</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge rfc">Síntesis</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Decisión</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  if (typeof Chart === 'undefined') return;
+
+  function getCss(name, fallback) {
+    var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return v || fallback;
+  }
+
+  var ctx = document.getElementById('swarm-chart');
+  if (!ctx) return;
+
+  var done = getCss('--done-fg', '#00471B');
+  var urgent = getCss('--urgent-fg', '#B0001A');
+  var muted = getCss('--muted', '#6B6B6B');
+  var ink = getCss('--ink', '#1A1A1A');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Track A · skill', 'Track B · sync.py'],
+      datasets: [
+        {
+          label: 'Cubierto por swarm',
+          data: [1, 0],
+          backgroundColor: done,
+          borderRadius: 6,
+          maxBarThickness: 60
+        },
+        {
+          label: 'Recuperado manual',
+          data: [5, 3],
+          backgroundColor: urgent,
+          borderRadius: 6,
+          maxBarThickness: 60
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: ink, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12 } }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (c) { return c.dataset.label + ': ' + c.parsed.y + ' entregables'; }
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          ticks: { color: ink, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 13, weight: '500' } },
+          grid: { display: false }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          ticks: { color: muted, stepSize: 1, font: { family: "'Red Hat Display', system-ui, sans-serif", size: 12 } },
+          grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false }
+        }
+      }
+    }
+  });
+})();
+</script>
+
+<script src="../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

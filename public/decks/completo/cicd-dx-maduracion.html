@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<title>CI/CD + DX Hardening · Maduración Q1-Q2 2026</title>
+<meta name="description" content="Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859; --green-dark: #00471B; --green-10: #DCF5E7; --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738; --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8; --gray-8: #ECECEC; --gray-20: #D0D0D0; --gray-60: #777777;
+    --dark-gray: #717171; --gray-80: #333333; --ink: #121212; --paper: #FFFFFF; --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06); --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1600px, 96vw, calc(92vh * 16 / 9)); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 42px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(42px, 4.8vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(33px, 3.4vw, 54px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; display: block; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 14px; font-weight: 500; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 17px; }
+  table.compare th, table.compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20); }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 18px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+  <meta property="og:title" content="CI/CD + DX Hardening · Maduración Q1-Q2 2026" />
+  <meta property="og:description" content="Retrospectiva enero-mayo 2026 de hardening CI/CD + developer experience. Pipelines, action versions, secrets management, build times." />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <meta property="og:type" content="article" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/completo/cicd-dx-maduracion.html" />
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<main class="deck" id="deck">
+
+  <!-- SLIDE 01 · COVER -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>ci/cd + dx · maduración 2026</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Maduración Q1-Q2 2026</p>
+      <h1 class="title">CI/CD + DX Hardening<br /><span style="color: var(--green-default)">del caos al pipeline confiable</span>.</h1>
+      <p class="lede">Cómo pasamos de un pipeline sin guardianes a un sistema con Dependabot, commitlint, Playwright, SonarLint, Safe-chain y Node 22 en 6 semanas.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><p class="meta__label">Audiencia</p><p>Comité mixto · PM, TL, Manager</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><p class="meta__label">Fecha</p><p>20 mayo 2026</p></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 02 · TL;DR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>02 · TL;DR</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">El resumen</p>
+      <h2 class="heading">Metimos 8 guardianes automaticos<br /><span style="color: var(--green-default)">al pipeline en 6 semanas</span>.</h2>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat">
+          <span class="stat__label">PRs de infraestructura CI</span>
+          <span class="num num--md stat__value">8+</span>
+          <p class="muted">Entre marzo y mayo 2026, todos mergeados</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Node.js upgrade</span>
+          <span class="num num--md stat__value">v22</span>
+          <p class="muted">De v20 a v22 LTS (Jod) · soporte extendido hasta 2027</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">CVE critico parchado</span>
+          <span class="num num--md stat__value">1</span>
+          <p class="muted">handlebars CRITICAL CVE-2026-33937 · bloqueado con Safe-chain</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por que importa</strong>: cada PR ahora tiene commitlint, SonarLint, Dependabot, auditoria de seguridad, e2e con Playwright y revision de tamanio. Antes solo habia ESLint y el criterio del reviewer.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 9%"></i></div>
+      <span class="counter">02 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 03 · PUNTO DE PARTIDA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>03 · Punto de partida</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Antes de abril 2026</p>
+      <h2 class="heading">Un pipeline con ESLint y buena voluntad,<br /><span style="color: var(--green-default)">pero sin guardianes automaticos</span>.</h2>
+      <div class="stack-today" style="margin-top: 24px;">
+        <div class="stack-block">
+          <h4>Lo que faltaba en CI</h4>
+          <div class="row-item"><span class="label">Commitlint</span><span class="value"><span class="dot dot--bad"></span> ausente</span></div>
+          <div class="row-item"><span class="label">Dependabot</span><span class="value"><span class="dot dot--bad"></span> ausente</span></div>
+          <div class="row-item"><span class="label">Security audit automatico</span><span class="value"><span class="dot dot--bad"></span> ausente</span></div>
+          <div class="row-item"><span class="label">PR size check</span><span class="value"><span class="dot dot--bad"></span> ausente</span></div>
+          <div class="row-item"><span class="label">E2E Playwright en CI</span><span class="value"><span class="dot dot--warn"></span> config rota (yarn en vez de pnpm)</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Consecuencias reales</h4>
+          <div class="row-item"><span class="label">Commits sin scope</span><span class="value"><span class="dot dot--warn"></span> inconsistentes en el log</span></div>
+          <div class="row-item"><span class="label">Deps desactualizadas</span><span class="value"><span class="dot dot--warn"></span> sin alertas automaticas</span></div>
+          <div class="row-item"><span class="label">CVEs no detectados</span><span class="value"><span class="dot dot--warn"></span> hasta que explotaban</span></div>
+          <div class="row-item"><span class="label">PRs gigantes</span><span class="value"><span class="dot dot--warn"></span> sin limite ni feedback</span></div>
+          <div class="row-item"><span class="label">SonarCloud</span><span class="value"><span class="dot dot--warn"></span> analisis parcial (solo /src)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 18%"></i></div>
+      <span class="counter">03 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 04 · HITO 1 ABRIL EARLY -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>04 · Hito 1 · Abril 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Abril 2026 · los guardianes</p>
+      <h2 class="heading">Dependabot, security audit, commitlint<br /><span style="color: var(--green-default)">y PR size en un solo PR</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">14 abr · <span class="mono">edc6dba11</span></span>
+          <h3 class="subheading">Workflows de seguridad y calidad</h3>
+          <ul class="checks">
+            <li>Dependabot: alertas automaticas de vulnerabilidades en deps</li>
+            <li>Security audit: <span class="mono">pnpm audit</span> en cada PR que toca packages</li>
+            <li>Commitlint: formato <span class="mono">type(scope): subject</span> obligatorio</li>
+            <li>PR size: score por esfuerzo de review, no por lineas crudas</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">14 abr · Playwright CI fix</span>
+          <h3 class="subheading">E2E funcionando por primera vez</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">5781c37d6</span></strong>: fix Playwright CI (yarn a pnpm + smoke test)</li>
+            <li><strong><span class="mono">41506b6bf</span></strong>: Playwright corre en ready_for_review y lee .nvmrc</li>
+            <li>Primera vez que los e2e corren automaticamente en PRs</li>
+          </ul>
+          <p class="muted" style="margin-top: 12px;">El bug de yarn vs pnpm tenia los e2e bloqueados desde que el repo migro el package manager.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 27%"></i></div>
+      <span class="counter">04 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 05 · HITO 2 ABRIL FINAL -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>05 · Hito 2 · Abril final</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Abril 2026 · SonarCloud + Safe-chain</p>
+      <h2 class="heading">SonarCloud expandido y Safe-chain<br /><span style="color: var(--green-default)">como validator de dependencias</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">28 abr · <span class="mono">1f68ce0b9</span></span>
+          <h3 class="subheading">Safe-chain age validator</h3>
+          <ul class="checks">
+            <li>Bloquea dependencias nuevas con menos de N dias de existencia (supply chain attack mitigation)</li>
+            <li>Primer CVE bloqueado: handlebars <span class="mono">CVE-2026-33937</span> detectado y parchado antes de llegar a prod</li>
+            <li>Fix del lockfile para limpiar los paquetes bloqueados</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">31 mar · <span class="mono">29e54493f</span></span>
+          <h3 class="subheading">SonarCloud: analisis completo</h3>
+          <ul class="checks">
+            <li>Antes analizaba solo <span class="mono">/src</span>, ahora analiza el root completo</li>
+            <li>SonarLint en modo connected: feedback local alineado con el server</li>
+            <li>XML secrets validation en pre-commit (Husky hook)</li>
+          </ul>
+          <p class="muted" style="margin-top: 12px;">El scope de Sonar paso de ~60% a 100% del codigo. Los code smells ahora se detectan localmente antes del push.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 36%"></i></div>
+      <span class="counter">05 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 06 · HITO 3 MAYO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>06 · Hito 3 · Mayo 2026</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Mayo 2026 · Node 22 + font perf</p>
+      <h2 class="heading">Upgrade a Node 22 LTS<br /><span style="color: var(--green-default)">y limpieza de deuda tecnica</span>.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">5 may · <span class="mono">f3498411a</span></span>
+          <h3 class="subheading">Node.js v20 a v22 LTS</h3>
+          <ul class="checks">
+            <li>Upgrade de Node v20 a v22 LTS (Jod) · soporte extendido hasta 2027</li>
+            <li>.nvmrc actualizado para que Playwright CI lea la version correcta</li>
+            <li>Sin breaking changes en el codigo de la app</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">13 may · cleanup</span>
+          <h3 class="subheading">Deuda tecnica limpiada</h3>
+          <ul class="checks">
+            <li><strong><span class="mono">e964b2653</span></strong>: Google Fonts consolidado, -66% CSS inlineado (3 requests a 1)</li>
+            <li><strong><span class="mono">1fe1d1912</span></strong>: react-joyride y OnBoarding SearchIA eliminados (dead code, ~15KB bundle)</li>
+            <li><strong><span class="mono">166673cb0</span></strong>: modalYoutube.css huerfano eliminado</li>
+            <li><strong><span class="mono">4b7aac039</span></strong>: regresion visual en titulos (Quicksand global) resuelta</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 45%"></i></div>
+      <span class="counter">06 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 07 · ANTES vs AHORA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>07 · Antes vs ahora</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Comparativa</p>
+      <h2 class="heading">Lo que cambio en el pipeline<br /><span style="color: var(--green-default)">entre enero y mayo 2026</span>.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead>
+          <tr><th style="width: 28%;">Aspecto</th><th>Antes (enero)</th><th>Ahora (mayo)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Commitlint</td><td class="was">Ausente</td><td class="now">Obligatorio en cada PR</td></tr>
+          <tr><td>Dependabot</td><td class="was">Ausente</td><td class="now">Alertas automaticas de CVEs</td></tr>
+          <tr><td>E2E Playwright</td><td class="was">Config rota (yarn vs pnpm)</td><td class="now">Corre en ready_for_review</td></tr>
+          <tr><td>SonarCloud scope</td><td class="was">Solo /src (~60% del repo)</td><td class="now">Root completo + SonarLint local</td></tr>
+          <tr><td>Supply chain</td><td class="was">Sin validacion</td><td class="now">Safe-chain age validator</td></tr>
+          <tr><td>Node.js version</td><td class="was">v20 (soporte hasta 2026)</td><td class="now">v22 LTS (soporte hasta 2027)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 54%"></i></div>
+      <span class="counter">07 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 08 · VALOR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>08 · Valor aportado</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Impacto</p>
+      <h2 class="heading">Tres impactos concretos.</h2>
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card">
+          <span class="card__index">Seguridad</span>
+          <p class="body" style="margin: 8px 0 0;">Un CVE critico (handlebars) fue detectado y parchado antes de llegar a produccion. Sin Safe-chain + Dependabot, hubiera pasado desapercibido hasta que algo fallara.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Velocidad del equipo</span>
+          <p class="body" style="margin: 8px 0 0;">Commitlint + PR size reducen la carga de review: los reviewers ya no tienen que chequear el formato del commit ni estimar el esfuerzo de un PR gigante. El CI lo hace automaticamente.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Confianza en el deploy</span>
+          <p class="body" style="margin: 8px 0 0;">E2E con Playwright corriendo en cada PR significa que los regressions basicos se detectan antes del merge. Antes de este ciclo, los e2e no corrian en CI.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 24px; padding: 16px 20px; background: var(--gray-3); border-radius: 14px; max-width: none;">
+        <strong>Honestidad</strong>: el pipeline nuevo es mas lento (+2-3 min por PR por los e2e). Es un tradeoff intencional: preferimos detectar regresiones en CI que en produccion. Si hay quejas del equipo sobre el tiempo, lo podemos discutir.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 63%"></i></div>
+      <span class="counter">08 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 09 · LO QUE SIGUE -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>09 · Lo que sigue</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Fase 2 · sujeta a feedback</p>
+      <h2 class="heading">Tres items para consolidar<br /><span style="color: var(--green-default)">el pipeline durante Q3</span>.</h2>
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card">
+          <span class="card__index">Playwright coverage</span>
+          <h3 class="subheading">Mas escenarios criticos</h3>
+          <p class="body" style="margin: 8px 0 0;">Actualmente solo hay smoke tests. Propongo agregar tests de los flujos criticos: home, promos, busqueda. Necesita tiempo del equipo QA para definir los casos.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Lighthouse CI</span>
+          <h3 class="subheading">Performance gate en PR</h3>
+          <p class="body" style="margin: 8px 0 0;">Bloquear PRs que degraden LCP o INP mas del 10% respecto al baseline. Con Playwright ya corriendo, el costo es bajo.</p>
+        </div>
+        <div class="card">
+          <span class="card__index">Next.js upgrade path</span>
+          <h3 class="subheading">Prep para Next 15</h3>
+          <p class="body" style="margin: 8px 0 0;">El pipeline de Fase 1 es la base necesaria para migrar a Next 15. El plan de migracion esta en <span class="mono">nextjs-migration-plan/</span>. Necesita alineacion con PM para priorizar.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 72%"></i></div>
+      <span class="counter">09 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 10 · DECISIONES -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>10 · Decisiones</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Lo que necesitamos</p>
+      <h2 class="heading">Dos decisiones para la Fase 2.</h2>
+      <ol class="decisions" style="margin-top: 32px;">
+        <li>
+          <h3>Tradeoff velocidad vs cobertura en CI</h3>
+          <p class="body" style="margin: 4px 0 0;">El pipeline actual agrega 2-3 min por PR. Si el equipo lo siente como friccion, podemos ajustar: mover los e2e a un workflow paralelo no-bloqueante. Necesito una decision explicita del TL y del Manager sobre la tolerancia al tiempo de CI.</p>
+          <p class="ownership">Owner: TL + Manager · Decision esta reunion</p>
+        </li>
+        <li>
+          <h3>Playwright: escenarios criticos</h3>
+          <p class="body" style="margin: 4px 0 0;">Para ir mas alla de smoke tests necesito que QA defina los flujos criticos de usuario. No arranco la cobertura hasta tener ese input documentado.</p>
+          <p class="ownership">Owner: QA Lead + PM · Workshop en 2 semanas</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>ci/cd + dx · maduración 2026</span>
+      <div class="progress"><i style="--p: 90%"></i></div>
+      <span class="counter">10 / 11</span>
+    </div>
+  </section>
+
+  <!-- SLIDE 11 · CIERRE -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark--sm">MODO</span>
+      <span>ci/cd + dx · maduración 2026</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Cierre</p>
+      <h1 class="title">El pipeline esta sano.<br /><span style="color: var(--green-default)">Falta decidir hasta donde llegamos</span>.</h1>
+      <p class="lede">Tenemos Dependabot, commitlint, Playwright, SonarLint, Safe-chain y Node 22 en produccion. La Fase 2 es opcional y depende de la tolerancia del equipo al tiempo de CI.</p>
+      <div class="card" style="margin-top: 32px; max-width: 640px;">
+        <h2 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px;">Equipos que deben opinar antes de avanzar</h2>
+        <ul class="checks">
+          <li>QA (escenarios criticos para Playwright)</li>
+          <li>Manager (tolerancia al tiempo de CI)</li>
+          <li>PM (prioridad Next 15 vs features)</li>
+          <li>SRE / Infra (impacto del pipeline en los runners de GHA)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><p class="meta__label">Tickets clave</p><p>EXA-1345, 1347, 1378, 1380, 1383, 1395</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><p class="meta__label">Contacto</p><p>hernan.desouza@modo.com.ar</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 11</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!isNaN(hash) && hash >= 1 && hash <= slides.length) current = hash - 1;
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+  go(current);
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    if (e.key === 'p' || e.key === 'P') window.print();
+  });
+})();
+</script>
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="cicd-dx-maduracion"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>

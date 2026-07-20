@@ -1,17 +1,42 @@
 {
   "name": "erno-modo",
+  "version": "1.0.0",
+  "private": true,
   "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
+  "description": "Bitácora MODO — Hernán De Souza · Sr AI Engineer. Migrada a Next.js 16 App Router.",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "next dev",
+    "prebuild": "node scripts/check-visibility.mjs",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:specs": "vitest run tests/specs",
+    "check:visibility": "node scripts/check-visibility.mjs",
+    "check:arch": "node scripts/check-arch.mjs",
+    "validate": "pnpm typecheck && pnpm check:arch && pnpm check:visibility && pnpm test",
+    "prepare": "husky"
   },
   "dependencies": {
-    "astro": "^7.1.3"
+    "@vercel/analytics": "^2.0.1",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.9",
+    "happy-dom": "^15.11.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.9"
   }
 }

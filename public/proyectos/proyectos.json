@@ -1,0 +1,500 @@
+{
+  "generated_at": "2026-05-22",
+  "totals": {
+    "repos": 27,
+    "prs": 616,
+    "merged": 475
+  },
+  "categories": [
+    {
+      "id": "web",
+      "name": "Web frontends",
+      "desc": "Sitios públicos y portales que sirven al usuario final o a stakeholders externos.",
+      "projects": [
+        {
+          "repo": "playsistemico/modo-landing",
+          "summary": "modo.com.ar — landing principal de MODO, Next.js 12. Pages, CMS Storyblok, ISR, /promos, /comercios, deep links iOS/Android.",
+          "total": 272,
+          "merged": 187,
+          "open": 36,
+          "closed": 49,
+          "language": "JavaScript",
+          "private": true,
+          "first": "2024-04-19T16:32:35Z",
+          "last": "2026-05-22T00:28:35Z"
+        },
+        {
+          "repo": "playsistemico/promos-hub-site",
+          "summary": "Hub de promociones en /promos, Next.js 15. Sirve catálogo de descuentos, bancos, comercios. Mismo dominio que modo-landing vía rewrite Istio.",
+          "total": 158,
+          "merged": 136,
+          "open": 1,
+          "closed": 21,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2024-05-02T19:48:51Z",
+          "last": "2026-05-15T23:15:57Z"
+        },
+        {
+          "repo": "playsistemico/benefits-personalization-portal-site",
+          "summary": "Portal interno para experimentación de personalización de beneficios. POC del track AI de MODO.",
+          "total": 32,
+          "merged": 28,
+          "open": 1,
+          "closed": 3,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-08-07T19:39:59Z",
+          "last": "2025-11-04T21:07:14Z"
+        },
+        {
+          "repo": "playsistemico/hackathon-2025-benefits-analyzer-portal",
+          "summary": "Portal del hackathon 2025 — analyzer de beneficios para discovery interno.",
+          "total": 2,
+          "merged": 2,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-05-19T16:35:12Z",
+          "last": "2025-05-19T16:37:14Z"
+        },
+        {
+          "repo": "playsistemico/selector-pcp-site",
+          "summary": "Selector PCP (Programa de Cuotas) — selector de bancos y financiación.",
+          "total": 6,
+          "merged": 5,
+          "open": 0,
+          "closed": 1,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-07-28T19:54:43Z",
+          "last": "2025-07-28T21:20:35Z"
+        },
+        {
+          "repo": "playsistemico/banks-admin-site",
+          "summary": "Admin de bancos asociados a MODO.",
+          "total": 1,
+          "merged": 0,
+          "open": 0,
+          "closed": 1,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-06-04T21:41:58Z",
+          "last": "2025-06-04T21:41:58Z"
+        }
+      ]
+    },
+    {
+      "id": "bitacora",
+      "name": "Bitácora pública",
+      "desc": "Mi sitio público con decks, RFCs, R&D y herramientas. Este sitio.",
+      "projects": [
+        {
+          "repo": "SoyErnoModo/erno-modo",
+          "summary": "Esta bitácora — decks HTML branded MODO, RFCs, R&D long-form, postmans y stack de Claude Code. GitHub Pages.",
+          "total": 37,
+          "merged": 34,
+          "open": 2,
+          "closed": 1,
+          "language": "HTML",
+          "private": false,
+          "first": "2026-05-20T17:24:44Z",
+          "last": "2026-05-21T14:11:41Z"
+        }
+      ]
+    },
+    {
+      "id": "design-system",
+      "name": "Design system & UI libs",
+      "desc": "Component libraries de las 3 ramas UI de MODO (web público, SDK WebView, atoms).",
+      "projects": [
+        {
+          "repo": "playsistemico/modo-landing-web-ui-lib",
+          "summary": "Atoms del SDK — biblioteca base de componentes para modo-landing y SDK WebView.",
+          "total": 29,
+          "merged": 21,
+          "open": 5,
+          "closed": 3,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2026-01-19T13:08:32Z",
+          "last": "2026-05-16T13:45:51Z"
+        },
+        {
+          "repo": "playsistemico/modo-ui-lib-web",
+          "summary": "Design system canónico que consume modo-landing. `@playsistemico/modo-ui-lib-web`.",
+          "total": 15,
+          "merged": 13,
+          "open": 2,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2024-04-23T15:22:27Z",
+          "last": "2026-05-14T21:10:05Z"
+        },
+        {
+          "repo": "playsistemico/modo-sdk-web-ui-lib",
+          "summary": "UI lib para el SDK WebView (componentes consumidos dentro del container nativo).",
+          "total": 14,
+          "merged": 14,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-11-04T18:19:44Z",
+          "last": "2025-12-24T14:24:20Z"
+        },
+        {
+          "repo": "playsistemico/modo-ui-sdk-webview-lib",
+          "summary": "Shell WebView del SDK — bridge JS↔nativo y wrapper de UI lib.",
+          "total": 4,
+          "merged": 4,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2024-04-12T18:40:20Z",
+          "last": "2024-04-29T23:10:02Z"
+        }
+      ]
+    },
+    {
+      "id": "sdk",
+      "name": "SDK Container & wrappers móviles",
+      "desc": "Containers nativos y wrappers cross-platform para embebido del SDK MODO en apps de bancos.",
+      "projects": [
+        {
+          "repo": "playsistemico/modo-sdk-container-android",
+          "summary": "Container nativo Android del SDK MODO.",
+          "total": 3,
+          "merged": 1,
+          "open": 0,
+          "closed": 2,
+          "language": "Kotlin",
+          "private": true,
+          "first": "2025-02-10T12:04:16Z",
+          "last": "2025-03-05T18:52:07Z"
+        },
+        {
+          "repo": "playsistemico/modo-sdk-container-ios",
+          "summary": "Container nativo iOS del SDK MODO.",
+          "total": 3,
+          "merged": 1,
+          "open": 0,
+          "closed": 2,
+          "language": "Swift",
+          "private": true,
+          "first": "2025-02-10T12:09:40Z",
+          "last": "2025-03-05T19:15:50Z"
+        },
+        {
+          "repo": "playsistemico/modo-sdk-cordova",
+          "summary": "Wrapper Cordova del SDK MODO.",
+          "total": 3,
+          "merged": 2,
+          "open": 0,
+          "closed": 1,
+          "language": "C++",
+          "private": true,
+          "first": "2025-02-21T18:43:23Z",
+          "last": "2025-03-05T15:13:05Z"
+        },
+        {
+          "repo": "playsistemico/modo-sdk-flutter",
+          "summary": "Wrapper Flutter del SDK MODO.",
+          "total": 3,
+          "merged": 2,
+          "open": 0,
+          "closed": 1,
+          "language": "Kotlin",
+          "private": true,
+          "first": "2025-02-21T18:43:01Z",
+          "last": "2025-03-05T15:12:50Z"
+        },
+        {
+          "repo": "playsistemico/modo-sdk-react-native",
+          "summary": "Wrapper React Native del SDK MODO.",
+          "total": 3,
+          "merged": 3,
+          "open": 0,
+          "closed": 0,
+          "language": "Kotlin",
+          "private": true,
+          "first": "2025-02-21T18:43:39Z",
+          "last": "2025-03-05T15:08:09Z"
+        }
+      ]
+    },
+    {
+      "id": "bff",
+      "name": "APIs & BFFs",
+      "desc": "Backends-for-frontend y APIs de dominio.",
+      "projects": [
+        {
+          "repo": "playsistemico/post-payment-api",
+          "summary": "API de eventos post-pago.",
+          "total": 1,
+          "merged": 1,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2024-12-23T15:39:54Z",
+          "last": "2024-12-23T15:39:54Z"
+        },
+        {
+          "repo": "playsistemico/rewards-handler-bff",
+          "summary": "BFF que orquesta rewards / cashback.",
+          "total": 1,
+          "merged": 1,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-03-05T17:32:02Z",
+          "last": "2025-03-05T17:32:02Z"
+        },
+        {
+          "repo": "playsistemico/benefits-search-mcp-api",
+          "summary": "API de búsqueda de beneficios (variante MCP para clientes AI).",
+          "total": 1,
+          "merged": 0,
+          "open": 0,
+          "closed": 1,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2026-02-10T12:41:58Z",
+          "last": "2026-02-10T12:41:58Z"
+        },
+        {
+          "repo": "playsistemico/sdk-config-job",
+          "summary": "Job que sincroniza configuración del SDK (feature flags, branding por banco).",
+          "total": 1,
+          "merged": 1,
+          "open": 0,
+          "closed": 0,
+          "language": "Jinja",
+          "private": true,
+          "first": "2025-08-12T15:29:05Z",
+          "last": "2025-08-12T15:29:05Z"
+        }
+      ]
+    },
+    {
+      "id": "backoffice",
+      "name": "Backoffices",
+      "desc": "Tooling interno para CX, marketing y operaciones.",
+      "projects": [
+        {
+          "repo": "playsistemico/cx-tooling-bo-site",
+          "summary": "BO de CX para soporte y operaciones.",
+          "total": 1,
+          "merged": 1,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-09-17T13:37:41Z",
+          "last": "2025-09-17T13:37:41Z"
+        },
+        {
+          "repo": "playsistemico/promo-backoffice",
+          "summary": "BO de promociones — alta y curación de descuentos.",
+          "total": 1,
+          "merged": 0,
+          "open": 0,
+          "closed": 1,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2024-10-07T19:12:26Z",
+          "last": "2024-10-07T19:12:26Z"
+        },
+        {
+          "repo": "playsistemico/bo-fe-template",
+          "summary": "Template frontend para backoffices nuevos.",
+          "total": 2,
+          "merged": 2,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-07-22T17:23:31Z",
+          "last": "2025-07-23T18:08:14Z"
+        }
+      ]
+    },
+    {
+      "id": "stores",
+      "name": "Stores & mapas",
+      "desc": "Capa de comercios físicos y geo.",
+      "projects": [
+        {
+          "repo": "playsistemico/stores-maps-lib",
+          "summary": "Library de mapas de comercios — capa de visualización geo de stores en /comercios y /promos.",
+          "total": 11,
+          "merged": 5,
+          "open": 6,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-12-16T18:46:43Z",
+          "last": "2026-05-15T13:49:01Z"
+        }
+      ]
+    },
+    {
+      "id": "core-infra",
+      "name": "Core & infra",
+      "desc": "Infraestructura compartida y librerías cross-FE/BE.",
+      "projects": [
+        {
+          "repo": "playsistemico/modo-core",
+          "summary": "`@playsistemico/core` — única lib cross frontend/backend del ecosistema.",
+          "total": 2,
+          "merged": 2,
+          "open": 0,
+          "closed": 0,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-02-28T12:01:00Z",
+          "last": "2025-03-05T13:17:00Z"
+        },
+        {
+          "repo": "playsistemico/tf-s3-assets",
+          "summary": "Terraform que provisiona buckets S3 de assets compartidos.",
+          "total": 9,
+          "merged": 9,
+          "open": 0,
+          "closed": 0,
+          "language": "HTML",
+          "private": true,
+          "first": "2024-04-19T12:04:59Z",
+          "last": "2025-11-03T01:19:35Z"
+        },
+        {
+          "repo": "playsistemico/payment-mobile",
+          "summary": "App móvil de pagos — código nativo / wrapper.",
+          "total": 1,
+          "merged": 0,
+          "open": 0,
+          "closed": 1,
+          "language": "TypeScript",
+          "private": true,
+          "first": "2025-04-16T20:10:30Z",
+          "last": "2025-04-16T20:10:30Z"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "repo": "playsistemico/modo-landing",
+      "category": "web"
+    },
+    {
+      "repo": "playsistemico/promos-hub-site",
+      "category": "web"
+    },
+    {
+      "repo": "playsistemico/benefits-personalization-portal-site",
+      "category": "web"
+    },
+    {
+      "repo": "playsistemico/hackathon-2025-benefits-analyzer-portal",
+      "category": "web"
+    },
+    {
+      "repo": "playsistemico/selector-pcp-site",
+      "category": "web"
+    },
+    {
+      "repo": "playsistemico/banks-admin-site",
+      "category": "web"
+    },
+    {
+      "repo": "SoyErnoModo/erno-modo",
+      "category": "bitacora"
+    },
+    {
+      "repo": "playsistemico/modo-landing-web-ui-lib",
+      "category": "design-system"
+    },
+    {
+      "repo": "playsistemico/modo-ui-lib-web",
+      "category": "design-system"
+    },
+    {
+      "repo": "playsistemico/modo-sdk-web-ui-lib",
+      "category": "design-system"
+    },
+    {
+      "repo": "playsistemico/modo-ui-sdk-webview-lib",
+      "category": "design-system"
+    },
+    {
+      "repo": "playsistemico/modo-sdk-container-android",
+      "category": "sdk"
+    },
+    {
+      "repo": "playsistemico/modo-sdk-container-ios",
+      "category": "sdk"
+    },
+    {
+      "repo": "playsistemico/modo-sdk-cordova",
+      "category": "sdk"
+    },
+    {
+      "repo": "playsistemico/modo-sdk-flutter",
+      "category": "sdk"
+    },
+    {
+      "repo": "playsistemico/modo-sdk-react-native",
+      "category": "sdk"
+    },
+    {
+      "repo": "playsistemico/post-payment-api",
+      "category": "bff"
+    },
+    {
+      "repo": "playsistemico/rewards-handler-bff",
+      "category": "bff"
+    },
+    {
+      "repo": "playsistemico/benefits-search-mcp-api",
+      "category": "bff"
+    },
+    {
+      "repo": "playsistemico/sdk-config-job",
+      "category": "bff"
+    },
+    {
+      "repo": "playsistemico/cx-tooling-bo-site",
+      "category": "backoffice"
+    },
+    {
+      "repo": "playsistemico/promo-backoffice",
+      "category": "backoffice"
+    },
+    {
+      "repo": "playsistemico/bo-fe-template",
+      "category": "backoffice"
+    },
+    {
+      "repo": "playsistemico/stores-maps-lib",
+      "category": "stores"
+    },
+    {
+      "repo": "playsistemico/modo-core",
+      "category": "core-infra"
+    },
+    {
+      "repo": "playsistemico/tf-s3-assets",
+      "category": "core-infra"
+    },
+    {
+      "repo": "playsistemico/payment-mobile",
+      "category": "core-infra"
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+{
+  "_meta": {
+    "generated": "2026-06-01",
+    "source": "capacitaciones/*/",
+    "notes": "Catálogo de capacitaciones interactivas Claude-Code versionadas en este repo. Cada curso es single-file HTML con sidebar, progreso persistente, checklists interactivas y los agentes MODO como harness. href apunta al index.html de cada curso."
+  },
+  "capacitaciones": [
+    {
+      "id": "coding-con-agentes",
+      "title": "Coding con una flota de agentes",
+      "desc": "La metodología que forjé construyendo una app real con Claude Code, destilada y transferible a cualquier repo: los 4 principios Karpathy + honestidad, contexto como memoria de trabajo (file-memory + destilación), Spec-Driven con OpenSpec, worktree por feature, una oficina de 20 agentes especializados (CEO/PO/PM + roster), destilar skills, el contrato de feature flags (OFF ⇒ nada), el harness de gates, el pipeline de PRs (Pain/Purpose/How + no perder trabajo), seguridad por defecto y el loop de ejecución por objetivos. Incluye lab integrador end-to-end.",
+      "href": "capacitaciones/coding-con-agentes/index.html",
+      "status": "draft",
+      "audience": "Dev que codea con agentes (Claude Code) y quiere una metodología completa",
+      "date": "2026-06-15",
+      "lessons": 13,
+      "topics": [
+        "agentes",
+        "metodologia",
+        "openspec",
+        "worktrees",
+        "skills",
+        "feature-flags",
+        "tdd",
+        "seguridad"
+      ],
+      "harness": [
+        "agent-ceo",
+        "agent-po",
+        "agent-pm",
+        "openspec",
+        "caveman",
+        "engram",
+        "worktree-per-feature",
+        "precommit-quality-harness",
+        "component-size-gate",
+        "feature-flag-wiring",
+        "ai-mcp-parity",
+        "release-on-merge",
+        "prompt-injection-hardening"
+      ],
+      "featured": true
+    },
+    {
+      "id": "storyblok-pages",
+      "title": "Crear páginas Storyblok-managed en modo-landing",
+      "desc": "Del setup de ambiente al deploy alpha en playsistemico, pasando por diseño SDD + design system, autoría de story + wiring del blok al registry CMS_COMPONENTS, TDD red→green y los 4 gates (code review+SDD · performance+CSP · a11y+SEO). Incluye lab integrador y el triple-layer skill modo-landing-page-builder.",
+      "href": "capacitaciones/storyblok-pages/index.html",
+      "status": "draft",
+      "audience": "Dev frontend que se suma a modo-landing",
+      "date": "2026-06-17",
+      "lessons": 10,
+      "topics": [
+        "cms",
+        "storyblok",
+        "tdd",
+        "design-system",
+        "deploy",
+        "skills"
+      ],
+      "harness": [
+        "modo-storyblok",
+        "modo-design-system",
+        "sdd-*",
+        "test-driven-development",
+        "guardia",
+        "frontend-security-checklist",
+        "modo-seo-geo-audit",
+        "modo-frontend-deploy",
+        "modo-landing-page-builder"
+      ],
+      "featured": true
+    },
+    {
+      "id": "storyblok-pages-branding",
+      "title": "Armá páginas de modo.com.ar — sin código",
+      "desc": "La versión sin código y hands-on del recorrido de páginas Storyblok, para que cualquiera del equipo arme páginas por su cuenta: pensar la página como bloques que combinás, crear/editar/previsualizar/publicar en Storyblok paso a paso, cómo la marca te respalda (no te podés salir de MODO), cómo llegar en verde a los 4 controles de calidad (tres jugadas las hacés vos), y cómo publicar con confianza. Cierra con una práctica guiada: armás tu primera landing de producto (pagos agénticos en ChatGPT) de cero, más glosario técnico→humano.",
+      "href": "capacitaciones/storyblok-pages-branding/index.html",
+      "audience": "Cualquiera del equipo, sin escribir código — contenido, diseño, marketing",
+      "status": "draft",
+      "date": "2026-06-17",
+      "lessons": 8,
+      "topics": [
+        "branding",
+        "contenido",
+        "storyblok",
+        "no-codigo",
+        "hands-on",
+        "marca",
+        "calidad"
+      ],
+      "harness": [],
+      "featured": false
+    },
+    {
+      "id": "deploy-playsistemico",
+      "title": "Deploy de un frontend MODO a playsistemico (EKS)",
+      "desc": "De un repo Next a subdominio.modo.com.ar en k8s: prerrequisitos, los 6 tickets JSM canónicos, 6 PRs de infra clonando promos-hub (catalog→helm→parameters→ci→cd→docker), subdominio + basePath con Istio, config runtime SOPS→SSM, primer deploy con verificación de pod, y gate GRC/OFFSEC antes de prod.",
+      "href": "capacitaciones/deploy-playsistemico/index.html",
+      "status": "draft",
+      "audience": "Dev que sube un front nuevo a playsistemico",
+      "date": "2026-06-01",
+      "lessons": 6,
+      "topics": [
+        "deploy",
+        "k8s",
+        "istio",
+        "sops",
+        "jsm"
+      ],
+      "harness": [
+        "modo-frontend-onboarding",
+        "modo-frontend-deploy",
+        "modo-jsm-ticket",
+        "sops-parameters-manager"
+      ]
+    },
+    {
+      "id": "migrar-next16",
+      "title": "Migrar un frontend a Next.js 16 (Pages Router)",
+      "desc": "De Vite/SPA o Next viejo a server-rendered: assessment del stack, estrategia Pages Router con integration branch + sub-PRs, breaking changes 12→16, routing y data fetching (SSR/ISR), build+test+smoke con contrato verde, y disparo de alpha.",
+      "href": "capacitaciones/migrar-next16/index.html",
+      "status": "draft",
+      "audience": "Dev que migra un front MODO de framework",
+      "date": "2026-06-01",
+      "lessons": 6,
+      "topics": [
+        "nextjs",
+        "migration",
+        "ssr",
+        "pages-router"
+      ],
+      "harness": [
+        "vite-to-nextjs-app-router",
+        "nextjs-pages-router-migration",
+        "nextjs-12-to-15-migration"
+      ]
+    },
+    {
+      "id": "seo-geo-modo",
+      "title": "SEO / GEO / JSON-LD para fronts MODO",
+      "desc": "Hacer un front visible a Google y a los AI crawlers: SEO vs GEO, canonical/robots/sitemap/llms.txt, JSON-LD Schema.org contra Rich Results, accesibilidad para crawlers AI, URL-as-state para filtros indexables, y el workflow de audit+fix.",
+      "href": "capacitaciones/seo-geo-modo/index.html",
+      "status": "draft",
+      "audience": "Dev frontend MODO · cualquier front público",
+      "date": "2026-06-01",
+      "lessons": 6,
+      "topics": [
+        "seo",
+        "geo",
+        "json-ld",
+        "schema-org"
+      ],
+      "harness": [
+        "modo-seo-geo-audit"
+      ]
+    },
+    {
+      "id": "tailwind-consolidation",
+      "title": "Consolidar el styling a Tailwind",
+      "desc": "De 3 sistemas (styled-components + emotion + tailwind) a Tailwind-only: detectar cada sistema, estrategia component-by-component, mapear CSS-in-JS a utilities, tokens del design system (sin hex), migración Tailwind 3→4, y verificación con visual regression.",
+      "href": "capacitaciones/tailwind-consolidation/index.html",
+      "status": "draft",
+      "audience": "Dev frontend MODO con CSS-in-JS legacy",
+      "date": "2026-06-01",
+      "lessons": 6,
+      "topics": [
+        "tailwind",
+        "css",
+        "design-system",
+        "refactor"
+      ],
+      "harness": [
+        "styled-components-to-tailwind",
+        "tailwind-3-to-4-migration",
+        "tailwind-design-system"
+      ]
+    },
+    {
+      "id": "jsm-cyber-tickets",
+      "title": "Armar tickets en el JSM de MODO (Cyber/IAM)",
+      "desc": "Del pedido al payload con el agente modo-jsm-ticket: el JSM de MODO (29 service desks, 318 request types), descubrir el portal correcto, mapear campos requeridos + aprobador, armar el JSON payload y postear por REST, casos canónicos (GitHub team, 1Password, Cyber GRC) y confirmación + tracking.",
+      "href": "capacitaciones/jsm-cyber-tickets/index.html",
+      "status": "draft",
+      "audience": "Cualquiera que necesite abrir tickets MODO",
+      "date": "2026-06-01",
+      "lessons": 6,
+      "topics": [
+        "jsm",
+        "cyber",
+        "iam",
+        "tickets",
+        "ops"
+      ],
+      "harness": [
+        "modo-jsm-ticket"
+      ]
+    }
+  ]
+}

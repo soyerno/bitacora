@@ -1,0 +1,345 @@
+{
+  "_meta": {
+    "generated": "2026-06-17",
+    "updated_by": "erno-modo-sync-all (merge skills-catalog-clean: +15 portables)",
+    "notes": "ZIPs contienen <skill-name>.skill/ con SKILL.md + assets."
+  },
+  "skills": [
+    {
+      "name": "modo-deck",
+      "description": "Armá presentaciones HTML branded MODO (verde #008859, Red Hat Display + Quicksand, logo solid green). Deck 16:9, navegación por teclado, exportable a PDF. Use cuando el usuario pida: 'armá un deck', '",
+      "filename": "modo-deck.zip",
+      "sha256_prefix": "f2759fa9d8d067a7",
+      "size_kb": 118.2,
+      "install_hint": "unzip modo-deck.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck"
+    },
+    {
+      "name": "modo-design-system",
+      "description": "SDK/skill MODO-específico para generar páginas Next.js/Astro one-shot con el design system MODO (Quicksand + Red Hat Display, verde #008859, brand tokens canónicos). Auto-invocar cuando el usuario pid",
+      "filename": "modo-design-system.zip",
+      "sha256_prefix": "1818fd9da6ab7174",
+      "size_kb": 55.9,
+      "install_hint": "unzip modo-design-system.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-design-system.skill ~/.claude/skills/modo-design-system"
+    },
+    {
+      "name": "modo-tech-architect",
+      "description": "AI Technical Architect for MODO projects. Analyzes PRDs, consults MODO resources (Swagger APIs, Confluence docs, GitHub repos), identifies gaps, and generates comprehensive technical documentation inc",
+      "filename": "modo-tech-architect.zip",
+      "sha256_prefix": "bfbafe3f06fdeef4",
+      "size_kb": 34.5,
+      "install_hint": "unzip modo-tech-architect.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-tech-architect.skill ~/.claude/skills/modo-tech-architect"
+    },
+    {
+      "name": "modo-code-review-checklist",
+      "description": "Comprehensive code review checklist tailored to modo-landing patterns and standards. Auto-invoke on all code changes and PR reviews to ensure quality, security, and architectural consistency.",
+      "filename": "modo-code-review-checklist.zip",
+      "sha256_prefix": "c8e4681994331754",
+      "size_kb": 1.6,
+      "install_hint": "unzip modo-code-review-checklist.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-code-review-checklist.skill ~/.claude/skills/modo-code-review-checklist"
+    },
+    {
+      "name": "modo-promos",
+      "description": "Consultar promociones, bancos y comercios adheridos de MODO via el MCP `modo-promos-mcp`. Auto-invocar cuando el usuario pregunte por promos vigentes, slots, slugs, detalle de una promo, bancos asocia",
+      "filename": "modo-promos.zip",
+      "sha256_prefix": "e06e6581fc07bf84",
+      "size_kb": 2.2,
+      "install_hint": "unzip modo-promos.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-promos.skill ~/.claude/skills/modo-promos"
+    },
+    {
+      "name": "consultar-promos-modo",
+      "description": "Responder consultas sobre promociones, comercios adheridos y bancos asociados de MODO usando el MCP `modo-promos`. Auto-invocar cuando el usuario haga preguntas tipo \"¿qué promos hay?\", \"¿cuáles son l",
+      "filename": "consultar-promos-modo.zip",
+      "sha256_prefix": "f949a1f97112910f",
+      "size_kb": 7.3,
+      "install_hint": "unzip consultar-promos-modo.zip -d ~/.claude/skills/ && mv ~/.claude/skills/consultar-promos-modo.skill ~/.claude/skills/consultar-promos-modo"
+    },
+    {
+      "name": "simular-compra-agentica",
+      "description": "Simular o ejecutar una compra agéntica end-to-end usando el POC `modo-checkout-skill` (server :3737 + UI Claude + SDK Container mock + demos HTML). Auto-invocar cuando el usuario pida correr/probar/de",
+      "filename": "simular-compra-agentica.zip",
+      "sha256_prefix": "8906e058f75058c0",
+      "size_kb": 6.3,
+      "install_hint": "unzip simular-compra-agentica.zip -d ~/.claude/skills/ && mv ~/.claude/skills/simular-compra-agentica.skill ~/.claude/skills/simular-compra-agentica"
+    },
+    {
+      "name": "agente-cx-whatsapp",
+      "description": "Operar el agente CX/Promos de MODO por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Auto-invocar cuando el usuario pida levantar, configurar, debuggear, registrar webhook, ver ",
+      "filename": "agente-cx-whatsapp.zip",
+      "sha256_prefix": "4a872ca174329ac3",
+      "size_kb": 5.4,
+      "install_hint": "unzip agente-cx-whatsapp.zip -d ~/.claude/skills/ && mv ~/.claude/skills/agente-cx-whatsapp.skill ~/.claude/skills/agente-cx-whatsapp"
+    },
+    {
+      "name": "lectura-bionica",
+      "description": "Lectura biónica + lectura asistida para TDAH/dislexia aplicada a la salida de Claude y a archivos arbitrarios. Bold de la primera mitad de cada palabra ≥3 letras para crear un ancla visual que reduce ",
+      "filename": "lectura-bionica.zip",
+      "sha256_prefix": "60ee7e99dcd57b89",
+      "size_kb": 10.1,
+      "install_hint": "unzip lectura-bionica.zip -d ~/.claude/skills/ && mv ~/.claude/skills/lectura-bionica.skill ~/.claude/skills/lectura-bionica"
+    },
+    {
+      "name": "modo-services-monitor",
+      "description": "Service-status panel para MODO + ecosistema externo. Auto-invocable cuando el user pregunta \"cómo están los servicios\", \"están todos los servicios up\", \"status de servicios\", \"service status\", \"qué ve",
+      "filename": "modo-services-monitor.zip",
+      "sha256_prefix": "3bb15c08de153d7a",
+      "size_kb": 26.1,
+      "install_hint": "unzip modo-services-monitor.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-services-monitor.skill ~/.claude/skills/modo-services-monitor"
+    },
+    {
+      "name": "modo-planner",
+      "description": "MODO Planning Framework (MPF). Orquesta planificación end-to-end para cualquier feature/change en MODO combinando brainstorming → discovery → SDD → Jira → swarm orchestration → verify → archive. Auto-",
+      "filename": "modo-planner.zip",
+      "sha256_prefix": "7e49e65ce78e84ad",
+      "size_kb": 16.8,
+      "install_hint": "unzip modo-planner.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-planner.skill ~/.claude/skills/modo-planner"
+    },
+    {
+      "name": "modo-pr-author",
+      "description": "Author MODO-grade pull request descriptions following the repo template + commit conventions + voz rioplatense. Auto-invocable cuando el usuario pide \"armá el PR\", \"creá el PR\", \"describí este PR\", \"i",
+      "filename": "modo-pr-author.zip",
+      "sha256_prefix": "4627f282e2ff1aa3",
+      "size_kb": 34.0,
+      "install_hint": "unzip modo-pr-author.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-pr-author.skill ~/.claude/skills/modo-pr-author"
+    },
+    {
+      "name": "modo-frontend-onboarding",
+      "description": "Playbook end-to-end para llevar un frontend (SPA Vite/Lovable o app Next) a producción en la infra MODO (EKS + Istio) bajo el org playsistemico. Cubre migración a Next 16 server-rendered, subida limpi",
+      "filename": "modo-frontend-onboarding.zip",
+      "sha256_prefix": "e2443cf91397761a",
+      "size_kb": 18.4,
+      "install_hint": "unzip modo-frontend-onboarding.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-frontend-onboarding.skill ~/.claude/skills/modo-frontend-onboarding"
+    },
+    {
+      "name": "modo-seo-geo-audit",
+      "description": "SEO/GEO/JSON-LD audit + fix workflow for MODO frontends (Vite SPAs, Next.js, Astro). Audits canonical signals, robots/sitemap/llms.txt, Open Graph, Schema.org JSON-LD against Google Rich Results, AI c",
+      "filename": "modo-seo-geo-audit.zip",
+      "sha256_prefix": "7dc8ce74fc364509",
+      "size_kb": 48.5,
+      "install_hint": "unzip modo-seo-geo-audit.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-seo-geo-audit.skill ~/.claude/skills/modo-seo-geo-audit"
+    },
+    {
+      "name": "modo-storyblok",
+      "description": "Orquestar contenido editorial en frontends MODO via Storyblok. Schemas + TS types + bloks renderer + dual-source con fallback al código + Management API push scripts + visual editor wiring. Reusable p",
+      "filename": "modo-storyblok.zip",
+      "sha256_prefix": "0ce32480c6c811fb",
+      "size_kb": 31.4,
+      "install_hint": "unzip modo-storyblok.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-storyblok.skill ~/.claude/skills/modo-storyblok"
+    },
+    {
+      "name": "modo-stakeholder-gate",
+      "description": "Gate de proceso MODO que valida comunicación + aprobación con el squad/tribu/chapter dueño de un feature ANTES de avanzar en un paso crítico (agregar tracking, tocar código de otro squad, cambiar infr",
+      "filename": "modo-stakeholder-gate.zip",
+      "sha256_prefix": "5e0133e12a0fc3ed",
+      "size_kb": 11.9,
+      "install_hint": "unzip modo-stakeholder-gate.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-stakeholder-gate.skill ~/.claude/skills/modo-stakeholder-gate"
+    },
+    {
+      "name": "modo-jsm-ticket",
+      "description": "Crear tickets en el Jira Service Management de MODO (https://play-sistemico.atlassian.net/servicedesk/customer/portals) de punta a punta — descubrir el portal correcto, mapear los campos requeridos y ",
+      "filename": "modo-jsm-ticket.zip",
+      "sha256_prefix": "0993996bd53dcc2e",
+      "size_kb": 41.6,
+      "install_hint": "unzip modo-jsm-ticket.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-jsm-ticket.skill ~/.claude/skills/modo-jsm-ticket"
+    },
+    {
+      "name": "modo-landing-smoke-test",
+      "description": "Smoke-testea modo-landing (modo.com.ar) por ambiente — valida rutas clave a nivel HTTP contra el edge live, compara prod vs preprod para cazar regresiones, y conoce qué versión está desplegada por env",
+      "filename": "modo-landing-smoke-test.zip",
+      "sha256_prefix": "520fbb37b159ca89",
+      "size_kb": 10.1,
+      "install_hint": "unzip modo-landing-smoke-test.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-landing-smoke-test.skill ~/.claude/skills/modo-landing-smoke-test"
+    },
+    {
+      "name": "modo-contribution-evaluator",
+      "description": "Evaluar contribuciones de Hernán (o cualquier dev) en el ecosistema MODO cruzando GitHub PRs (autor + reviewer) + Jira tickets (assignee + reporter) + repos del workspace. Produce inventario raw (JSON",
+      "filename": "modo-contribution-evaluator.zip",
+      "sha256_prefix": "12c035228ee6a3f6",
+      "size_kb": 25.8,
+      "install_hint": "unzip modo-contribution-evaluator.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-contribution-evaluator.skill ~/.claude/skills/modo-contribution-evaluator"
+    },
+    {
+      "name": "modo-ci-quality-harness",
+      "description": "Instala y valida el harness de calidad CI en cualquier frontend MODO: audit hard-fail, bundle-size guard, visual regression (Loki) y a11y (axe WCAG 2.2 AA). Auto-invocable cuando el usuario dice (ES/E",
+      "filename": "modo-ci-quality-harness.zip",
+      "sha256_prefix": "d1d8783094122f86",
+      "size_kb": 28.1,
+      "install_hint": "unzip modo-ci-quality-harness.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-ci-quality-harness.skill ~/.claude/skills/modo-ci-quality-harness"
+    },
+    {
+      "name": "modo-research-article",
+      "description": "Generate long-form HTML R&D articles for the erno-modo bitácora (https://soyernomodo.github.io/erno-modo/rd/) using the canonical research-article.css pattern (SVG diagrams theme-aware, Chart.js with ",
+      "filename": "modo-research-article.zip",
+      "sha256_prefix": "45c74610a29bc3f6",
+      "size_kb": 37.5,
+      "install_hint": "unzip modo-research-article.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-research-article.skill ~/.claude/skills/modo-research-article"
+    },
+    {
+      "name": "modo-postman-pack",
+      "description": "Construir packs Postman extendidos para el workspace MODO cruzando Chrome history + Postman exports existentes + memoria del repo. Genera master environments por tier (QA/PREPROD/PROD), collections nu",
+      "filename": "modo-postman-pack.zip",
+      "sha256_prefix": "3dea3e4e4a724148",
+      "size_kb": 10.7,
+      "install_hint": "unzip modo-postman-pack.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-postman-pack.skill ~/.claude/skills/modo-postman-pack"
+    },
+    {
+      "name": "modo-plugin-builder",
+      "description": "Construir plugins Claude Code para el ecosistema MODO siguiendo el patrón triple-layer (skill auto-invocable + agent worktree-delegable + slash commands explícitos) con symlink architecture para no du",
+      "filename": "modo-plugin-builder.zip",
+      "sha256_prefix": "f229b9c755219656",
+      "size_kb": 12.0,
+      "install_hint": "unzip modo-plugin-builder.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-plugin-builder.skill ~/.claude/skills/modo-plugin-builder"
+    },
+    {
+      "name": "modo-nocturno",
+      "description": "Loop overnight read-only de auto-mejora supervisada. De noche mina fuentes (distill-lint del knowledge base, transcripts del día, PRs/Jira, monitores de servicios, y read-only WhatsApp/mail/Slack cuan",
+      "filename": "modo-nocturno.zip",
+      "sha256_prefix": "347d58b20e59413c",
+      "size_kb": 34.5,
+      "install_hint": "unzip modo-nocturno.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-nocturno.skill ~/.claude/skills/modo-nocturno"
+    },
+    {
+      "name": "pr-quality-review",
+      "description": "Comprehensive PR quality review against team standards. Analyzes PR metadata, code quality, SonarCloud results, architecture, SEO, accessibility, and generates a Slack-ready report. Use when asked to ",
+      "filename": "pr-quality-review.zip",
+      "sha256_prefix": "f96d137211f756a3",
+      "size_kb": 5.3,
+      "install_hint": "unzip pr-quality-review.zip -d ~/.claude/skills/ && mv ~/.claude/skills/pr-quality-review.skill ~/.claude/skills/pr-quality-review"
+    },
+    {
+      "name": "frontend-storage-audit",
+      "description": "Auditá la capa de almacenamiento client-side en frontends MODO (cookies vs sessionStorage vs localStorage). Mapea cada dato a su capa actual, identifica candidatos a mover, detecta gaps legales (CMP/c",
+      "filename": "frontend-storage-audit.zip",
+      "sha256_prefix": "bc73092ab258639f",
+      "size_kb": 18.3,
+      "install_hint": "unzip frontend-storage-audit.zip -d ~/.claude/skills/ && mv ~/.claude/skills/frontend-storage-audit.skill ~/.claude/skills/frontend-storage-audit"
+    },
+    {
+      "name": "modo-landing-page-builder",
+      "description": "Orquesta crear una página Storyblok-managed en modo-landing de punta a punta — diseño SDD + design system, autoría de story, wiring del blok al registry CMS_COMPONENTS, TDD red→green, los 4 gates (cod",
+      "filename": "modo-landing-page-builder.zip",
+      "sha256_prefix": "eedfabcec312b99a",
+      "size_kb": 7.8,
+      "install_hint": "unzip modo-landing-page-builder.zip -d ~/.claude/skills/ && mv ~/.claude/skills/modo-landing-page-builder.skill ~/.claude/skills/modo-landing-page-builder"
+    },
+    {
+      "name": "session-recall",
+      "description": "Retomá tus conversaciones con Claude Code por tema. Mina los .jsonl locales, rankea por hits + recencia, comprime sin perder señal (drop sintéticos/dups, keep decisions/files/pending/errors). Boolean queries (--and/--not/--regex), --repo-only filter, ~/.cache mtime+size cache (9x speedup), permisos 0600 contra leak de tokens, vacuum opcional. Repo: github.com/SoyErnoModo/session-recall.",
+      "filename": "session-recall.zip",
+      "sha256_prefix": "502b772c6110df2a",
+      "size_kb": 18.5,
+      "install_hint": "unzip session-recall.zip -d ~/.claude/skills/ && mv ~/.claude/skills/session-recall.skill ~/.claude/skills/session-recall"
+    },
+    {
+      "name": "feature-flag-wiring",
+      "description": "Use this skill when adding, editing, or auditing a feature behind an admin/runtime feature flag, or when asked to \"validate feature-flag wiring / prove nothing of a disabled feature shows\". Captures the contract (feature OFF ⇒ nothing related renders or is reachable), the layers to gate, the static-check blind spots...",
+      "filename": "feature-flag-wiring.zip",
+      "sha256_prefix": "00a5af870c3d1666",
+      "size_kb": 2.9,
+      "install_hint": "unzip feature-flag-wiring.zip -d ~/.claude/skills/ && mv ~/.claude/skills/feature-flag-wiring.skill ~/.claude/skills/feature-flag-wiring"
+    },
+    {
+      "name": "ai-mcp-parity",
+      "description": "Use this skill before shipping any PR in an app that exposes its functionality to AI — an in-app assistant and/or external MCP agents (Claude/ChatGPT/Gemini). It runs a pre-prod parity loop so the AI layer never drifts from the app's real features: a single tool catalog as source of truth, exposure rules (public vs ...",
+      "filename": "ai-mcp-parity.zip",
+      "sha256_prefix": "b599bfc13ebfc591",
+      "size_kb": 1.9,
+      "install_hint": "unzip ai-mcp-parity.zip -d ~/.claude/skills/ && mv ~/.claude/skills/ai-mcp-parity.skill ~/.claude/skills/ai-mcp-parity"
+    },
+    {
+      "name": "prompt-injection-hardening",
+      "description": "Use this skill when any user- or third-party-controlled text reaches an LLM — chat messages, free-text notes, or stored user content re-shown to a model — including the second-order vector where stored UGC is later read by an external MCP/agent. Provides a pure sanitizer + delimiter-wrapping helper and the rule \"unt...",
+      "filename": "prompt-injection-hardening.zip",
+      "sha256_prefix": "fe766f2a7dda58f3",
+      "size_kb": 2.3,
+      "install_hint": "unzip prompt-injection-hardening.zip -d ~/.claude/skills/ && mv ~/.claude/skills/prompt-injection-hardening.skill ~/.claude/skills/prompt-injection-hardening"
+    },
+    {
+      "name": "component-size-gate",
+      "description": "Use this skill to add or maintain an automated architecture gate that fails when a UI file grows past a line budget, with a grandfathered allow-list that can only shrink (boy-scout migration). Stops new god-components without forcing a big-bang refactor of existing ones. Framework-agnostic; distilled from a producti...",
+      "filename": "component-size-gate.zip",
+      "sha256_prefix": "a2c1b13284a9f8bb",
+      "size_kb": 1.8,
+      "install_hint": "unzip component-size-gate.zip -d ~/.claude/skills/ && mv ~/.claude/skills/component-size-gate.skill ~/.claude/skills/component-size-gate"
+    },
+    {
+      "name": "optimistic-persist-rq",
+      "description": "Use this skill to persist a write surface (likes/comments/bookmarks/follows/reactions) with TanStack Query (React Query) v5 and optimistic UI, applied uniformly across views. Captures the canonical onMutate/onError/onSettled mutation shape, a typo-proof query-key factory, seeding the cache from server props, and the...",
+      "filename": "optimistic-persist-rq.zip",
+      "sha256_prefix": "b0ba16ef5b587fcc",
+      "size_kb": 2.4,
+      "install_hint": "unzip optimistic-persist-rq.zip -d ~/.claude/skills/ && mv ~/.claude/skills/optimistic-persist-rq.skill ~/.claude/skills/optimistic-persist-rq"
+    },
+    {
+      "name": "distill-design-system-skill",
+      "description": "Use this skill to turn a project's design system into a reusable Claude skill so the agent designs on-brand by default. Meta-skill — it tells you HOW to author a `<project>-design` skill: runtime token source-of-truth, a pass/fail brand checklist, an atomic-design component map, and load-bearing non-negotiables. Use...",
+      "filename": "distill-design-system-skill.zip",
+      "sha256_prefix": "b1adf16ba37004ef",
+      "size_kb": 2.1,
+      "install_hint": "unzip distill-design-system-skill.zip -d ~/.claude/skills/ && mv ~/.claude/skills/distill-design-system-skill.skill ~/.claude/skills/distill-design-system-skill"
+    },
+    {
+      "name": "distill-brand-voice-skill",
+      "description": "Use this skill to turn a product's voice & tone into a reusable Claude skill so all user-facing copy sounds like the brand by default. Meta-skill — it tells you HOW to author a `<project>-voice` skill: non-negotiables, the persona, \"say this not that\" pairs, voice-constant/tone-modulating, and the guard that copy co...",
+      "filename": "distill-brand-voice-skill.zip",
+      "sha256_prefix": "d8f8a7e2996ffa4b",
+      "size_kb": 2.0,
+      "install_hint": "unzip distill-brand-voice-skill.zip -d ~/.claude/skills/ && mv ~/.claude/skills/distill-brand-voice-skill.skill ~/.claude/skills/distill-brand-voice-skill"
+    },
+    {
+      "name": "distill-ux-a11y-layer-skill",
+      "description": "Use this skill to author a project-specific UX/accessibility layer skill that complements (never overrides) the brand/design skill. Meta-skill — it gives the 3-pillar structure (mobile-first, the target persona's motor/visual a11y, simple-don't-overwhelm) and a verifiable pass/fail UX checklist. Use when a product h...",
+      "filename": "distill-ux-a11y-layer-skill.zip",
+      "sha256_prefix": "a99d853e9d2c0348",
+      "size_kb": 2.1,
+      "install_hint": "unzip distill-ux-a11y-layer-skill.zip -d ~/.claude/skills/ && mv ~/.claude/skills/distill-ux-a11y-layer-skill.skill ~/.claude/skills/distill-ux-a11y-layer-skill"
+    },
+    {
+      "name": "distill-framework-conventions-skill",
+      "description": "Use this skill to author a `<project>-<framework>` conventions skill for a repo running a modified/bleeding-edge/forked framework whose APIs differ from training data. Meta-skill — it gives the hard rule \"read the local docs before writing framework code\", the confirmed-stack section, and the known-traps list, so th...",
+      "filename": "distill-framework-conventions-skill.zip",
+      "sha256_prefix": "2142192ef4285f6d",
+      "size_kb": 1.9,
+      "install_hint": "unzip distill-framework-conventions-skill.zip -d ~/.claude/skills/ && mv ~/.claude/skills/distill-framework-conventions-skill.skill ~/.claude/skills/distill-framework-conventions-skill"
+    },
+    {
+      "name": "worktree-per-feature",
+      "description": "Use this skill to enforce the discipline of doing each feature/fix in its own isolated git worktree + branch + PR, based off a fresh main, never mutating a shared checkout or another session's active branch. Prevents cross-session collisions and false-revert diffs. Use when running multiple parallel agent sessions o...",
+      "filename": "worktree-per-feature.zip",
+      "sha256_prefix": "38cf4d3c3249797b",
+      "size_kb": 1.6,
+      "install_hint": "unzip worktree-per-feature.zip -d ~/.claude/skills/ && mv ~/.claude/skills/worktree-per-feature.skill ~/.claude/skills/worktree-per-feature"
+    },
+    {
+      "name": "precommit-quality-harness",
+      "description": "Use this skill to set up or maintain a fast, scoped pre-commit quality gate (husky + lint-staged + a validate step) that gates touched code without punishing pre-existing debt, and that avoids the \"full typecheck poisoned by stale generated types\" trap. Use when adding pre-commit hooks to a repo, when the hook is to...",
+      "filename": "precommit-quality-harness.zip",
+      "sha256_prefix": "d85a54fff1fc197c",
+      "size_kb": 1.5,
+      "install_hint": "unzip precommit-quality-harness.zip -d ~/.claude/skills/ && mv ~/.claude/skills/precommit-quality-harness.skill ~/.claude/skills/precommit-quality-harness"
+    },
+    {
+      "name": "release-on-merge",
+      "description": "Use this skill to wire automated release-on-merge with semantic-release — every merge to the default branch computes the next version from Conventional Commits, tags it, publishes a GitHub Release, and updates the changelog. Captures the two gotchas (disable the commit hook inside the release job; the race between p...",
+      "filename": "release-on-merge.zip",
+      "sha256_prefix": "35eed6cda9dd8bb8",
+      "size_kb": 1.4,
+      "install_hint": "unzip release-on-merge.zip -d ~/.claude/skills/ && mv ~/.claude/skills/release-on-merge.skill ~/.claude/skills/release-on-merge"
+    },
+    {
+      "name": "pr-pain-purpose-how",
+      "description": "Use this skill when writing a pull request description. Every PR opens with three sections — Pain (the problem/symptom), Purpose (what it's for / why it matters), How (what the change does) — so a reviewer gets the why before the what. Use whenever drafting or rewriting a PR body.",
+      "filename": "pr-pain-purpose-how.zip",
+      "sha256_prefix": "749a1d9caa3bc106",
+      "size_kb": 1.3,
+      "install_hint": "unzip pr-pain-purpose-how.zip -d ~/.claude/skills/ && mv ~/.claude/skills/pr-pain-purpose-how.skill ~/.claude/skills/pr-pain-purpose-how"
+    },
+    {
+      "name": "prompt-coach",
+      "description": "Mide y mejora el loop humano-agente, en dos mitades. (1) Prompting: lee los logs de sesión, puntúa la calidad de tus prompts (planificar-primero, scope, verificación vs delegación vaga y bundles irreversibles), grafica la tendencia en ASCII + dashboard HTML offline, y un hook UserPromptSubmit reescribe en vivo el prompt flojo. (2) ENTREGABLE (la palanca alta): en vez de medirte a vos, mide el PRODUCTO que el agente entrega — auto-señales de git (commits/tests/rework/conventional) + autoevaluación del agente + tu veredicto 1-5 + calibración self↔veredicto — cerrado solo por un hook Stop al terminar una sesión con commits nuevos. Vos coordinás y evaluás el producto; el resto automatiza. Use cuando el usuario pida 'medí mi prompting', 'medí el entregable', 'evaluá el producto', o un dashboard de calidad.",
+      "filename": "prompt-coach.zip",
+      "sha256_prefix": "476101aa1eb59980",
+      "size_kb": 19.4,
+      "install_hint": "unzip prompt-coach.zip -d ~/.claude/skills/ && mv ~/.claude/skills/prompt-coach.skill ~/.claude/skills/prompt-coach  # modo activo: ver SKILL.md → wire coach-hook.sh en hooks.UserPromptSubmit de settings.json"
+    }
+  ]
+}

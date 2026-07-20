@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herramientas · Erno × MODO</title>
+  <meta name="description" content="Mi stack en Claude Code: skills, MCPs y plugins agrupados por uso real." />
+  <meta name="theme-color" content="#008859" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#tools-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="./" aria-current="page">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div></header>
+
+<main id="tools-main">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">Herramientas</span>
+  </nav>
+  <p class="section-label">Stack</p>
+  <h1 class="page-heading">Herramientas</h1>
+  <p class="page-sub">Mi stack en Claude Code: skills, MCPs y plugins que uso día a día para sostener el trabajo de TL en MODO. Agrupados por uso real, no por orden alfabético.</p>
+
+  <p class="tools-intro">
+    Markers: <span class="tool-meta-tag mcp">MCP</span> servidor MCP · <span class="tool-meta-tag plugin">plugin</span> plugin Claude Code · <span class="tool-meta-tag external">github</span> skill comunitario externo.
+  </p>
+
+  <div class="filter-bar" style="margin-bottom: 24px;">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
+      </svg>
+      <input class="search-input" type="search" id="tool-search" aria-label="Buscar herramientas" placeholder="Buscar por nombre o descripción… (ej: ruflo, MCP, sonar)" />
+    </div>
+    <span id="tool-result-count" aria-live="polite" aria-atomic="true" style="font-size: 12px; color: var(--muted); align-self: center;">61 tools</span>
+  </div>
+
+  <div id="tools-root">
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">MODO · skills y MCPs propios</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-deck</code><a class="download-badge" href="../skills/modo-deck.zip" title="Descargar modo-deck.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-design-system</code><a class="download-badge" href="../skills/modo-design-system.zip" title="Descargar modo-design-system.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-tech-architect</code><a class="download-badge" href="../skills/modo-tech-architect.zip" title="Descargar modo-tech-architect.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-code-review-checklist</code><a class="download-badge" href="../skills/modo-code-review-checklist.zip" title="Descargar modo-code-review-checklist.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-promos</code><a class="download-badge" href="../skills/modo-promos.zip" title="Descargar modo-promos.skill como ZIP" download>↓ .skill</a><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo <code>mcp__modo-promos__*</code>.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>consultar-promos-modo</code><a class="download-badge" href="../skills/consultar-promos-modo.zip" title="Descargar consultar-promos-modo.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Capa NL sobre <code>modo-promos</code>. Mapea preguntas humanas ("¿qué descuentos hay hoy en supermercados?") a las tools correctas del MCP.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>simular-compra-agentica</code><a class="download-badge" href="../skills/simular-compra-agentica.zip" title="Descargar simular-compra-agentica.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>agente-cx-whatsapp</code><a class="download-badge" href="../skills/agente-cx-whatsapp.zip" title="Descargar agente-cx-whatsapp.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo "levantar el agente cx".</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>lectura-bionica</code><a class="download-badge" href="../skills/lectura-bionica.zip" title="Descargar lectura-bionica.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Lectura biónica + asistida para TDAH/dislexia: bold de la primera mitad de cada palabra ≥3 letras (acrónimos, números, URLs, código y env vars intactos). MD + HTML, idempotente. Basado en el deck <a href="../decks/draft/accesibilidad-lectura-asistida-tdah.html">accesibilidad-lectura-asistida-tdah</a>.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-services-monitor</code><a class="download-badge" href="../skills/modo-services-monitor.zip" title="Descargar modo-services-monitor.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Service-status panel desde Claude Code. Capa 1 anon: 8 statuspages externos (GitHub · Claude · OpenAI · Datadog · Cloudflare · GCP · npm · Vercel) + 5 HTTP probes MODO público. Capa 2 opt-in con JWT: cruza con <code>status.modo.com.ar/api/last-incidents</code>. Trigger "cómo están los servicios".</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-planner</code><a class="download-badge" href="../skills/modo-planner.zip" title="Descargar modo-planner.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">MODO Planning Framework (MPF). Orquesta la planificación de punta a punta de cualquier feature: brainstorming → discovery → SDD → tareas Jira → swarm → verify → archive. Output canónico en <code>openspec/changes/&lt;change&gt;/</code>.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-pr-author</code><a class="download-badge" href="../skills/modo-pr-author.zip" title="Descargar modo-pr-author.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Autora descripciones de PR grado MODO: template del repo + convención de commits + voz rioplatense. Complementa los skills de review (no los reemplaza) — este escribe el PR, los otros lo evalúan.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-frontend-onboarding</code><a class="download-badge" href="../skills/modo-frontend-onboarding.zip" title="Descargar modo-frontend-onboarding.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Playbook end-to-end para llevar un frontend (SPA Vite/Lovable o app Next) a producción en EKS bajo <code>playsistemico</code>: subida limpia sin secretos, tickets JSM, PRs de infra por slice.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-seo-geo-audit</code><a class="download-badge" href="../skills/modo-seo-geo-audit.zip" title="Descargar modo-seo-geo-audit.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Auditoría + fix de SEO/GEO/JSON-LD para fronts MODO (Vite SPA, Next, Astro). Resuelve el CSR trap, declara AI bots, <code>llms.txt</code>, schema Organization/Course y checklist GEO 7/7.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-storyblok</code><a class="download-badge" href="../skills/modo-storyblok.zip" title="Descargar modo-storyblok.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Orquestar contenido editorial en fronts MODO vía Storyblok: schemas + TS types + bloks + routing por folders con el pattern <code>is_startpage</code> child. Cubre los gotchas de la CDN.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-stakeholder-gate</code><a class="download-badge" href="../skills/modo-stakeholder-gate.zip" title="Descargar modo-stakeholder-gate.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Gate de proceso pregunta-y-espera: valida comunicación + aprobación con el squad/tribu/chapter dueño antes de pasos críticos (tracking, infra, código ajeno). No inventa ownership.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-jsm-ticket</code><a class="download-badge" href="../skills/modo-jsm-ticket.zip" title="Descargar modo-jsm-ticket.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Crear tickets en el Jira Service Management de MODO de punta a punta: descubre el portal correcto, mapea campos requeridos y genera el payload. 29 service desks · 318 request types catalogados.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-landing-smoke-test</code><a class="download-badge" href="../skills/modo-landing-smoke-test.zip" title="Descargar modo-landing-smoke-test.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Smoke-test de modo.com.ar por ambiente (develop/qa/preprod/prod): valida rutas clave a nivel HTTP, detecta regresiones de CMS y compara versiones desplegadas vía GitHub Deployments.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-contribution-evaluator</code><a class="download-badge" href="../skills/modo-contribution-evaluator.zip" title="Descargar modo-contribution-evaluator.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Evalúa contribuciones de un dev en el ecosistema MODO cruzando PRs autorados/revisados + diff stats + Jira. Output Markdown + HTML branded para review de impacto.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-ci-quality-harness</code><a class="download-badge" href="../skills/modo-ci-quality-harness.zip" title="Descargar modo-ci-quality-harness.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Instala los 4 gates de calidad en CI (audit de deps, bundle-size, visual regression, a11y) con la config correcta por tipo de build. Drop-ins validados + detect-repo-type.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-research-article</code><a class="download-badge" href="../skills/modo-research-article.zip" title="Descargar modo-research-article.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Genera artículos R&D long-form HTML para la <a href="../rd/">bitácora R&D</a>: diagramas SVG theme-aware, Chart.js con CSS vars, matrix producto×API, endpoint tables y voz rioplatense.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-postman-pack</code><a class="download-badge" href="../skills/modo-postman-pack.zip" title="Descargar modo-postman-pack.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Construye packs Postman extendidos del workspace MODO cruzando Chrome history + colecciones existentes. Alimenta la categoría <a href="../postmans/">Postmans</a> del sitio.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-plugin-builder</code><a class="download-badge" href="../skills/modo-plugin-builder.zip" title="Descargar modo-plugin-builder.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Construir plugins Claude Code para el ecosistema MODO con el patrón triple-layer (skill + agent + slash commands) + symlinks + smoke tests. La meta-fábrica de los plugins MODO.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>modo-nocturno</code><a class="download-badge" href="../skills/modo-nocturno.zip" title="Descargar modo-nocturno.skill como ZIP" download>↓ .skill</a></div><div class="tool-desc">Loop overnight read-only de auto-mejora supervisada: mina el knowledge base, transcripts, PRs y monitores, draftea propuestas a una cola <code>_pending/</code> SIN aplicar nada. El humano aprueba despierto.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>session-recall</code><a class="download-badge" href="../skills/session-recall.zip" title="Descargar session-recall.skill como ZIP" download>↓ .skill</a><a href="https://github.com/SoyErnoModo/session-recall" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Retomá tus conversaciones con Claude Code por tema. Mina los <code>.jsonl</code> locales, rankea por hits + recencia, comprime sin perder señal (drop sintéticos/dups, keep decisions/files/pending/errors) y devuelve bundle paste-ready con <code>claude --resume</code> listo.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">AI · workflow + memoria + agentes</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>ruflo</code><span class="tool-meta-tag mcp">MCP</span><a href="https://github.com/ruvnet/ruflo" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Memoria persistente (sql.js + HNSW + ONNX), swarm coordinator, autopilot y federation cross-installation. Backend único de memoria user-level.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>claude-api</code><a href="https://github.com/anthropics/skills/tree/main/skills/claude-api" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Build/debug apps con Claude API + Anthropic SDK. Maneja prompt caching, tool use, batch, files, citations y migración entre versiones de modelo.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>mcp-builder</code><a href="https://github.com/anthropics/skills/tree/main/skills/mcp-builder" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Diseñar, construir y testear MCP servers custom con tools, resources y prompts para extender capabilities de agentes.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>skill-creator</code><a href="https://github.com/anthropics/skills/tree/main/skills/skill-creator" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Crear skills nuevos (o actualizar existentes) que extienden Claude con conocimiento especializado, workflows o integraciones.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>sdd-*</code> · explore / propose / design / tasks / apply / verify / archive</div><div class="tool-desc">Spec-Driven Development en MODO. Obligatorio para cambios en <code>/comercios</code> y features no-triviales: spec antes de código, verify después.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>brainstorming</code></div><div class="tool-desc">Explorar intent + requirements + design ANTES de implementar. Bloquea cualquier feature/componente/behavior nuevo hasta tener intent claro.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>doc-coauthoring</code><a href="https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Workflow estructurado para escribir docs, proposals, technical specs y decision docs. Transfer de contexto + iteración + verificación con readers.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>caveman</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/JuliusBrussee/caveman" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">Frontend · diseño y UX</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>impeccable</code><a href="https://github.com/pbakaus/impeccable" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Skill de Phil Bakaus para frontend production-grade. Anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>taste-skill</code><a href="https://github.com/Leonxlnx/taste-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Anti-slop frontend rules de Leonxlnx. Evita over-design y mantiene interfaces limpias y funcionales.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>ui-ux-pro-max</code><a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">161 paletas, 57 font pairings, 50+ estilos de UI (NextLevelBuilder). Referencia para composición visual y tipografía.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>frontend-design</code><a href="https://github.com/anthropics/skills/tree/main/skills/frontend-design" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Diseño visual + interacción para web. Cobertura amplia: layouts, hierarchy, motion, micro-interactions.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>web-design-guidelines</code><a href="https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Review de UI contra Web Interface Guidelines. Trigger en frases tipo "review my UI", "check accessibility", "audit design".</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>react-doctor</code></div><div class="tool-desc">Catch React issues early después de cambios. Se invoca al revisar código, terminar features o fixear bugs en proyectos React.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">Frontend · code quality + migraciones</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>next-best-practices</code><a href="https://github.com/vercel-labs/next-skills" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Next.js file conventions, RSC boundaries, data patterns, async APIs, metadata, route handlers, image/font optimization.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:react-best-practices</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin/tree/main/skills/react-best-practices" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Guidelines de Vercel Engineering para perf React/Next: rendering strategies, bundle, caching, data fetching.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>typescript-strict-mode</code></div><div class="tool-desc">Migrar codebases existentes a strict mode sin romper la app. Pattern incremental con feature flags.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>sonar-best-practices</code></div><div class="tool-desc">Reglas SonarQube/SonarCloud para JS/TS/React. Auto-invoca al escribir JS/TS o crear componentes React.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>tailwind-3-to-4-migration</code></div><div class="tool-desc">Tailwind v3 → v4 con CSS-first config. Después de consolidar styled-components.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>styled-components-to-tailwind</code></div><div class="tool-desc">Consolidar 3 sistemas (Styled Components 5.2 + Emotion 11 + Tailwind 3) en Tailwind-only. Migración componente por componente.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>nextjs-12-to-15-migration</code></div><div class="tool-desc">Guía step-by-step Next.js 12 → 15 con coexistencia Pages Router. Breaking changes + estrategia gradual hacia App Router.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>bundle-size-optimization</code></div><div class="tool-desc">Análisis y refactor para bajar bundle size. Tree-shaking checks, dynamic imports, dependencies audit.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">Code review + security</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>guardia</code><span class="tool-meta-tag plugin">plugin</span></div><div class="tool-desc">Full parallel sub-agent review: SonarCloud, tests, React Doctor, security, CI/CD, bundle size. Trigger <code>/guardia &lt;pr&gt;</code>.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>pr-quality-review</code></div><div class="tool-desc">Review rápido de metadata + code quality + SonarCloud + arch + SEO + a11y. Output Slack-ready.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>code-review-excellence</code></div><div class="tool-desc">Code review guidance multi-stack: React, Vue, Angular, Svelte, Rust, TS, Java, Python, Go, NestJS. Catch bugs + improve quality.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>frontend-security-checklist</code></div><div class="tool-desc">Checklist OWASP-aligned para frontend. XSS, CSRF, secrets, auth flows, dependencias inseguras.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>github-actions-security</code></div><div class="tool-desc">Securing GitHub Actions workflows: pin actions, secrets scope, OIDC, supply chain attacks.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>csp-hardening</code></div><div class="tool-desc">Content Security Policy hardening. Audit headers actuales y plan de migración a strict CSP sin romper third-parties.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">MCPs · productividad y workspace</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>Atlassian</code><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Jira issues + Confluence pages. Crear/editar issues COENXT/EXA, leer wiki, transicionar status, comentar.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>Google Drive</code><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Search files + read content. La fuente que construyó el catálogo de RFCs en esta misma página.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>Gmail</code><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Threads, labels, drafts, search. Para comms internas que no caen en Slack.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>Google Calendar</code><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Events, scheduling, suggest_time. Útil para coordinar revisiones de RFC con stakeholders.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>Slack</code><span class="tool-meta-tag mcp">MCP</span></div><div class="tool-desc">Read channels + send messages + canvas. Pegar resultados de <code>pr-quality-review</code> directo al canal.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>Amplitude</code><span class="tool-meta-tag mcp">MCP</span><a href="https://github.com/amplitude/mcp-marketplace" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Product analytics + experiments. Charts, cohorts, dashboards, session replays, A/B tests.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>Storyblok</code><span class="tool-meta-tag mcp">MCP</span><a href="https://github.com/storyblok/mcp-server" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">CMS de MODO hosted en mcp.labs.storyblok.com. Leer y escribir contenido del sitio desde el agente.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>chrome-devtools</code><span class="tool-meta-tag mcp">MCP</span><a href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Browser automation, screenshots, Lighthouse audits, network inspection, console messages. Wrappeado con caveman para ahorrar tokens.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>gscServer</code><span class="tool-meta-tag mcp">MCP</span><a href="https://github.com/AminForou/mcp-gsc" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Google Search Console. Performance, indexing issues, sitemap status, advanced search analytics, batch URL inspection.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">Vercel · deploy y plataforma</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:deploy</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Deploy a Vercel (preview o prod). Default preview, pass "prod" para production.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:nextjs</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin/tree/main/skills/nextjs" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Next.js patterns optimizados para Vercel: ISR, edge runtime, image optimization.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:ai-sdk</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin/tree/main/skills/ai-sdk" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Vercel AI SDK patterns para apps con LLMs streaming + tool use.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:vercel-functions</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin/tree/main/skills/vercel-functions" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Edge + serverless functions. Cuándo usar cada runtime, cómo configurar regiones y caching.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:env</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Environment variables management: scopes (dev/preview/prod), secrets, runtime vs build-time.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>vercel:vercel-firewall</code><span class="tool-meta-tag plugin">plugin</span><a href="https://github.com/vercel/vercel-plugin/tree/main/skills/vercel-firewall" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Firewall config para bloquear bots, rate limiting, geo restrictions, custom rules.</div></div>
+      </div>
+    </div>
+
+    <div class="tool-category" data-category>
+      <h3 class="tool-category-name">Design + comms + output</h3>
+      <div class="tools-grid">
+        <div class="tool-item" data-tool><div class="tool-name"><code>design</code></div><div class="tool-desc">Brand identity, design tokens, logo generation (55 styles, Gemini), CIP (50 deliverables), HTML presentations, banners, icons, social photos.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>slides</code></div><div class="tool-desc">HTML presentations con Chart.js, design tokens, layouts responsive y copywriting formulas. Base de los decks de este repo.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>banner-design</code></div><div class="tool-desc">Banners para social media, ads, web heroes y print. Múltiples direcciones de arte con AI-generated visuals.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>writing-clearly-and-concisely</code></div><div class="tool-desc">Strunk para prose: una claim por oración, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>internal-comms</code><a href="https://github.com/anthropics/skills/tree/main/skills/internal-comms" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, project updates. Formato que el management ya espera.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>brand</code></div><div class="tool-desc">Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Anchor para todo material externo.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><code>theme-factory</code><a href="https://github.com/anthropics/skills/tree/main/skills/theme-factory" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Aplicar themes pre-set (10 colores/fonts) a artifacts: slides, docs, reportings, landings HTML. Generar themes on-the-fly también.</div></div>
+        <div class="tool-item" data-tool><div class="tool-name"><a href="https://github.com/anthropics/skills/tree/main/skills/pdf" target="_blank" rel="noopener"><code>pdf</code></a> · <a href="https://github.com/anthropics/skills/tree/main/skills/docx" target="_blank" rel="noopener"><code>docx</code></a> · <a href="https://github.com/anthropics/skills/tree/main/skills/pptx" target="_blank" rel="noopener"><code>pptx</code></a> · <a href="https://github.com/anthropics/skills/tree/main/skills/xlsx" target="_blank" rel="noopener"><code>xlsx</code></a><a href="https://github.com/anthropics/skills" target="_blank" rel="noopener"><span class="tool-meta-tag external">github</span></a></div><div class="tool-desc">Toolkits de manipulación de formatos. PDF (extract + forms), DOCX (tracked changes), PPTX (layouts), XLSX (formulas + viz).</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="skills-note">
+    Las skills con badge <span class="download-badge">↓ .skill</span> son custom y se publican como ZIPs en <a href="../skills/" class="meta-link">/skills/</a> (manifest <a href="../skills/skills.json" class="meta-link" target="_blank" rel="noopener">skills.json</a>). El skill <code>/erno-modo-sync-all</code> regenera el bundle todos los días a las 18:00. Para sumar herramientas: editar <code>herramientas/index.html</code>. Eventualmente este catálogo va a salir de <code>tools.json</code> generado por el skill <code>/modo-rfc-sync</code> (ver R19 en <a href="../rfcs/" class="meta-link">RFCs</a>).
+  </p>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Agrupamiento:</strong>
+    <span class="status-badge completo">MODO</span>
+    <span class="workflow-arrow">·</span>
+    <span class="status-badge rfc">AI</span>
+    <span class="workflow-arrow">·</span>
+    <span class="status-badge draft">Externo</span>
+  </div>
+  </div></footer>
+
+<script>
+(function () {
+  var $search = document.getElementById('tool-search');
+  var $count = document.getElementById('tool-result-count');
+  var tools = Array.prototype.slice.call(document.querySelectorAll('[data-tool]'));
+  var categories = Array.prototype.slice.call(document.querySelectorAll('[data-category]'));
+  var total = tools.length;
+  $count.textContent = total + ' tools';
+
+  function apply() {
+    var q = $search.value.trim().toLowerCase();
+    var visible = 0;
+    tools.forEach(function (t) {
+      var hay = t.textContent.toLowerCase();
+      var match = !q || hay.indexOf(q) !== -1;
+      t.classList.toggle('dimmed', !match);
+      if (match) visible++;
+    });
+    /* Hide a category if every tool in it is dimmed. */
+    categories.forEach(function (cat) {
+      var anyVisible = Array.prototype.slice.call(cat.querySelectorAll('[data-tool]'))
+        .some(function (t) { return !t.classList.contains('dimmed'); });
+      cat.style.display = anyVisible ? '' : 'none';
+    });
+    $count.textContent = q && visible !== total
+      ? visible + ' de ' + total + ' tools'
+      : total + ' tools';
+  }
+
+  $search.addEventListener('input', apply);
+})();
+</script>
+
+  <script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Lib consume Navbar/Footer desde Storyblok vía BFF en modo-landing (default-layout, revalidate, sync). Cache TTL 5min + SWR 24h, una sola API key. Snapshot embebido, release cascade automático." />
+<title>Storyblok via BFF · Navbar / Footer en la lib</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1600px, 96vw, calc(92vh * 16 / 9)); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 42px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(42px, 4.8vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(33px, 3.4vw, 54px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 14px; font-weight: 500; letter-spacing: 0.02em; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--ghost { background: transparent; color: var(--gray-60); border: 1px solid var(--gray-20); }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 14px 0 14px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 16px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 18px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .pillar-detail { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; height: 100%; align-items: center; }
+  .pillar-detail__evidence { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; }
+  .pillar-detail__evidence h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-default); margin: 0 0 12px; }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 16px; align-items: stretch; margin-top: 24px; }
+  .phase { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); display: flex; flex-direction: column; position: relative; }
+  .phase__num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 66px; line-height: 1; color: var(--green-default); margin-bottom: 8px; letter-spacing: -0.04em; }
+  .phase__weeks { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
+  .phase__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total { background: var(--green-10); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 180px; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+  .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 24px; align-items: stretch; }
+  .flow__step { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .flow__step h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--ink); }
+  .flow__step p { margin: 0; font-size: 14px; color: var(--gray-60); line-height: 1.4; }
+  .flow__step .num--md { font-size: 38px; color: var(--green-default); margin-bottom: 4px; }
+  .cache-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.4fr; gap: 0; margin-top: 16px; background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; overflow: hidden; }
+  .cache-grid > div { padding: 12px 16px; border-bottom: 1px solid var(--gray-8); font-size: 16px; line-height: 1.4; }
+  .cache-grid > div.head { background: var(--gray-3); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .cache-grid > div:nth-last-child(-n+4) { border-bottom: none; }
+  @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+  <meta property="og:title" content="Storyblok via BFF · Navbar / Footer en la lib" />
+  <meta property="og:description" content="Lib consume Navbar/Footer desde Storyblok vía BFF en modo-landing. Cache TTL 5min + SWR 24h, una sola API key. Snapshot embebido, release cascade automático." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/completo/storyblok-cms-build-time.html" />
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<main class="deck" id="deck">
+
+  <!-- ============ 01 · COVER ============ -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>storyblok · bff · cache · modo-landing-web-ui-lib</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Propuesta técnica · PR #38</p>
+      <h1 class="title">Storyblok via<br /><span style="color: var(--green-default)">BFF de Next + cache</span>.</h1>
+      <p class="lede">La lib no le pega a Storyblok. Le pega a una ruta de Next en modo-landing que actúa como única boca y como capa de cache. Cada release de la lib embebe el snapshot y los consumers reciben un PR automático.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>Tech Leads + PMs MODO</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>2026-05-20</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 · TL;DR ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>02 · La recomendación</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">La recomendación</p>
+      <h1 class="title" style="font-size: clamp(48px, 5.5vw, 82px); max-width: 22ch;">Mergear PR #38<br /><span style="color: var(--green-default)">y armar el BFF</span> en modo-landing.</h1>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat">
+          <span class="stat__label">Boca a Storyblok</span>
+          <span class="num num--md stat__value">1</span>
+          <p class="muted">Una sola ruta: <span class="mono">modo.com.ar/api/cms/default-layout</span>. La lib y los consumers no ven Storyblok.</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">TTL de cache en el BFF</span>
+          <span class="num num--md stat__value">5 min</span>
+          <p class="muted"><span class="mono">s-maxage=300</span> + SWR 24h + invalidación on-demand vía webhook.</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Cascade end-to-end</span>
+          <span class="num num--md stat__value">~30 min</span>
+          <p class="muted">Webhook → BFF → PR snapshot → release → PR de bump en consumers.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por qué juntas</strong>: la lib sola no rinde sin el BFF, porque sino tenemos N consumers golpeando Storyblok sin control. Y el BFF sin la lib es un endpoint solitario sin caller productivo. Las dos piezas componen el loop.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 20%"></i></div>
+      <span class="counter">02 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 03 · DIAGNÓSTICO ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>03 · Diagnóstico</span>
+      <span>contenido global hoy</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Diagnóstico</p>
+      <h2 class="heading">Cada app le pega a Storyblok como puede.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 24px;">No hay un proxy. Cada consumer maneja su propio acceso, su propia API key, su propio adapter. Lo que termina apareciendo en producción depende de quién buildeó por última vez.</p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>modo-landing</h4>
+          <div class="row-item"><span class="label">Fetch en <span class="mono">getStaticProps</span></span><span class="value">14 páginas</span></div>
+          <div class="row-item"><span class="label">Adapter local <span class="mono">CMSNavbar/CMSFooter</span></span><span class="value">~270 LOC</span></div>
+          <div class="row-item"><span class="label">API key de Storyblok</span><span class="value">en su env</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>promos-hub-site</h4>
+          <div class="row-item"><span class="label">JSON hardcoded en la lib</span><span class="value">desincronizado</span></div>
+          <div class="row-item"><span class="label">Sin adapter de Storyblok</span><span class="value">0 LOC</span></div>
+          <div class="row-item"><span class="label">Cambios en CMS</span><span class="value">no llegan</span></div>
+        </div>
+        <div class="stack-block" style="grid-column: 1 / -1;">
+          <h4>Síntoma observable</h4>
+          <div class="row-item"><span class="label">El footer dice cosas distintas en modo.com.ar vs promos.modo.com.ar</span><span class="value">drift visible</span></div>
+          <div class="row-item"><span class="label">Para cambiar un link, hace falta tocar 2 repos + esperar 2 deploys</span><span class="value">fricción operativa</span></div>
+          <div class="row-item"><span class="label">Si mañana sumamos un 3er consumer, replica el problema</span><span class="value">escala mal</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 30%"></i></div>
+      <span class="counter">03 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 04 · PILAR 01 ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>04 · Pilar 01</span>
+      <span>una sola fuente de verdad</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 01 · Single source of truth</p>
+        <div class="num num--xl num--accent">3 → 1</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Una historia, un endpoint, un snapshot.</h2>
+        <p class="body" style="max-width: 50ch;">El story vive en Storyblok (<span class="mono">global/defaultlayout</span>). El BFF lo sirve. La lib lo embebe. Los consumers lo consumen. Cero re-implementaciones del adapter.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">snapshot al build</span>
+          <span class="chip">SectionNavbar.reference</span>
+          <span class="chip">SectionFooter.reference</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Qué pasa con los adapters de modo-landing</h4>
+          <ul class="checks">
+            <li><strong>Hoy</strong>: <span class="mono">CMSNavbar</span>, <span class="mono">CMSFooter</span>, <span class="mono">CMSModal</span> mapean blok → props en modo-landing.</li>
+            <li><strong>Mañana</strong>: esa lógica vive en <span class="mono">src/cms/adapters/</span> de la lib, ya commiteada y testeada (15 tests nuevos en esta PR, 100% pasando).</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Backwards compat garantizada</h4>
+          <p class="body" style="margin: 0;">El shape de <span class="mono">defaultConfig.json</span> no cambia. Los consumers que ya usan <span class="mono">&lt;Navbar /&gt;</span> sin props siguen funcionando igual, ahora con contenido fresco.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 40%"></i></div>
+      <span class="counter">04 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 05 · PILAR 02 · BFF + CACHE ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>05 · Pilar 02</span>
+      <span>BFF como única boca + cache</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 02 · BFF + cache</p>
+        <div class="num num--xl num--accent">5'</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">La ruta de Next es el cache.</h2>
+        <p class="body" style="max-width: 50ch;">El BFF (<span class="mono">/api/cms/default-layout</span>) es la única boca contra Storyblok. Devuelve la respuesta cacheada 5 minutos. Cuando el editor publica, el webhook invalida la cache y la siguiente call es fresh. La lib no se entera.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">s-maxage=300</span>
+          <span class="chip">SWR 24h</span>
+          <span class="chip"><span class="mono">res.revalidate()</span></span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Endpoints del BFF (Next 12 · Pages Router)</h4>
+          <ul class="checks">
+            <li><span class="mono">GET /api/cms/default-layout</span> · auth <span class="mono">Bearer ${CMS_BFF_TOKEN}</span> · responde <span class="mono">{ body }</span> cacheado.</li>
+            <li><span class="mono">POST /api/cms/revalidate</span> · invalida cache vía <span class="mono">res.revalidate()</span>.</li>
+            <li><span class="mono">POST /api/cms/sync</span> · webhook de Storyblok: revalida cache + dispara <span class="mono">repository_dispatch</span> al repo de la lib.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Una sola API key</h4>
+          <p class="body" style="margin: 0;"><span class="mono">STORYBLOK_API_KEY</span> queda solo en modo-landing. La lib y los demás consumers usan <span class="mono">CMS_BFF_TOKEN</span> (token interno, rotable, distinto). Si se filtra, no compromete Storyblok.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 50%"></i></div>
+      <span class="counter">05 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 06 · PILAR 03 · CERO RUNTIME ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>06 · Pilar 03</span>
+      <span>cero red en runtime del consumer</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 03 · Bundle limpio</p>
+        <div class="num num--xl num--accent">0 KB</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">El consumer no habla con nada.</h2>
+        <p class="body" style="max-width: 50ch;">El JSON vive en <span class="mono">dist/</span>. SSG, SSR, RSC, CSR: a todos les llega lo mismo, hidratado del bundle. Sin fetch, sin handshake, sin token de BFF en cada repo.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">cmsOverride opcional</span>
+          <span class="chip">DeepPartial&lt;Config&gt;</span>
+          <span class="chip">preview / A/B opt-in</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que NO entra al bundle</h4>
+          <ul class="checks">
+            <li><span class="mono">storyblok-js-client</span> queda en devDeps (solo se usa en modo directo de fallback).</li>
+            <li>El script de build usa <span class="mono">fetch</span> nativo de Node 18+ contra el BFF.</li>
+            <li>Tamaño de <span class="mono">dist/index.es.js</span>: 157 KB (sin cambios respecto a 5.6.0).</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Escape hatch para preview</h4>
+          <p class="body" style="margin: 0;">Consumers que quieren hidratar dinámico (preview de Storyblok, A/B desde feature flag) pasan <span class="mono">cmsOverride</span> y la lib hace deep-merge sobre el snapshot. Sin breaking changes.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 60%"></i></div>
+      <span class="counter">06 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 07 · FLUJO END-TO-END ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>07 · Flujo end-to-end</span>
+      <span>publish a PR de consumer</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Distribución</p>
+      <h2 class="heading">Publicás en Storyblok. Cada consumer recibe un PR.</h2>
+      <p class="body" style="max-width: 80ch;">Cinco saltos automáticos. Humano interviene solo para mergear PR de snapshot y PR de bump.</p>
+      <div class="flow">
+        <div class="flow__step">
+          <span class="num num--md">01</span>
+          <h4>Storyblok publish</h4>
+          <p>Editor publica una story. Webhook va al BFF, no a GitHub.</p>
+        </div>
+        <div class="flow__step">
+          <span class="num num--md">02</span>
+          <h4>BFF <span class="mono">/api/cms/sync</span></h4>
+          <p>Invalida cache + dispara <span class="mono">repository_dispatch</span> a la lib.</p>
+        </div>
+        <div class="flow__step">
+          <span class="num num--md">03</span>
+          <h4><span class="mono">cms-sync.yml</span></h4>
+          <p>Corre <span class="mono">pnpm sync:storyblok</span> contra el BFF (cache fresh). Si hay diff, abre PR.</p>
+        </div>
+        <div class="flow__step">
+          <span class="num num--md">04</span>
+          <h4><span class="mono">release.yml</span></h4>
+          <p>Mergeado el PR, semantic-release publica <span class="mono">vX.Y.Z</span>.</p>
+        </div>
+        <div class="flow__step">
+          <span class="num num--md">05</span>
+          <h4>Bump cascade</h4>
+          <p><span class="mono">bump-modo-landing</span> + <span class="mono">bump-promos-hub-site</span> abren PRs en consumers.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 24px;"><span class="sigil"></span>Total típico end-to-end: 15 a 40 minutos. Si el webhook falla, el TTL de 5 min en el BFF garantiza que el snapshot se atrase como máximo 5 min de la realidad.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 70%"></i></div>
+      <span class="counter">07 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 08 · PLAN ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>08 · El plan</span>
+      <span>fases incrementales, opt-in</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Roadmap</p>
+      <h2 class="heading">Tres fases. La fundación viaja en dos PRs.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">01</span>
+          <span class="phase__weeks">Esta PR + PR en modo-landing</span>
+          <h3 class="phase__title">Foundation · BFF + lib</h3>
+          <p class="phase__body">1a · BFF en modo-landing (3 endpoints + secrets + webhook). 1b · adapters + script + workflows en la lib. Ninguna toca consumers.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">02</span>
+          <span class="phase__weeks">Siguiente sprint</span>
+          <h3 class="phase__title">Sidebar + DownloadModal</h3>
+          <p class="phase__body">Extraer el contenido hardcoded de <span class="mono">SidebarMenus.tsx</span> a <span class="mono">defaultConfig.json</span>. Wrappers <span class="mono">&lt;CMSx data /&gt;</span>.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">03</span>
+          <span class="phase__weeks">2 sprints</span>
+          <h3 class="phase__title">Migración modo-landing</h3>
+          <p class="phase__body">Página piloto + 14 páginas que llaman <span class="mono">getNavFooterData</span>. Eliminamos el adapter local.</p>
+        </div>
+        <div class="phase__total">
+          <span class="phase__weeks">Esta PR</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">#38</span>
+          <span style="font-size: 14px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">CI 6/6 ✓</span>
+          <span style="font-size: 13px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Sonar QG: OK · 446 tests</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 24px; gap: 20px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Lo que sí ya está</h4>
+          <p class="body" style="margin: 0; font-size: 16px; color: var(--green-dark);">446/446 tests, typecheck/lint/build verde, OpenSpec <span class="mono">--strict</span> validado, script con modo BFF + fallback directo.</p>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Lo que NO entra a esta PR</h4>
+          <p class="body" style="margin: 0; font-size: 16px;">Las rutas del BFF en modo-landing (PR aparte). Sidebar/DownloadModal snapshot. Migración de páginas modo-landing.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 80%"></i></div>
+      <span class="counter">08 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 09 · DECISIONES ============ -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>09 · Decisiones</span>
+      <span>qué necesito antes de avanzar</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Decisiones</p>
+      <h2 class="heading">Cuatro cosas para arrancar el loop.</h2>
+      <ol class="decisions" style="margin-top: 24px;">
+        <li>
+          <h3>Aprobar el merge de PR #38 (lib)</h3>
+          <p class="body" style="margin: 4px 0 0;">Foundation: adapters + script con modo BFF + workflows + <span class="mono">cmsOverride</span>. Sin breaking changes. CI 6/6 verde.</p>
+          <p class="ownership">Owner · TL del frontend platform</p>
+        </li>
+        <li>
+          <h3>Aprobar el PR del BFF en modo-landing</h3>
+          <p class="body" style="margin: 4px 0 0;">3 endpoints: <span class="mono">/api/cms/default-layout</span>, <span class="mono">/revalidate</span>, <span class="mono">/sync</span>. Coordino con el dueño de modo-landing antes de abrirlo.</p>
+          <p class="ownership">Owner · TL modo-landing</p>
+        </li>
+        <li>
+          <h3>Setear secrets en ambos repos</h3>
+          <p class="body" style="margin: 4px 0 0;">modo-landing: <span class="mono">CMS_BFF_TOKEN</span>, <span class="mono">CMS_REVALIDATE_SECRET</span>, <span class="mono">CMS_WEBHOOK_SECRET</span>, <span class="mono">CMS_GITHUB_DISPATCH_PAT</span>. Lib: <span class="mono">CMS_PROXY_URL</span>, <span class="mono">CMS_PROXY_TOKEN</span>.</p>
+          <p class="ownership">Owner · TL + SRE (rotación de PATs)</p>
+        </li>
+        <li>
+          <h3>Configurar webhook "Story Published" en Storyblok</h3>
+          <p class="body" style="margin: 4px 0 0;">Apunta a <span class="mono">https://modo.com.ar/api/cms/sync</span> con header secret. Validar con quien administra el espacio antes de tocar.</p>
+          <p class="ownership">Owner · PM + admin de Storyblok (content ops)</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>storyblok · via bff</span>
+      <div class="progress"><i style="--p: 90%"></i></div>
+      <span class="counter">09 / 10</span>
+    </div>
+  </section>
+
+  <!-- ============ 10 · CIERRE ============ -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>cierre · feedback abierto</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Cierre</p>
+      <h1 class="title">¿Arrancamos<br /><span style="color: var(--green-default)">el loop</span>?</h1>
+      <p class="lede">Antes de mergear las dos PRs y configurar el webhook, busco feedback del TL platform, del TL de modo-landing y del admin de Storyblok. Con su feedback, el próximo paso es agendar una review de 30 min, no abrir tickets.</p>
+      <div class="card" style="margin-top: 32px; max-width: 720px;">
+        <h3 class="subheading">Material de soporte</h3>
+        <ul class="checks">
+          <li><strong>PR lib</strong>: <span class="mono">playsistemico/modo-landing-web-ui-lib#38</span></li>
+          <li><strong>Plan canónico</strong>: <span class="mono">openspec/changes/add-storyblok-cms-integration/</span> (proposal · design · tasks · spec)</li>
+          <li><strong>Doc operativa</strong>: <span class="mono">docs/CMS_INTEGRATION.md</span> (diagrama + endpoints + secrets)</li>
+          <li><strong>Workflows</strong>: <span class="mono">.github/workflows/cms-sync.yml</span> · <span class="mono">bump-modo-landing.yml</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza</p></div>
+      <div class="meta__col"><h4>PR</h4><p>modo-landing-web-ui-lib #38</p></div>
+      <div class="meta__col"><h4>Repo</h4><p>playsistemico/modo-landing-web-ui-lib</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 10</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); go(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') {
+      e.preventDefault(); go(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(slides.length - 1);
+    } else if (e.key === 'p' || e.key === 'P') {
+      window.print();
+    }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) {
+    go(hash - 1);
+  } else {
+    go(0);
+  }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="storyblok-cms-build-time"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>

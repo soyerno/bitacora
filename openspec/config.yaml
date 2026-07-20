@@ -1,0 +1,41 @@
+schema: spec-driven
+
+context: |
+  App: erno-modo — static GitHub Pages site at https://soyernomodo.github.io/erno-modo/
+  Stack: Plain HTML + vanilla JS (no build, no framework). Two shared JS modules:
+    - assets/common.js   — STATUS_LABELS, escapeHTML, initThemeToggle (3-state cycle, localStorage)
+    - assets/collection.js — MODO.createCollection (search + tabs + chips + sort + clear + empty)
+  Pages: index.html (home), decks/index.html, rfcs/index.html, herramientas/index.html, individual decks.
+  Data sources (consumibles por agentes, schema dict with `_meta` + array):
+    - decks/decks.json   (statuses: draft|rfc|completo)
+    - rfcs/rfcs.json     (statuses: draft|rfc|completo|archivado; saga `versions` colapsada)
+    - skills/skills.json (manifest de .zip descargables con sha256_prefix + size_kb)
+    - assets/profile.json (GitHub stats refreshed by .github/workflows/update-contributions.yml)
+  Testing: Vitest + JSDOM. No bundler. Tests live in `tests/` and import the shared assets
+  scripts directly via `await import('../assets/common.js')` after stubbing window/document.
+  Branding: verde MODO #008859, Red Hat Display + Quicksand, layout 16:9 en decks.
+  Deploy: GitHub Pages, branch `main`, root. Cron de `erno-modo-sync-all` regenera manifests a las 18:00.
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes (data manifests, theme defaults, breaking schema)
+    - Identify affected files: HTML pages, JS assets, JSON manifests
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Reference DOM contracts by data-attribute (data-collection, data-search, data-tabs, …)
+  design:
+    - Document architecture decisions with rationale
+    - Note any non-obvious DOM dependency between HTML and JS
+  tasks:
+    - Group by phase (specs, tests, implementation, docs)
+    - Use hierarchical numbering (1.1, 1.2, …)
+    - TDD: red test BEFORE implementation; one task per scenario
+  apply:
+    - Follow existing patterns (window.MODO namespace, idempotent DOM init, no global build)
+    - Vanilla JS only — no ES modules with bundling, but `import()` is OK in Vitest because JSDOM supports it
+  verify:
+    - Run `pnpm test` (Vitest) — all green
+    - Spot-check pages render with the manifest the spec requires
+  archive:
+    - Warn before deleting fields from `_meta` or item rows (downstream agents may depend on them)

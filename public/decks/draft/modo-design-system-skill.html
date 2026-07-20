@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Skill MODO-específico para generar páginas Next/Astro one-shot con tokens canónicos, JSON-LD obligatorio, NavFooterLayout, validación automática. 5 repos · 4 stacks · learning loop." />
+<title>modo-design-system · skill / SDK para devs frontend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --blue-default: #0049C4;
+    --blue-10: #E5EDF9;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFF8E5;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1600px, 96vw, calc(92vh * 16 / 9)); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 42px; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  h1.title { font-family: "Quicksand", sans-serif; font-size: clamp(42px, 4.8vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", sans-serif; font-size: clamp(33px, 3.4vw, 54px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stack-sm > * + * { margin-top: 8px; }
+  .stack-md > * + * { margin-top: 16px; }
+  .stack-lg > * + * { margin-top: 24px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 14px; font-weight: 500; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .chip--red { background: #FFE6E6; color: #A92121; font-weight: 600; }
+  .chip--blue { background: var(--blue-10); color: var(--blue-default); font-weight: 600; }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 16px; }
+  table.compare th, table.compare td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); border-bottom: 1px solid var(--gray-20); }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); text-decoration: line-through; }
+  td.now { color: var(--green-default); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  ol.decisions h3 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 17px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--no li::before { background: var(--red-warn); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--red-warn); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pillar { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 260px; }
+  .pillar__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; }
+  .pillar__title { font-size: 20px; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0; }
+  .pillar__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .pillar__footer { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--gray-8); display: flex; justify-content: space-between; align-items: baseline; }
+  .pillar__footer .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .pillar__footer .value { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 18px; color: var(--ink); }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  .codeblock { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; line-height: 1.55; background: var(--ink); color: #E4E8EE; padding: 18px 22px; border-radius: 12px; overflow: auto; max-height: 320px; }
+  .codeblock .k { color: #F8A0BC; }
+  .codeblock .s { color: #98DDA3; }
+  .codeblock .c { color: #6F7884; font-style: italic; }
+  .codeblock .n { color: #FFC738; }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 16px; }
+  .swatch { border-radius: 12px; overflow: hidden; border: 1px solid var(--border-soft); display: flex; flex-direction: column; min-height: 90px; }
+  .swatch__color { flex: 1; min-height: 50px; }
+  .swatch__label { padding: 8px 10px; background: var(--paper); font-size: 12px; font-weight: 600; color: var(--gray-80); }
+  .swatch__hex { padding: 0 10px 8px; background: var(--paper); font-family: ui-monospace, monospace; font-size: 12px; color: var(--gray-60); }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.06), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+  .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  @media print { body { background: white; } .deck { display: block; height: auto; width: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; letter-spacing: 0.04em; }
+  .timeline-row { display: grid; grid-template-columns: 100px 1fr; gap: 24px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--gray-8); }
+  .timeline-row:last-child { border-bottom: none; }
+  .timeline-row .v { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); font-size: 22px; letter-spacing: -0.02em; }
+  .timeline-row .meta { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-60); }
+  .timeline-row .body { font-size: 17px; color: var(--ink); margin-top: 4px; line-height: 1.45; }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+<link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/draft/modo-design-system-skill.html" />
+<meta property="og:title" content="modo-design-system · skill / SDK para devs frontend" />
+<meta property="og:description" content="Skill MODO-específico para generar páginas Next/Astro one-shot con tokens canónicos, JSON-LD obligatorio, NavFooterLayout, validación automática. 5 repos · 4 stacks · learning loop." />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<main class="deck" id="deck">
+
+<!-- ====== 1 · COVER ====== -->
+<section class="slide slide--cover active" data-slide>
+  <div class="slide__chrome-top">
+    <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+    <span>modo-design-system · skill / SDK</span>
+  </div>
+  <div class="slide__body" style="justify-content: center;">
+    <p class="eyebrow">SDK interno · workspace MODO · 2026-05-20</p>
+    <h1 class="title">El design system MODO,<br/>como <span style="color: var(--green-default);">skill ejecutable</span>.</h1>
+    <p class="lede">Pedís una página. Sale completa. Con los tokens, la tipo, el layout, el SEO, el JSON-LD y el commit convention. Sin re-prompts.</p>
+  </div>
+  <div class="meta">
+    <div class="meta__col"><h4>Audiencia</h4><p>Equipo frontend MODO · TL · PM</p></div>
+    <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza</p></div>
+    <div class="meta__col"><h4>Fecha</h4><p>20 mayo 2026 · v1.0.0</p></div>
+  </div>
+</section>
+
+<!-- ====== 2 · TL;DR ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>02 · La recomendación</span><span>TL;DR</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">La recomendación</p>
+    <h1 class="title" style="font-size: clamp(42px, 4.9vw, 72px); max-width: 22ch;">1 skill. 5 repos. <span style="color: var(--green-default);">0 drift</span> de branding.</h1>
+    <div class="grid-3" style="margin-top: 32px;">
+      <div class="stat"><span class="stat__label">Pilar 01</span><span class="num num--md stat__value">Tokens canónicos</span><p class="muted">colores, fuentes, spacing extraídos de fuentes verdad</p></div>
+      <div class="stat"><span class="stat__label">Pilar 02</span><span class="num num--md stat__value">7 templates</span><p class="muted">listing, detail, hero, featured, app-banner, jsonld, helpers</p></div>
+      <div class="stat"><span class="stat__label">Pilar 03</span><span class="num num--md stat__value">Validación auto</span><p class="muted">hex hardcoded, fonts banned, layout, JSON-LD, console.*</p></div>
+    </div>
+    <p class="body" style="margin-top: 32px; max-width: 78ch;"><strong>Por qué un skill y no un boilerplate</strong>: un boilerplate envejece. Un skill se versiona, aprende del uso real, se valida contra las fuentes verdad cada vez que corre, y bloquea drift en tiempo de generación, no en review.</p>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 13%;"></i></div><span class="counter">02 / 15</span></div>
+</section>
+
+<!-- ====== 3 · EL PROBLEMA ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>03 · Diagnóstico</span><span>El estado hoy</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">El estado hoy</p>
+    <h2 class="heading">5 repos, 4 stacks distintos, 1 brand que va a la deriva.</h2>
+    <p class="body" style="max-width: 75ch;">Cada dev frontend tiene que reaprender los tokens MODO cada vez que entra a un repo nuevo. La lib <span class="mono">@playsistemico/modo-ui-lib-web</span> tiene SCSS variables. <span class="mono">modo-landing</span> tiene 3 styling systems conviviendo. <span class="mono">promos-hub-site</span> está en Next 15 + Tailwind v4. Las fuentes están en <span class="mono">_document.js</span>, los colores en <span class="mono">tailwind.config.js</span>, los CSS vars en <span class="mono">globals.css</span>, y los SCSS tokens en la lib externa.</p>
+
+    <div class="stack-today">
+      <div class="stack-block">
+        <h4>Síntomas observados</h4>
+        <div class="row-item"><span class="label">Hex hardcoded en componentes</span><span class="value">~60 ocurrencias</span></div>
+        <div class="row-item"><span class="label">Páginas sin JSON-LD breadcrumb</span><span class="value">12 de 28 routes</span></div>
+        <div class="row-item"><span class="label">Variantes de fonts en uso</span><span class="value">Inter, system-ui, Arial leak</span></div>
+        <div class="row-item"><span class="label">Container max-width inconsistente</span><span class="value">1200, 1260, 1440, 92vw</span></div>
+        <div class="row-item"><span class="label">Letter-spacing display ausente</span><span class="value">~40% de los H1</span></div>
+      </div>
+      <div class="stack-block">
+        <h4>Costo</h4>
+        <div class="row-item"><span class="label">Tiempo onboarding dev nuevo a tokens</span><span class="value">~3 días</span></div>
+        <div class="row-item"><span class="label">PRs con feedback "no es el color MODO"</span><span class="value">recurrente</span></div>
+        <div class="row-item"><span class="label">Tiempo crear página nueva from scratch</span><span class="value">~1 día</span></div>
+        <div class="row-item"><span class="label">Tiempo review de SEO + JSON-LD</span><span class="value">~2h por PR</span></div>
+        <div class="row-item"><span class="label">Drift visual entre repos hermanos</span><span class="value">visible</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 20%;"></i></div><span class="counter">03 / 15</span></div>
+</section>
+
+<!-- ====== 4 · TOKENS CANÓNICOS ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>04 · Tokens</span><span>Brand verdadero</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Tokens canónicos · extraídos de fuentes verdad</p>
+    <h2 class="heading">Esta es la marca MODO. No es Roboto, no es rojo.</h2>
+
+    <div class="grid-2" style="margin-top: 24px;">
+      <div>
+        <h3 class="subheading">Tipografía</h3>
+        <div class="card" style="padding: 16px 20px; margin-bottom: 12px;">
+          <div style="font-family: Quicksand, sans-serif; font-weight: 700; font-size: 38px; letter-spacing: -0.025em; color: var(--ink);">Quicksand 700</div>
+          <p class="muted" style="margin-top: 4px;">Display · H1, H2, H3, H4, stats, card titles · pesos 400/500/700</p>
+        </div>
+        <div class="card" style="padding: 16px 20px;">
+          <div style="font-family: 'Red Hat Display', sans-serif; font-weight: 500; font-size: 26px; color: var(--ink);">Red Hat Display 500</div>
+          <p class="muted" style="margin-top: 4px;">Body · callout, caption, app-*, links, forms · 400/500/600/700/900</p>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="subheading">Paleta brand</h3>
+        <div class="swatch-grid">
+          <div class="swatch"><div class="swatch__color" style="background: #008859;"></div><div class="swatch__label">Payment</div><div class="swatch__hex">#008859</div></div>
+          <div class="swatch"><div class="swatch__color" style="background: #00471B;"></div><div class="swatch__label">Pay Dark</div><div class="swatch__hex">#00471B</div></div>
+          <div class="swatch"><div class="swatch__color" style="background: #0049C4;"></div><div class="swatch__label">Send</div><div class="swatch__hex">#0049C4</div></div>
+          <div class="swatch"><div class="swatch__color" style="background: #FFC738;"></div><div class="swatch__label">Rewards</div><div class="swatch__hex">#FFC738</div></div>
+          <div class="swatch"><div class="swatch__color" style="background: #121212;"></div><div class="swatch__label">Ink</div><div class="swatch__hex">#121212</div></div>
+          <div class="swatch"><div class="swatch__color" style="background: #F3F4F9;"></div><div class="swatch__label">Surface</div><div class="swatch__hex">#F3F4F9</div></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="body" style="margin-top: 24px; max-width: 90ch;"><strong>Verdad operativa</strong>: <span class="mono">tailwind.config.js:11–100</span> + <span class="mono">globals.css:6–94</span> + <span class="mono">modo-ui-lib-web/theme/colors.scss</span> + <span class="mono">_document.js:51</span>. El skill levanta estos archivos en cada generación y valida contra ellos.</p>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 27%;"></i></div><span class="counter">04 / 15</span></div>
+</section>
+
+<!-- ====== 5 · SPACING + GRID ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>05 · Layout</span><span>Spacing, container, motion</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Spacing · container · motion</p>
+    <h2 class="heading">Una sola escala. Un container. Dos curvas de motion.</h2>
+
+    <div class="grid-3" style="margin-top: 24px;">
+      <div class="card">
+        <div class="card__index">01 · Spacing</div>
+        <h3 class="subheading">Tokens Tailwind</h3>
+        <table class="compare" style="margin-top: 8px;">
+          <tbody>
+            <tr><td><span class="mono">xxxsm</span></td><td class="now">4 px</td></tr>
+            <tr><td><span class="mono">xxsm</span></td><td class="now">8 px</td></tr>
+            <tr><td><span class="mono">sm</span></td><td class="now">16 px</td></tr>
+            <tr><td><span class="mono">md</span></td><td class="now">24 px</td></tr>
+            <tr><td><span class="mono">lg</span></td><td class="now">32 px</td></tr>
+            <tr><td><span class="mono">xxxlg</span></td><td class="now">48 px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card__index">02 · Container</div>
+        <h3 class="subheading">Canónico</h3>
+        <pre class="codeblock" style="margin-top: 8px;"><span class="k">className</span>=<span class="s">"mx-auto max-w-[1260px] px-4 lg:px-6"</span></pre>
+        <p class="muted" style="margin-top: 12px;">Hero py: <span class="mono">pb-14 pt-10 lg:pb-20 lg:pt-14</span><br/>Section gap: <span class="mono">py-6 lg:py-10</span> · <span class="mono">mb-10</span></p>
+      </div>
+
+      <div class="card">
+        <div class="card__index">03 · Motion</div>
+        <h3 class="subheading">2 easings + 3 durations</h3>
+        <table class="compare" style="margin-top: 8px;">
+          <tbody>
+            <tr><td>Smooth (default)</td><td class="now" style="font-size:11px;">cubic-bezier(.25,1,.5,1)</td></tr>
+            <tr><td>Sharp (botones)</td><td class="now" style="font-size:11px;">cubic-bezier(.4,0,.4,1)</td></tr>
+            <tr><td>Micro</td><td class="now">120 ms</td></tr>
+            <tr><td>Normal</td><td class="now">200 ms</td></tr>
+            <tr><td>Image hover</td><td class="now">300 ms</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; padding: 16px 20px; background: var(--green-10); border-radius: 12px; display: flex; gap: 16px; align-items: baseline;">
+      <span class="chip chip--green">Letter-spacing display</span>
+      <span style="font-size: 16px; color: var(--gray-80);">H1 hero <strong>-0.025em</strong> · H2 card <strong>-0.022em</strong> · H2 section <strong>-0.018em</strong> · Stat <strong>-0.025em</strong> · sin esto el copy se ve "blando".</span>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 33%;"></i></div><span class="counter">05 / 15</span></div>
+</section>
+
+<!-- ====== 6 · ARQUITECTURA SKILL ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>06 · Arquitectura</span><span>~/.claude/skills/modo-design-system/</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Anatomía del skill</p>
+    <h2 class="heading">Estructura: SKILL + reference + templates + scripts.</h2>
+
+    <div class="grid-2" style="margin-top: 20px; gap: 40px;">
+      <pre class="codeblock" style="font-size: 13px; line-height: 1.7;">~/.claude/skills/modo-design-system/
+├── <span class="n">SKILL.md</span>                     <span class="c"># trigger ES/EN + hard rules</span>
+├── <span class="n">reference/</span>
+│   ├── tokens.md                <span class="c"># colors · spacing · fonts</span>
+│   ├── typography-scale.md      <span class="c"># Tw classes → semántica</span>
+│   ├── page-patterns.md         <span class="c"># 5 patterns canónicos</span>
+│   ├── components-inventory.md  <span class="c"># lib + locales</span>
+│   └── brand-voice.md           <span class="c"># copy rules rioplatense</span>
+├── <span class="n">templates/</span>
+│   ├── page-listing.next12.tmpl
+│   ├── page-detail.next12.tmpl
+│   ├── hero-verde.tsx.tmpl
+│   ├── featured-grid.tsx.tmpl
+│   ├── app-banner-cta.tsx.tmpl
+│   └── jsonld-helpers.ts.tmpl
+├── <span class="n">scripts/</span>
+│   ├── validate-tokens.sh
+│   └── extract-tokens.sh
+├── <span class="n">manifests/</span>
+│   └── repo-targets.json        <span class="c"># 5 repos → 4 stacks</span>
+├── <span class="n">changelog/</span>
+│   ├── CHANGELOG.md
+│   ├── learnings.md
+│   ├── runs.jsonl
+│   └── ds-snapshots/            <span class="c"># drift detection</span>
+└── <span class="n">examples/</span>
+    └── README.md                <span class="c"># goldens en producción</span></pre>
+
+      <div>
+        <h3 class="subheading">Triggers (auto-invoke)</h3>
+        <ul class="checks" style="margin-bottom: 16px;">
+          <li>"nueva página MODO"</li>
+          <li>"crear /<i>slug</i>"</li>
+          <li>"página comercios"</li>
+          <li>"landing MODO"</li>
+          <li>"feature page"</li>
+          <li>"promos-hub page"</li>
+          <li>"new modo page" / "add route"</li>
+        </ul>
+        <h3 class="subheading">Reglas duras</h3>
+        <ul class="checks">
+          <li>Solo Quicksand + Red Hat Display</li>
+          <li>Solo tokens MODO (cero hex literal)</li>
+          <li><span class="mono">NavFooterLayout</span> obligatorio</li>
+          <li>JSON-LD Org + WebSite + Breadcrumb</li>
+          <li>ISR <span class="mono">revalidate: 3600</span> default</li>
+          <li>Container max <span class="mono">1260px</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 40%;"></i></div><span class="counter">06 / 15</span></div>
+</section>
+
+<!-- ====== 7 · 5 PAGE PATTERNS ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>07 · Page patterns</span><span>5 recetas canónicas</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Page patterns · cubierto en v1.0.0</p>
+    <h2 class="heading">Toda página MODO calza en uno de 5 patrones.</h2>
+
+    <div class="pillar-grid" style="margin-top: 20px;">
+      <div class="pillar">
+        <div class="pillar__index">P01</div>
+        <h3 class="pillar__title">Listing programático</h3>
+        <p class="pillar__body">Catálogo enumerable, hero verde, featured 4-col, grid, app banner. ISR 1h. Schema CollectionPage + ItemList.</p>
+        <div class="pillar__footer"><span class="label">Golden</span><span class="value">/comercios</span></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__index">P02</div>
+        <h3 class="pillar__title">Detail page</h3>
+        <p class="pillar__body">Ficha individual, breadcrumb, sidebar, FAQ, related. Paths estáticos pre-generados. Schema específico + Offer + FAQPage.</p>
+        <div class="pillar__footer"><span class="label">Golden</span><span class="value">/comercios/[slug]</span></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__index">P03</div>
+        <h3 class="pillar__title">Landing institucional</h3>
+        <p class="pillar__body">Storytelling vertical, hero asimétrico, secciones modulares, CTA descargá app. Schema Service / Product.</p>
+        <div class="pillar__footer"><span class="label">Golden</span><span class="value">/modo-en-tu-comercio</span></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__index">P04</div>
+        <h3 class="pillar__title">FAQ topic page</h3>
+        <p class="pillar__body">Pregunta/respuesta para indexar en AI overviews. Search in-page. Schema FAQPage con mainEntity completo.</p>
+        <div class="pillar__footer"><span class="label">Golden</span><span class="value">/ayuda/...</span></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar__index">P05</div>
+        <h3 class="pillar__title">Bank-specific page</h3>
+        <p class="pillar__body">Theme switching via <span class="mono">data-theme</span>. Override CSS vars al brand del banco. Listing + hero del banco.</p>
+        <div class="pillar__footer"><span class="label">Golden</span><span class="value">/promos-banco/[slug]</span></div>
+      </div>
+      <div class="pillar" style="background: var(--green-10); border-color: var(--green-default);">
+        <div class="pillar__index" style="color: var(--green-dark);">→</div>
+        <h3 class="pillar__title" style="color: var(--green-dark);">Extensible</h3>
+        <p class="pillar__body" style="color: var(--green-dark);">Si aparece un patrón nuevo (ej. agentic checkout page), se agrega al inventario en <span class="mono">page-patterns.md</span> y se acumula golden en producción.</p>
+        <div class="pillar__footer" style="border-color: rgba(0,71,27,0.15);"><span class="label" style="color: var(--green-dark);">Versión</span><span class="value" style="color: var(--green-dark);">v1.1.0+</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 47%;"></i></div><span class="counter">07 / 15</span></div>
+</section>
+
+<!-- ====== 8 · WORKFLOW END-TO-END ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>08 · Workflow</span><span>De brief a archivos</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Workflow end-to-end · una sola interacción</p>
+    <h2 class="heading">Pedís. Genera. Valida. Recuerda commit + build.</h2>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 20px;">
+      <pre class="codeblock" style="font-size: 14px;"><span class="c"># 1 · Usuario</span>
+<span class="k">hernan</span>: necesito una página /seguros con
+       listing de productos y SEO completo
+
+<span class="c"># 2 · Skill auto-invoca por trigger</span>
+[ <span class="n">modo-design-system</span> ] activado
+  → lee manifests/repo-targets.json
+  → detecta: modo-landing (Next 12 + Pages)
+  → carga reference/{tokens,typography,patterns}.md
+  → carga templates/page-listing.next12.tmpl
+
+<span class="c"># 3 · Pregunta lo mínimo</span>
+? hero copy (title, subtitle, eyebrow)
+? data source (BFF, static, Storyblok)
+? tema (default green | Patagonia | bank)
+
+<span class="c"># 4 · Genera archivos</span>
++ src/pages/seguros/index.tsx
++ src/components/Seguros/{Hero,Grid,Card}.tsx
++ src/utils/seguros/jsonld.ts
++ src/data/seguros/api.ts <span class="c">(stub)</span>
+
+<span class="c"># 5 · Valida</span>
+$ scripts/validate-tokens.sh &lt;generated&gt;
+✓ Clean · 0 violations
+
+<span class="c"># 6 · Recuerda</span>
+→ pnpm lint &amp;&amp; pnpm build
+→ commit: feat(SEGUROS-001): scaffold page</pre>
+
+      <div>
+        <h3 class="subheading">Lo que el dev no tiene que pensar</h3>
+        <ul class="checks">
+          <li>Qué fonts cargar</li>
+          <li>Qué tokens de color usar</li>
+          <li>Cuál es el container max-width</li>
+          <li>Cómo se hace el hero verde</li>
+          <li>Qué JSON-LD obligatorios poner</li>
+          <li>Cómo armar la breadcrumb</li>
+          <li>Qué duración tienen las transiciones</li>
+          <li>Cómo nombrar la commit</li>
+          <li>Si las imágenes necesitan <span class="mono">alt</span></li>
+          <li>Si los botones icon-only necesitan <span class="mono">aria-label</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 54%;"></i></div><span class="counter">08 / 15</span></div>
+</section>
+
+<!-- ====== 9 · VALIDACIÓN ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>09 · Validación</span><span>validate-tokens.sh</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Validación automática · pre-commit</p>
+    <h2 class="heading">7 reglas. Cada archivo generado pasa o falla.</h2>
+
+    <table class="compare" style="margin-top: 20px;">
+      <thead>
+        <tr><th>Regla</th><th>Detecta</th><th>Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="chip chip--red">HEX_HARDCODED</span></td><td>hex literal fuera de allowlist <span class="mono">rgba(...)</span> / <span class="mono">var(--...)</span></td><td>usar token canónico (<span class="mono">primary-*</span>, <span class="mono">brand-*</span>, <span class="mono">var(--green-*)</span>)</td></tr>
+        <tr><td><span class="chip chip--red">FONT_BANNED</span></td><td><span class="mono">Inter</span>, <span class="mono">Roboto</span>, <span class="mono">Arial</span>, <span class="mono">system-ui</span>, <span class="mono">Geist</span>, <span class="mono">Space Grotesk</span></td><td><span class="mono">font-quicksand</span> o <span class="mono">font-red-hat</span></td></tr>
+        <tr><td><span class="chip chip--red">TW_DEFAULT_COLOR</span></td><td><span class="mono">bg-green-500</span>, <span class="mono">text-gray-500</span>, etc.</td><td>tokens MODO equivalentes</td></tr>
+        <tr><td><span class="chip chip--yellow">MISSING_LAYOUT</span></td><td>page sin <span class="mono">NavFooterLayout</span></td><td>wrap content en layout canónico</td></tr>
+        <tr><td><span class="chip chip--yellow">MISSING_JSONLD</span></td><td>falta Organization, WebSite o Breadcrumb</td><td>incluir en <span class="mono">seoData.jsonLd[]</span></td></tr>
+        <tr><td><span class="chip chip--red">CONSOLE</span></td><td><span class="mono">console.log/error/warn</span></td><td>remover</td></tr>
+        <tr><td><span class="chip chip--yellow">INLINE_COLOR</span></td><td><span class="mono">style={{ backgroundColor: '#...' }}</span></td><td>Tailwind class</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 20px; padding: 14px 18px; background: var(--green-10); border-radius: 12px;">
+      <span class="chip chip--green">Probado</span>
+      <span style="font-size: 16px; color: var(--gray-80); margin-left: 12px;">contra <span class="mono">comercios/index.tsx</span> (golden) · <strong>0 violations</strong>. Escape: <span class="mono">// modo-ds:disable</span> en la línea.</span>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 60%;"></i></div><span class="counter">09 / 15</span></div>
+</section>
+
+<!-- ====== 10 · MULTI-REPO ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>10 · Multi-repo</span><span>5 repos · 4 stacks</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Multi-repo support · manifests/repo-targets.json</p>
+    <h2 class="heading">El skill detecta el repo y elige el template correcto.</h2>
+
+    <table class="compare" style="margin-top: 20px;">
+      <thead>
+        <tr><th>Repo</th><th>Framework</th><th>Router</th><th>Tailwind</th><th>Template family</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>modo-landing</td><td>Next 12.3.5</td><td>Pages</td><td>v3.3</td><td><span class="mono">*.next12.tmpl</span></td><td><span class="chip chip--green">v1.0</span></td></tr>
+        <tr><td>promos-hub-site</td><td>Next 15.5</td><td>App</td><td>v4.1</td><td><span class="mono">*.next15.tmpl</span></td><td><span class="chip chip--yellow">v1.2</span></td></tr>
+        <tr><td>modoplus-hub-site</td><td>Next 14.2</td><td>App</td><td>v3.4</td><td><span class="mono">*.next14.tmpl</span></td><td><span class="chip chip--yellow">v1.2</span></td></tr>
+        <tr><td>modo-landing-astro</td><td>Astro 5.17</td><td>File-routes</td><td>v4.2</td><td><span class="mono">*.astro.tmpl</span></td><td><span class="chip chip--yellow">v1.2</span></td></tr>
+        <tr><td>modo-landing-sdk-ui-lib</td><td>Rollup (lib)</td><td>n/a</td><td>v4.0</td><td>N/A (no pages)</td><td><span class="chip">refuse</span></td></tr>
+      </tbody>
+    </table>
+
+    <p class="body" style="margin-top: 24px; max-width: 90ch;"><strong>Detección automática</strong>: lee <span class="mono">package.json</span> + marker file (<span class="mono">_document.js</span> para Pages, <span class="mono">app/layout.tsx</span> para App Router, <span class="mono">astro.config.mjs</span> para Astro). Match contra <span class="mono">stackDetection</span> en el manifest. Si no matchea, pide al user qué template usar.</p>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 67%;"></i></div><span class="counter">10 / 15</span></div>
+</section>
+
+<!-- ====== 11 · LEARNING LOOP ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>11 · Learning loop</span><span>Iterativo · cada run mejora</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Iterativo · el skill aprende del uso real</p>
+    <h2 class="heading">3 mecanismos de mejora continua.</h2>
+
+    <div class="grid-3" style="margin-top: 24px;">
+      <div class="card">
+        <div class="card__index">M1</div>
+        <h3 class="subheading">runs.jsonl</h3>
+        <p class="muted">Cada generación deja entry: timestamp, repo, slug, tipo, tokens detectados fuera de DS, correcciones del user post-gen. Grep-able, append-only.</p>
+      </div>
+      <div class="card">
+        <div class="card__index">M2</div>
+        <h3 class="subheading">learnings.md</h3>
+        <p class="muted">Si el user corrige el mismo patrón ≥3 veces, se abre entry: detectado, síntoma, fix aplicado, status. Cada cierre dispara update de template y bump version.</p>
+      </div>
+      <div class="card">
+        <div class="card__index">M3</div>
+        <h3 class="subheading">ds-snapshots/</h3>
+        <p class="muted">Run trimestral de <span class="mono">extract-tokens.sh</span> graba sha256 de tailwind.config + globals.css. Diff detecta drift del DS upstream y dispara revisión del skill.</p>
+      </div>
+    </div>
+
+    <pre class="codeblock" style="margin-top: 24px; font-size: 13px;"><span class="c"># Ejemplo de loop cerrado (hipotético)</span>
+2026-06-10  user genera /seguros, agrega class="text-emerald-600" post-gen
+2026-06-15  user genera /promos-banco-galicia, agrega class="text-emerald-600" post-gen
+2026-06-22  user genera /promociones-cyber, agrega class="text-emerald-600" post-gen
+            → learnings.md crea A007 "text-emerald-* sustituye sdk-system-success"
+            → review: ¿agregar nuevo token al DS? ¿bloquear text-emerald-*?
+            → resolución: agregar al token <span class="mono">sdk-colors-success-emphasis</span>
+            → bump v1.0.0 → v1.0.1
+            → template update
+            → próxima generación ya lo aplica</pre>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 74%;"></i></div><span class="counter">11 / 15</span></div>
+</section>
+
+<!-- ====== 12 · COMO SDK ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>12 · Como SDK</span><span>Para todo el equipo frontend</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Distribución · roadmap v2.0</p>
+    <h2 class="heading">Skill hoy. SDK publicable mañana. CLI sin Claude pasado.</h2>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 24px;">
+      <div class="card" style="border-left: 4px solid var(--green-default);">
+        <span class="chip chip--green" style="margin-bottom: 12px;">v1.0 · hoy</span>
+        <h3 class="subheading">Skill personal</h3>
+        <p class="muted">Vive en <span class="mono">~/.claude/skills/</span> de cada dev. Versionado por git en repo personal o sync via dotfiles.</p>
+        <ul class="checks" style="margin-top: 12px;">
+          <li>Auto-invoca por triggers</li>
+          <li>Cero install fricción</li>
+          <li>Iteración solo · pull request al fork del skill</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 4px solid var(--yellow-rewards);">
+        <span class="chip chip--yellow" style="margin-bottom: 12px;">v2.0 · Q3 2026</span>
+        <h3 class="subheading">Skill compartido</h3>
+        <p class="muted">Skill publicado como repo público <span class="mono">SoyErnoModo/modo-design-skill</span>. <span class="mono">install.sh</span> que lo clona a <span class="mono">~/.claude/skills/</span>.</p>
+        <ul class="checks" style="margin-top: 12px;">
+          <li>Tag releases semver</li>
+          <li>CHANGELOG público</li>
+          <li>PRs del equipo extienden patterns</li>
+          <li>Auto-update via cron / hook</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 4px solid var(--blue-default);">
+        <span class="chip chip--blue" style="margin-bottom: 12px;">v3.0 · Q4 2026</span>
+        <h3 class="subheading">CLI sin Claude</h3>
+        <p class="muted">Wrapper <span class="mono">pnpm modo-page</span>. Mismos templates, motor JS (Plop / Hygen). Funciona sin sesión IA.</p>
+        <ul class="checks" style="margin-top: 12px;">
+          <li>Lockstep con skill</li>
+          <li>CI-friendly · scaffolding repetible</li>
+          <li>Usable en dev environments sin Claude</li>
+          <li>Mismo manifest <span class="mono">repo-targets.json</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 80%;"></i></div><span class="counter">12 / 15</span></div>
+</section>
+
+<!-- ====== 13 · ROADMAP ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>13 · Roadmap</span><span>Versions próximas</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Roadmap · cómo evoluciona el skill</p>
+    <h2 class="heading">5 versions planeadas. Cada una baja fricción.</h2>
+
+    <div style="margin-top: 24px;">
+      <div class="timeline-row">
+        <div><div class="v">v1.0.0</div><div class="meta">20 may 26</div></div>
+        <div><strong>Hoy · base productiva</strong><div class="body">Listing + detail Next 12, reference completa, validate-tokens, manifest 5 repos, changelog inicial. <span class="chip chip--green" style="font-size:10px; padding:2px 8px; margin-left:6px;">SHIPPED</span></div></div>
+      </div>
+      <div class="timeline-row">
+        <div><div class="v">v1.1.0</div><div class="meta">~2 sem</div></div>
+        <div><strong>Templates restantes</strong><div class="body">page-landing + page-faq + page-bank Next 12. Hook PostToolUse del workspace para validación auto al crear file. Examples bank con 3 goldens reales.</div></div>
+      </div>
+      <div class="timeline-row">
+        <div><div class="v">v1.2.0</div><div class="meta">~1 mes</div></div>
+        <div><strong>Multi-stack</strong><div class="body">Templates Next 15 App Router (promos-hub-site), Next 14 (modoplus-hub-site), Astro 5 (modo-landing-astro). Detección automática del stack ya implementada.</div></div>
+      </div>
+      <div class="timeline-row">
+        <div><div class="v">v1.3.0</div><div class="meta">~6 sem</div></div>
+        <div><strong>Aprendizaje automatizado</strong><div class="body">Post-skill-run hook graba correcciones del user en <span class="mono">runs.jsonl</span>. Si patrón repite ≥3 → entry auto en <span class="mono">learnings.md</span> + propuesta de update. Storyblok content-type generator. BFF stub generator.</div></div>
+      </div>
+      <div class="timeline-row">
+        <div><div class="v">v2.0.0</div><div class="meta">Q3 26</div></div>
+        <div><strong>SDK + multi-banco</strong><div class="body">Theme switching automático (Patagonia, Galicia, Macro, BBVA). Publicación como <span class="mono">@playsistemico/modo-design-skill</span>. CLI <span class="mono">pnpm modo-page</span> sin Claude.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 87%;"></i></div><span class="counter">13 / 15</span></div>
+</section>
+
+<!-- ====== 14 · DECISIONES ====== -->
+<section class="slide" data-slide>
+  <div class="slide__chrome-top"><span><span class="sigil"></span>14 · Decisiones</span><span>Qué necesito que aprueben</span></div>
+  <div class="slide__body">
+    <p class="eyebrow">Decisiones pendientes</p>
+    <h2 class="heading">3 decisiones para activar al equipo entero.</h2>
+
+    <ol class="decisions" style="margin-top: 24px;">
+      <li>
+        <h3>Adoptar el skill en el workflow estándar del equipo frontend</h3>
+        <p class="muted">Cada dev instala el skill (clone + symlink a <span class="mono">~/.claude/skills/</span>). Onboarding: 5 minutos. Output: cualquier "necesito página X" sale on-brand sin re-prompt.</p>
+        <div class="ownership">Owner · Tech Lead frontend · target: próximo sprint</div>
+      </li>
+      <li>
+        <h3>Convertir el repo del skill en source-of-truth oficial del DS MODO</h3>
+        <p class="muted">Cambios al tailwind.config / globals.css disparan re-extract y bump del skill. La doc del DS deja de ser un Confluence stale; vive en <span class="mono">reference/</span>.</p>
+        <div class="ownership">Owner · Design System + Frontend · target: Q3 2026</div>
+      </li>
+      <li>
+        <h3>Reservar tiempo para v1.1+v1.2 (templates restantes + multi-stack)</h3>
+        <p class="muted">Cubrir promos-hub-site + modoplus-hub-site + Astro habilita el skill al 100% del workspace. Estimado: ~16h. Bloquea drift que ya se está acumulando.</p>
+        <div class="ownership">Owner · Hernán · target: 2 sprints</div>
+      </li>
+    </ol>
+  </div>
+  <div class="slide__chrome-bottom"><span>modo-design-system · v1.0.0</span><div class="progress"><i style="--p: 94%;"></i></div><span class="counter">14 / 15</span></div>
+</section>
+
+<!-- ====== 15 · CIERRE ====== -->
+<section class="slide slide--cover" data-slide>
+  <div class="slide__chrome-top">
+    <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+    <span>modo-design-system · skill / SDK</span>
+  </div>
+  <div class="slide__body" style="justify-content: center;">
+    <p class="eyebrow">Cierre</p>
+    <h1 class="title">El DS deja de ser doc.<br/>Pasa a ser <span style="color: var(--green-default);">comportamiento ejecutable</span>.</h1>
+    <p class="lede">Una página MODO bien hecha hoy lleva ~1 día. Con el skill, ~10 minutos. Y el branding deja de drift-ear porque la generación pasa por el skill antes de pasar por review.</p>
+  </div>
+  <div class="meta">
+    <div class="meta__col"><h4>Skill path</h4><p><span class="mono" style="font-size: 14px;">~/.claude/skills/modo-design-system/</span></p></div>
+    <div class="meta__col"><h4>Próximo paso</h4><p>Validar v1.0 generando <span class="mono">/seguros</span></p></div>
+    <div class="meta__col"><h4>Contacto</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+  </div>
+</section>
+
+</div>
+
+<nav class="deck__nav">
+  <button id="prev" aria-label="Anterior">‹</button>
+  <span class="counter"><span id="cur">1</span> / <span id="tot">15</span></span>
+  <button id="next" aria-label="Siguiente">›</button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+const slides = Array.from(document.querySelectorAll('[data-slide]'));
+let i = 0;
+const cur = document.getElementById('cur');
+const tot = document.getElementById('tot');
+tot.textContent = slides.length;
+function go(n) {
+  slides[i].classList.remove('active');
+  i = (n + slides.length) % slides.length;
+  slides[i].classList.add('active');
+  cur.textContent = i + 1;
+}
+document.getElementById('prev').addEventListener('click', () => go(i - 1));
+document.getElementById('next').addEventListener('click', () => go(i + 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(i - 1);
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { go(i + 1); e.preventDefault(); }
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(slides.length - 1);
+});
+</script>
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="modo-design-system-skill"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>

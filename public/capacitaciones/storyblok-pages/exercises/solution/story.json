@@ -1,0 +1,41 @@
+{
+  "_comment": "Story de prueba para el lab. Crear vía modo-storyblok (MCP o curl). full_slug = lab/promo-banner → ruta /lab/promo-banner. Publicar (o ?preview=true en develop).",
+  "story": {
+    "name": "Lab Promo Banner",
+    "slug": "promo-banner",
+    "full_slug": "lab/promo-banner",
+    "content": {
+      "component": "page",
+      "seo": [
+        {
+          "component": "Seo",
+          "title": "Lab · Promo Banner",
+          "description": "Página de prueba del lab de la capacitación Storyblok."
+        }
+      ],
+      "body": [
+        {
+          "component": "SectionPromoBanner",
+          "_uid": "promo-1",
+          "title": "Black Friday MODO",
+          "subtitle": "Aprovechá los descuentos pagando con MODO",
+          "variant": "primary",
+          "items": [
+            { "text": "Hasta 40% de descuento" },
+            { "text": "Cuotas sin interés" },
+            { "text": "Reintegro en tu cuenta" }
+          ],
+          "ctaText": "Ver promos",
+          "ctaUrl": "/promos"
+        },
+        {
+          "component": "SectionPromoBanner",
+          "_uid": "promo-2",
+          "title": "Sin CTA",
+          "subtitle": "Este banner no define ctaUrl, así que no muestra botón",
+          "variant": "secondary"
+        }
+      ]
+    }
+  }
+}

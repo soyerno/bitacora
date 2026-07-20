@@ -1,0 +1,193 @@
+/* MODO decks · bionic reading mode for ADHD/focus
+ * When body.bionic-on is set, the prefix of each word gets extra weight
+ * (wrapped in <b class="bionic"> by deck-bionic.js). Skipped: code, .mono,
+ * the toggle buttons themselves, and any element marked [data-bionic="skip"].
+ *
+ * The bionic toggle is no longer a floating element: deck-bionic.js groups
+ * it together with the existing .theme-toggle inside a header dropdown
+ * (.deck-controls) so both reading prefs live at the same level.
+ */
+
+body.bionic-on b.bionic { font-weight: 700; }
+body:not(.bionic-on) b.bionic { font-weight: inherit; }
+
+/* ----------------------------------------------------------------------- */
+/* Header dropdown that hosts both theme + bionic toggles                  */
+/* Built on native <details>/<summary> — open/close is HTML+CSS only,      */
+/* zero JS state.                                                          */
+/* ----------------------------------------------------------------------- */
+.deck-controls {
+  position: relative;
+  justify-self: end;
+  display: inline-block;
+}
+
+/* Kill the native disclosure marker (▶/▼) on every engine. */
+.deck-controls > summary::-webkit-details-marker { display: none; }
+.deck-controls > summary::marker { content: ""; }
+
+.deck-controls__trigger {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px 6px 10px;
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.deck-controls__trigger:hover,
+.deck-controls__trigger:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.deck-controls__trigger svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.deck-controls__caret {
+  font-size: 10px;
+  line-height: 1;
+  opacity: 0.7;
+  transform: translateY(1px);
+  transition: transform 0.15s;
+}
+.deck-controls[open] .deck-controls__trigger {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-light, color-mix(in srgb, var(--accent) 10%, var(--surface)));
+}
+.deck-controls[open] .deck-controls__caret {
+  transform: rotate(180deg) translateY(-1px);
+}
+
+/* Closed state: explicitly hide the panel so the panel's own
+   `display: flex` doesn't override the UA's <details>-collapsed rule. */
+.deck-controls:not([open]) > .deck-controls__panel { display: none; }
+
+.deck-controls__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 240px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.18), 0 4px 10px -4px rgba(0, 0, 0, 0.08);
+  z-index: 50;
+}
+:root[data-theme="dark"] .deck-controls__panel {
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 10px -4px rgba(0, 0, 0, 0.4);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .deck-controls__panel {
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6), 0 4px 10px -4px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.deck-controls__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.deck-controls__row + .deck-controls__row {
+  border-top: 1px solid var(--border-soft);
+  margin-top: 2px;
+  padding-top: 8px;
+}
+.deck-controls__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+/* When the theme toggle lives inside the dropdown panel, drop the
+   justify-self override from the header layout so it lines up with the
+   bionic toggle. */
+.deck-controls__panel .theme-toggle { justify-self: auto; }
+
+/* ----------------------------------------------------------------------- */
+/* Bionic toggle — used inside the dropdown row (or as a standalone        */
+/* fallback inline in the header when no theme toggle exists).             */
+/* ----------------------------------------------------------------------- */
+.deck-bionic-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font: 500 11px/1 "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.deck-bionic-toggle:hover,
+.deck-bionic-toggle:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.deck-bionic-toggle .icon {
+  font-family: "Quicksand", "Red Hat Display", sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.deck-bionic-toggle .icon b {
+  font-weight: 700;
+  color: var(--ink);
+}
+.deck-bionic-toggle:hover .icon b,
+.deck-bionic-toggle:focus-visible .icon b {
+  color: var(--accent);
+}
+
+/* When active, fill the chip with the accent so the state is obvious. */
+body.bionic-on .deck-bionic-toggle {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-light, color-mix(in srgb, var(--accent) 14%, var(--surface)));
+}
+body.bionic-on .deck-bionic-toggle .icon b {
+  color: var(--accent);
+}
+
+/* Standalone fallback: only used if a page has no .theme-toggle to group with. */
+.deck-bionic-toggle--standalone {
+  justify-self: end;
+}
+
+@media (max-width: 860px) {
+  .deck-controls { justify-self: end; }
+}
+@media (max-width: 640px) {
+  .deck-bionic-toggle .label { display: none; }
+  .deck-controls__panel { min-width: 220px; }
+}
+
+@media print {
+  .deck-controls,
+  .deck-bionic-toggle { display: none !important; }
+}

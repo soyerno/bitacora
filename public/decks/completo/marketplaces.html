@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Integración de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisición vía el modal existente. Incluye demo del flujo agéntico end-to-end." />
+<title>Sumar ChatGPT App + Claude Skill a "Descargá MODO"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --yellow-rewards: #FFC738;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+    /* MODO download block colors (matching the live site) */
+    --coral: #FF4F47;
+    --modo-bank-yellow: #FFC738;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: var(--gray-8);
+    font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck {
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slide {
+    width: min(1600px, 96vw, calc(92vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    background: var(--paper-warm);
+    position: relative;
+    display: none;
+    padding: 64px 80px;
+    box-shadow: 0 24px 80px rgba(18,18,18,0.08);
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  .slide__chrome-top {
+    position: absolute;
+    top: 28px; left: 80px; right: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .slide__chrome-bottom {
+    position: absolute;
+    bottom: 24px; left: 80px; right: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--gray-60);
+  }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress {
+    flex: 1; margin: 0 24px; height: 2px;
+    background: var(--gray-8); overflow: hidden; border-radius: 999px;
+  }
+  .slide__chrome-bottom .progress > i {
+    display: block; height: 100%; background: var(--green-default);
+    width: var(--p, 0%);
+    transition: width 360ms var(--ease);
+  }
+
+  /* MODO wordmark — text logo */
+  .modo-wordmark {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    color: var(--green-default);
+    letter-spacing: -0.06em;
+    line-height: 1; display: inline-block;
+    font-size: 42px;
+    font-variant-numeric: tabular-nums;
+  }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+
+  .eyebrow {
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 16px;
+  }
+  h1.title {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(42px, 4.8vw, 68px);
+    font-weight: 700; line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 20px;
+    color: var(--ink);
+    max-width: 22ch;
+  }
+  h2.heading {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(33px, 3.4vw, 48px);
+    font-weight: 700; line-height: 1.1;
+    letter-spacing: -0.018em;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+  p.lede {
+    font-size: 24px; line-height: 1.45;
+    color: var(--gray-80); margin: 0 0 16px;
+    max-width: 62ch;
+  }
+  p.body {
+    font-size: 18px; line-height: 1.55;
+    color: var(--gray-80); margin: 0 0 8px;
+    max-width: 68ch;
+  }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 14px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  .chip {
+    display: inline-flex; align-items: center;
+    gap: 6px; padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--gray-3); color: var(--gray-80);
+    font-size: 14px; font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--accent { background: var(--green-default); color: white; font-weight: 600; }
+
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+  }
+  .card__label {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gray-60); margin: 0 0 12px;
+  }
+
+  /* =========================================================
+     DOWNLOAD MOCKUP — recreación del bloque "Descargá MODO"
+     (parity con el demo /entregable/demo/modo-landing/index.html)
+     ========================================================= */
+  .dl-mockup {
+    background: linear-gradient(180deg, var(--green-default) 0%, var(--green-dark) 100%);
+    border-radius: 18px;
+    padding: 28px 32px;
+    color: white;
+    display: flex; flex-direction: column;
+    gap: 14px;
+  }
+  .dl-mockup--compact { padding: 20px 24px; gap: 10px; }
+  .dl-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .dl-pill {
+    background: var(--coral);
+    color: white;
+    padding: 10px 16px 10px 18px;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 12px;
+    font-weight: 700; font-size: 17px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .dl-pill__qr {
+    width: 28px; height: 28px;
+    background: white;
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #000; font-size: 11px;
+    font-family: ui-monospace, monospace;
+  }
+  .dl-pill__qr::before {
+    content: "▣";
+    font-size: 19px;
+    color: #000;
+  }
+  .dl-circle {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    background: white;
+    color: var(--ink);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    line-height: 1.15;
+    padding: 6px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .dl-circle--chatgpt::after {
+    content: "ChatGPT";
+    font-weight: 800;
+    color: #0D0D0D;
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .dl-circle--store::after {
+    content: attr(data-store);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .dl-circle__top {
+    font-size: 11px;
+    color: var(--gray-60);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .dl-circle__brand-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800;
+    margin-bottom: 2px;
+  }
+  .dl-circle--chatgpt .dl-circle__brand-icon { background: #10A37F; color: white; }
+  .dl-circle--appstore .dl-circle__brand-icon { background: #000; color: white; }
+  .dl-circle--playstore .dl-circle__brand-icon {
+    background: linear-gradient(45deg, #2DD4D4, #FF5252, #FFD400, #FF9800);
+    color: white;
+  }
+  .dl-bank-pill {
+    background: var(--modo-bank-yellow);
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 13px; font-weight: 700;
+    line-height: 1.2;
+    display: flex; flex-direction: column;
+    gap: 2px;
+    max-width: 160px;
+  }
+  .dl-bank-pill__cta {
+    color: var(--green-dark);
+    font-size: 12px;
+    text-decoration: underline;
+  }
+  .dl-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin: 4px 0;
+  }
+
+  /* Badge for "NEW" / "antes / después" markers */
+  .label-badge {
+    position: absolute;
+    top: -10px; left: 16px;
+    background: var(--ink);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .label-badge--new { background: var(--green-default); }
+  .label-badge--was { background: var(--gray-60); }
+
+  .mockup-wrap {
+    position: relative;
+    padding-top: 8px;
+  }
+
+  /* Slide 1 cover */
+  .slide--cover {
+    background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm);
+    padding: 80px;
+  }
+  .slide--cover .meta {
+    margin-top: auto;
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 48px;
+  }
+  .slide--cover .meta__col h4 {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--gray-60); margin: 0 0 6px;
+  }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li {
+    position: relative;
+    padding: 6px 0 6px 24px;
+    font-size: 17px; line-height: 1.5;
+    color: var(--gray-80);
+  }
+  ul.checks li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 13px;
+    width: 10px; height: 10px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: inset 0 0 0 2px var(--paper-warm), 0 0 0 1px var(--green-default);
+  }
+
+  .arrow {
+    display: inline-flex; align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--green-default);
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide {
+      display: flex !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1280px; height: 720px; max-height: 720px;
+    }
+    .deck__nav { display: none !important; }
+  }
+
+  .deck__nav {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    display: flex; gap: 8px;
+    background: var(--paper);
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(18,18,18,0.12);
+    z-index: 100;
+  }
+  .deck__nav button {
+    background: transparent; border: none;
+    width: 36px; height: 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    transition: background 180ms var(--ease), color 180ms var(--ease);
+  }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav .counter {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600; font-size: 16px;
+    color: var(--ink);
+    padding: 0 12px;
+    display: flex; align-items: center;
+    letter-spacing: 0.04em;
+  }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+  <meta property="og:title" content="Sumar ChatGPT App + Claude Skill a &quot;Descargá MODO&quot;" />
+  <meta property="og:description" content="Integración de marketplaces de IA (ChatGPT App Store, Claude Skill) como canal de adquisición vía el modal existente. Incluye demo del flujo agéntico end-to-end." />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <meta property="og:type" content="article" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/completo/marketplaces.html" />
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<main class="deck" id="deck">
+
+  <!-- ====== SLIDE 1: COVER ====== -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>modo-landing · descarga · marketplaces de IA</span>
+    </div>
+
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Mejora a la sección "Descargá MODO"</p>
+      <h1 class="title">Sumar <span style="color: var(--green-default)">ChatGPT App</span> y <span style="color: var(--green-default)">Claude Skill</span> al bloque de descarga.</h1>
+      <p class="lede">Sin reemplazar nada. Los marketplaces de IA son canales nuevos de descubrimiento. App Store, Google Play y los bancos asociados quedan tal cual.</p>
+    </div>
+
+    <div class="meta">
+      <div class="meta__col">
+        <h4>Audiencia</h4>
+        <p>Product Manager · Tech Lead · Manager</p>
+      </div>
+      <div class="meta__col">
+        <h4>Fecha</h4>
+        <p>20 mayo 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 2: LA RECOMENDACIÓN ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>02 · La recomendación</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">La recomendación</p>
+      <h1 class="title" style="font-size: clamp(40px, 4.6vw, 64px); max-width: 26ch;">Sumar <span style="color: var(--green-default)">ChatGPT App</span> y <span style="color: var(--green-default)">Claude Skill</span> al bloque "Descargá MODO".</h1>
+
+      <div class="grid-3" style="margin-top: 28px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <p class="card__label" style="color: var(--green-dark);">Esfuerzo</p>
+          <div style="font-family: Quicksand; font-weight: 700; font-size: 33px; color: var(--green-dark); letter-spacing: -0.02em;">1 a 2 días</div>
+          <p class="muted" style="margin-top: 4px;">1 dev + Claude Code</p>
+        </div>
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <p class="card__label" style="color: var(--green-dark);">Riesgo</p>
+          <div style="font-family: Quicksand; font-weight: 700; font-size: 33px; color: var(--green-dark); letter-spacing: -0.02em;">Bajo</div>
+          <p class="muted" style="margin-top: 4px;">aditivo · cero breaking changes</p>
+        </div>
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <p class="card__label" style="color: var(--green-dark);">Canales nuevos</p>
+          <div style="font-family: Quicksand; font-weight: 700; font-size: 33px; color: var(--green-dark); letter-spacing: -0.02em;">2</div>
+          <p class="muted" style="margin-top: 4px;">ChatGPT Apps · Claude Marketplace</p>
+        </div>
+      </div>
+
+      <p class="body" style="margin-top: 28px; max-width: 80ch;">
+        <strong>Por qué juntas</strong>: MODO ya tiene checkout agentic listo (Intent Mandate · Cart Mandate · SPT). Para que ChatGPT y Claude propongan MODO como medio de pago, primero el agente tiene que poder descubrirla e instalarla. Estos dos canales son esa puerta.
+      </p>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 22%"></i></div>
+      <span class="counter">02 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 3: POR QUÉ AHORA ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>03 · Por qué ahora</span>
+      <span>Compras que arrancan en un asistente de IA</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Por qué ahora</p>
+      <h2 class="heading">Cada vez más usuarios arrancan una compra en un asistente de IA.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 18px;">
+        Si el agente no encuentra a MODO como app o skill instalable, no la propone como medio de pago. La conversación de compra arranca sin nosotros y MODO entra recién al final, si entra.
+      </p>
+
+      <div class="grid-2" style="margin-top: 12px; align-items: stretch;">
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">Lo que pasa hoy</p>
+          <h3 style="margin: 0 0 8px; font-size: 19px; font-weight: 700;">El agente no tiene cómo invocar MODO.</h3>
+          <ul class="checks">
+            <li>El usuario le pide al asistente "comprame X" desde ChatGPT o Claude.</li>
+            <li>El agente no encuentra MODO en su marketplace, así que ofrece otros medios.</li>
+            <li>El checkout agentic de MODO está listo pero queda sin canal de entrada.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <p class="card__label" style="color: var(--gray-60);">Lo que necesitamos</p>
+          <h3 style="margin: 0 0 8px; font-size: 19px; font-weight: 700;">MODO instalable en los 2 marketplaces.</h3>
+          <ul class="checks" style="--accent: var(--gray-20);">
+            <li>App publicada en ChatGPT Apps, skill publicada en el Marketplace de Claude.</li>
+            <li>Un click desde modo.com.ar lleva al usuario a habilitarla en su asistente.</li>
+            <li>Una vez instalada, el checkout agentic se enchufa solo (Intent · Cart · SPT).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 44%"></i></div>
+      <span class="counter">03 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 4: ANTES (live) vs DESPUÉS (demo) · modal Usá MODO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>04 · El cambio</span>
+      <span>Modal "Usá MODO"</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">El cambio en el modal "Usá MODO"</p>
+      <h2 class="heading">Sumamos 2 cards. Cero reemplazo.</h2>
+
+      <div class="grid-2" style="margin-top: 20px; align-items: start; gap: 28px;">
+        <!-- BEFORE: live modo.com.ar -->
+        <div class="mockup-wrap">
+          <span class="label-badge label-badge--was">Hoy · modo.com.ar</span>
+          <img
+            src="../assets/usa-modo-modal-before.png"
+            alt="Modal Usá MODO actual en modo.com.ar con 2 cards: Desde la App de MODO y Desde la App de tus bancos"
+            style="width:100%; display:block; border-radius:12px; border:1px solid var(--border-soft); box-shadow: var(--shadow-card);"
+          />
+          <p class="muted" style="margin-top: 8px; text-align: center;">2 cards · App de MODO · App de tus bancos</p>
+        </div>
+
+        <!-- AFTER: demo proposal -->
+        <div class="mockup-wrap">
+          <span class="label-badge label-badge--new">Después · propuesta</span>
+          <img
+            src="../assets/usa-modo-modal-after.png"
+            alt="Modal Usá MODO propuesto con 4 cards: agrega Conectar con ChatGPT y Skill en el Marketplace de Claude"
+            style="width:100%; display:block; border-radius:12px; border:1px solid var(--border-soft); box-shadow: var(--shadow-card);"
+          />
+          <p class="muted" style="margin-top: 8px; text-align: center;">4 cards · + ChatGPT App · + Claude Skill</p>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top: 14px;">Capturas reales · BEFORE: <code style="font-size:11px;">modo.com.ar</code> · AFTER: <code style="font-size:11px;">entregable/demo/modo-landing/index.html</code></p>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 33%"></i></div>
+      <span class="counter">04 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 3: FOOTER · ANTES vs DESPUÉS ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>05 · El cambio · pre-footer</span>
+      <span>Antes / Después</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">El cambio en el bloque de descarga del footer</p>
+      <h2 class="heading">Mismo bloque. Sumamos "Descargá MODO" con QR + ChatGPT arriba.</h2>
+
+      <div class="grid-2" style="margin-top: 20px; align-items: start; gap: 28px;">
+        <div class="mockup-wrap">
+          <span class="label-badge label-badge--was">Hoy · modo.com.ar</span>
+          <img
+            src="../assets/footer-before.png"
+            alt="Footer actual de modo.com.ar con App Store, Google Play y pill Usá MODO desde tu app bancaria"
+            style="width:100%; display:block; border-radius:12px; border:1px solid var(--border-soft); box-shadow: var(--shadow-card);"
+          />
+          <p class="muted" style="margin-top: 8px; text-align: center;">App Store · Google Play · Usá MODO desde tu app bancaria</p>
+        </div>
+        <div class="mockup-wrap">
+          <span class="label-badge label-badge--new">Después · propuesta</span>
+          <img
+            src="../assets/footer-after.png"
+            alt="Footer propuesto con pill Descargá MODO + QR + circle Conectar con ChatGPT arriba de las opciones existentes"
+            style="width:100%; display:block; border-radius:12px; border:1px solid var(--border-soft); box-shadow: var(--shadow-card);"
+          />
+          <p class="muted" style="margin-top: 8px; text-align: center;">+ Pill "Descargá MODO" con QR · + Circle "Conectar con ChatGPT"</p>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top: 14px;">Capturas reales · BEFORE: <code style="font-size:11px;">modo.com.ar</code> pre-footer · AFTER: <code style="font-size:11px;">entregable/demo/modo-landing/index.html</code></p>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 56%"></i></div>
+      <span class="counter">05 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 4: QUÉ AGREGAMOS ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>06 · Qué agregamos</span>
+      <span>2 marketplaces de IA</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Qué agregamos</p>
+      <h2 class="heading">2 canales nuevos. Cada uno es un link directo.</h2>
+
+      <div class="grid-2" style="margin-top: 24px; align-items: stretch;">
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">Canal 01</p>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
+            <div class="dl-circle__brand-icon" style="background:#10A37F; color:white; width:32px; height:32px; font-size:18px;">✱</div>
+            <h3 style="margin:0; font-size:18px; font-weight:700;">ChatGPT App de MODO</h3>
+          </div>
+          <p class="body" style="margin:0 0 12px;">App publicada en el marketplace de ChatGPT Apps. Un click en el bloque de descarga lleva al usuario directo a habilitarla.</p>
+          <p class="muted" style="font-family: ui-monospace, monospace; font-size:11px; line-height: 1.4; word-break: break-all;">chatgpt.com/apps/modo/asdk_app_69a98bb36ab88191b54089640db46232</p>
+        </div>
+
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">Canal 02</p>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
+            <div class="dl-circle__brand-icon" style="background:#CC785C; color:white; width:32px; height:32px; font-size:14px;">C</div>
+            <h3 style="margin:0; font-size:18px; font-weight:700;">Skill en el Marketplace de Claude</h3>
+          </div>
+          <p class="body" style="margin:0 0 12px;">Skill publicada para Claude. Un usuario que use Claude para hacer compras agentic puede invocar MODO desde su asistente.</p>
+          <p class="muted" style="font-family: ui-monospace, monospace; font-size:11px;">claude-marketplace.html (demo)</p>
+        </div>
+      </div>
+
+      <p class="body" style="margin-top: 20px;">
+        Conectado con el <strong>checkout agentic</strong> (Intent Mandate · Cart Mandate · SPT). Los dos canales son la puerta de entrada a la POC de MODO for Agents.
+      </p>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 66%"></i></div>
+      <span class="counter">06 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 5: IMPLEMENTACIÓN ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>07 · Implementación</span>
+      <span>Scope acotado</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Implementación</p>
+      <h2 class="heading">Es una mejora aditiva. 1 a 2 días con IA.</h2>
+
+      <div class="grid-2" style="margin-top: 24px; align-items: stretch;">
+        <div class="card">
+          <p class="card__label">Qué se toca</p>
+          <ul class="checks">
+            <li>Componente <code style="font-size:13px;">DownloadSection</code> en <code style="font-size:13px;">src/components/</code></li>
+            <li>2 nuevos elementos: pill "Descargá MODO + QR" y circle "ChatGPT"</li>
+            <li>Modal/sección secundaria con cards para los 2 marketplaces</li>
+            <li>Links externos: ChatGPT apps URL · Claude marketplace URL</li>
+            <li>Tracking: Amplitude event por canal de descarga (separar de App Store / Google Play)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <p class="card__label">Qué NO se toca</p>
+          <ul class="checks" style="--accent: var(--gray-20);">
+            <li>App Store · Google Play badges</li>
+            <li>Pill "Usá MODO desde tu app bancaria"</li>
+            <li>Copy principal de la home</li>
+            <li>Flujo de descarga humano (idéntico)</li>
+            <li>Storyblok schema (queda flexible para futuras adiciones)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <p class="card__label" style="color: var(--green-dark);">Esfuerzo</p>
+          <div style="font-family: Quicksand; font-weight: 700; font-size: 33px; color: var(--green-dark); letter-spacing: -0.02em;">1 a 2 días</div>
+          <p class="muted" style="margin-top: 4px;">1 dev + Claude Code</p>
+        </div>
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <p class="card__label" style="color: var(--green-dark);">Riesgo</p>
+          <div style="font-family: Quicksand; font-weight: 700; font-size: 33px; color: var(--green-dark); letter-spacing: -0.02em;">Bajo</div>
+          <p class="muted" style="margin-top: 4px;">aditivo · sin breaking changes</p>
+        </div>
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <p class="card__label" style="color: var(--green-dark);">Rollback</p>
+          <div style="font-family: Quicksand; font-weight: 700; font-size: 33px; color: var(--green-dark); letter-spacing: -0.02em;">git revert</div>
+          <p class="muted" style="margin-top: 4px;">aislado en 1 componente</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 78%"></i></div>
+      <span class="counter">07 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 8: DECISIONES QUE NECESITAMOS ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>08 · Decisiones</span>
+      <span>Qué necesitamos antes de avanzar</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Decisiones que necesitamos</p>
+      <h2 class="heading">Antes de tocar el componente "Descargá MODO".</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 16px;">
+        Este deck propone, no decide. Cada decisión tiene un owner natural fuera del equipo de modo-landing. Si están alineados, el dev arranca; si no, ajustamos scope.
+      </p>
+
+      <div class="grid-2" style="margin-top: 8px; align-items: stretch; gap: 20px;">
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">PM</p>
+          <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">¿Lanzamos los 2 canales en paralelo o secuencial?</h3>
+          <p class="muted">Una opción es publicar primero la ChatGPT App (la más madura), validar tracking en Amplitude y después sumar Claude. La otra es lanzar ambas el mismo día. Decisión de cadencia y de qué deja primero MODO en cancha.</p>
+        </div>
+
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">Brand</p>
+          <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">¿Logos de ChatGPT y Claude conviven con App Store y Google Play?</h3>
+          <p class="muted">Hoy el bloque tiene solo badges propios y de las plataformas mobile. Sumar logos de terceros (ChatGPT, Claude) toca jerarquía visual. Brand valida copy + iconografía del modal y del footer.</p>
+        </div>
+
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">Legal / Compliance</p>
+          <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">¿Revisamos términos del marketplace antes de publicar?</h3>
+          <p class="muted">Cada marketplace tiene sus propios términos de uso, política de datos y revisión de contenido. Confirmar que publicar la app y la skill no obliga a aceptar cláusulas que choquen con la política de MODO.</p>
+        </div>
+
+        <div class="card">
+          <p class="card__label" style="color: var(--green-default);">TL · modo-landing</p>
+          <h3 style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">Scope del componente + tracking.</h3>
+          <p class="muted">Confirmar que <code style="font-size:13px;">DownloadSection</code> es el único componente que se toca y que los eventos nuevos en Amplitude (canal por canal) no rompen los dashboards existentes de descargas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span>Descargá MODO · marketplaces · modo-landing</span>
+      <div class="progress"><i style="--p: 89%"></i></div>
+      <span class="counter">08 / 09</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 9: CIERRE ====== -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>09 · Cierre</span>
+    </div>
+
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Gracias</p>
+      <h1 class="title" style="font-size: clamp(42px, 4.8vw, 72px); max-width: 20ch;">Busco <span style="color: var(--green-default)">feedback</span> antes de seguir.</h1>
+      <p class="lede">Aguardo su feedback para agendar una review corta con los owners involucrados.</p>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 09</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    else if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) { go(hash - 1); } else { go(0); }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="marketplaces"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>

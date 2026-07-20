@@ -1,0 +1,370 @@
+/* @vitest-environment node */
+import { describe, it, expect } from 'vitest';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const repoRoot = resolve(__dirname, '..', '..');
+
+function resolveContent(rel) {
+  const inPublic = resolve(repoRoot, 'public', rel);
+  if (existsSync(inPublic)) return inPublic;
+  return resolve(repoRoot, rel);
+}
+
+function loadJSON(rel) {
+  return JSON.parse(readFileSync(resolveContent(rel), 'utf8'));
+}
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+// ── rd.json ──────────────────────────────────────────────────────────────────
+
+describe('SPEC-RD-001 — rd.json top-level shape', () => {
+  const doc = loadJSON('rd/rd.json');
+
+  it('has _meta with ISO generated date', () => {
+    expect(doc).toHaveProperty('_meta');
+    expect(doc._meta.generated).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty items array', () => {
+    expect(Array.isArray(doc.items)).toBe(true);
+    expect(doc.items.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-RD-002 — rd.json entry fields', () => {
+  const items = loadJSON('rd/rd.json').items;
+
+  it('every entry has required fields', () => {
+    for (const item of items) {
+      expect(typeof item.slug).toBe('string');
+      expect(item.slug.length).toBeGreaterThan(0);
+      expect(typeof item.title).toBe('string');
+      expect(typeof item.href).toBe('string');
+      expect(item.date).toMatch(ISO_DATE);
+    }
+  });
+
+  it('slugs are unique', () => {
+    const slugs = items.map((i) => i.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('every href resolves on disk (relative to rd/)', () => {
+    for (const item of items) {
+      const p = resolveContent(`rd/${item.href}`);
+      expect(existsSync(p), `missing file for rd "${item.slug}": rd/${item.href}`).toBe(true);
+    }
+  });
+
+  it('every status is declared in _meta.workflow', () => {
+    const doc = loadJSON('rd/rd.json');
+    const workflow = new Set(doc._meta.workflow);
+    for (const item of doc.items) {
+      expect(
+        workflow.has(item.status),
+        `rd '${item.slug}' has undeclared status '${item.status}'`,
+      ).toBe(true);
+    }
+  });
+});
+
+describe('SPEC-RD-003 — no orphan rd HTML files on disk', () => {
+  it('every .html file in public/rd/ has a manifest entry in rd.json', () => {
+    const rdDir = resolve(repoRoot, 'public', 'rd');
+    const diskFiles = readdirSync(rdDir).filter((f) => f.endsWith('.html'));
+    const manifestHrefs = new Set(loadJSON('rd/rd.json').items.map((i) => i.href));
+    for (const file of diskFiles) {
+      expect(
+        manifestHrefs.has(file),
+        `orphan rd HTML file on disk with no manifest entry: rd/${file}`,
+      ).toBe(true);
+    }
+  });
+});
+
+// ── capacitaciones.json ───────────────────────────────────────────────────────
+
+describe('SPEC-CAP-001 — capacitaciones.json top-level shape', () => {
+  const doc = loadJSON('capacitaciones/capacitaciones.json');
+
+  it('has _meta with ISO generated date', () => {
+    expect(doc).toHaveProperty('_meta');
+    expect(doc._meta.generated).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty capacitaciones array', () => {
+    expect(Array.isArray(doc.capacitaciones)).toBe(true);
+    expect(doc.capacitaciones.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-CAP-002 — capacitaciones.json entry fields', () => {
+  const items = loadJSON('capacitaciones/capacitaciones.json').capacitaciones;
+
+  it('every entry has required fields', () => {
+    for (const item of items) {
+      expect(typeof item.id).toBe('string');
+      expect(item.id.length).toBeGreaterThan(0);
+      expect(typeof item.title).toBe('string');
+      expect(typeof item.href).toBe('string');
+      expect(item.date).toMatch(ISO_DATE);
+    }
+  });
+
+  it('ids are unique', () => {
+    const ids = items.map((i) => i.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('each id matches the directory component of its href', () => {
+    for (const item of items) {
+      const dirFromHref = item.href.split('/')[1];
+      expect(
+        item.id,
+        `capacitacion id "${item.id}" does not match directory in href "${item.href}" (expected "${dirFromHref}")`,
+      ).toBe(dirFromHref);
+    }
+  });
+
+  it('every href resolves on disk (relative to public/)', () => {
+    for (const item of items) {
+      const p = resolveContent(item.href);
+      expect(existsSync(p), `missing file for capacitacion "${item.id}": ${item.href}`).toBe(true);
+    }
+  });
+
+  it('every entry has a string status field', () => {
+    for (const item of items) {
+      expect(typeof item.status).toBe('string');
+      expect(item.status.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('no orphan course directories on disk (every dir maps to a manifest entry)', () => {
+    const capDir = resolve(repoRoot, 'public', 'capacitaciones');
+    const EXCLUDED = new Set(['assets']);
+    const diskDirs = readdirSync(capDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && !EXCLUDED.has(d.name))
+      .map((d) => d.name);
+    const manifestDirSet = new Set(
+      items.map((item) => item.href.split('/')[1]),
+    );
+    for (const dir of diskDirs) {
+      expect(
+        manifestDirSet.has(dir),
+        `orphan course directory found on disk with no manifest entry: capacitaciones/${dir}`,
+      ).toBe(true);
+    }
+  });
+
+  it('lessons count matches numbered lessons in course.json (excludes intro and lab)', () => {
+    for (const item of items) {
+      const courseJsonPath = `capacitaciones/${item.id}/course.json`;
+      const cj = loadJSON(courseJsonPath);
+      const numbered = (cj.lessons ?? []).filter(
+        (l) => !['intro', 'lab'].includes(l.id),
+      );
+      expect(
+        item.lessons,
+        `capacitacion '${item.id}': manifest lessons=${item.lessons} but course.json has ${numbered.length} numbered lessons`,
+      ).toBe(numbered.length);
+    }
+  });
+});
+
+// ── herramientas.json ─────────────────────────────────────────────────────────
+
+describe('SPEC-HERR-001 — herramientas.json top-level shape', () => {
+  const doc = loadJSON('herramientas/herramientas.json');
+
+  it('has _meta with ISO generated date', () => {
+    expect(doc).toHaveProperty('_meta');
+    expect(doc._meta.generated).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty categories array', () => {
+    expect(Array.isArray(doc.categories)).toBe(true);
+    expect(doc.categories.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-HERR-002 — herramientas.json entry fields', () => {
+  const doc = loadJSON('herramientas/herramientas.json');
+
+  it('every category has id, name, and tools array', () => {
+    for (const cat of doc.categories) {
+      expect(typeof cat.id).toBe('string');
+      expect(typeof cat.name).toBe('string');
+      expect(Array.isArray(cat.tools)).toBe(true);
+    }
+  });
+
+  it('category ids are unique', () => {
+    const ids = doc.categories.map((c) => c.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('every tool with a local download path resolves on disk', () => {
+    for (const cat of doc.categories) {
+      for (const tool of cat.tools) {
+        if (!tool.download) continue;
+        if (!tool.download.startsWith('/')) continue; // skip external URLs
+        const rel = tool.download.replace(/^\//, '');
+        const p = resolveContent(rel);
+        expect(existsSync(p), `missing download for tool "${tool.name}": ${tool.download}`).toBe(true);
+      }
+    }
+  });
+
+  it('_meta.total_tools matches actual tool count across all categories', () => {
+    const actual = doc.categories.reduce((sum, cat) => sum + cat.tools.length, 0);
+    expect(doc._meta.total_tools).toBe(actual);
+  });
+});
+
+// ── postmans.json ─────────────────────────────────────────────────────────────
+
+describe('SPEC-POST-001 — postmans.json top-level shape', () => {
+  const doc = loadJSON('postmans/postmans.json');
+
+  it('has _meta with ISO generated date', () => {
+    expect(doc).toHaveProperty('_meta');
+    expect(doc._meta.generated).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty postmans array', () => {
+    expect(Array.isArray(doc.postmans)).toBe(true);
+    expect(doc.postmans.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-POST-002 — postmans.json entry fields', () => {
+  const items = loadJSON('postmans/postmans.json').postmans;
+
+  it('every entry has required fields', () => {
+    for (const item of items) {
+      expect(typeof item.id).toBe('string');
+      expect(item.id.length).toBeGreaterThan(0);
+      expect(typeof item.title).toBe('string');
+      expect(typeof item.url).toBe('string');
+      expect(item.url.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('ids are unique', () => {
+    const ids = items.map((i) => i.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('every entry has a valid ISO date field', () => {
+    for (const item of items) {
+      expect(typeof item.date).toBe('string');
+      expect(item.date).toMatch(ISO_DATE);
+    }
+  });
+});
+
+// ── proyectos.json ────────────────────────────────────────────────────────────
+
+describe('SPEC-PROY-001 — proyectos.json top-level shape', () => {
+  const doc = loadJSON('proyectos/proyectos.json');
+
+  // proyectos.json uses generated_at (not _meta) — verified against live file
+  it('has generated_at ISO date', () => {
+    expect(typeof doc.generated_at).toBe('string');
+    expect(doc.generated_at).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty projects array', () => {
+    expect(Array.isArray(doc.projects)).toBe(true);
+    expect(doc.projects.length).toBeGreaterThan(0);
+  });
+
+  it('has non-empty categories array', () => {
+    expect(Array.isArray(doc.categories)).toBe(true);
+    expect(doc.categories.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-PROY-002 — proyectos.json entry fields', () => {
+  const items = loadJSON('proyectos/proyectos.json').projects;
+
+  it('every entry has repo and category', () => {
+    for (const item of items) {
+      expect(typeof item.repo).toBe('string');
+      expect(item.repo.length).toBeGreaterThan(0);
+      expect(typeof item.category).toBe('string');
+      expect(item.category.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('repo values are unique', () => {
+    const repos = items.map((i) => i.repo);
+    expect(new Set(repos).size).toBe(repos.length);
+  });
+});
+
+// ── bitacora.json ─────────────────────────────────────────────────────────────
+
+describe('SPEC-BITACORA-001 — bitacora.json top-level shape', () => {
+  const doc = loadJSON('bitacora/bitacora.json');
+
+  it('has _meta with ISO generated date', () => {
+    expect(doc).toHaveProperty('_meta');
+    expect(doc._meta.generated).toMatch(ISO_DATE);
+  });
+
+  it('has non-empty items array', () => {
+    expect(Array.isArray(doc.items)).toBe(true);
+    expect(doc.items.length).toBeGreaterThan(0);
+  });
+});
+
+describe('SPEC-BITACORA-002 — bitacora.json entry fields', () => {
+  const items = loadJSON('bitacora/bitacora.json').items;
+
+  it('every entry has required fields', () => {
+    for (const item of items) {
+      expect(item.date).toMatch(ISO_DATE);
+      expect(typeof item.slug).toBe('string');
+      expect(item.slug.length).toBeGreaterThan(0);
+      expect(typeof item.title).toBe('string');
+      expect(item.title.length).toBeGreaterThan(0);
+      expect(typeof item.href).toBe('string');
+      expect(item.href.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('slugs are unique', () => {
+    const slugs = items.map((i) => i.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('every href resolves on disk (relative to bitacora/)', () => {
+    for (const item of items) {
+      const p = resolveContent(`bitacora/${item.href}`);
+      expect(existsSync(p), `missing file for bitacora entry "${item.slug}": bitacora/${item.href}`).toBe(true);
+    }
+  });
+});
+
+describe('SPEC-BITACORA-003 — no orphan bitacora HTML files on disk', () => {
+  it('every .html file in public/bitacora/ (except _template.html) has a manifest entry', () => {
+    const bitacoraDir = resolve(repoRoot, 'public', 'bitacora');
+    const EXCLUDED = new Set(['_template.html']);
+    const diskFiles = readdirSync(bitacoraDir).filter(
+      (f) => f.endsWith('.html') && !EXCLUDED.has(f),
+    );
+    const manifestHrefs = new Set(loadJSON('bitacora/bitacora.json').items.map((i) => i.href));
+    for (const file of diskFiles) {
+      expect(
+        manifestHrefs.has(file),
+        `orphan bitacora HTML file on disk with no manifest entry: bitacora/${file}`,
+      ).toBe(true);
+    }
+  });
+});

@@ -1,0 +1,50 @@
+name: Build + typecheck
+
+# Paridad con el CI de los frontends MODO (modo-landing): el build de Next y el
+# typecheck deben pasar en cada PR. Complementa test.yml (Vitest + spec drift).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (tsc --noEmit)
+        run: pnpm typecheck
+
+      - name: Arch gate (size de componentes)
+        run: pnpm check:arch
+
+      # Informativo: el gate real de lint es lint-staged (solo lo tocado).
+      # En CI no bloquea para no frenar PRs de contenido por deuda no relacionada.
+      - name: Lint (ESLint)
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: Next build (incluye prebuild check-visibility)
+        run: pnpm build

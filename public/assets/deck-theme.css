@@ -1,0 +1,100 @@
+/* MODO decks · dark theme overrides
+ * Decks define MODO design tokens inline (--paper, --ink, --gray-*, etc.).
+ * This file overrides those tokens when [data-theme="dark"] or
+ * [data-theme="auto"] + prefers-color-scheme: dark.
+ * Attribute selector specificity (0,0,1,1) beats bare `:root` (0,0,0,1)
+ * so this wins over the inline <style> regardless of source order.
+ */
+
+:root[data-theme="dark"] {
+  --paper-warm: #16201A;
+  --paper: #1E2A23;
+  --ink: #F2F4F1;
+  --gray-3: #1A241D;
+  --gray-8: #0E1411;
+  --gray-20: #2C3A31;
+  --gray-60: #92978F;
+  --gray-80: #C7CECB;
+  --dark-gray: #B0B6B3;
+  --green-default: #2DD68B;
+  --green-dark: #DCF5E7;
+  --green-10: #14271E;
+  --green-20: #103226;
+  --yellow-rewards: #FFC738;
+  --yellow-soft: #3A2E10;
+  --red-warn: #FF8B97;
+  --modo-bank-yellow: #FFC738;
+  --coral: #FF7A73;
+  --border-soft: rgba(242, 244, 241, 0.10);
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] {
+    --paper-warm: #16201A;
+    --paper: #1E2A23;
+    --ink: #F2F4F1;
+    --gray-3: #1A241D;
+    --gray-8: #0E1411;
+    --gray-20: #2C3A31;
+    --gray-60: #92978F;
+    --gray-80: #C7CECB;
+    --dark-gray: #B0B6B3;
+    --green-default: #2DD68B;
+    --green-dark: #DCF5E7;
+    --green-10: #14271E;
+    --green-20: #103226;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #3A2E10;
+    --red-warn: #FF8B97;
+    --modo-bank-yellow: #FFC738;
+    --coral: #FF7A73;
+    --border-soft: rgba(242, 244, 241, 0.10);
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.45);
+  }
+}
+
+/* Floating toggle button — same look across decks */
+.deck-theme-toggle {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font: 500 11px/1 "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-60);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: color 120ms var(--ease, ease), border-color 120ms var(--ease, ease);
+}
+.deck-theme-toggle:hover {
+  color: var(--green-default);
+  border-color: var(--green-default);
+}
+.deck-theme-toggle svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.deck-theme-toggle [data-icon] { display: none; }
+:root[data-theme="auto"] .deck-theme-toggle [data-icon="auto"] { display: inline-flex; }
+:root[data-theme="light"] .deck-theme-toggle [data-icon="light"] { display: inline-flex; }
+:root[data-theme="dark"] .deck-theme-toggle [data-icon="dark"] { display: inline-flex; }
+
+/* Print: hide the toggle */
+@media print {
+  .deck-theme-toggle { display: none !important; }
+}

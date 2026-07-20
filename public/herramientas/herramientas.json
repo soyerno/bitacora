@@ -1,0 +1,590 @@
+{
+  "_meta": {
+    "generated": "2026-05-28",
+    "updated": "2026-06-15",
+    "source": "public/herramientas/herramientas.json (fuente viva — el HTML legacy ya no existe; app/herramientas lo lee directo vía getHerramientas)",
+    "total_tools": 77,
+    "total_categories": 8,
+    "notes": "Editar este JSON directamente. El generador scripts/build-herramientas-json.mjs y su HTML fuente quedaron deprecados; la page consume el feed JSON."
+  },
+  "categories": [
+    {
+      "id": "modo-skills-y-mcps-propios",
+      "name": "MODO · skills y MCPs propios",
+      "tools": [
+        {
+          "name": "modo-deck",
+          "description": "Orquestador de decks HTML branded MODO. Voz rioplatense, Pyramid Principle, comms discipline. Punto de entrada para todo deck en este repo.",
+          "download": "/skills/modo-deck.zip",
+          "external": null
+        },
+        {
+          "name": "modo-design-system",
+          "description": "SDK Next/Astro para generar páginas one-shot con tokens canónicos MODO (Quicksand + Red Hat Display, #008859). Auto-invoca en cualquier repo del workspace.",
+          "download": "/skills/modo-design-system.zip",
+          "external": null
+        },
+        {
+          "name": "modo-tech-architect",
+          "description": "PRD → specs OpenSpec + plan de implementación + sprints + tareas Jira. Consulta APIs Swagger, Confluence y repos MODO para detectar reuso.",
+          "download": "/skills/modo-tech-architect.zip",
+          "external": null
+        },
+        {
+          "name": "modo-code-review-checklist",
+          "description": "Checklist de review tailored a patrones modo-landing. Auto-invoca en PRs para chequear quality, security y consistencia arquitectónica.",
+          "download": "/skills/modo-code-review-checklist.zip",
+          "external": null
+        },
+        {
+          "name": "modo-promos",
+          "description": "Consulta promos vigentes, bancos y comercios adheridos en cualquier ambiente (develop/qa/preprod/prod). Tools bajo `mcp__modo-promos__*`.",
+          "download": "/skills/modo-promos.zip",
+          "external": null,
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "consultar-promos-modo",
+          "description": "Capa NL sobre `modo-promos`. Mapea preguntas humanas (\"¿qué descuentos hay hoy en supermercados?\") a las tools correctas del MCP.",
+          "download": "/skills/consultar-promos-modo.zip",
+          "external": null
+        },
+        {
+          "name": "simular-compra-agentica",
+          "description": "Demo end-to-end del flow agentic MODO Checkout (POC del hackathon): discovery, Intent Mandate, Cart Mandate, SPT, deeplink, biometric.",
+          "download": "/skills/simular-compra-agentica.zip",
+          "external": null
+        },
+        {
+          "name": "agente-cx-whatsapp",
+          "description": "Operar el agente CX/Promos por WhatsApp (OpenWA + Anthropic + Confluence + modo-promos + anti-bot). Trigger por frases tipo \"levantar el agente cx\".",
+          "download": "/skills/agente-cx-whatsapp.zip",
+          "external": null
+        },
+        {
+          "name": "lectura-bionica",
+          "description": "Lectura biónica + asistida para TDAH/dislexia: bold de la primera mitad de cada palabra ≥3 letras (acrónimos, números, URLs, código y env vars intactos). MD + HTML, idempotente. Basado en el deck accesibilidad-lectura-asistida-tdah.",
+          "download": "/skills/lectura-bionica.zip",
+          "external": null
+        },
+        {
+          "name": "modo-services-monitor",
+          "description": "Service-status panel desde Claude Code. Capa 1 anon: 8 statuspages externos (GitHub · Claude · OpenAI · Datadog · Cloudflare · GCP · npm · Vercel) + 5 HTTP probes MODO público. Capa 2 opt-in con JWT: cruza con `status.modo.com.ar/api/last-incidents`. Trigger \"cómo están los servicios\".",
+          "download": "/skills/modo-services-monitor.zip",
+          "external": null
+        },
+        {
+          "name": "modo-planner",
+          "description": "MODO Planning Framework (MPF). Orquesta la planificación de punta a punta de cualquier feature: brainstorming → discovery → SDD → tareas Jira → swarm → verify → archive. Output canónico en `openspec/changes/<change>/`.",
+          "download": "/skills/modo-planner.zip",
+          "external": null
+        },
+        {
+          "name": "modo-pr-author",
+          "description": "Autora descripciones de PR grado MODO: template del repo + convención de commits + voz rioplatense. Complementa los skills de review (no los reemplaza) — este escribe el PR, los otros lo evalúan.",
+          "download": "/skills/modo-pr-author.zip",
+          "external": null
+        },
+        {
+          "name": "modo-frontend-onboarding",
+          "description": "Playbook end-to-end para llevar un frontend (SPA Vite/Lovable o app Next) a producción en EKS bajo `playsistemico`: subida limpia sin secretos, tickets JSM, PRs de infra por slice.",
+          "download": "/skills/modo-frontend-onboarding.zip",
+          "external": null
+        },
+        {
+          "name": "modo-seo-geo-audit",
+          "description": "Auditoría + fix de SEO/GEO/JSON-LD para fronts MODO (Vite SPA, Next, Astro). Resuelve el CSR trap, declara AI bots, `llms.txt`, schema Organization/Course y checklist GEO 7/7.",
+          "download": "/skills/modo-seo-geo-audit.zip",
+          "external": null
+        },
+        {
+          "name": "modo-storyblok",
+          "description": "Orquestar contenido editorial en fronts MODO vía Storyblok: schemas + TS types + bloks + routing por folders con el pattern `is_startpage` child. Cubre los gotchas de la CDN.",
+          "download": "/skills/modo-storyblok.zip",
+          "external": null
+        },
+        {
+          "name": "modo-stakeholder-gate",
+          "description": "Gate de proceso pregunta-y-espera: valida comunicación + aprobación con el squad/tribu/chapter dueño antes de pasos críticos (tracking, infra, código ajeno). No inventa ownership.",
+          "download": "/skills/modo-stakeholder-gate.zip",
+          "external": null
+        },
+        {
+          "name": "modo-jsm-ticket",
+          "description": "Crear tickets en el Jira Service Management de MODO de punta a punta: descubre el portal correcto, mapea campos requeridos y genera el payload. 29 service desks · 318 request types catalogados.",
+          "download": "/skills/modo-jsm-ticket.zip",
+          "external": null
+        },
+        {
+          "name": "modo-landing-smoke-test",
+          "description": "Smoke-test de modo.com.ar por ambiente (develop/qa/preprod/prod): valida rutas clave a nivel HTTP, detecta regresiones de CMS y compara versiones desplegadas vía GitHub Deployments.",
+          "download": "/skills/modo-landing-smoke-test.zip",
+          "external": null
+        },
+        {
+          "name": "modo-contribution-evaluator",
+          "description": "Evalúa contribuciones de un dev en el ecosistema MODO cruzando PRs autorados/revisados + diff stats + Jira. Output Markdown + HTML branded para review de impacto.",
+          "download": "/skills/modo-contribution-evaluator.zip",
+          "external": null
+        },
+        {
+          "name": "modo-ci-quality-harness",
+          "description": "Instala los 4 gates de calidad en CI (audit de deps, bundle-size, visual regression, a11y) con la config correcta por tipo de build. Drop-ins validados + detect-repo-type.",
+          "download": "/skills/modo-ci-quality-harness.zip",
+          "external": null
+        },
+        {
+          "name": "modo-research-article",
+          "description": "Genera artículos R&D long-form HTML para la bitácora R&D: diagramas SVG theme-aware, Chart.js con CSS vars, matrix producto×API, endpoint tables y voz rioplatense.",
+          "download": "/skills/modo-research-article.zip",
+          "external": null
+        },
+        {
+          "name": "modo-postman-pack",
+          "description": "Construye packs Postman extendidos del workspace MODO cruzando Chrome history + colecciones existentes. Alimenta la categoría Postmans del sitio.",
+          "download": "/skills/modo-postman-pack.zip",
+          "external": null
+        },
+        {
+          "name": "modo-plugin-builder",
+          "description": "Construir plugins Claude Code para el ecosistema MODO con el patrón triple-layer (skill + agent + slash commands) + symlinks + smoke tests. La meta-fábrica de los plugins MODO.",
+          "download": "/skills/modo-plugin-builder.zip",
+          "external": null
+        },
+        {
+          "name": "modo-nocturno",
+          "description": "Loop overnight read-only de auto-mejora supervisada: mina el knowledge base, transcripts, PRs y monitores, draftea propuestas a una cola `_pending/` SIN aplicar nada. El humano aprueba despierto.",
+          "download": "/skills/modo-nocturno.zip",
+          "external": null
+        }
+      ]
+    },
+    {
+      "id": "ai-workflow-memoria-agentes",
+      "name": "AI · workflow + memoria + agentes",
+      "tools": [
+        {
+          "name": "ruflo",
+          "description": "Memoria persistente (sql.js + HNSW + ONNX), swarm coordinator, autopilot y federation cross-installation. Backend único de memoria user-level.",
+          "download": null,
+          "external": "https://github.com/ruvnet/ruflo",
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "claude-api",
+          "description": "Build/debug apps con Claude API + Anthropic SDK. Maneja prompt caching, tool use, batch, files, citations y migración entre versiones de modelo.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/claude-api"
+        },
+        {
+          "name": "mcp-builder",
+          "description": "Diseñar, construir y testear MCP servers custom con tools, resources y prompts para extender capabilities de agentes.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/mcp-builder"
+        },
+        {
+          "name": "skill-creator",
+          "description": "Crear skills nuevos (o actualizar existentes) que extienden Claude con conocimiento especializado, workflows o integraciones.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/skill-creator"
+        },
+        {
+          "name": "sdd-*",
+          "description": "Spec-Driven Development en MODO. Obligatorio para cambios en `/comercios` y features no-triviales: spec antes de código, verify después.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "brainstorming",
+          "description": "Explorar intent + requirements + design ANTES de implementar. Bloquea cualquier feature/componente/behavior nuevo hasta tener intent claro.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "doc-coauthoring",
+          "description": "Workflow estructurado para escribir docs, proposals, technical specs y decision docs. Transfer de contexto + iteración + verificación con readers.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring"
+        },
+        {
+          "name": "caveman",
+          "description": "Comms compressed ~75% token savings para agent-to-agent. Sub-agents de guardia usan caveman entre ellos; user-facing output sigue siendo prose.",
+          "download": null,
+          "external": "https://github.com/JuliusBrussee/caveman",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "roster-por-rol",
+          "description": "Patrón: un equipo de agentes por rol (no por tarea) como entorno de trabajo — construcción, especialistas, guardianes de integridad y una capa de gerencia (PO/PM/coach/CEO) atada a un North Star. Cada rol es un .md en .claude/agents/ con su disciplina y skill base. Adaptable a cualquier repo. Writeup completo en la bitácora.",
+          "download": null,
+          "external": "https://soyernomodo.github.io/erno-modo/bitacora/2026-06-15.html",
+          "tags": [
+            "patrón",
+            "agentes"
+          ]
+        },
+        {
+          "name": "oficina-de-agentes",
+          "description": "Patrón: un tablero local para VER al equipo de agentes trabajar. Un loop route-request reparte el pedido a las lanes; los hooks de sesión escriben eventos (SubagentStop / cambio de fase) que una UI React pollea en el mismo origin. Incluye chat con un CEO-agente y kill-switch del mandato. Tooling de dev, no parte del producto.",
+          "download": null,
+          "external": "https://soyernomodo.github.io/erno-modo/bitacora/2026-06-15.html",
+          "tags": [
+            "patrón",
+            "agentes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frontend-dise-o-y-ux",
+      "name": "Frontend · diseño y UX",
+      "tools": [
+        {
+          "name": "impeccable",
+          "description": "Skill de Phil Bakaus para frontend production-grade. Anti-patterns checks: sin gradientes, sin nested cards, color restrained, sin em dashes.",
+          "download": null,
+          "external": "https://github.com/pbakaus/impeccable"
+        },
+        {
+          "name": "taste-skill",
+          "description": "Anti-slop frontend rules de Leonxlnx. Evita over-design y mantiene interfaces limpias y funcionales.",
+          "download": null,
+          "external": "https://github.com/Leonxlnx/taste-skill"
+        },
+        {
+          "name": "ui-ux-pro-max",
+          "description": "161 paletas, 57 font pairings, 50+ estilos de UI (NextLevelBuilder). Referencia para composición visual y tipografía.",
+          "download": null,
+          "external": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+        },
+        {
+          "name": "frontend-design",
+          "description": "Diseño visual + interacción para web. Cobertura amplia: layouts, hierarchy, motion, micro-interactions.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/frontend-design"
+        },
+        {
+          "name": "web-design-guidelines",
+          "description": "Review de UI contra Web Interface Guidelines. Trigger en frases tipo \"review my UI\", \"check accessibility\", \"audit design\".",
+          "download": null,
+          "external": "https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines"
+        },
+        {
+          "name": "react-doctor",
+          "description": "Catch React issues early después de cambios. Se invoca al revisar código, terminar features o fixear bugs en proyectos React.",
+          "download": null,
+          "external": null
+        }
+      ]
+    },
+    {
+      "id": "frontend-code-quality-migraciones",
+      "name": "Frontend · code quality + migraciones",
+      "tools": [
+        {
+          "name": "next-best-practices",
+          "description": "Next.js file conventions, RSC boundaries, data patterns, async APIs, metadata, route handlers, image/font optimization.",
+          "download": null,
+          "external": "https://github.com/vercel-labs/next-skills"
+        },
+        {
+          "name": "vercel:react-best-practices",
+          "description": "Guidelines de Vercel Engineering para perf React/Next: rendering strategies, bundle, caching, data fetching.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin/tree/main/skills/react-best-practices",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "typescript-strict-mode",
+          "description": "Migrar codebases existentes a strict mode sin romper la app. Pattern incremental con feature flags.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "sonar-best-practices",
+          "description": "Reglas SonarQube/SonarCloud para JS/TS/React. Auto-invoca al escribir JS/TS o crear componentes React.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "tailwind-3-to-4-migration",
+          "description": "Tailwind v3 → v4 con CSS-first config. Después de consolidar styled-components.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "styled-components-to-tailwind",
+          "description": "Consolidar 3 sistemas (Styled Components 5.2 + Emotion 11 + Tailwind 3) en Tailwind-only. Migración componente por componente.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "nextjs-12-to-15-migration",
+          "description": "Guía step-by-step Next.js 12 → 15 con coexistencia Pages Router. Breaking changes + estrategia gradual hacia App Router.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "bundle-size-optimization",
+          "description": "Análisis y refactor para bajar bundle size. Tree-shaking checks, dynamic imports, dependencies audit.",
+          "download": null,
+          "external": null
+        }
+      ]
+    },
+    {
+      "id": "code-review-security",
+      "name": "Code review + security",
+      "tools": [
+        {
+          "name": "guardia",
+          "description": "Full parallel sub-agent review: SonarCloud, tests, React Doctor, security, CI/CD, bundle size. Trigger `/guardia <pr>`.",
+          "download": null,
+          "external": null,
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "pr-quality-review",
+          "description": "Review rápido de metadata + code quality + SonarCloud + arch + SEO + a11y. Output Slack-ready.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "code-review-excellence",
+          "description": "Code review guidance multi-stack: React, Vue, Angular, Svelte, Rust, TS, Java, Python, Go, NestJS. Catch bugs + improve quality.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "frontend-security-checklist",
+          "description": "Checklist OWASP-aligned para frontend. XSS, CSRF, secrets, auth flows, dependencias inseguras.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "github-actions-security",
+          "description": "Securing GitHub Actions workflows: pin actions, secrets scope, OIDC, supply chain attacks.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "csp-hardening",
+          "description": "Content Security Policy hardening. Audit headers actuales y plan de migración a strict CSP sin romper third-parties.",
+          "download": null,
+          "external": null
+        }
+      ]
+    },
+    {
+      "id": "mcps-productividad-y-workspace",
+      "name": "MCPs · productividad y workspace",
+      "tools": [
+        {
+          "name": "Atlassian",
+          "description": "Jira issues + Confluence pages. Crear/editar issues COENXT/EXA, leer wiki, transicionar status, comentar.",
+          "download": null,
+          "external": null,
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "Google Drive",
+          "description": "Search files + read content. La fuente que construyó el catálogo de RFCs en esta misma página.",
+          "download": null,
+          "external": null,
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "Gmail",
+          "description": "Threads, labels, drafts, search. Para comms internas que no caen en Slack.",
+          "download": null,
+          "external": null,
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "Google Calendar",
+          "description": "Events, scheduling, suggest_time. Útil para coordinar revisiones de RFC con stakeholders.",
+          "download": null,
+          "external": null,
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "Slack",
+          "description": "Read channels + send messages + canvas. Pegar resultados de `pr-quality-review` directo al canal.",
+          "download": null,
+          "external": null,
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "Amplitude",
+          "description": "Product analytics + experiments. Charts, cohorts, dashboards, session replays, A/B tests.",
+          "download": null,
+          "external": "https://github.com/amplitude/mcp-marketplace",
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "Storyblok",
+          "description": "CMS de MODO hosted en mcp.labs.storyblok.com. Leer y escribir contenido del sitio desde el agente.",
+          "download": null,
+          "external": "https://github.com/storyblok/mcp-server",
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "chrome-devtools",
+          "description": "Browser automation, screenshots, Lighthouse audits, network inspection, console messages. Wrappeado con caveman para ahorrar tokens.",
+          "download": null,
+          "external": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+          "tags": [
+            "mcp"
+          ]
+        },
+        {
+          "name": "gscServer",
+          "description": "Google Search Console. Performance, indexing issues, sitemap status, advanced search analytics, batch URL inspection.",
+          "download": null,
+          "external": "https://github.com/AminForou/mcp-gsc",
+          "tags": [
+            "mcp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vercel-deploy-y-plataforma",
+      "name": "Vercel · deploy y plataforma",
+      "tools": [
+        {
+          "name": "vercel:deploy",
+          "description": "Deploy a Vercel (preview o prod). Default preview, pass \"prod\" para production.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "vercel:nextjs",
+          "description": "Next.js patterns optimizados para Vercel: ISR, edge runtime, image optimization.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin/tree/main/skills/nextjs",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "vercel:ai-sdk",
+          "description": "Vercel AI SDK patterns para apps con LLMs streaming + tool use.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin/tree/main/skills/ai-sdk",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "vercel:vercel-functions",
+          "description": "Edge + serverless functions. Cuándo usar cada runtime, cómo configurar regiones y caching.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin/tree/main/skills/vercel-functions",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "vercel:env",
+          "description": "Environment variables management: scopes (dev/preview/prod), secrets, runtime vs build-time.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin",
+          "tags": [
+            "plugin"
+          ]
+        },
+        {
+          "name": "vercel:vercel-firewall",
+          "description": "Firewall config para bloquear bots, rate limiting, geo restrictions, custom rules.",
+          "download": null,
+          "external": "https://github.com/vercel/vercel-plugin/tree/main/skills/vercel-firewall",
+          "tags": [
+            "plugin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-comms-output",
+      "name": "Design + comms + output",
+      "tools": [
+        {
+          "name": "design",
+          "description": "Brand identity, design tokens, logo generation (55 styles, Gemini), CIP (50 deliverables), HTML presentations, banners, icons, social photos.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "slides",
+          "description": "HTML presentations con Chart.js, design tokens, layouts responsive y copywriting formulas. Base de los decks de este repo.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "banner-design",
+          "description": "Banners para social media, ads, web heroes y print. Múltiples direcciones de arte con AI-generated visuals.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "writing-clearly-and-concisely",
+          "description": "Strunk para prose: una claim por oración, sin buzzwords, sin verbos de relleno. Garantiza que cada slide diga exactamente lo que tiene que decir.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "internal-comms",
+          "description": "Status reports, leadership updates, 3P updates, newsletters, FAQs, incident reports, project updates. Formato que el management ya espera.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/internal-comms"
+        },
+        {
+          "name": "brand",
+          "description": "Brand voice, visual identity, messaging frameworks, asset management, brand consistency. Anchor para todo material externo.",
+          "download": null,
+          "external": null
+        },
+        {
+          "name": "theme-factory",
+          "description": "Aplicar themes pre-set (10 colores/fonts) a artifacts: slides, docs, reportings, landings HTML. Generar themes on-the-fly también.",
+          "download": null,
+          "external": "https://github.com/anthropics/skills/tree/main/skills/theme-factory"
+        },
+        {
+          "name": "pdf",
+          "description": "Toolkits de manipulación de formatos. PDF (extract + forms), DOCX (tracked changes), PPTX (layouts), XLSX (formulas + viz).",
+          "download": null,
+          "external": "https://github.com/anthropics/skills"
+        }
+      ]
+    }
+  ]
+}

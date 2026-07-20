@@ -1,0 +1,1538 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Migración del stack de modo-landing (Next.js 12) a Next.js 16 en 7 fases. Contexto técnico, riesgos, cronograma y equipos involucrados." />
+<title>Consolidar el stack frontend · modo-landing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* MODO design tokens · extraídos de tailwind.config.js */
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--gray-8);
+    font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ============ DECK CONTAINER ============ */
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: min(1600px, 96vw, calc(92vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    background: var(--paper-warm);
+    position: relative;
+    display: none;
+    padding: 64px 80px;
+    box-shadow: 0 24px 80px rgba(18,18,18,0.08);
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  .slide__chrome-top {
+    position: absolute;
+    top: 28px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
+
+  /* MODO wordmark · text-based logo (Quicksand bold, on-brand fallback while we don't have a clean solid SVG) */
+  .modo-wordmark {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    color: var(--green-default);
+    letter-spacing: -0.06em;
+    line-height: 1;
+    display: inline-block;
+    font-size: 42px;
+    font-variant-numeric: tabular-nums;
+  }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+
+  .slide__chrome-bottom {
+    position: absolute;
+    bottom: 24px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray-60);
+  }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress {
+    flex: 1;
+    margin: 0 24px;
+    height: 2px;
+    background: var(--gray-8);
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  .slide__chrome-bottom .progress > i {
+    display: block;
+    height: 100%;
+    background: var(--green-default);
+    width: var(--p, 0%);
+    transition: width 360ms var(--ease);
+  }
+
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 16px;
+  }
+  .eyebrow--neutral { color: var(--gray-60); }
+  h1.title {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(42px, 4.8vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    color: var(--ink);
+  }
+  h2.heading {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(33px, 3.4vw, 54px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  h3.subheading {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  p.lede {
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--gray-80);
+    margin: 0 0 24px;
+    max-width: 62ch;
+  }
+  p.body {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--gray-80);
+    margin: 0 0 12px;
+    max-width: 68ch;
+  }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted {
+    font-size: 16px;
+    color: var(--gray-60);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .row { display: flex; gap: 32px; }
+  .row > * { flex: 1; min-width: 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .stack-sm > * + * { margin-top: 8px; }
+  .stack-md > * + * { margin-top: 16px; }
+  .stack-lg > * + * { margin-top: 24px; }
+
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+  }
+  .card__index {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--gray-3);
+    color: var(--gray-80);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .chip--red { background: #FFE6E6; color: #A92121; font-weight: 600; }
+  .chip--ghost { background: transparent; color: var(--gray-60); border: 1px solid var(--gray-20); }
+
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .stat__value { color: var(--ink); }
+
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+  }
+  table.compare th, table.compare td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-8);
+  }
+  table.compare thead th {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    background: transparent;
+    border-bottom: 1px solid var(--gray-20);
+  }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); }
+  td.now { color: var(--ink); font-weight: 600; }
+
+  ol.decisions {
+    list-style: none;
+    counter-reset: decisions;
+    padding: 0;
+    margin: 0;
+  }
+  ol.decisions li {
+    counter-increment: decisions;
+    position: relative;
+    padding: 16px 0 16px 56px;
+    border-bottom: 1px solid var(--gray-8);
+  }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before {
+    content: counter(decisions, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 18px;
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+  }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin-top: 4px;
+  }
+
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li {
+    position: relative;
+    padding: 6px 0 6px 28px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--gray-80);
+  }
+  ul.checks li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 13px;
+    width: 12px; height: 12px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default);
+  }
+  ul.checks.checks--no li::before { background: var(--red-warn); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--red-warn); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+
+  /* Pillar tiles */
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pillar {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 280px;
+  }
+  .pillar__index {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+  }
+  .pillar__title { font-size: 22px; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0; }
+  .pillar__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .pillar__footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-8);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .pillar__footer .label {
+    font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60);
+  }
+  .pillar__footer .value {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 19px;
+    color: var(--ink);
+  }
+
+  /* Big pillar detail (slides 5-7) */
+  .pillar-detail {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 48px;
+    height: 100%;
+    align-items: center;
+  }
+  .pillar-detail__evidence {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .pillar-detail__evidence h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 8px;
+  }
+  .pillar-detail__evidence ul.checks li {
+    padding: 4px 0 4px 24px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .pillar-detail__evidence ul.checks li::before {
+    top: 10px;
+    width: 10px; height: 10px;
+  }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 10px; }
+
+  /* Phase timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 16px;
+    align-items: stretch;
+    margin-top: 24px;
+  }
+  .phase {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .phase__num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 66px;
+    line-height: 1;
+    color: var(--green-default);
+    margin-bottom: 8px;
+    letter-spacing: -0.04em;
+  }
+  .phase__weeks {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin-bottom: 12px;
+  }
+  .phase__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total {
+    background: var(--green-10);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 180px;
+  }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 16px;
+    background: var(--gray-3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--gray-80);
+  }
+
+  /* Stack-today visual */
+  .stack-today {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .stack-block {
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--border-soft);
+    background: var(--paper);
+  }
+  .stack-block h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 12px;
+  }
+  .stack-block .row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-8);
+    font-size: 17px;
+  }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+
+  /* Cover slide */
+  .slide--cover {
+    background:
+      radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%),
+      var(--paper-warm);
+    padding: 80px;
+  }
+  .slide--cover h1.title {
+    font-size: clamp(56px, 6.5vw, 96px);
+    max-width: 18ch;
+  }
+  .slide--cover .meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+  }
+  .slide--cover .meta__col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 6px;
+  }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+
+  .sigil {
+    width: 12px;
+    height: 12px;
+    background: var(--green-default);
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  /* Print */
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide {
+      display: flex !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1280px;
+      height: 720px;
+      max-height: 720px;
+    }
+    .deck__nav { display: none !important; }
+  }
+
+  /* Nav */
+  .deck__nav {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 8px;
+    background: var(--paper);
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(18,18,18,0.12);
+    z-index: 100;
+  }
+  .deck__nav button {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    transition: background 180ms var(--ease), color 180ms var(--ease);
+  }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.04em;
+  }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+  <meta property="og:title" content="Consolidar el stack frontend · modo-landing" />
+  <meta property="og:description" content="Migración del stack de modo-landing (Next.js 12) a Next.js 16 en 7 fases. Contexto técnico, riesgos, cronograma y equipos involucrados." />
+  <meta property="og:type" content="article" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/completo/nextjs-12-to-16-consolidation.html" />
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<!-- ============ REUSABLE LOGO SYMBOL ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="modo-logo" viewBox="0 0 107 24">
+    <path d="M2.42202 16.6821C1.80204 16.6818 1.20585 16.45 0.756436 16.0346C0.307025 15.6191 0.0386893 15.0517 0.00679152 14.4495V21.394C-0.000170847 21.7069 0.0571683 22.018 0.175445 22.309C0.293722 22.6001 0.470556 22.8652 0.695573 23.0889C0.92059 23.3125 1.18926 23.4902 1.48582 23.6116C1.78238 23.7329 2.10087 23.7954 2.42259 23.7954C2.74431 23.7954 3.06279 23.7329 3.35936 23.6116C3.65592 23.4902 3.92459 23.3125 4.14961 23.0889C4.37462 22.8652 4.55146 22.6001 4.66973 22.309C4.78801 22.018 4.84535 21.7069 4.83839 21.394V14.4484C4.80622 15.0508 4.53768 15.6183 4.08812 16.0339C3.63855 16.4495 3.04222 16.6815 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M2.42202 16.6821C3.75967 16.6821 4.84404 15.6273 4.84404 14.3262C4.84404 13.025 3.75967 11.9702 2.42202 11.9702C1.08438 11.9702 0 13.025 0 14.3262C0 15.6273 1.08438 16.6821 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M23.1914 4.9321C22.7557 4.93316 22.3277 4.81975 21.9528 4.60384C21.5778 4.38794 21.2697 4.07755 21.0611 3.70545C20.8524 3.33335 20.7509 2.91335 20.7673 2.4898C20.7837 2.06625 20.9174 1.65486 21.1542 1.29907L12.8039 12.6385L14.6679 15.1706C14.9906 15.5483 15.1838 16.0146 15.2205 16.5044C15.2573 16.9941 15.1357 17.4828 14.8728 17.902L20.7728 9.88512V21.2686C20.8028 20.665 21.0705 20.0959 21.5202 19.679C21.97 19.2622 22.5674 19.0297 23.1886 19.0297C23.8098 19.0297 24.4072 19.2622 24.857 19.679C25.3067 20.0959 25.5744 20.665 25.6044 21.2686V2.69834C25.5728 3.30042 25.3049 3.86776 24.8559 4.28338C24.407 4.69899 23.8112 4.93119 23.1914 4.9321Z" fill="#008859"/>
+    <path d="M12.8062 14.3263C13.1625 14.326 13.5144 14.4022 13.8368 14.5495C14.1592 14.6968 14.4442 14.9115 14.6714 15.1784L12.8074 12.6463L4.38688 1.20447C4.20221 0.95356 3.96855 0.740489 3.69922 0.577422C3.4299 0.414355 3.13019 0.304486 2.81721 0.254087C2.50424 0.203687 2.18412 0.213746 1.87514 0.283687C1.56616 0.353628 1.27437 0.482083 1.01643 0.661717C0.758481 0.84135 0.539436 1.06865 0.371797 1.33062C0.204158 1.5926 0.0912076 1.88413 0.0393952 2.18857C-0.0124171 2.49301 -0.00207694 2.8044 0.0698254 3.10495C0.141728 3.40551 0.273784 3.68934 0.458455 3.94025L10.7385 17.9087C10.752 17.9307 10.7668 17.9516 10.7815 17.9725C10.5416 17.6174 10.4051 17.2058 10.3863 16.7813C10.3675 16.3568 10.4672 15.9353 10.6748 15.5614C10.8824 15.1876 11.1901 14.8754 11.5654 14.6579C11.9407 14.4405 12.3694 14.3259 12.8062 14.3263Z" fill="#008859"/>
+    <path d="M75.9179 3.18596C73.686 1.24725 70.654 0.220093 67.1511 0.220093H59.9077C60.5393 0.233393 61.1405 0.486813 61.5824 0.926058C62.0243 1.3653 62.2717 1.95543 62.2717 2.57C62.2717 3.18457 62.0243 3.7747 61.5824 4.21394C61.1405 4.65319 60.5393 4.90661 59.9077 4.91991H67.1511C69.4486 4.91991 71.3681 5.53202 72.6968 6.69018C74.1025 7.9089 74.811 9.69348 74.811 11.9999C74.811 14.3063 74.0991 16.0733 72.6946 17.2843C71.3591 18.4359 69.4418 19.0458 67.1488 19.0458H62.3285V21.1463V21.1518C62.3365 21.23 62.341 21.3082 62.341 21.3885C62.341 22.0135 62.0859 22.6128 61.6317 23.0548C61.1775 23.4968 60.5614 23.7453 59.919 23.7456H67.1511C70.6438 23.7456 73.6702 22.7272 75.9021 20.8006C78.3512 18.688 79.6449 15.6439 79.6449 11.9933C79.6449 8.34266 78.3569 5.30193 75.9179 3.18596Z" fill="#008859"/>
+    <path d="M62.3285 21.1452V9.64066C62.3149 9.02623 62.0543 8.44145 61.6028 8.01161C61.1512 7.58177 60.5445 7.34106 59.9127 7.34106C59.2809 7.34106 58.6743 7.58177 58.2227 8.01161C57.7711 8.44145 57.5106 9.02623 57.497 9.64066V21.3874C57.496 20.783 57.7339 20.2012 58.1615 19.7626C58.5891 19.324 59.1737 19.062 59.7943 19.0309C60.4149 18.9998 61.0241 19.2019 61.4958 19.5955C61.9675 19.989 62.2656 20.5439 62.3285 21.1452Z" fill="#008859"/>
+    <path d="M92.2632 21.644C92.2632 21.0192 92.5184 20.4199 92.9726 19.9781C93.4268 19.5363 94.0429 19.288 94.6852 19.288C93.2024 19.2847 91.7538 18.8542 90.5221 18.051C89.2905 17.2477 88.331 16.1077 87.7647 14.7746C87.1983 13.4416 87.0505 11.9752 87.3399 10.5606C87.6293 9.1459 88.3429 7.84629 89.3907 6.82566C89.841 6.3817 90.0915 5.78194 90.0871 5.15833C90.0828 4.53471 89.8239 3.93831 89.3675 3.50034C88.9111 3.06237 88.2945 2.8187 87.6534 2.82293C87.0123 2.82716 86.3992 3.07895 85.949 3.52291C84.247 5.18687 83.0841 7.29983 82.6042 9.6002C82.1243 11.9006 82.3485 14.2873 83.2491 16.465C84.1496 18.6427 85.687 20.5156 87.6708 21.852C89.6546 23.1883 91.9978 23.9294 94.4102 23.9834H94.4204C93.828 23.9198 93.2805 23.646 92.8825 23.2144C92.4845 22.7829 92.2641 22.2238 92.2632 21.644Z" fill="#008859"/>
+    <path d="M94.6853 4.71192C96.0229 4.71192 97.1073 3.65712 97.1073 2.35596C97.1073 1.0548 96.0229 0 94.6853 0C93.3476 0 92.2632 1.0548 92.2632 2.35596C92.2632 3.65712 93.3476 4.71192 94.6853 4.71192Z" fill="#008859"/>
+    <path d="M12.8062 19.0382C14.1439 19.0382 15.2283 17.9834 15.2283 16.6823C15.2283 15.3811 14.1439 14.3263 12.8062 14.3263C11.4686 14.3263 10.3842 15.3811 10.3842 16.6823C10.3842 17.9834 11.4686 19.0382 12.8062 19.0382Z" fill="#008859"/>
+    <path d="M23.1914 23.7467C24.5291 23.7467 25.6134 22.6919 25.6134 21.3908C25.6134 20.0896 24.5291 19.0348 23.1914 19.0348C21.8538 19.0348 20.7694 20.0896 20.7694 21.3908C20.7694 22.6919 21.8538 23.7467 23.1914 23.7467Z" fill="#008859"/>
+    <path d="M23.1914 4.93202C24.5291 4.93202 25.6134 3.87722 25.6134 2.57606C25.6134 1.27489 24.5291 0.220093 23.1914 0.220093C21.8538 0.220093 20.7694 1.27489 20.7694 2.57606C20.7694 3.87722 21.8538 4.93202 23.1914 4.93202Z" fill="#008859"/>
+    <path d="M59.919 23.7435C61.2566 23.7435 62.341 22.6887 62.341 21.3876C62.341 20.0864 61.2566 19.0316 59.919 19.0316C58.5813 19.0316 57.4969 20.0864 57.4969 21.3876C57.4969 22.6887 58.5813 23.7435 59.919 23.7435Z" fill="#008859"/>
+    <path d="M59.9135 4.92223C61.2474 4.92223 62.3287 3.87038 62.3287 2.57287C62.3287 1.27535 61.2474 0.223511 59.9135 0.223511C58.5796 0.223511 57.4982 1.27535 57.4982 2.57287C57.4982 3.87038 58.5796 4.92223 59.9135 4.92223Z" fill="#008859"/>
+    <path d="M94.9172 0.0098877C95.5234 0.0673384 96.0851 0.344936 96.4902 0.787322C96.8953 1.22971 97.1141 1.80437 97.103 2.39672C97.0918 2.98907 96.8516 3.55556 96.4301 3.98324C96.0086 4.41092 95.4369 4.66835 94.829 4.7042C96.7973 4.75011 98.6681 5.54753 100.037 6.92415C101.406 8.30077 102.163 10.146 102.145 12.0612C102.126 13.9763 101.334 15.8076 99.9393 17.1593C98.5443 18.5109 96.6587 19.2744 94.6898 19.2847C95.3129 19.279 95.9143 19.5071 96.369 19.9217C96.8237 20.3362 97.0966 20.9053 97.131 21.5106C97.1654 22.1158 96.9586 22.7107 96.5537 23.1714C96.1488 23.6322 95.5769 23.9234 94.9569 23.9846C98.1795 23.9125 101.245 22.6154 103.496 20.3711C105.747 18.1268 107.005 15.114 107 11.9784C106.995 8.84276 105.727 5.8339 103.468 3.59666C101.21 1.35942 98.1401 0.0718412 94.9172 0.0098877Z" fill="#008859"/>
+    <path d="M94.6853 24C96.0229 24 97.1073 22.9452 97.1073 21.644C97.1073 20.3429 96.0229 19.2881 94.6853 19.2881C93.3476 19.2881 92.2632 20.3429 92.2632 21.644C92.2632 22.9452 93.3476 24 94.6853 24Z" fill="#008859"/>
+    <path d="M39.3658 21.6441C39.3658 21.0192 39.621 20.42 40.0752 19.9782C40.5294 19.5363 41.1455 19.2881 41.7879 19.2881C40.3048 19.2853 38.8558 18.8551 37.6238 18.052C36.3918 17.2488 35.432 16.1087 34.8656 14.7754C34.2992 13.4421 34.1515 11.9755 34.4412 10.5607C34.7309 9.14582 35.445 7.84616 36.4934 6.82574C36.9436 6.38134 37.1939 5.78116 37.1893 5.15724C37.1846 4.53331 36.9253 3.93674 36.4685 3.49877C36.0116 3.0608 35.3946 2.8173 34.7532 2.82184C34.1118 2.82638 33.4985 3.07859 33.0482 3.52299C31.3462 5.18695 30.1833 7.29991 29.7034 9.60028C29.2236 11.9006 29.4478 14.2874 30.3483 16.4651C31.2489 18.6427 32.7862 20.5157 34.77 21.8521C36.7538 23.1884 39.097 23.9295 41.5094 23.9835H41.5207C40.9286 23.9196 40.3815 23.6457 39.984 23.2141C39.5864 22.7825 39.3664 22.2236 39.3658 21.6441Z" fill="#008859"/>
+    <path d="M41.7877 4.71192C43.1253 4.71192 44.2097 3.65712 44.2097 2.35596C44.2097 1.0548 43.1253 0 41.7877 0C40.45 0 39.3657 1.0548 39.3657 2.35596C39.3657 3.65712 40.45 4.71192 41.7877 4.71192Z" fill="#008859"/>
+    <path d="M42.0198 0.0098877C42.626 0.0673384 43.1877 0.344936 43.5928 0.787322C43.9979 1.22971 44.2167 1.80437 44.2056 2.39672C44.1944 2.98907 43.9542 3.55556 43.5327 3.98324C43.1112 4.41092 42.5395 4.66835 41.9316 4.7042C43.8999 4.75011 45.7707 5.54753 47.1396 6.92415C48.5085 8.30077 49.2657 10.146 49.2474 12.0612C49.2291 13.9763 48.4369 15.8076 47.0419 17.1593C45.647 18.5109 43.7613 19.2744 41.7924 19.2847C42.4102 19.2862 43.0041 19.5174 43.4526 19.9308C43.901 20.3443 44.17 20.9088 44.2046 21.5089C44.2391 22.109 44.0366 22.6992 43.6385 23.1588C43.2403 23.6184 42.6767 23.9126 42.0629 23.9812C45.2729 23.8913 48.3202 22.5863 50.5561 20.344C52.7919 18.1016 54.0399 15.099 54.0343 11.9752C54.0287 8.8514 52.77 5.85305 50.5261 3.61831C48.2821 1.38357 45.2302 0.0889181 42.0198 0.0098877Z" fill="#008859"/>
+    <path d="M41.7877 24C43.1253 24 44.2097 22.9452 44.2097 21.644C44.2097 20.3429 43.1253 19.2881 41.7877 19.2881C40.45 19.2881 39.3657 20.3429 39.3657 21.644C39.3657 22.9452 40.45 24 41.7877 24Z" fill="#008859"/>
+  </symbol>
+</svg>
+
+<main class="deck" id="deck">
+
+  <!-- ====== SLIDE 1: COVER ====== -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>modo-landing · stack consolidation</span>
+    </div>
+
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Propuesta de programa · Q2 2026 · estimación asistida por IA</p>
+      <h1 class="title" style="font-size: clamp(40px, 4.4vw, 68px); line-height: 1.08; margin-bottom: 18px;">Consolidar el stack frontend<br />de <span style="color: var(--green-default)">modo-landing</span>.</h1>
+      <p class="lede" style="font-size: 20px; line-height: 1.5; margin-bottom: 0;">Tres movimientos coordinados, ventana de ~3 semanas con trabajo AI-augmented.<br />Next 16, absorber <span class="mono" style="font-size:0.9em">modo-ui-lib-web</span>, Tailwind único.</p>
+    </div>
+
+    <div class="meta">
+      <div class="meta__col">
+        <h4>Audiencia</h4>
+        <p>Product Manager · Tech Lead · Manager</p>
+      </div>
+      <div class="meta__col">
+        <h4>Autor</h4>
+        <p>Hernán De Souza</p>
+      </div>
+      <div class="meta__col">
+        <h4>Fecha</h4>
+        <p>20 mayo 2026</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 2: TL;DR ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>02 · La recomendación</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">La recomendación · estimación asistida por IA</p>
+      <h1 class="title" style="font-size: clamp(42px, 4.8vw, 70px); max-width: 24ch;">Subir Next a 16 para destrabar <span style="color: var(--green-default)">SSR sin romper la UX</span>. De paso, limpiamos 2 deudas más.</h1>
+
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="stat">
+          <span class="stat__label">Pilar 01 · La pieza que destraba</span>
+          <span class="num num--md stat__value">Next 12 → 16</span>
+          <p class="muted">SSR moderno con streaming, sin flicker</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Pilar 02 · Aprovechamos la ventana</span>
+          <span class="num num--md stat__value">Absorber lib</span>
+          <p class="muted"><span class="mono">modo-ui-lib-web</span> al repo principal</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Pilar 03 · Aprovechamos la ventana</span>
+          <span class="num num--md stat__value">Tailwind único</span>
+          <p class="muted">limpiar styled-components, Emotion y CSS modules</p>
+        </div>
+      </div>
+
+      <p class="body" style="margin-top: 32px; max-width: 80ch;">
+        <strong>Por qué juntas</strong>: la necesidad real arrancó por GEO (necesitamos SSR para que los buscadores IA nos vean). Al ir a hacerlo, descubrimos que rompe la UX humana en Next 12. El upgrade a 16 lo resuelve. Y ya que tocamos el motor a fondo, vale aprovechar para limpiar las otras 2 deudas que vienen arrastrándose.
+      </p>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 13%"></i></div>
+      <span class="counter">02 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 3: PUNTO DE PARTIDA · GEO NECESITA SSR ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>03 · Punto de partida</span>
+      <span>GEO necesita SSR</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Punto de partida · necesidad GEO</p>
+      <h2 class="heading">Para que los buscadores IA nos vean, la web tiene que ser SSR.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 20px;">
+        Cada vez más usuarios buscan en ChatGPT, Claude, Perplexity y Gemini antes que en Google. Esos asistentes scrappean la web y citan lo que pueden parsear. Si nuestra página entrega HTML vacío y arma el contenido en cliente, los crawlers IA no ven nada útil.
+      </p>
+
+      <div class="grid-2" style="margin-top: 12px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">Lo que el negocio necesita</span>
+          <h3 class="subheading" style="font-size: 19px;">Visibilidad en buscadores IA y en Google.</h3>
+          <ul class="checks" style="margin-top: 8px;">
+            <li>Que ChatGPT, Claude, Perplexity y Gemini puedan citar MODO con info correcta.</li>
+            <li>Que Google indexe contenido completo de cada ruta (no shells vacíos).</li>
+            <li>Que la red MODO aparezca en respuestas a queries de promos, comercios, bancos.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <span class="card__index" style="color: var(--gray-60);">Lo que tenemos hoy</span>
+          <h3 class="subheading" style="font-size: 19px;">Render mayormente cliente en Next 12.</h3>
+          <ul class="checks checks--neutral" style="margin-top: 8px;">
+            <li>Pages Router con <span class="mono">getServerSideProps</span> / <span class="mono">getStaticProps</span> en algunas rutas.</li>
+            <li>Prácticamente <strong>solo <span class="mono">/blog/[slug]</span> entrega body SSR</strong> útil al crawler.</li>
+            <li>El resto de las rutas devuelven shell vacío y arman el contenido en cliente tras hydration.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 20%"></i></div>
+      <span class="counter">03 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 4: EL BLOQUEO · SSR ROMPE LA UX EN NEXT 12 ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>04 · El bloqueo</span>
+      <span>SSR vs UX en Next 12</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Lo que descubrimos al intentar</p>
+      <h2 class="heading">Cuando forzamos SSR en Next 12, se rompe la UX humana.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 16px;">
+        Probamos mover más rutas a SSR para resolver el problema de GEO. Lo que pasa es que la primera carga humana queda peor: aparece flicker en la navbar, el sidebar y las fuentes, y el layout salta antes de estabilizarse.
+      </p>
+
+      <div class="grid-2" style="margin-top: 12px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">El síntoma</span>
+          <h3 class="subheading" style="font-size: 19px;">UX humana degradada.</h3>
+          <ul class="checks checks--no" style="margin-top: 8px;">
+            <li>Flicker visible en navbar y sidebar al cargar la primera vez.</li>
+            <li>Fuentes Google Fonts cargan tarde, los títulos saltan.</li>
+            <li>Layout shift (CLS) que también empeora Core Web Vitals.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <span class="card__index">La causa raíz</span>
+          <h3 class="subheading" style="font-size: 19px;">Next 12 no tiene las piezas modernas.</h3>
+          <ul class="checks checks--neutral" style="margin-top: 8px;">
+            <li>Sin streaming SSR + Suspense (lo trae Next 13+).</li>
+            <li>Sin <span class="mono">next/font</span> self-hosted (lo trae Next 13+).</li>
+            <li>Sin React Server Components para render sin client weight.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="body" style="margin-top: 18px; padding: 14px 18px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>Conclusión</strong>: necesitamos el motor moderno (Next 16) que tiene streaming SSR, <span class="mono">next/font</span> y RSC. Es lo que destraba GEO sin sacrificar la experiencia humana.
+      </p>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 27%"></i></div>
+      <span class="counter">04 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 5: PILAR 01 · NEXT 16 ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>05 · Pilar 01</span>
+      <span>Framework</span>
+    </div>
+
+    <div class="pillar-detail">
+      <div>
+        <p class="eyebrow">Pilar 01 · Framework</p>
+        <div class="num num--xl num--accent">12 → 16</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Subir Next.js a la versión actual,<br />en Pages Router.</h2>
+        <p class="body" style="max-width: 50ch;">Salto incremental con codemods oficiales (<span class="mono">12 → 13 → 14 → 15 → 16</span>). Pages Router intacto. <strong>El codemod soporta saltar directo a 16</strong> (<span class="mono">@next/codemod upgrade latest</span>), pero hacerlo incremental nos deja validar build entre cada step y aislar fallos. Para un repo de este tamaño la chain es la práctica segura.</p>
+        <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">~2 días con IA</span>
+          <span class="chip">1 dev + Claude Code</span>
+          <span class="chip">Pages Router intacto</span>
+          <span class="chip">Rollback &lt;10 min</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Qué se desbloquea</h4>
+          <ul class="checks">
+            <li><strong>Performance</strong>: AVIF en <span class="mono">next/image</span>, <span class="mono">next/font</span> self-hosted, streaming SSR.</li>
+            <li><strong>DX</strong>: Turbopack default en dev y build (HMR sub-segundo).</li>
+            <li><strong>SEO / GEO</strong>: HTML más completo para Google y AI crawlers, Metadata API moderna.</li>
+            <li><strong>Base para Fase 2</strong>: App Router y RSC quedan como opción cuando los necesitemos.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que arrastra el upgrade a 16</h4>
+          <ul class="checks checks--neutral" style="margin-top: 4px;">
+            <li><strong>React 19.2</strong> ya no es opcional, sube en el mismo PR.</li>
+            <li><strong>Turbopack default</strong>. Custom webpack: migrar o flag <span class="mono">--webpack</span>.</li>
+            <li><strong><span class="mono">next lint</span> eliminado</strong>, codemod migra a ESLint CLI.</li>
+            <li><strong><span class="mono">middleware.ts</span> → <span class="mono">proxy.ts</span></strong> (codemod automático).</li>
+            <li><strong>Node 20.9+</strong> (ya estamos en 22.22). AMP eliminado (no usamos).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 33%"></i></div>
+      <span class="counter">05 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 6: PILAR 02 · ABSORBER LIB ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>06 · Pilar 02</span>
+      <span>UI library</span>
+    </div>
+
+    <div class="pillar-detail">
+      <div>
+        <p class="eyebrow">Pilar 02 · UI library</p>
+        <div class="num num--xl num--accent">0</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Consumidores externos de<br /><span class="mono" style="font-size: 0.7em">modo-ui-lib-web</span>.</h2>
+        <p class="body" style="max-width: 50ch;">La lib se publica en GitHub Packages, requiere auth con PAT, tiene su propio CI, sus propios version bumps. Y la consume <strong>un solo proyecto</strong>: este.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">~3 días con IA</span>
+          <span class="chip">−1 dep privada</span>
+          <span class="chip">−1 repo a mantener</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>El plan</h4>
+          <ul class="checks">
+            <li>Mover los componentes a <span class="mono">src/components/ui/</span> en modo-landing.</li>
+            <li>Eliminar la dependencia <span class="mono">@playsistemico/modo-ui-lib-web</span>.</li>
+            <li>Retirar GitHub Packages auth del CI y del <span class="mono">.npmrc</span>.</li>
+            <li>Archivar el repo <span class="mono">modo-ui-lib-web</span> con README de migración.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence">
+          <h4>Costo que eliminamos</h4>
+          <ul class="checks checks--neutral">
+            <li>Doble PR cycle cuando se toca un componente compartido (lib + landing).</li>
+            <li>Version pinning y bumps recurrentes.</li>
+            <li>Pipeline CI extra (build + publish).</li>
+            <li>Token de GitHub Packages para cada dev y para CI/CD.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 40%"></i></div>
+      <span class="counter">06 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 7: PILAR 03 · TAILWIND ÚNICO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>07 · Pilar 03</span>
+      <span>Styling</span>
+    </div>
+
+    <div class="pillar-detail">
+      <div>
+        <p class="eyebrow">Pilar 03 · Styling</p>
+        <div class="num num--xl num--accent">4 → 1</div>
+        <h2 class="heading" style="font-size: 34px; margin-top: 8px;">Sistemas de styling.</h2>
+        <p class="body" style="max-width: 50ch;">Hoy conviven <span class="mono">styled-components</span>, <span class="mono">@emotion</span>, CSS modules y Tailwind. Tailwind ya es el primario. Deprecamos los otros tres.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">~1.5 a 2 semanas con IA</span>
+          <span class="chip">migración por componente</span>
+          <span class="chip">skill <span class="mono" style="font-size:0.9em">styled-components-to-tailwind</span></span>
+        </div>
+      </div>
+
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>El plan</h4>
+          <ul class="checks">
+            <li>Inventario de componentes con CSS-in-JS o CSS modules.</li>
+            <li>Migración por feature, no big-bang. Cada PR es atómico.</li>
+            <li>Usar skill <span class="mono">styled-components-to-tailwind</span> para automatizar el 80%.</li>
+            <li>Quitar <span class="mono">styled-components</span> y <span class="mono">@emotion/*</span> del <span class="mono">package.json</span> al final.</li>
+            <li>Borrar archivos <span class="mono">*.module.css</span> conforme se migran.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence">
+          <h4>Qué ganamos</h4>
+          <ul class="checks checks--neutral">
+            <li>Bundle más chico (3 runtimes menos).</li>
+            <li>1 forma de stylar para nuevos devs.</li>
+            <li>Base lista para Tailwind 4 cuando llegue (Fase 4).</li>
+            <li>Tokens del design system ya están en <span class="mono">tailwind.config.js</span>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 47%"></i></div>
+      <span class="counter">07 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 8: EL PLAN EN FASES ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>08 · El plan</span>
+      <span>3 fases secuenciales</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">El plan en fases · estimación asistida por IA</p>
+      <h2 class="heading">Secuenciales. Cada fase mergeable y reversible por sí sola.</h2>
+
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">01</span>
+          <span class="phase__weeks">Semana 1 · días 1–2</span>
+          <h3 class="phase__title">Next 12 → 16</h3>
+          <p class="phase__body">Codemods <span class="mono">12→13→14→15→16</span>, fix breaking changes con Claude Code, smoke en QA, PR a main. ~1.5 días.</p>
+        </div>
+
+        <div class="phase">
+          <span class="phase__num">02</span>
+          <span class="phase__weeks">Semana 1 · días 3–5</span>
+          <h3 class="phase__title">Absorber <span class="mono">modo-ui-lib-web</span></h3>
+          <p class="phase__body">Mover componentes, search-replace de imports en masa con AI, limpieza de CI y <span class="mono">.npmrc</span>. ~3 días.</p>
+        </div>
+
+        <div class="phase">
+          <span class="phase__num">03</span>
+          <span class="phase__weeks">Semanas 2 a 3</span>
+          <h3 class="phase__title">Styling a Tailwind</h3>
+          <p class="phase__body">Migración por componente con skill <span class="mono">styled-components-to-tailwind</span>. PRs atómicos, review humana, smoke visual. ~1.5–2 sem.</p>
+        </div>
+
+        <div class="phase__total">
+          <span class="phase__weeks">Total con IA</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~3</span>
+          <span style="font-size: 14px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">semanas calendario</span>
+          <span style="font-size: 13px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">vs ~6–8 sem manual</span>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top: 24px; gap: 20px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Qué acelera la IA</h4>
+          <p class="body" style="margin: 0; font-size: 16px; color: var(--green-dark);">Codemods residuales, search-replace masivo de imports, transformación styled-components → Tailwind por componente, generación de tests y PR descriptions.</p>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Qué NO acelera (human floor)</h4>
+          <p class="body" style="margin: 0; font-size: 16px;">Review humana por PR, smoke E2E en QA, validación visual, runtime de CI, ventanas de deploy (mobile freezes), coordinación con Mobile, QA y Brand.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 53%"></i></div>
+      <span class="counter">08 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 9: LO QUE NO ENTRA ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>09 · Scope</span>
+      <span>Lo que NO entra</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Honestidad de scope</p>
+      <h2 class="heading">Lo que el programa consolida.<br />Lo que queda para Fase 4+.</h2>
+
+      <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
+        <div class="card">
+          <h3 class="subheading" style="color: var(--green-default);">Sí entra (~6 semanas)</h3>
+          <ul class="checks">
+            <li>Next 12 → 16 en Pages Router.</li>
+            <li>Codemods automáticos para <span class="mono">next/image</span> y <span class="mono">next/link</span>.</li>
+            <li>Absorber componentes de <span class="mono">modo-ui-lib-web</span> al repo principal.</li>
+            <li>Eliminar GitHub Packages auth y CI del repo de la lib.</li>
+            <li>Migrar <span class="mono">styled-components</span> y <span class="mono">@emotion</span> a Tailwind.</li>
+            <li>Reemplazar CSS modules por Tailwind.</li>
+          </ul>
+        </div>
+
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--dark-gray);">NO entra (Fase 4+)</h3>
+          <ul class="checks checks--neutral">
+            <li>App Router migration.</li>
+            <li>React Server Components.</li>
+            <li>React 19 upgrade.</li>
+            <li>Tailwind 4 migration.</li>
+            <li>Async <span class="mono">params</span> / <span class="mono">searchParams</span>.</li>
+            <li>Refactor del <span class="mono">ThemeProviderSDK</span> para SSR de <span class="mono">/blog</span>.</li>
+            <li>Rediseño visual (mismo design system, mismos tokens).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 60%"></i></div>
+      <span class="counter">09 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 10: VISTA PM ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>10 · Vista PM</span>
+      <span>Producto y velocity</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Para el Product Manager</p>
+      <h2 class="heading">Qué cambia para producto.</h2>
+
+      <table class="compare" style="margin-top: 24px;">
+        <thead>
+          <tr>
+            <th style="width: 36%;">Aspecto</th>
+            <th>Hoy</th>
+            <th>Después del programa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tiempo para shipar un componente nuevo</td>
+            <td class="was">2 PRs cuando toca la lib (lib + landing)</td>
+            <td class="now">1 PR siempre</td>
+          </tr>
+          <tr>
+            <td>Onboarding de un dev nuevo</td>
+            <td class="was">Aprender 4 sistemas de styling + GitHub Packages auth</td>
+            <td class="now">Tailwind y nada más</td>
+          </tr>
+          <tr>
+            <td>Velocity de feature work</td>
+            <td class="was">Frenada por decisiones de "¿en cuál sistema?"</td>
+            <td class="now">Sin fricción de stack</td>
+          </tr>
+          <tr>
+            <td>Performance percibida (mobile)</td>
+            <td class="was">Dependiente de hydration en cliente</td>
+            <td class="now">Más rápido por streaming + bundle reducido</td>
+          </tr>
+          <tr>
+            <td>Cambios visuales o UX</td>
+            <td class="was">N/A</td>
+            <td class="now">Ninguno (mismo design system)</td>
+          </tr>
+          <tr>
+            <td>Habilita Fase 4</td>
+            <td class="was">App Router bloqueado por styling fragmentado</td>
+            <td class="now">Base lista para App Router cuando se decida</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 67%"></i></div>
+      <span class="counter">10 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 11: VISTA TL ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>11 · Vista TL</span>
+      <span>Scope técnico</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Para el Tech Lead</p>
+      <h2 class="heading">Scope por fase, riesgo y rollback.</h2>
+
+      <table class="compare" style="margin-top: 24px;">
+        <thead>
+          <tr>
+            <th style="width: 18%;">Fase</th>
+            <th style="width: 32%;">Cambios principales</th>
+            <th style="width: 25%;">Riesgo top</th>
+            <th>Rollback</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>01 · Next 16</strong><br /><span class="muted" style="font-size:12px">~1.5 días con IA</span></td>
+            <td>Codemods <span class="mono">12→13→14→15→16</span>. Claude Code resuelve breaking changes residuales en <span class="mono">next/image</span>, <span class="mono">next/link</span>, <span class="mono">next.config.js</span>.</td>
+            <td><span class="dot dot--warn"></span> <span class="mono">modo-ui-lib-web</span> incompat → pin a Next 14.</td>
+            <td><span class="mono">git revert</span> + Helm rollback. &lt;10 min.</td>
+          </tr>
+          <tr>
+            <td><strong>02 · Absorber lib</strong><br /><span class="muted" style="font-size:12px">~3 días con IA</span></td>
+            <td>Mover componentes a <span class="mono">src/components/ui/</span>. AI hace search-replace masivo de imports. Limpiar CI y <span class="mono">.npmrc</span>.</td>
+            <td><span class="dot dot--warn"></span> Imports rotos por search-replace incompleto.</td>
+            <td>Re-instalar dep y revertir mv. Cubierto por tests unitarios.</td>
+          </tr>
+          <tr>
+            <td><strong>03 · Tailwind</strong><br /><span class="muted" style="font-size:12px">~1.5–2 sem con IA</span></td>
+            <td>Skill <span class="mono">styled-components-to-tailwind</span> automatiza el 80% del componente. PRs atómicos, review humana.</td>
+            <td><span class="dot dot--warn"></span> Regresiones visuales sutiles (margins, line-heights).</td>
+            <td>Revert por componente. PRs atómicos minimizan blast radius.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2" style="margin-top: 24px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--green-dark); margin-bottom: 8px;">Stop-the-line shared</h3>
+          <p class="body" style="margin: 0; font-size: 17px;">LCP empeora &gt;200ms · Sentry error rate &gt;2× baseline · Amplitude eventos caen &gt;5% · bundle crece &gt;15%.</p>
+        </div>
+        <div class="card">
+          <h3 class="subheading" style="margin-bottom: 8px;">Pre-PR sanity por fase</h3>
+          <p class="body" style="margin: 0; font-size: 17px;">CI Builder verde · SonarCloud QG pass · Playwright e2e verde · smoke top 10 rutas · screenshots desktop + mobile.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 73%"></i></div>
+      <span class="counter">11 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 12: VISTA MANAGER ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>12 · Vista Manager</span>
+      <span>Costo · Riesgo · ROI</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Para el Manager</p>
+      <h2 class="heading">Costo total, riesgo por fase, ROI.</h2>
+
+      <div class="grid-3" style="margin-top: 24px;">
+        <div class="card">
+          <span class="card__index">Costo total con IA</span>
+          <div class="num num--md" style="margin: 8px 0;">~3 sem</div>
+          <p class="body" style="margin: 0;">1 dev + Claude Code en sprint dedicado. Vs ~6–8 sem en manual.</p>
+        </div>
+
+        <div class="card">
+          <span class="card__index">Riesgo por fase</span>
+          <div class="num num--md" style="margin: 8px 0; color: var(--green-default);">Bajo</div>
+          <p class="body" style="margin: 0;">Cada fase mergeable y reversible por sí sola. Rollback &lt;10 min.</p>
+        </div>
+
+        <div class="card">
+          <span class="card__index">Costo de NO hacerlo</span>
+          <div class="num num--md" style="margin: 8px 0; color: var(--red-warn);">Compound</div>
+          <p class="body" style="margin: 0;">Crece cada trimestre. Cada major de Next que pasa, más caro migrar.</p>
+        </div>
+      </div>
+
+      <table class="compare" style="margin-top: 24px;">
+        <tbody>
+          <tr>
+            <td>Stack frontend post-programa</td>
+            <td colspan="2"><span class="dot dot--good"></span> &nbsp;Next 16 · 1 sistema de styling · 1 repo</td>
+          </tr>
+          <tr>
+            <td>Deps eliminadas</td>
+            <td colspan="2"><span class="dot dot--good"></span> &nbsp;<span class="mono">styled-components</span>, <span class="mono">@emotion/*</span>, <span class="mono">modo-ui-lib-web</span> (3 deps)</td>
+          </tr>
+          <tr>
+            <td>Repos a mantener</td>
+            <td colspan="2"><span class="dot dot--good"></span> &nbsp;De 2 a 1 (<span class="mono">modo-ui-lib-web</span> archivado)</td>
+          </tr>
+          <tr>
+            <td>Velocity esperada en feature work</td>
+            <td colspan="2"><span class="dot dot--good"></span> &nbsp;Sube por menos fricción de stack y onboarding más rápido</td>
+          </tr>
+          <tr>
+            <td>Habilita Fase 4 (App Router, RSC)</td>
+            <td colspan="2"><span class="dot dot--warn"></span> &nbsp;Sin este programa, Fase 4 no se puede arrancar</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 80%"></i></div>
+      <span class="counter">12 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 13: HARNESS QUE ASEGURA EL DESARROLLO ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>13 · Harness</span>
+      <span>Cómo aseguramos el upgrade</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Cómo aseguramos el desarrollo</p>
+      <h2 class="heading">El upgrade pasa por el harness que <span style="color: var(--green-default);">ya usamos en cada PR</span>.</h2>
+      <p class="body" style="max-width: 80ch; margin-bottom: 14px;">
+        No es proceso nuevo: workflow de 6 pasos + 8 guardianes de CI que vienen activos en modo-landing. Si algo de la migración 12→16 rompe, lo agarra antes de llegar a main.
+      </p>
+
+      <div class="grid-2" style="margin-top: 6px; align-items: stretch; gap: 24px;">
+        <div class="pillar-detail__evidence">
+          <h4>El workflow · 6 pasos por PR</h4>
+          <ul class="checks">
+            <li><strong>SDD</strong> — spec primero (qué + porqué), antes de tocar código.</li>
+            <li><strong>TDD</strong> — test que falla (rojo) → código mínimo (verde) → refactor.</li>
+            <li><strong>Tests en 3 niveles</strong> — unit, integración y E2E con Playwright.</li>
+            <li><strong>Validación E2E</strong> — un bot recorre las pantallas antes de deploy.</li>
+            <li><strong>Docs vivas</strong> — PRD, RFC, ADR en el mismo repo (no en wiki muerta).</li>
+            <li><strong>Regresión automática</strong> — cada PR corre los tests de todo lo viejo.</li>
+          </ul>
+        </div>
+
+        <div class="pillar-detail__evidence">
+          <h4>El pipeline · 8 guardianes en CI</h4>
+          <ul class="checks checks--neutral">
+            <li><strong>SonarCloud Quality Gate</strong> — 0 new smells, 0 hotspots, ≤3% duplication.</li>
+            <li><strong>ESLint + commitlint + PR size</strong> — convención forzada por hook.</li>
+            <li><strong>Dependabot + security audit</strong> — vulnerabilidades flageadas en PR.</li>
+            <li><strong>Safe-chain</strong> — validator de dependencias supply-chain.</li>
+            <li><strong>Playwright E2E</strong> — smoke desktop + mobile en cada PR.</li>
+            <li><strong>Screenshots desktop + mobile</strong> — review visual obligatoria.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 14px; padding: 10px 18px; background: var(--green-10); border-radius: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark);">Decks relacionados</span>
+        <a href="cicd-dx-maduracion.html" class="chip chip--green" style="text-decoration: none;">CI/CD + DX Hardening</a>
+        <a href="seo-geo-maduracion.html" class="chip" style="text-decoration: none;">SEO + GEO Architecture</a>
+        <a href="storyblok-cms-build-time.html" class="chip" style="text-decoration: none;">Storyblok via BFF</a>
+      </div>
+
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 87%"></i></div>
+      <span class="counter">13 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 14: DECISIONES ====== -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>14 · Decisiones</span>
+      <span>Lo que necesitamos hoy</span>
+    </div>
+
+    <div class="slide__body">
+      <p class="eyebrow">Decisiones que necesitamos hoy</p>
+      <h2 class="heading">4 cosas para poder arrancar.</h2>
+
+      <ol class="decisions" style="margin-top: 32px;">
+        <li>
+          <h3>Aprobar el programa como bloque (3 fases, ~6 semanas).</h3>
+          <p class="body" style="margin: 4px 0 0;">No como 3 tickets sueltos. El valor está en la consolidación, no en cada parte por separado.</p>
+          <p class="ownership">Owner: Manager + PM</p>
+        </li>
+        <li>
+          <h3>Definir modelo de capacity.</h3>
+          <p class="body" style="margin: 4px 0 0;">Sprint dedicado AI-augmented (~3 sem calendario) o trabajo paralelo a features (~5 sem). Asume Claude Code + skills <span class="mono">nextjs-12-to-15-migration</span> y <span class="mono">styled-components-to-tailwind</span> ya instaladas.</p>
+          <p class="ownership">Owner: PM + TL</p>
+        </li>
+        <li>
+          <h3>Owner por fase.</h3>
+          <p class="body" style="margin: 4px 0 0;">Cada fase tiene su PR principal y su reviewer. Tech Lead aprueba todas las fases.</p>
+          <p class="ownership">Owner: TL</p>
+        </li>
+        <li>
+          <h3>KPIs pre/post programa.</h3>
+          <p class="body" style="margin: 4px 0 0;">Baseline hoy: bundle size, Lighthouse, dev startup time, tiempo promedio de PR. Comparar al cierre de cada fase.</p>
+          <p class="ownership">Owner: PM</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="slide__chrome-bottom">
+      <span></span>
+      <div class="progress"><i style="--p: 93%"></i></div>
+      <span class="counter">14 / 15</span>
+    </div>
+  </section>
+
+  <!-- ====== SLIDE 14: CIERRE ====== -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><span class="modo-wordmark modo-wordmark--sm">MODO</span></span>
+      <span>15 · Cierre</span>
+    </div>
+
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">¿Avanzamos?</p>
+      <h1 class="title">Antes de arrancar, <span style="color: var(--green-default)">necesito feedback</span>.</h1>
+      <p class="lede">Este deck propone, no decide. El próximo paso es review con Mobile, QA, lib owners, Brand y SRE. Tickets recién después.</p>
+    </div>
+
+    <div class="meta">
+      <div class="meta__col">
+        <h4>Autor</h4>
+        <p>Hernán De Souza</p>
+      </div>
+      <div class="meta__col">
+        <h4>Próximo paso</h4>
+        <p>Agendar review · sin tickets aún</p>
+      </div>
+      <div class="meta__col">
+        <h4>Repo</h4>
+        <p><span class="mono">modo-landing</span></p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ NAV ============ -->
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 15</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); go(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') {
+      e.preventDefault(); go(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(slides.length - 1);
+    } else if (e.key === 'p' || e.key === 'P') {
+      window.print();
+    }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) {
+    go(hash - 1);
+  } else {
+    go(0);
+  }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="nextjs-12-to-16-consolidation"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>

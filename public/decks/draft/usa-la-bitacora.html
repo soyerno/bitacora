@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Deck de adopción para fomentar el uso de erno-modo (soyernomodo.github.io/erno-modo) como bitácora pública del equipo: decks, RFCs y skills con URL estable, brand MODO y workflow draft → rfc → completo. Tres pasos para arrancar esta semana." />
+<title>Usá la bitácora · erno-modo</title>
+<link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/draft/usa-la-bitacora.html" />
+<meta property="og:title" content="Usá la bitácora · erno-modo" />
+<meta property="og:description" content="Deck de adopción para fomentar el uso de erno-modo (soyernomodo.github.io/erno-modo) como bitácora pública del equipo: decks, RFCs y skills con URL estable, brand MODO y workflow draft → rfc → completo. Tres pasos para arrancar esta semana." />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859;
+    --green-dark: #00471B;
+    --green-10: #DCF5E7;
+    --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738;
+    --yellow-soft: #FFE69B;
+    --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8;
+    --gray-8: #ECECEC;
+    --gray-20: #D0D0D0;
+    --gray-60: #777777;
+    --dark-gray: #717171;
+    --gray-80: #333333;
+    --ink: #121212;
+    --paper: #FFFFFF;
+    --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06);
+    --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--gray-8);
+    font-family: "Red Hat Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slide {
+    width: min(1600px, 96vw, calc(92vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    background: var(--paper-warm);
+    position: relative;
+    display: none;
+    padding: 64px 80px;
+    box-shadow: 0 24px 80px rgba(18,18,18,0.08);
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  .slide__chrome-top {
+    position: absolute;
+    top: 28px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .slide__chrome-top .logo svg { display: block; height: 18px; width: auto; }
+
+  .modo-wordmark {
+    font-family: "Quicksand", sans-serif;
+    font-weight: 700;
+    color: var(--green-default);
+    letter-spacing: -0.06em;
+    line-height: 1;
+    display: inline-block;
+    font-size: 42px;
+    font-variant-numeric: tabular-nums;
+  }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+
+  .slide__chrome-bottom {
+    position: absolute;
+    bottom: 24px; left: 80px; right: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--gray-60);
+  }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress {
+    flex: 1;
+    margin: 0 24px;
+    height: 2px;
+    background: var(--gray-8);
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  .slide__chrome-bottom .progress > i {
+    display: block;
+    height: 100%;
+    background: var(--green-default);
+    width: var(--p, 0%);
+    transition: width 360ms var(--ease);
+  }
+
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 16px;
+  }
+  .eyebrow--neutral { color: var(--gray-60); }
+  h1.title {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(42px, 4.8vw, 80px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 24px;
+    color: var(--ink);
+  }
+  h2.heading {
+    font-family: "Quicksand", "Red Hat Display", sans-serif;
+    font-size: clamp(33px, 3.4vw, 54px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  h3.subheading {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  p.lede {
+    font-size: 26px;
+    line-height: 1.45;
+    color: var(--gray-80);
+    margin: 0 0 24px;
+    max-width: 62ch;
+  }
+  p.body {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--gray-80);
+    margin: 0 0 12px;
+    max-width: 68ch;
+  }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted {
+    font-size: 16px;
+    color: var(--gray-60);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .row { display: flex; gap: 32px; }
+  .row > * { flex: 1; min-width: 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .stack-sm > * + * { margin-top: 8px; }
+  .stack-md > * + * { margin-top: 16px; }
+  .stack-lg > * + * { margin-top: 24px; }
+
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+  }
+  .card__index {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--green-default);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--gray-3);
+    color: var(--gray-80);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .chip--red { background: #FFE6E6; color: #A92121; font-weight: 600; }
+  .chip--ghost { background: transparent; color: var(--gray-60); border: 1px solid var(--gray-20); }
+
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); }
+  .dot--good { background: var(--green-default); }
+  .dot--warn { background: var(--yellow-rewards); }
+
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+  }
+  .stat__value { color: var(--ink); }
+
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li {
+    position: relative;
+    padding: 6px 0 6px 28px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--gray-80);
+  }
+  ul.checks li::before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 13px;
+    width: 12px; height: 12px;
+    border-radius: 999px;
+    background: var(--green-default);
+    box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default);
+  }
+  ul.checks.checks--no li::before { background: var(--red-warn); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--red-warn); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+
+  .pillar-detail {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 56px;
+    height: 100%;
+    align-items: center;
+  }
+  .pillar-detail__evidence {
+    background: var(--paper);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .pillar-detail__evidence h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-default);
+    margin: 0 0 12px;
+  }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 16px;
+    background: var(--gray-3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--gray-80);
+  }
+
+  .stack-today {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .stack-block {
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid var(--border-soft);
+    background: var(--paper);
+  }
+  .stack-block h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 12px;
+  }
+  .stack-block .row-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-8);
+    font-size: 17px;
+  }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+
+  /* Steps grid (slide 8) */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .step {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    display: flex;
+    flex-direction: column;
+    min-height: 240px;
+  }
+  .step__num {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--green-default);
+    letter-spacing: -0.04em;
+    margin-bottom: 12px;
+  }
+  .step__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .step__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0 0 12px; }
+  .step__cmd { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--gray-8); }
+
+  .slide--cover {
+    background:
+      radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%),
+      var(--paper-warm);
+    padding: 80px;
+  }
+  .slide--cover h1.title {
+    font-size: clamp(56px, 6.5vw, 96px);
+    max-width: 18ch;
+  }
+  .slide--cover .meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+  }
+  .slide--cover .meta__col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-60);
+    margin: 0 0 6px;
+  }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+
+  .sigil {
+    width: 12px;
+    height: 12px;
+    background: var(--green-default);
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @media print {
+    body { background: white; }
+    .deck { display: block; height: auto; width: auto; }
+    .slide {
+      display: flex !important;
+      page-break-after: always;
+      box-shadow: none;
+      width: 1280px;
+      height: 720px;
+      max-height: 720px;
+    }
+    .deck__nav { display: none !important; }
+  }
+
+  .deck__nav {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    gap: 8px;
+    background: var(--paper);
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(18,18,18,0.12);
+    z-index: 100;
+  }
+  .deck__nav button {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    transition: background 180ms var(--ease), color 180ms var(--ease);
+  }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav button:focus-visible { outline: 2px solid var(--green-default); outline-offset: 2px; }
+  .deck__nav .counter {
+    font-family: "Quicksand", sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.04em;
+  }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+<link rel="stylesheet" href="../../assets/deck-bionic.css" />
+</head>
+<body>
+
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="modo-logo-solid" viewBox="0 0 107 24">
+    <path d="M2.42202 16.6821C1.80204 16.6818 1.20585 16.45 0.756436 16.0346C0.307025 15.6191 0.0386893 15.0517 0.00679152 14.4495V21.394C-0.000170847 21.7069 0.0571683 22.018 0.175445 22.309C0.293722 22.6001 0.470556 22.8652 0.695573 23.0889C0.92059 23.3125 1.18926 23.4902 1.48582 23.6116C1.78238 23.7329 2.10087 23.7954 2.42259 23.7954C2.74431 23.7954 3.06279 23.7329 3.35936 23.6116C3.65592 23.4902 3.92459 23.3125 4.14961 23.0889C4.37462 22.8652 4.55146 22.6001 4.66973 22.309C4.78801 22.018 4.84535 21.7069 4.83839 21.394V14.4484C4.80622 15.0508 4.53768 15.6183 4.08812 16.0339C3.63855 16.4495 3.04222 16.6815 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M2.42202 16.6821C3.75967 16.6821 4.84404 15.6273 4.84404 14.3262C4.84404 13.025 3.75967 11.9702 2.42202 11.9702C1.08438 11.9702 0 13.025 0 14.3262C0 15.6273 1.08438 16.6821 2.42202 16.6821Z" fill="#008859"/>
+    <path d="M23.1914 4.9321C22.7557 4.93316 22.3277 4.81975 21.9528 4.60384C21.5778 4.38794 21.2697 4.07755 21.0611 3.70545C20.8524 3.33335 20.7509 2.91335 20.7673 2.4898C20.7837 2.06625 20.9174 1.65486 21.1542 1.29907L12.8039 12.6385L14.6679 15.1706C14.9906 15.5483 15.1838 16.0146 15.2205 16.5044C15.2573 16.9941 15.1357 17.4828 14.8728 17.902L20.7728 9.88512V21.2686C20.8028 20.665 21.0705 20.0959 21.5202 19.679C21.97 19.2622 22.5674 19.0297 23.1886 19.0297C23.8098 19.0297 24.4072 19.2622 24.857 19.679C25.3067 20.0959 25.5744 20.665 25.6044 21.2686V2.69834C25.5728 3.30042 25.3049 3.86776 24.8559 4.28338C24.407 4.69899 23.8112 4.93119 23.1914 4.9321Z" fill="#008859"/>
+    <path d="M12.8062 14.3263C13.1625 14.326 13.5144 14.4022 13.8368 14.5495C14.1592 14.6968 14.4442 14.9115 14.6714 15.1784L12.8074 12.6463L4.38688 1.20447C4.20221 0.95356 3.96855 0.740489 3.69922 0.577422C3.4299 0.414355 3.13019 0.304486 2.81721 0.254087C2.50424 0.203687 2.18412 0.213746 1.87514 0.283687C1.56616 0.353628 1.27437 0.482083 1.01643 0.661717C0.758481 0.84135 0.539436 1.06865 0.371797 1.33062C0.204158 1.5926 0.0912076 1.88413 0.0393952 2.18857C-0.0124171 2.49301 -0.00207694 2.8044 0.0698254 3.10495C0.141728 3.40551 0.273784 3.68934 0.458455 3.94025L10.7385 17.9087C10.752 17.9307 10.7668 17.9516 10.7815 17.9725C10.5416 17.6174 10.4051 17.2058 10.3863 16.7813C10.3675 16.3568 10.4672 15.9353 10.6748 15.5614C10.8824 15.1876 11.1901 14.8754 11.5654 14.6579C11.9407 14.4405 12.3694 14.3259 12.8062 14.3263Z" fill="#008859"/>
+    <path d="M12.8062 19.0382C14.1439 19.0382 15.2283 17.9834 15.2283 16.6823C15.2283 15.3811 14.1439 14.3263 12.8062 14.3263C11.4686 14.3263 10.3842 15.3811 10.3842 16.6823C10.3842 17.9834 11.4686 19.0382 12.8062 19.0382Z" fill="#008859"/>
+    <path d="M23.1914 23.7467C24.5291 23.7467 25.6134 22.6919 25.6134 21.3908C25.6134 20.0896 24.5291 19.0348 23.1914 19.0348C21.8538 19.0348 20.7694 20.0896 20.7694 21.3908C20.7694 22.6919 21.8538 23.7467 23.1914 23.7467Z" fill="#008859"/>
+    <path d="M23.1914 4.93202C24.5291 4.93202 25.6134 3.87722 25.6134 2.57606C25.6134 1.27489 24.5291 0.220093 23.1914 0.220093C21.8538 0.220093 20.7694 1.27489 20.7694 2.57606C20.7694 3.87722 21.8538 4.93202 23.1914 4.93202Z" fill="#008859"/>
+    <path d="M39.3658 21.6441C39.3658 21.0192 39.621 20.42 40.0752 19.9782C40.5294 19.5363 41.1455 19.2881 41.7879 19.2881C40.3048 19.2853 38.8558 18.8551 37.6238 18.052C36.3918 17.2488 35.432 16.1087 34.8656 14.7754C34.2992 13.4421 34.1515 11.9755 34.4412 10.5607C34.7309 9.14582 35.445 7.84616 36.4934 6.82574C36.9436 6.38134 37.1939 5.78116 37.1893 5.15724C37.1846 4.53331 36.9253 3.93674 36.4685 3.49877C36.0116 3.0608 35.3946 2.8173 34.7532 2.82184C34.1118 2.82638 33.4985 3.07859 33.0482 3.52299C31.3462 5.18695 30.1833 7.29991 29.7034 9.60028C29.2236 11.9006 29.4478 14.2874 30.3483 16.4651C31.2489 18.6427 32.7862 20.5157 34.77 21.8521C36.7538 23.1884 39.097 23.9295 41.5094 23.9835H41.5207C40.9286 23.9196 40.3815 23.6457 39.984 23.2141C39.5864 22.7825 39.3664 22.2236 39.3658 21.6441Z" fill="#008859"/>
+    <path d="M41.7877 4.71192C43.1253 4.71192 44.2097 3.65712 44.2097 2.35596C44.2097 1.0548 43.1253 0 41.7877 0C40.45 0 39.3657 1.0548 39.3657 2.35596C39.3657 3.65712 40.45 4.71192 41.7877 4.71192Z" fill="#008859"/>
+    <path d="M42.0198 0.0098877C42.626 0.0673384 43.1877 0.344936 43.5928 0.787322C43.9979 1.22971 44.2167 1.80437 44.2056 2.39672C44.1944 2.98907 43.9542 3.55556 43.5327 3.98324C43.1112 4.41092 42.5395 4.66835 41.9316 4.7042C43.8999 4.75011 45.7707 5.54753 47.1396 6.92415C48.5085 8.30077 49.2657 10.146 49.2474 12.0612C49.2291 13.9763 48.4369 15.8076 47.0419 17.1593C45.647 18.5109 43.7613 19.2744 41.7924 19.2847C42.4102 19.2862 43.0041 19.5174 43.4526 19.9308C43.901 20.3443 44.17 20.9088 44.2046 21.5089C44.2391 22.109 44.0366 22.6992 43.6385 23.1588C43.2403 23.6184 42.6767 23.9126 42.0629 23.9812C45.2729 23.8913 48.3202 22.5863 50.5561 20.344C52.7919 18.1016 54.0399 15.099 54.0343 11.9752C54.0287 8.8514 52.77 5.85305 50.5261 3.61831C48.2821 1.38357 45.2302 0.0889181 42.0198 0.0098877Z" fill="#008859"/>
+    <path d="M41.7877 24C43.1253 24 44.2097 22.9452 44.2097 21.644C44.2097 20.3429 43.1253 19.2881 41.7877 19.2881C40.45 19.2881 39.3657 20.3429 39.3657 21.644C39.3657 22.9452 40.45 24 41.7877 24Z" fill="#008859"/>
+    <path d="M75.9179 3.18596C73.686 1.24725 70.654 0.220093 67.1511 0.220093H59.9077C60.5393 0.233393 61.1405 0.486813 61.5824 0.926058C62.0243 1.3653 62.2717 1.95543 62.2717 2.57C62.2717 3.18457 62.0243 3.7747 61.5824 4.21394C61.1405 4.65319 60.5393 4.90661 59.9077 4.91991H67.1511C69.4486 4.91991 71.3681 5.53202 72.6968 6.69018C74.1025 7.9089 74.811 9.69348 74.811 11.9999C74.811 14.3063 74.0991 16.0733 72.6946 17.2843C71.3591 18.4359 69.4418 19.0458 67.1488 19.0458H62.3285V21.1463V21.1518C62.3365 21.23 62.341 21.3082 62.341 21.3885C62.341 22.0135 62.0859 22.6128 61.6317 23.0548C61.1775 23.4968 60.5614 23.7453 59.919 23.7456H67.1511C70.6438 23.7456 73.6702 22.7272 75.9021 20.8006C78.3512 18.688 79.6449 15.6439 79.6449 11.9933C79.6449 8.34266 78.3569 5.30193 75.9179 3.18596Z" fill="#008859"/>
+    <path d="M62.3285 21.1452V9.64066C62.3149 9.02623 62.0543 8.44145 61.6028 8.01161C61.1512 7.58177 60.5445 7.34106 59.9127 7.34106C59.2809 7.34106 58.6743 7.58177 58.2227 8.01161C57.7711 8.44145 57.5106 9.02623 57.497 9.64066V21.3874C57.496 20.783 57.7339 20.2012 58.1615 19.7626C58.5891 19.324 59.1737 19.062 59.7943 19.0309C60.4149 18.9998 61.0241 19.2019 61.4958 19.5955C61.9675 19.989 62.2656 20.5439 62.3285 21.1452Z" fill="#008859"/>
+    <path d="M59.919 23.7435C61.2566 23.7435 62.341 22.6887 62.341 21.3876C62.341 20.0864 61.2566 19.0316 59.919 19.0316C58.5813 19.0316 57.4969 20.0864 57.4969 21.3876C57.4969 22.6887 58.5813 23.7435 59.919 23.7435Z" fill="#008859"/>
+    <path d="M59.9135 4.92223C61.2474 4.92223 62.3287 3.87038 62.3287 2.57287C62.3287 1.27535 61.2474 0.223511 59.9135 0.223511C58.5796 0.223511 57.4982 1.27535 57.4982 2.57287C57.4982 3.87038 58.5796 4.92223 59.9135 4.92223Z" fill="#008859"/>
+    <path d="M92.2632 21.644C92.2632 21.0192 92.5184 20.4199 92.9726 19.9781C93.4268 19.5363 94.0429 19.288 94.6852 19.288C93.2024 19.2847 91.7538 18.8542 90.5221 18.051C89.2905 17.2477 88.331 16.1077 87.7647 14.7746C87.1983 13.4416 87.0505 11.9752 87.3399 10.5606C87.6293 9.1459 88.3429 7.84629 89.3907 6.82566C89.841 6.3817 90.0915 5.78194 90.0871 5.15833C90.0828 4.53471 89.8239 3.93831 89.3675 3.50034C88.9111 3.06237 88.2945 2.8187 87.6534 2.82293C87.0123 2.82716 86.3992 3.07895 85.949 3.52291C84.247 5.18687 83.0841 7.29983 82.6042 9.6002C82.1243 11.9006 82.3485 14.2873 83.2491 16.465C84.1496 18.6427 85.687 20.5156 87.6708 21.852C89.6546 23.1883 91.9978 23.9294 94.4102 23.9834H94.4204C93.828 23.9198 93.2805 23.646 92.8825 23.2144C92.4845 22.7829 92.2641 22.2238 92.2632 21.644Z" fill="#008859"/>
+    <path d="M94.6853 4.71192C96.0229 4.71192 97.1073 3.65712 97.1073 2.35596C97.1073 1.0548 96.0229 0 94.6853 0C93.3476 0 92.2632 1.0548 92.2632 2.35596C92.2632 3.65712 93.3476 4.71192 94.6853 4.71192Z" fill="#008859"/>
+    <path d="M94.9172 0.0098877C95.5234 0.0673384 96.0851 0.344936 96.4902 0.787322C96.8953 1.22971 97.1141 1.80437 97.103 2.39672C97.0918 2.98907 96.8516 3.55556 96.4301 3.98324C96.0086 4.41092 95.4369 4.66835 94.829 4.7042C96.7973 4.75011 98.6681 5.54753 100.037 6.92415C101.406 8.30077 102.163 10.146 102.145 12.0612C102.126 13.9763 101.334 15.8076 99.9393 17.1593C98.5443 18.5109 96.6587 19.2744 94.6898 19.2847C95.3129 19.279 95.9143 19.5071 96.369 19.9217C96.8237 20.3362 97.0966 20.9053 97.131 21.5106C97.1654 22.1158 96.9586 22.7107 96.5537 23.1714C96.1488 23.6322 95.5769 23.9234 94.9569 23.9846C98.1795 23.9125 101.245 22.6154 103.496 20.3711C105.747 18.1268 107.005 15.114 107 11.9784C106.995 8.84276 105.727 5.8339 103.468 3.59666C101.21 1.35942 98.1401 0.0718412 94.9172 0.0098877Z" fill="#008859"/>
+    <path d="M94.6853 24C96.0229 24 97.1073 22.9452 97.1073 21.644C97.1073 20.3429 96.0229 19.2881 94.6853 19.2881C93.3476 19.2881 92.2632 20.3429 92.2632 21.644C92.2632 22.9452 93.3476 24 94.6853 24Z" fill="#008859"/>
+  </symbol>
+</svg>
+
+<main class="deck" id="deck">
+
+  <!-- 01 · COVER -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>fomentá el uso · soyernomodo.github.io/erno-modo</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Bitácora del equipo · invitación</p>
+      <h1 class="title">Usá la <span style="color: var(--green-default)">bitácora</span>.</h1>
+      <p class="lede">Decks, RFCs y skills viven en <span class="mono">erno-modo</span>. Público, indexable, persistente. Si lo subís ahí, deja de perderse.</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Audiencia</h4><p>Equipo extendido MODO</p></div>
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><h4>Fecha</h4><p>20 · 05 · 2026</p></div>
+    </div>
+  </section>
+
+  <!-- 02 · TL;DR · LA INVITACIÓN -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="64" height="14" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>02 · La invitación</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">La invitación</p>
+      <h1 class="title" style="font-size: clamp(40px, 5vw, 68px); max-width: 22ch;">Subí tu próximo deck<br /><span style="color: var(--green-default)">a la bitácora</span> en lugar de Slack.</h1>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat"><span class="stat__label">Ya publicado</span><span class="num num--md stat__value">13 decks</span><p class="muted">10 completo · 3 draft · todos con identidad MODO.</p></div>
+        <div class="stat"><span class="stat__label">Skills MODO</span><span class="num num--md stat__value">8 zips</span><p class="muted">Empaquetadas, descargables, listas para Claude Code.</p></div>
+        <div class="stat"><span class="stat__label">Herramientas</span><span class="num num--md stat__value">59 tools</span><p class="muted">Skills + MCPs + plugins agrupados en 8 categorías.</p></div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por qué juntas</strong>: un solo lugar público para encontrar lo que el equipo ya hizo. Sin login, sin VPN, sin buscar mensajes viejos en Slack.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>fomentá el uso · soyernomodo.github.io/erno-modo</span>
+      <div class="progress"><i style="--p: 20%"></i></div>
+      <span class="counter">02 / 10</span>
+    </div>
+  </section>
+
+  <!-- 03 · DIAGNÓSTICO · QUÉ PASA HOY -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>03 · Diagnóstico</span><span>dónde vive el conocimiento del equipo</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Diagnóstico</p>
+      <h2 class="heading">El conocimiento del equipo está disperso.</h2>
+      <p class="body" style="max-width: 70ch; margin-bottom: 24px;">Cada propuesta, deck o skill nueva se publica en un canal distinto. Buscarlo dos meses después es ruletear entre Slack, Drive y mensajes directos.</p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>Dónde queda hoy</h4>
+          <div class="row-item"><span class="label">Slack</span><span class="value">se hunde en 2 semanas</span></div>
+          <div class="row-item"><span class="label">Drive</span><span class="value">requiere login + permisos</span></div>
+          <div class="row-item"><span class="label">DMs / mails</span><span class="value">no buscable a nivel equipo</span></div>
+          <div class="row-item"><span class="label">Repos privados</span><span class="value">visibles solo si te suman</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Qué duele</h4>
+          <div class="row-item"><span class="label">Decks de reuniones</span><span class="value">se piden de nuevo cada Q</span></div>
+          <div class="row-item"><span class="label">RFCs en revisión</span><span class="value">sin link único compartible</span></div>
+          <div class="row-item"><span class="label">Skills internas</span><span class="value">sin catálogo</span></div>
+          <div class="row-item"><span class="label">Reacciones / feedback</span><span class="value">en threads que se cierran</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 30%"></i></div><span class="counter">03 / 10</span></div>
+  </section>
+
+  <!-- 04 · QUÉ ES ERNO-MODO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>04 · Qué es</span><span>la bitácora · sitio público</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Qué es la bitácora</p>
+      <h2 class="heading">Un sitio público con tres colecciones.</h2>
+      <p class="body" style="max-width: 70ch; margin-bottom: 24px;">Vive en <span class="mono">soyernomodo.github.io/erno-modo</span>. Servido desde GitHub Pages, sin backend, sin login. Cada pieza tiene URL estable.</p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>Decks · presentaciones HTML</h4>
+          <div class="row-item"><span class="label"><span class="mono">/decks/draft/</span></span><span class="value">working drafts</span></div>
+          <div class="row-item"><span class="label"><span class="mono">/decks/rfc/</span></span><span class="value">en review formal</span></div>
+          <div class="row-item"><span class="label"><span class="mono">/decks/completo/</span></span><span class="value">shipped o histórico</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>RFCs · documentos vivos</h4>
+          <div class="row-item"><span class="label"><span class="mono">/rfcs/</span></span><span class="value">índice por status</span></div>
+          <div class="row-item"><span class="label">Link a Drive / GitHub</span><span class="value">el doc vive donde estaba</span></div>
+          <div class="row-item"><span class="label">Tabs por estado</span><span class="value">Draft · RFC · Completo · Archivado</span></div>
+        </div>
+        <div class="stack-block" style="grid-column: 1 / -1;">
+          <h4>Herramientas · stack del equipo</h4>
+          <div class="row-item"><span class="label"><span class="mono">/herramientas/</span></span><span class="value">59 skills + MCPs + plugins de Claude Code, agrupados en 8 categorías</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 40%"></i></div><span class="counter">04 / 10</span></div>
+  </section>
+
+  <!-- 05 · PILAR 1 · PERSISTENCIA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>05 · Pilar 1</span><span>Persistencia · URL estable, no se pierde</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 1 · Persistencia</p>
+        <div class="num num--xl num--accent">URL</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Una URL por pieza, para siempre.</h2>
+        <p class="body" style="max-width: 50ch;">El deck que subís hoy lo abre alguien en seis meses con un solo link. No depende de buscar en Slack ni de pedir acceso a un Drive.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">público</span>
+          <span class="chip">indexable</span>
+          <span class="chip">sin login</span>
+          <span class="chip">PDF-exportable</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Qué te llevás</h4>
+          <ul class="checks">
+            <li><strong>Link único</strong>: <span class="mono">/decks/draft/&lt;slug&gt;.html</span>, compartible en Slack/mail/Jira.</li>
+            <li><strong>Historial git</strong>: cada cambio queda versionado, podés volver a una versión vieja.</li>
+            <li><strong>Mismo link al promover</strong>: el thread de comentarios sigue al deck cuando va draft → rfc → completo.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Hoy en uso</h4>
+          <p class="body" style="margin: 0;">13 decks ya publicados con URL pública. Buscables desde la home con filtros por status y tema.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 50%"></i></div><span class="counter">05 / 10</span></div>
+  </section>
+
+  <!-- 06 · PILAR 2 · IDENTIDAD + WORKFLOW -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>06 · Pilar 2</span><span>Identidad MODO · workflow declarado</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 2 · Identidad</p>
+        <div class="num num--xl num--accent">3</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Estados declarados, brand MODO siempre.</h2>
+        <p class="body" style="max-width: 50ch;">Draft · RFC · Completo. Cada deck dice en qué estado está. El lector sabe si es working draft o decisión cerrada antes de abrirlo.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--yellow">draft</span>
+          <span class="chip chip--green">rfc</span>
+          <span class="chip">completo</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que viene gratis</h4>
+          <ul class="checks">
+            <li><strong>Brand MODO</strong>: verde #008859, Red Hat Display + Quicksand, layout 16:9 listo para presentar o exportar a PDF.</li>
+            <li><strong>Workflow visible</strong>: badge en el listado, transiciones con un script (<span class="mono">promote-deck.sh</span>).</li>
+            <li><strong>Sin diseñar nada</strong>: la skill <span class="mono">modo-deck</span> en Claude Code te arma el HTML completo.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Por qué importa</h4>
+          <p class="body" style="margin: 0;">Lo que sale del equipo se ve como MODO sin que cada uno pelee con CSS o tipografías.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 60%"></i></div><span class="counter">06 / 10</span></div>
+  </section>
+
+  <!-- 07 · PILAR 3 · SIN FRICCIÓN -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>07 · Pilar 3</span><span>Sin fricción · 1 comando, listo</span></div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">Pilar 3 · Sin fricción</p>
+        <div class="num num--xl num--accent">1</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Un slash command y queda publicado.</h2>
+        <p class="body" style="max-width: 50ch;">En Claude Code: <span class="mono">/modo-deck</span> con el tema. Te pregunta audiencia, números y estado. Genera HTML, lo subí al repo, te tira la URL pública.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">~minutos con IA</span>
+          <span class="chip">sin frameworks</span>
+          <span class="chip">sin diseñar</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que ya hay armado</h4>
+          <ul class="checks">
+            <li><strong>Skill <span class="mono">modo-deck</span></strong>: brand tokens, recetas de slide, voz rioplatense, anti-patterns.</li>
+            <li><strong>Reacciones</strong>: 👍 ❤️ 🚀 + comentarios vía Giscus (GitHub Discussions). Sin backend propio.</li>
+            <li><strong>Lectura biónica</strong>: toggle TDAH/foco built-in para quien lee mejor con énfasis.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Costo real</h4>
+          <p class="body" style="margin: 0;">Un deck nuevo desde cero arranca abajo de 15 minutos con IA. Promoverlo de draft a rfc es un script.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 70%"></i></div><span class="counter">07 / 10</span></div>
+  </section>
+
+  <!-- 08 · CÓMO ARRANCAR · 3 PASOS -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>08 · Cómo arrancar</span><span>tres caminos · elegí el que aplique</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Cómo arrancar</p>
+      <h2 class="heading">Tres maneras de aportar esta semana.</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="step__num">01</span>
+          <h3 class="step__title">Subí tu próximo deck</h3>
+          <p class="step__body">El próximo deck que armes para una reunión PM/TL/Manager, mandalo a la bitácora en estado draft. Cinco minutos extra de tu reunión.</p>
+          <div class="step__cmd"><span class="mono">/modo-deck</span> en Claude Code</div>
+        </div>
+        <div class="step">
+          <span class="step__num">02</span>
+          <h3 class="step__title">Linkeá una RFC viva</h3>
+          <p class="step__body">Si tenés una RFC en Drive o GitHub, sumala al índice. El doc sigue donde estaba, la bitácora la indexa con título, estado y áreas.</p>
+          <div class="step__cmd">PR a <span class="mono">rfcs/rfcs.json</span></div>
+        </div>
+        <div class="step">
+          <span class="step__num">03</span>
+          <h3 class="step__title">Reaccioná a un deck</h3>
+          <p class="step__body">Abrí cualquier deck, tocá el botón de comentarios. 👍 ❤️ 🚀 sin escribir nada. Es señal para el autor de qué resuena.</p>
+          <div class="step__cmd">Tecla <span class="mono">C</span> en cualquier deck</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 80%"></i></div><span class="counter">08 / 10</span></div>
+  </section>
+
+  <!-- 09 · SCOPE · QUÉ SÍ / QUÉ NO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top"><span>09 · Scope</span><span>qué va a la bitácora · qué no</span></div>
+    <div class="slide__body">
+      <p class="eyebrow">Scope</p>
+      <h2 class="heading">Qué entra y qué se queda donde está.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
+        <div class="card">
+          <h3 class="subheading" style="color: var(--green-default);">Sí va a la bitácora</h3>
+          <ul class="checks">
+            <li>Decks de propuestas PM / TL / Manager</li>
+            <li>RFCs y ADRs en review (link al doc real)</li>
+            <li>Skills MODO empaquetadas (zips)</li>
+            <li>Retros y kickoffs con format presentable</li>
+            <li>Decisiones técnicas con autor y fecha</li>
+          </ul>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--dark-gray);">No va · queda donde está</h3>
+          <ul class="checks checks--neutral">
+            <li>Material con NDA o datos de cliente sin anonimizar</li>
+            <li>Threads de Slack del día a día</li>
+            <li>Specs de features no shippeadas (esperan completo)</li>
+            <li>Documentación operativa de Confluence</li>
+            <li>Roadmaps internos no compartibles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom"><span>fomentá el uso · soyernomodo.github.io/erno-modo</span><div class="progress"><i style="--p: 90%"></i></div><span class="counter">09 / 10</span></div>
+  </section>
+
+  <!-- 10 · CIERRE -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="logo"><svg width="80" height="18" aria-label="MODO"><use href="#modo-logo-solid"/></svg></span>
+      <span>fomentá el uso · soyernomodo.github.io/erno-modo</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">El pedido</p>
+      <h1 class="title">Esta semana, <span style="color: var(--green-default)">subí algo</span>.</h1>
+      <p class="lede">Un deck, una RFC linkeada, una reacción. Lo que sea. Lo que el equipo aporta a la bitácora ahora, queda para todos después.</p>
+      <div class="card" style="margin-top: 24px; max-width: 760px;">
+        <h3 class="subheading" style="margin-bottom: 12px;">Material de soporte</h3>
+        <ul class="checks" style="font-size: 16px;">
+          <li><strong>Sitio</strong>: <span class="mono">soyernomodo.github.io/erno-modo</span></li>
+          <li><strong>Repo</strong>: <span class="mono">github.com/SoyErnoModo/erno-modo</span> · público</li>
+          <li><strong>Skill</strong>: <span class="mono">modo-deck</span> en Claude Code · tipea <span class="mono">/modo-deck</span></li>
+          <li><strong>Dudas / feedback</strong>: ping a Hernán por Slack o reaccioná en cualquier deck con la tecla <span class="mono">C</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><h4>Autor</h4><p>Hernán De Souza · Sr AI Engineer</p></div>
+      <div class="meta__col"><h4>Estado</h4><p>Draft · aguardo feedback</p></div>
+      <div class="meta__col"><h4>Repo</h4><p>SoyErnoModo/erno-modo</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 10</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); go(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') {
+      e.preventDefault(); go(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(slides.length - 1);
+    } else if (e.key === 'p' || e.key === 'P') {
+      window.print();
+    }
+  });
+
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) {
+    go(hash - 1);
+  } else {
+    go(0);
+  }
+})();
+</script>
+
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="usa-la-bitacora"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+
+</body>
+</html>

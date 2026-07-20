@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>15 de junio · la oficina cobró vida: de maqueta a tablero, y el roster contrató gerencia · Bitácora · Erno × MODO</title>
+  <meta name="description" content="La entrada del 14 cerró con “lo vivo quedó pendiente”. El 15 lo cablé: la oficina de agentes dejó de ser teatro y pasó a tablero —reescrita en React, alimentada por eventos reales, mismo origin—; el roster creció de 16 a 20 con una capa de gerencia (PO, PM, coach y un CEO con freno de mano); aprendí que hasta el tooling local que dispara comandos es superficie de ataque; y refresqué el mapa para que el patrón sea reusable por la comunidad." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="15 de junio · la oficina cobró vida: de maqueta a tablero, y el roster contrató gerencia" />
+  <meta property="og:description" content="La entrada del 14 cerró con “lo vivo quedó pendiente”. El 15 lo cablé: la oficina de agentes pasó de teatro a tablero, el roster contrató gerencia (PO/PM/coach/CEO con freno de mano), endurecí el tooling local contra CSRF, y refresqué la documentación para que el patrón sea reusable por la comunidad." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/bitacora/2026-06-15.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-06-15" />
+  <meta property="article:section" content="Bitácora" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../rd/research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="./" aria-current="page">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">Bitácora</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">2026-06-15</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Publicado</span>
+        <span class="meta-pill">Bitácora · 2026-06-15</span>
+      </div>
+      <h1 class="article-title">15 de junio · la oficina cobró vida: de maqueta a tablero, y el roster contrató gerencia</h1>
+      <p class="article-deck">La entrada del 14 cerró con "lo vivo quedó pendiente". El 15 lo cablé: la oficina de agentes dejó de ser teatro —una animación con <code>setTimeout</code>— y pasó a tablero, reescrita en React y alimentada por eventos reales que escriben los hooks, todo en el mismo origin. El roster creció de 16 a 20: contrató una capa de gerencia (PO, PM, coach y un CEO con freno de mano). Aprendí que hasta el tooling local que dispara comandos es superficie de ataque. Y que el entorno crecía más rápido que su documentación.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-06-15">2026-06-15</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~7 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>La oficina del 14 era teatro (animación <code>setTimeout</code>); el 15 la cablé con eventos reales y la reescribí en React, servida en el mismo origin que sus datos.</li>
+        <li>El roster pasó de 16 a 20 agentes: sumó una capa de gerencia —PO, PM, coach y CEO— atada a un North Star (WALM).</li>
+        <li>El CEO conduce solo dentro de un mandato revocable y nunca cruza una acción irreversible sin OK: autonomía con freno de mano.</li>
+        <li>Hasta el tooling local que corre comandos necesita defensa: endurecí el server de la oficina contra CSRF (bindear a <code>localhost</code> no alcanza).</li>
+        <li>El entorno crecía más rápido que su doc: refresqué el README canónico y catalogué el patrón como herramienta pública reusable.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#s1">1 · De teatro a tablero</a></li>
+          <li><a href="#s2">2 · El roster contrató gerencia</a></li>
+          <li><a href="#s3">3 · El CEO con freno de mano</a></li>
+          <li><a href="#s4">4 · Hasta el tooling local necesita defensa</a></li>
+          <li><a href="#s5">5 · El mapa atrasado, y por qué la doc es la mitad del trabajo</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        <section id="s1"><h2>1 · De teatro a tablero</h2><p>El 14 dejé la oficina como una animación: un botón "Simular ronda" que encendía cada puesto con <code>setTimeout</code>. Mostraba el <em>ritmo</em> del loop —el router clasifica, las lanes codean en paralelo, los guardianes auditan— pero no su latido. Era teatro, y lo dije así. El pendiente que me quedó fue cablear eventos de verdad.</p><p>El 15 lo cablé. Los hooks de sesión escriben un NDJSON de eventos —cada <code>SubagentStop</code>, cada cambio de fase del Workflow— y la oficina lo pollea. Un puente <code>Workflow → oficina</code> empuja esos eventos a cada puesto. De paso reescribí el lienzo en React (Vite + TS + Tailwind v4, atomic design, tokens reales de marca) y lo serví con <code>office-serve</code> en el <strong>mismo origin</strong> que los datos, así el front hace siempre <code>fetch</code> relativo y el mismo código corre en dev y en build. La regla de la casa —no declarar hecho lo que es teatro— se cumplió, esta vez al revés: lo que el 14 era teatro, el 15 dejó de serlo.</p></section>
+
+        <section id="s2"><h2>2 · El roster contrató gerencia</h2><p>El roster de 16 sabía <em>ejecutar</em>: <code>firu-front</code> toca React, <code>firu-back</code> el dominio, <code>firu-geo</code> el mapa, los guardianes cierran y atacan la seguridad. Pero nadie decidía <strong>qué</strong> construir ni custodiaba el estándar con que se construía. Le faltaba gerencia.</p><p>Sumé cuatro perfiles, y subió a 20. El <code>firu-po</code> es dueño del qué y el por qué: escribe la change proposal OpenSpec <em>antes</em> de codear y parte el trabajo en historias verificables. El <code>firu-pm</code> custodia el proceso: que cada PR tenga su milestone, sus labels y su sección 🏁 Hito, y que el roadmap quede en sync. El <code>firu-coach</code> es un meta-agente que mejora a los <em>otros</em> agentes —mide sus system-prompts y reescribe los flojos. Y el <code>firu-ceo</code> conduce el conjunto. Dejó de ser un roster y pasó a ser una empresa, con todo atado a un North Star explícito: <strong>WALM</strong>, <em>Weekly Active Lost-found Matches</em> —las reuniones de mascota perdida y encontrada por semana. La métrica le da norte a la gerencia; sin ella, "decidir qué sigue" es opinión.</p></section>
+
+        <section id="s3"><h2>3 · El CEO con freno de mano</h2><p>Un CEO agente da miedo por la razón correcta: puede mergear, deployar, gastar, borrar. La tentación es darle el volante entero. No lo hice. El <code>firu-ceo</code> conduce el roster <strong>en nombre del humano, dentro de un mandato que el humano otorga y revoca cuando quiere</strong>. Decide el próximo movimiento de mayor palanca contra el WALM, delega a la gerencia y al loop, custodia el estándar y reporta hacia arriba. Pero hay una línea que no cruza: ninguna acción irreversible —merge, deploy, gasto, borrado, publicar a prod— sin un OK explícito. Y un kill-switch en la oficina le corta el mandato al instante.</p><p>Es, con cara de agente, el mismo principio que escribí el 27 de mayo: <em>autonomía con freno de mano</em>. Delegás el volante sin soltar el freno. La diferencia entre un asistente útil y un riesgo no está en cuánto puede hacer, sino en qué no hace sin preguntar. Codificar ese "no" en el system-prompt es la parte que de verdad importa.</p></section>
+
+        <section id="s4"><h2>4 · Hasta el tooling local necesita defensa</h2><p>El server que sirve la oficina no es pasivo: sus <code>POST</code> corren <code>gh</code> y <code>claude</code>, abren PRs, escriben estado. Mi primer instinto fue el de todos: "es <code>localhost</code>, está a salvo". Es falso, y vale la pena entender por qué. El atacante no necesita estar en tu red: es <strong>tu propio browser</strong>. Un sitio malicioso abierto en otra pestaña puede disparar un <code>fetch</code> a <code>http://localhost:4317</code> — y si ese endpoint ejecuta comandos, acaba de ejecutarlos por vos.</p><p>El fix no es un parche, es entender el modelo del navegador y usarlo a favor. Exijo <code>Content-Type: application/json</code> en los POST con efecto: un POST cross-origin con JSON dispara un <em>preflight</em> CORS, que sin permiso explícito falla <em>antes</em> de que el request salga. Y si viene <code>Origin</code>, tiene que ser el de la oficina. La lección es general y la voy a repetir: <strong>cualquier superficie que ejecute comandos es superficie de ataque, por más que diga "solo local"</strong>. El threat model no entiende de "es para mí nomás".</p></section>
+
+        <section id="s5"><h2>5 · El mapa atrasado, y por qué la doc es la mitad del trabajo</h2><p>Cuando fui a publicar todo esto, abrí el README canónico del entorno y me encontré con el mapa atrasado: documentaba 13 de 20 agentes —le faltaba entera la capa de gerencia— y ni mencionaba la oficina React ni los eventos vivos. El territorio había crecido; el mapa, no. Un entorno sin su documentación al día <strong>no es reusable</strong>: ni por vos en tres semanas, cuando te olvidaste de los detalles, ni por nadie más que quiera partir de ahí.</p><p>Así que refresqué el README —los cuatro de gerencia, los especialistas, la sección de la oficina viva con cómo correrla— y catalogué el patrón como herramienta pública: <em>un equipo de agentes por rol como entorno de trabajo, adaptable a cualquier repo</em>, desacoplado de Firulapp. Es el LLM Wiki Pattern de Karpathy aplicado al propio andamiaje: escribir lo aprendido para no re-aprenderlo. La doc no es el cierre del trabajo —es la mitad. La que decide si lo que construiste vive una sesión o sirve a la comunidad.</p></section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-06-15">2026-06-15</time>
+          </p>
+          <p class="article-credits">
+            Tags del día: agentes · orquestación · oficina · seguridad · documentación · comunidad · firulapp · karpathy
+          </p>
+          <p class="article-disclaimer">
+            Generado por <code>/daily-bitacora</code> · voz rioplatense + claridad Karpathy. Digest diario de aprendizajes propios del workspace MODO (memorias fechadas, actividad de git/gh, transcripts de sesión, memoria ruflo). No describe productos MODO ni decisiones de plataforma como hechos públicos: es bitácora personal de ingeniería para no re-aprender lo aprendido.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow Bitácora:</strong>
+    <span class="status-badge draft">Borrador</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Publicado</span>
+  </div>
+  </div>
+</footer>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

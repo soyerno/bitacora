@@ -1,0 +1,33 @@
+# Erno × MODO
+
+> Feed de IA aplicada a fintech desde adentro de MODO (Argentina). Decks, RFCs, R&D, postmans, skills, proyectos y bitácora — material producido día a día por el Sr AI Engineer de MODO usando Claude Code en producción. Voz rioplatense, sin buzzwords, foco en pagos, SEO/GEO, agentes y plataforma.
+
+## Bóveda completa
+
+- [Bóveda · feed unificado](https://soyernomodo.github.io/erno-modo/boveda/): índice buscable de los 100+ items con filtros por tipo (deck/RFC/R&D/postman/skill/proyecto/bitácora) y madurez (draft/en curso/shipped/archivado).
+
+## Colecciones principales
+
+- [Decks](https://soyernomodo.github.io/erno-modo/decks/): presentaciones HTML branded MODO para Comité PM + TL + Manager. Storytelling afilado, decisión clara.
+- [RFCs](https://soyernomodo.github.io/erno-modo/rfcs/): propuestas técnicas con voz de autor. Migración Next 12→16, evergreen SEO/GEO, pagos agénticos, infra k8s.
+- [R&D](https://soyernomodo.github.io/erno-modo/rd/): long-form research articles con diagramas SVG y gráficos Chart.js. Mapeos de superficie API, análisis cross-plataforma.
+- [Postmans](https://soyernomodo.github.io/erno-modo/postmans/): URLs de prueba parametrizadas para QA de deep links y validación de branding por banco.
+- [Skills](https://soyernomodo.github.io/erno-modo/skills/): herramientas Claude Code reusables empaquetadas como `.zip` — modo-deck, modo-design-system, modo-jsm-ticket, modo-research-article, modo-promos, simular-compra-agentica y más.
+- [Proyectos](https://soyernomodo.github.io/erno-modo/proyectos/): repos del ecosistema MODO (@playsistemico) con conteo de PRs aportados.
+- [Bitácora diaria](https://soyernomodo.github.io/erno-modo/bitacora/): digest de aprendizajes — una historia por feature o lección del día, voz pedagógica estilo Karpathy.
+
+## Temas recurrentes
+
+- **SEO/GEO**: presencia en buscadores con IA (ChatGPT, Perplexity, Claude). Schema.org, canonical, JSON-LD, llms.txt, evergreen pages.
+- **Pagos agénticos**: ACP, AP2, Intent Mandates, Cart Mandates, SPT, SDK Container, biometric, checkout end-to-end.
+- **Claude Code en producción**: skills custom, MCP servers, hooks, plugins MODO, audit-iterate loop, worktrees, paralelización.
+- **Migraciones**: Next 12→16, TypeScript strict, Styled Components → Tailwind v4, App Router, React 19.
+- **Plataforma MODO**: Storyblok CMS, design system, BFFs, k8s deploy, CSP, observability baseline.
+
+## Quién escribe
+
+Hernán De Souza · Sr AI Engineer @ MODO (Play Digital S.A.) · modo-landing, promos-hub, aprendeatumodo. GitHub: [@SoyErnoModo](https://github.com/SoyErnoModo).
+
+## Modelo editorial
+
+Curado por una persona, no submission-driven. Si una práctica funciona en MODO real, sube a la bóveda. Si rompe, también — esa es la bitácora.

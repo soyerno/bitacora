@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>14 de junio · ver a los agentes trabajar juntos: el loop ya estaba, faltaba el lienzo · Bitácora · Erno × MODO</title>
+  <meta name="description" content="Me pidieron guionar el loop de orquestación de Firulapp y ver a los agentes trabajar en conjunto. Lo primero fue descubrir que el loop <code>route-request</code> ya estaba escrito; lo segundo, que el roster vivía en <code>main</code> y que los agentes se registran al arrancar la sesión; lo tercero, armar tres niveles de "ver": un plano ASCII, un lienzo HTML que anima el loop, y <code>/workflows</code> para lo vivo de verdad. Honesto: verlo correr con eventos reales quedó para la próxima." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="14 de junio · ver a los agentes trabajar juntos: el loop ya estaba, faltaba el lienzo" />
+  <meta property="og:description" content="Me pidieron guionar el loop de orquestación de Firulapp y ver a los agentes trabajar en conjunto. Lo primero fue descubrir que el loop <code>route-request</code> ya estaba escrito; lo segundo, que el roster vivía en <code>main</code> y que los agentes se registran al arrancar la sesión; lo tercero, armar tres niveles de "ver": un plano ASCII, un lienzo HTML que anima el loop, y <code>/workflows</code> para lo vivo de verdad. Honesto: verlo correr con eventos reales quedó para la próxima." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/bitacora/2026-06-14.html" />
+  <meta property="article:author" content="Hernán De Souza" />
+  <meta property="article:published_time" content="2026-06-14" />
+  <meta property="article:section" content="Bitácora" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../rd/research-article.css" />
+  <link rel="stylesheet" href="../assets/deck-bionic.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../assets/common.js"></script>
+  <script defer src="../assets/nav-counts.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#article-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../">Home</a>
+    <a href="../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="./" aria-current="page">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="article-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="./">Bitácora</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">2026-06-14</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Publicado</span>
+        <span class="meta-pill">Bitácora · 2026-06-14</span>
+      </div>
+      <h1 class="article-title">14 de junio · ver a los agentes trabajar juntos: el loop ya estaba, faltaba el lienzo</h1>
+      <p class="article-deck">Me pidieron guionar el loop de orquestación de Firulapp y ver a los agentes trabajar en conjunto. Lo primero fue descubrir que el loop <code>route-request</code> ya estaba escrito; lo segundo, que el roster vivía en <code>main</code> y que los agentes se registran al arrancar la sesión; lo tercero, armar tres niveles de "ver": un plano ASCII, un lienzo HTML que anima el loop, y <code>/workflows</code> para lo vivo de verdad. Honesto: verlo correr con eventos reales quedó para la próxima.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <time datetime="2026-06-14">2026-06-14</time>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>~6 min de lectura</span>
+      </div>
+    </header>
+
+    <aside class="tldr" aria-label="TL;DR">
+      <p class="tldr-label">TL;DR</p>
+      <ul>
+        <li>Me pidieron guionar el loop de orquestación de Firulapp y ver a los agentes trabajar en conjunto. Lo primero fue descubrir que el loop <code>route-request</code> ya estaba escrito; lo segundo, que el roster vivía en <code>main</code> y que los agentes se registran al arrancar la sesión; lo tercero, armar tres niveles de "ver": un plano ASCII, un lienzo HTML que anima el loop, y <code>/workflows</code> para lo vivo de verdad. Honesto: verlo correr con eventos reales quedó para la próxima.</li>
+      </ul>
+    </aside>
+
+    <div class="article-grid">
+
+      <nav class="article-toc" aria-label="Tabla de contenidos">
+        <p class="toc-label">En esta página</p>
+        <ol>
+          <li><a href="#s1">1 · Primero leer, después codear</a></li>
+          <li><a href="#s2">2 · El roster vive en <code>main</code>, y se registra al arrancar</a></li>
+          <li><a href="#s3">3 · Tres niveles de ver al equipo trabajar</a></li>
+          <li><a href="#s4">4 · Lo honesto: lo vivo quedó pendiente</a></li>
+        </ol>
+      </nav>
+
+      <div class="article-prose">
+
+        
+        <section id="s1"><h2>1 · Primero leer, después codear</h2><p>El pedido era guionar el loop de orquestación de Firulapp — el <code>route-request</code>, ese que toma un pedido y lo reparte a los agentes de rol. Mi primer reflejo fue abrir el editor. El segundo, mejor, fue mirar el repo: <code>.claude/workflows/route-request.mjs</code> ya existía, y bien hecho. Tres fases —Clasificar, Despachar, Custodiar—, un agente por lane en su propio worktree off <code>origin/main</code>, y una red de seguridad siempre-on con dos lentes: <code>firu-security</code> defensivo y <code>firu-cyber</code> ofensivo sobre todo lo despachado.</p><p>No había nada que escribir. La lección vieja, otra vez: el código más barato es el que no escribís porque ya estaba. Leer el repo antes de teclear me ahorró un duplicado y, peor, un duplicado divergente. La disciplina no es "escribir rápido", es <strong>verificar el estado del mundo antes de actuar</strong>.</p></section>
+
+        <section id="s2"><h2>2 · El roster vive en <code>main</code>, y se registra al arrancar</h2><p>El blocker real no era el script sino los actores. El workflow despacha por <code>agentType</code>: <code>firu-front</code>, <code>firu-back</code>, <code>firu-ux</code>… pero en mi branch (1 adelante / 4 atrás de <code>origin/main</code>) la carpeta <code>.claude/agents/</code> tenía un solo archivo. Los 16 agentes del roster vivían en <code>origin/main</code> (PRs #454/#455), no en mi checkout. Un <code>git checkout origin/main -- .claude/agents/</code> los trajo al working tree de un saque.</p><p>Pero ahí apareció el gotcha que importa: <strong>Claude Code registra los agent types al arrancar la sesión.</strong> Materializar los <code>.md</code> a mitad de sesión no los registra — la sesión sigue viendo solo los que cargó al boot. Para que <code>firu-front</code> resuelva de verdad en <code>agent({agentType})</code> hay que recargar. Mismo patrón que engram el otro día y que los flags congelados en el WebView de Firulapp: <em>lo que se carga en el arranque no se entera de lo que pasó después</em>. Es el mismo bug con tres caras.</p></section>
+
+        <section id="s3"><h2>3 · Tres niveles de ver al equipo trabajar</h2><p>"Ver a los agentes trabajar juntos" tiene tres respuestas, de menos a más vivo. <strong>Uno, el plano estático</strong>: un ASCII de la oficina —recepción con el router, sala de construcción con los puestos, rincón de seguridad— que muestra la topología del loop de un vistazo. Sirve para entender quién le pasa la posta a quién.</p><p><strong>Dos, el lienzo animado</strong>: un <code>office.html</code> autocontenido, paleta Firulapp, con los 16 puestos y un botón "Simular ronda" que enciende cada puesto fase por fase — el router clasifica, cuatro lanes codean en paralelo, una choca y queda en rojo, los guardianes auditan. Es un mock (<code>setTimeout</code>, no eventos reales) pero deja ver el <em>ritmo</em> del loop sin gastar un token. Y expone <code>window.setOfficeState({agente: estado})</code> para alimentarlo con datos de verdad cuando los haya.</p><p><strong>Tres, lo vivo en serio</strong>: <code>/workflows</code>, el árbol de progreso del Workflow mientras corre. Ahí ves el fan-out, el pipeline, qué agente alimenta a cuál, en tiempo real. La maqueta enseña la forma; <code>/workflows</code> muestra el latido.</p></section>
+
+        <section id="s4"><h2>4 · Lo honesto: lo vivo quedó pendiente</h2><p>Lo que <strong>no</strong> entregué: verlo correr de verdad. Quedó trabado en el reload de sesión, y la animación del HTML es teatro, no telemetría. El paso que sigue —y que ya me pidieron— es cablear los eventos del loop en vivo a esa oficina: que cada <code>SubagentStop</code> o cada cambio de fase del Workflow empuje un <code>setOfficeState</code> real, vía hook o un archivo de estado que la página lea por polling.</p><p>Ahí la oficina deja de ser maqueta y se vuelve tablero. Pero eso es trabajo de la próxima entrada — y la regla de la casa es no declarar "hecho" lo que todavía es teatro.</p></section>
+
+        <hr class="article-hr" />
+
+        <footer class="article-footer">
+          <p class="article-credits">
+            Hernán De Souza · Sr AI Engineer @ MODO · <time datetime="2026-06-14">2026-06-14</time>
+          </p>
+          <p class="article-credits">
+            Tags del día: agentes · orquestación · workflow · visualización · firulapp · karpathy
+          </p>
+          <p class="article-disclaimer">
+            Generado por <code>/daily-bitacora</code> · voz rioplatense + claridad Karpathy. Digest diario de aprendizajes propios del workspace MODO (memorias fechadas, actividad de git/gh, transcripts de sesión, memoria ruflo). No describe productos MODO ni decisiones de plataforma como hechos públicos: es bitácora personal de ingeniería para no re-aprender lo aprendido.
+          </p>
+        </footer>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">modo-deck</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Workflow Bitácora:</strong>
+    <span class="status-badge draft">Borrador</span>
+    <span class="workflow-arrow">→</span>
+    <span class="status-badge completo">Publicado</span>
+  </div>
+  </div>
+</footer>
+
+<script src="../assets/deck-bionic.js" defer></script>
+</body>
+</html>

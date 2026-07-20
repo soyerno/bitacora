@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'" />
+  <title>Timeline de PRs · Bitácora · Erno × MODO</title>
+  <meta name="description" content="Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Refrescado dos veces al día desde la GitHub API." />
+  <meta name="theme-color" content="#008859" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Timeline de PRs · Erno × MODO" />
+  <meta property="og:description" content="Cada PR con su intención: qué hace y qué dolor resuelve." />
+  <meta property="og:url" content="https://soyernomodo.github.io/erno-modo/bitacora/prs/" />
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23008859'/><text x='50' y='72' font-family='Quicksand,sans-serif' font-weight='700' font-size='66' fill='white' text-anchor='middle' letter-spacing='-0.06em'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Red+Hat+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('modo-decks-theme');
+        var theme = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : 'auto';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { document.documentElement.setAttribute('data-theme', 'auto'); }
+    })();
+  </script>
+  <script defer src="../../assets/common.js"></script>
+  <script defer src="../../assets/nav-counts.js"></script>
+  <style>
+    .prs-intro {
+      max-width: 70ch;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+    }
+
+    .prs-meta-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin: 0 0 28px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .prs-meta-bar strong { color: var(--ink); font-weight: 600; }
+
+    .prs-timeline {
+      position: relative;
+      padding: 0 0 0 24px;
+      margin: 0;
+      list-style: none;
+    }
+
+    .prs-timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .prs-day {
+      margin-bottom: 36px;
+      position: relative;
+    }
+
+    .prs-day-head {
+      position: relative;
+      margin: 0 0 16px;
+      padding-left: 0;
+    }
+
+    .prs-day-head::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      background: var(--accent, #008859);
+      border-radius: 50%;
+      border: 3px solid var(--surface);
+      box-shadow: 0 0 0 1px var(--border);
+    }
+
+    .prs-day-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .prs-day-title {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 4px 0 0;
+    }
+
+    .prs-card {
+      display: block;
+      padding: 18px 20px;
+      margin: 0 0 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow-card);
+      color: inherit;
+      text-decoration: none;
+      transition: transform 0.15s, border-color 0.15s;
+      position: relative;
+    }
+
+    .prs-card:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent);
+    }
+
+    .prs-card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .prs-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .prs-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--bg-soft, rgba(0,136,89,0.08));
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+
+    .prs-state {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .prs-state.merged { background: rgba(130, 80, 223, 0.12); color: #7c5dd4; }
+    .prs-state.open { background: rgba(0, 136, 89, 0.12); color: var(--accent); }
+    .prs-state.closed { background: rgba(120, 120, 120, 0.12); color: var(--muted); }
+    .prs-state.draft { background: rgba(255, 165, 0, 0.12); color: #c87a00; }
+
+    .prs-repo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .prs-card-title {
+      font-family: 'Red Hat Display', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 1.4;
+      margin: 0 0 12px;
+      color: var(--ink);
+    }
+
+    .prs-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 12px;
+      margin: 6px 0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .prs-row-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 2px;
+    }
+
+    .prs-row-body {
+      color: var(--ink-soft);
+    }
+
+    .prs-row-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 1px 4px;
+      background: var(--bg-soft, rgba(0,0,0,0.04));
+      border-radius: 3px;
+    }
+
+    .prs-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .prs-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: var(--bg-soft, rgba(0,0,0,0.04));
+    }
+
+    @media (max-width: 640px) {
+      .prs-row { grid-template-columns: 1fr; gap: 4px; }
+      .prs-row-label { padding-top: 0; }
+    }
+
+    #prs-loading, #prs-empty {
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<a class="skip-link" href="#prs-main">Saltar al contenido</a>
+
+<header>
+  <div class="container">
+  <div class="brand">
+    <a class="wordmark" href="../../" aria-label="Erno por MODO · home"><span class="wm-name">Erno</span><span class="wm-x" aria-hidden="true">×</span><span class="wm-modo">MODO</span></a>
+    <span class="brand-subtitle">IA aplicada a fintech, desde adentro de MODO</span>
+  </div>
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="../../">Home</a>
+    <a href="../../decks/">Decks <span class="nav-count" id="nav-count-decks">·</span></a>
+    <a href="../../rfcs/">RFCs <span class="nav-count" id="nav-count-rfcs">·</span></a>
+    <a href="../../postmans/">Postmans <span class="nav-count" id="nav-count-postmans">·</span></a>
+    <a href="../../rd/">R&amp;D <span class="nav-count" id="nav-count-rd">·</span></a>
+    <a href="../" aria-current="page">Bitácora <span class="nav-count" id="nav-count-bitacora">·</span></a>
+    <a href="../../proyectos/">Proyectos <span class="nav-count" id="nav-count-proyectos">·</span></a>
+    <a href="../../herramientas/">Herramientas</a>
+  </nav>
+  <button class="theme-toggle" type="button" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema (auto / claro / oscuro)">
+    <span data-icon="auto" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 0 0 18"/></svg></span>
+    <span data-icon="light" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    <span data-icon="dark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+    <span class="label" id="theme-label">auto</span>
+  </button>
+  </div>
+</header>
+
+<main id="prs-main" class="article-shell">
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="../../">Erno × MODO</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <a href="../">Bitácora</a>
+    <span class="sep" aria-hidden="true">/</span>
+    <span aria-current="page">PRs · Timeline</span>
+  </nav>
+
+  <article class="article">
+
+    <header class="article-hero">
+      <div class="article-badges">
+        <span class="status-badge completo">Live</span>
+        <span class="meta-pill">Bitácora · PRs</span>
+      </div>
+      <h1 class="article-title">Timeline de PRs</h1>
+      <p class="article-deck">Cada PR que abro queda acá con su intención explícita: <strong>qué hace</strong> y <strong>qué dolor resuelve</strong>. Sin marketing, sin checklists, sin patch notes — sólo el porqué del cambio.</p>
+      <div class="article-meta">
+        <span>Hernán De Souza · Sr AI Engineer</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>Refresh automático <strong>09:00</strong> y <strong>16:30</strong> ART</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>Fuente: <code>gh pr list</code> + body parsing</span>
+      </div>
+    </header>
+
+    <p class="prs-intro">
+      Este timeline es append-only. Cada entrada cita el PR, su tipo (<code>feat</code>/<code>fix</code>/<code>perf</code>/<code>refactor</code>/<code>ci</code>/<code>chore</code>), el repo, el estado actual y dos líneas que explican <em>qué hace</em> y <em>qué dolor resuelve</em>. La intención es que cualquiera (yo en 3 meses, el equipo, un dev nuevo) pueda barrer la lista y entender la motivación de cada cambio sin abrir los diffs.
+    </p>
+
+    <div class="prs-meta-bar" id="prs-meta-bar">
+      <span><strong id="prs-count">0</strong> PRs</span>
+      <span><strong id="prs-merged-count">0</strong> merged</span>
+      <span><strong id="prs-open-count">0</strong> open</span>
+      <span><strong id="prs-closed-count">0</strong> closed</span>
+      <span>Última sync: <strong id="prs-last-sync">—</strong></span>
+    </div>
+
+    <div id="prs-loading">Cargando timeline…</div>
+    <div id="prs-empty" hidden>Todavía no hay PRs registrados.</div>
+    <ol class="prs-timeline" id="prs-timeline" hidden></ol>
+
+  </article>
+</main>
+
+<footer>
+  <div class="container">
+  <div>
+    Generados con <a href="https://github.com/SoyErnoModo/erno-modo">erno-modo</a> · repo <a href="https://github.com/SoyErnoModo/erno-modo">SoyErnoModo/erno-modo</a>
+  </div>
+  <div class="workflow-legend">
+    <strong>Refresh:</strong>
+    <span class="status-badge completo">09:00 + 16:30 ART</span>
+  </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var TYPE_LABELS = {
+    feat: 'FEAT', fix: 'FIX', perf: 'PERF', refactor: 'REFACTOR',
+    ci: 'CI', chore: 'CHORE', docs: 'DOCS', test: 'TEST',
+    style: 'STYLE', build: 'BUILD', revert: 'REVERT', merge: 'MERGE'
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  // URL scheme allowlist · only https GitHub PR links can render as <a href>.
+  // Anything else (javascript:, data:, file:, ftp:, etc.) falls back to '#'
+  // so a tampered timeline.json cannot create clickable XSS vectors.
+  function safeHref(u) {
+    var str = String(u || '');
+    if (/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/pull\/\d+(?:[/?#].*)?$/.test(str)) {
+      return str;
+    }
+    return '#';
+  }
+
+  function stateClass(state) {
+    var s = String(state || '').toLowerCase();
+    if (s.indexOf('draft') !== -1) return 'draft';
+    if (s === 'merged') return 'merged';
+    if (s === 'closed') return 'closed';
+    return 'open';
+  }
+
+  function fmtDate(d) {
+    var dt = new Date(d + 'T00:00:00');
+    var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return dt.getDate() + ' de ' + months[dt.getMonth()] + ' · ' + dt.getFullYear();
+  }
+
+  function groupByDate(items) {
+    var by = {};
+    items.forEach(function (it) {
+      if (!by[it.date]) by[it.date] = [];
+      by[it.date].push(it);
+    });
+    return Object.keys(by).sort(function (a, b) { return b.localeCompare(a); }).map(function (d) {
+      by[d].sort(function (a, b) { return (b.number || 0) - (a.number || 0); });
+      return { date: d, items: by[d] };
+    });
+  }
+
+  function render(data) {
+    var items = (data && data.items) || [];
+    var counters = { total: items.length, MERGED: 0, OPEN: 0, CLOSED: 0 };
+    items.forEach(function (it) {
+      var st = String(it.state || '').toUpperCase();
+      if (st === 'MERGED') counters.MERGED++;
+      else if (st === 'CLOSED') counters.CLOSED++;
+      else counters.OPEN++;
+    });
+
+    document.getElementById('prs-count').textContent = counters.total;
+    document.getElementById('prs-merged-count').textContent = counters.MERGED;
+    document.getElementById('prs-open-count').textContent = counters.OPEN;
+    document.getElementById('prs-closed-count').textContent = counters.CLOSED;
+    document.getElementById('prs-last-sync').textContent = (data._meta && data._meta.generated) || '—';
+
+    var ol = document.getElementById('prs-timeline');
+    var loading = document.getElementById('prs-loading');
+    var empty = document.getElementById('prs-empty');
+    loading.hidden = true;
+
+    if (!items.length) { empty.hidden = false; return; }
+
+    var html = '';
+    groupByDate(items).forEach(function (group) {
+      html += '<li class="prs-day">';
+      html += '<div class="prs-day-head">';
+      html += '  <div class="prs-day-date">' + escapeHtml(group.date) + '</div>';
+      html += '  <h2 class="prs-day-title">' + escapeHtml(fmtDate(group.date)) + '</h2>';
+      html += '</div>';
+
+      group.items.forEach(function (it) {
+        var st = String(it.state || '').toUpperCase();
+        var stClass = stateClass(it.state);
+        var typeLabel = TYPE_LABELS[it.type] || (it.type || '').toUpperCase();
+        html += '<a class="prs-card" href="' + escapeHtml(safeHref(it.url)) + '" target="_blank" rel="noopener noreferrer">';
+        html += '  <div class="prs-card-head">';
+        html += '    <span class="prs-num">#' + it.number + '</span>';
+        if (typeLabel) html += '    <span class="prs-type">' + escapeHtml(typeLabel) + '</span>';
+        html += '    <span class="prs-state ' + stClass + '">' + escapeHtml(st || 'OPEN') + '</span>';
+        if (it.repo) html += '    <span class="prs-repo">' + escapeHtml(it.repo) + '</span>';
+        html += '  </div>';
+        html += '  <div class="prs-card-title">' + escapeHtml(it.title) + '</div>';
+        if (it.que_hace) {
+          html += '  <div class="prs-row">';
+          html += '    <div class="prs-row-label">Qué hace</div>';
+          html += '    <div class="prs-row-body">' + escapeHtml(it.que_hace) + '</div>';
+          html += '  </div>';
+        }
+        if (it.dolor) {
+          html += '  <div class="prs-row">';
+          html += '    <div class="prs-row-label">Dolor</div>';
+          html += '    <div class="prs-row-body">' + escapeHtml(it.dolor) + '</div>';
+          html += '  </div>';
+        }
+        if (it.tags && it.tags.length) {
+          html += '  <div class="prs-tags">';
+          it.tags.forEach(function (t) { html += '<span class="prs-tag">' + escapeHtml(t) + '</span>'; });
+          html += '  </div>';
+        }
+        html += '</a>';
+      });
+
+      html += '</li>';
+    });
+
+    ol.innerHTML = html;
+    ol.hidden = false;
+  }
+
+  fetch('./timeline.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data) {
+        document.getElementById('prs-loading').textContent = 'No se pudo cargar timeline.json';
+        return;
+      }
+      render(data);
+    })
+    .catch(function (err) {
+      document.getElementById('prs-loading').textContent = 'Error al cargar timeline: ' + err.message;
+    });
+})();
+</script>
+
+</body>
+</html>

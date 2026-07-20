@@ -1,0 +1,203 @@
+{
+  "_meta": {
+    "generated": "2026-05-21",
+    "category": "R&D",
+    "format": "HTML long-form articles with inline SVG diagrams and Chart.js visualizations",
+    "workflow": [
+      "exploración",
+      "síntesis",
+      "decisión",
+      "completo",
+      "archivado"
+    ],
+    "notes": "Investigaciones técnicas que preceden a un RFC formal. Mapeos, descubrimientos, análisis de superficie. Más cortas que un RFC, más profundas que un comentario en Slack."
+  },
+  "items": [
+    {
+      "number": "RD01",
+      "slug": "developers-portal-mapping",
+      "title": "MODO Developers Portal · Mapeo de API y gaps de DX",
+      "summary": "Qué hostea developers.modo.com.ar (un viewer auth-gated, no la API), dónde vive la API real (merchants.playdigital.com.ar), modelo de auth (JWT HS256 / 7d) y heatmap de 9 gaps críticos + 7 importantes para mover esto a DX moderna.",
+      "status": "exploración",
+      "tags": [
+        "dx",
+        "api",
+        "portal",
+        "developers"
+      ],
+      "area": "platform",
+      "date": "2026-05-20",
+      "href": "developers-portal-mapping.html",
+      "reading_minutes": 12,
+      "diagrams": 3,
+      "charts": 1,
+      "sources": [
+        "https://developers.modo.com.ar/",
+        "https://central.modo.com.ar/",
+        "https://merchants.modo.com.ar/docs",
+        "Confluence space Developers (play-sistemico)"
+      ]
+    },
+    {
+      "number": "RD02",
+      "slug": "modo-govern-influencias",
+      "title": "MODO Govern · análisis de influencias",
+      "summary": "Genealogía de un proyecto interno: qué prior art declarada (Paperclip, OpenClaw, Spotify Engineering, Zettelkasten/Obsidian, HRIS, MCP) e implícita (sigstore/SLSA, OPA, Backstage, Vanta, n8n/Temporal, JumpCloud, Supabase, Lovable) lo formó, y por qué los docs cuentan dos historias que todavía no terminan de cerrar.",
+      "status": "exploración",
+      "tags": [
+        "interno",
+        "agentes",
+        "compliance",
+        "genealogía"
+      ],
+      "area": "platform",
+      "date": "2026-05-21",
+      "href": "modo-govern-influencias.html",
+      "reading_minutes": 10,
+      "diagrams": 1,
+      "charts": 1,
+      "sources": [
+        "modo-govern-source-2026-04-13/README.md",
+        "modo-govern-source-2026-04-13/docs/AI-SQUAD-AUTOMATION.md",
+        "modo-govern-source-2026-04-13/docs/ARCHITECTURE.md",
+        "modo-govern-source-2026-04-13/docs/PITCH-PRESENTATION.md",
+        "modo-govern-source-2026-04-13/docs/SALES-STRATEGY.md",
+        "modo-govern-source-2026-04-13/docs/specs/SPEC-{101,106,107,109,110,113,119}*.md"
+      ]
+    },
+    {
+      "number": "RD03",
+      "slug": "rd-infrastructure-ship",
+      "title": "R&D Infrastructure ship · skill canónico + validación de catálogo",
+      "summary": "24 horas después de abrir la categoría R&D con RD01, cómo quedó armada la infra para que el siguiente research no requiera reinventar nada: skill modo-research-article que enforce el pattern + validate_rd() en el sync diario + post-mortem del swarm de ruflo que se cayó mid-flight (1 socket disconnect + 1 rate limit, 0 trabajos completos).",
+      "status": "decisión",
+      "tags": [
+        "meta",
+        "infra",
+        "swarm",
+        "post-mortem"
+      ],
+      "area": "platform",
+      "date": "2026-05-21",
+      "href": "rd-infrastructure-ship.html",
+      "reading_minutes": 8,
+      "diagrams": 2,
+      "charts": 1,
+      "sources": [
+        "~/.claude/skills/modo-research-article/ (SKILL.md + README + assets + references)",
+        "~/.claude/skills/erno-modo-sync-all/scripts/sync.py (validate_rd)",
+        "https://soyernomodo.github.io/erno-modo/rd/developers-portal-mapping.html (RD01, pattern source)"
+      ]
+    },
+    {
+      "number": "RD04",
+      "slug": "promos-hub-seo-geo-bridge",
+      "title": "Landings temáticas evergreen + /comercios canonical hub para SEO/GEO MODO",
+      "summary": "Cómo recuperar el tráfico estacional que hoy muere cada año en /hotsale-2026, /cyber2025, /navidad-2025: URL evergreen por evento + JSON-LD SaleEvent + cross-link estructural a hubs /comercios/[slug] para que la equity de cada edición se acumule en vez de empezar de cero el año siguiente. Patrón híbrido sin big-bang, ~7 días de dev, encaja como V1.5 del roadmap comercios-database.",
+      "status": "síntesis",
+      "tags": [
+        "seo",
+        "geo",
+        "comercios",
+        "storyblok",
+        "json-ld"
+      ],
+      "area": "seo",
+      "date": "2026-05-28",
+      "href": "promos-hub-seo-geo-bridge.html",
+      "reading_minutes": 12,
+      "diagrams": 2,
+      "charts": 1,
+      "sources": [
+        "modo-landing/docs/comercios-database/04-seo-geo-strategy.md",
+        "modo-landing/docs/comercios-database/README.md",
+        "modo-landing/src/components/PromotionsOnlineStores/PromotionsOnlineStores.jsx",
+        "modo-landing/src/components/TextHeader/TextHeader.jsx",
+        "modo-landing/src/pages/[[...slug]].jsx",
+        "Google Search Console export 28d · 2026-05 (queries modo+comercio + URLs /promos/*-mes)",
+        "https://schema.org/SaleEvent"
+      ]
+    },
+    {
+      "number": "RD05",
+      "slug": "publicar-frontend-modo-k8s",
+      "title": "Publicar un frontend MODO en Kubernetes",
+      "summary": "Runbook de cero a producción para un front MODO en k8s: imagen modo-base + entrypoint.sh, config runtime SOPS→AWS SSM, chart compartido vía ci-ms/cd-ms@v1, subdominio por exposeName+dnsAliasRecord+istio.external, basePath/assetPrefix para embeber bajo modo.com.ar/<path>, integración de modo-landing-web-ui-lib, y los seis tickets canónicos del JSM (HD-1404 repo · CYBS-1576/1577 team+miembros · PEA-10936 plataforma · OFFSEC-14111 GRC gate · CYBS-1042 1Password) generados con el skill hermano modo-jsm-ticket. Tres casos: promos-hub (molde vivo), modo-landing (apex con deuda) y aprendeatumodo (pre-infra).",
+      "status": "decisión",
+      "tags": [
+        "platform",
+        "k8s",
+        "deploy",
+        "jsm",
+        "dx"
+      ],
+      "area": "platform",
+      "date": "2026-05-27",
+      "href": "publicar-frontend-modo-k8s.html",
+      "reading_minutes": 11,
+      "diagrams": 3,
+      "charts": 1,
+      "sources": [
+        "promos-hub-site (helm/values.yaml, next.config.mjs, entrypoint.sh, .github/workflows/, .sops.yaml)",
+        "modo-landing (helm/values.yaml, docs/deployment.md, Dockerfile)",
+        "aprendeatumodo (vite.config.ts, openspec/changes/migrate-to-next16, COENXT-308)",
+        "modo-landing/docs/runbook-publish-modo-frontend-k8s.md (source of truth)",
+        "skill modo-frontend-deploy (~/.claude/skills/modo-frontend-deploy/)",
+        "~/.claude/skills/modo-jsm-ticket/reference/catalog.md (sd/rt validados)"
+      ]
+    },
+    {
+      "number": "RD06",
+      "slug": "perf-next12-vs-next16-ssr-2026-05-28",
+      "title": "Performance modo-landing · Next 12 prod vs Next 16 preprod (con y sin SSR fix)",
+      "summary": "Tres baselines Unlighthouse del mismo día — Next 12 en prod, Next 16 en preprod sin SSR del CMS body, Next 16 en preprod con SSR fix puesto. Score medio cae 5 puntos y bytes suben 8%, pero el env mismatch prod ↔ preprod hace que los deltas absolutos sean direccionales, no veredicto. El SSR fix sí mueve la aguja donde tenía que moverla: /bancos CLS de 1.048 (catástrofe) a 0.375 (paridad con prod). Next 16 tree-shakea 60-100 KB de unused JS por ruta — win modesto que se absorbe en el 8% extra de HTML/CSS. PR #1496 (image quality 95→75 + AVIF) sigue draft.",
+      "status": "exploración",
+      "tags": [
+        "performance",
+        "next16",
+        "ssr",
+        "unlighthouse"
+      ],
+      "area": "platform",
+      "date": "2026-05-28",
+      "href": "perf-next12-vs-next16-ssr-2026-05-28.html",
+      "reading_minutes": 9,
+      "diagrams": 1,
+      "charts": 6,
+      "sources": [
+        "modo-landing/docs/perf/baselines/2026-05-28-prod-pre-migration/metrics.json (Next 12 control)",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration/metrics.json (Next 16 sin SSR fix)",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration-ssr/metrics.json (Next 16 con SSR fix)",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration-ssr/diff-vs-prod.md",
+        "modo-landing/docs/perf/baselines/2026-05-28-preprod-post-migration-ssr/diff-vs-noss.md",
+        "modo-landing PR #1466 (SSR fix CMS body, mergeado a preprod)",
+        "modo-landing PR #1496 (CMSImage quality 95→75 + AVIF, draft)",
+        "Web Vitals targets (LCP ≤2.5s, CLS ≤0.1)"
+      ]
+    },
+    {
+      "number": "RD07",
+      "slug": "motd-status-monitor",
+      "title": "MOTD service status monitor · 12 servicios en el arranque del terminal",
+      "summary": "Panel de status de 12 servicios (GitHub, Claude, OpenAI, Datadog, Cloudflare, Google Cloud, npm, Vercel + MODO Landing/Promos/Merchants/Developers) renderizado al final del MOTD. Cache-first ~50ms + BG refresh paralelo ~800ms · contrato statuspage.io v2 dominante · HEAD probe para hosts sin status page · trap zsh con local en loops.",
+      "status": "decisión",
+      "tags": [
+        "tooling",
+        "shell",
+        "monitoring",
+        "zsh"
+      ],
+      "area": "devex",
+      "date": "2026-05-22",
+      "href": "motd-status-monitor.html",
+      "reading_minutes": 5,
+      "diagrams": 0,
+      "charts": 0,
+      "sources": [
+        "~/.config/motd-status.sh (librería)",
+        "~/.zshrc (wire-up)",
+        "https://www.githubstatus.com/api/v2/status.json (contrato statuspage.io v2 canónico)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="description" content="Roadmap V1-V3 para construir el catálogo canónico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301." />
+<title>Comercios Database · De 200 merchants ruidosos a catalogo canonico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green-default: #008859; --green-dark: #00471B; --green-10: #DCF5E7; --green-20: #CCF6ED;
+    --yellow-rewards: #FFC738; --red-warn: #FE5E5E;
+    --gray-3: #F8F8F8; --gray-8: #ECECEC; --gray-20: #D0D0D0; --gray-60: #777777;
+    --dark-gray: #717171; --gray-80: #333333; --ink: #121212; --paper: #FFFFFF; --paper-warm: #FAFAF7;
+    --border-soft: rgba(18, 18, 18, 0.06); --shadow-card: 0 1px 2px rgba(18,18,18,0.04), 0 8px 24px rgba(18,18,18,0.05);
+    --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--gray-8); font-family: "Red Hat Display", -apple-system, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .deck { width: 100vw; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .slide { width: min(1600px, 96vw, calc(92vh * 16 / 9)); aspect-ratio: 16 / 9; max-height: 100vh; background: var(--paper-warm); position: relative; display: none; padding: 64px 80px; box-shadow: 0 24px 80px rgba(18,18,18,0.08); overflow: hidden; }
+  .slide.active { display: flex; flex-direction: column; }
+  .slide__chrome-top { position: absolute; top: 28px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .modo-wordmark { font-family: "Quicksand", sans-serif; font-weight: 700; color: var(--green-default); letter-spacing: -0.06em; line-height: 1; display: inline-block; font-size: 42px; font-variant-numeric: tabular-nums; }
+  .modo-wordmark--sm { font-size: 26px; letter-spacing: -0.05em; }
+  .slide__chrome-bottom { position: absolute; bottom: 24px; left: 80px; right: 80px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-60); }
+  .slide__chrome-bottom .counter { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+  .slide__chrome-bottom .progress { flex: 1; margin: 0 24px; height: 2px; background: var(--gray-8); overflow: hidden; border-radius: 999px; }
+  .slide__chrome-bottom .progress > i { display: block; height: 100%; background: var(--green-default); width: var(--p, 0%); transition: width 360ms var(--ease); }
+  .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-default); margin: 0 0 16px; }
+  h1.title { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(42px, 4.8vw, 80px); font-weight: 700; line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 24px; color: var(--ink); }
+  h2.heading { font-family: "Quicksand", "Red Hat Display", sans-serif; font-size: clamp(33px, 3.4vw, 54px); font-weight: 700; line-height: 1.1; letter-spacing: -0.018em; margin: 0 0 16px; color: var(--ink); }
+  h3.subheading { font-size: 24px; font-weight: 600; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+  p.lede { font-size: 26px; line-height: 1.45; color: var(--gray-80); margin: 0 0 24px; max-width: 62ch; }
+  p.body { font-size: 19px; line-height: 1.55; color: var(--gray-80); margin: 0 0 12px; max-width: 68ch; }
+  p.body strong { color: var(--ink); font-weight: 600; }
+  p.muted { font-size: 16px; color: var(--gray-60); margin: 0; line-height: 1.5; }
+  .num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: -0.035em; }
+  .num--xl { font-size: clamp(96px, 10vw, 168px); line-height: 0.95; }
+  .num--lg { font-size: clamp(56px, 5.5vw, 88px); line-height: 1; }
+  .num--md { font-size: clamp(38px, 3.8vw, 58px); line-height: 1; }
+  .num--accent { color: var(--green-default); }
+  .slide__body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .card { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); box-shadow: var(--shadow-card); }
+  .card__index { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); letter-spacing: 0.04em; margin-bottom: 12px; display: block; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--gray-3); color: var(--gray-80); font-size: 14px; font-weight: 500; }
+  .chip--green { background: var(--green-10); color: var(--green-dark); font-weight: 600; }
+  .chip--red { background: #FFE6E6; color: #A92121; font-weight: 600; }
+  .chip--yellow { background: #FFF1C8; color: #5C3F00; font-weight: 600; }
+  .dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+  .dot--bad { background: var(--red-warn); } .dot--good { background: var(--green-default); } .dot--warn { background: var(--yellow-rewards); }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat__label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); }
+  .stat__value { color: var(--ink); }
+  table.compare { width: 100%; border-collapse: collapse; font-size: 17px; }
+  table.compare th, table.compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--gray-8); }
+  table.compare thead th { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); background: transparent; border-bottom: 1px solid var(--gray-20); }
+  table.compare tbody tr:last-child td { border-bottom: none; }
+  table.compare td:first-child { color: var(--ink); font-weight: 500; }
+  td.was { color: var(--gray-60); } td.now { color: var(--ink); font-weight: 600; }
+  ol.decisions { list-style: none; counter-reset: decisions; padding: 0; margin: 0; }
+  ol.decisions li { counter-increment: decisions; position: relative; padding: 16px 0 16px 56px; border-bottom: 1px solid var(--gray-8); }
+  ol.decisions li:last-child { border-bottom: none; }
+  ol.decisions li::before { content: counter(decisions, decimal-leading-zero); position: absolute; left: 0; top: 18px; font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 17px; color: var(--green-default); }
+  ol.decisions h3 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  ol.decisions .ownership { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-top: 4px; }
+  ul.checks { list-style: none; padding: 0; margin: 0; }
+  ul.checks li { position: relative; padding: 6px 0 6px 28px; font-size: 18px; line-height: 1.5; color: var(--gray-80); }
+  ul.checks li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 999px; background: var(--green-default); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--green-default); }
+  ul.checks.checks--no li::before { background: var(--red-warn); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--red-warn); }
+  ul.checks.checks--neutral li::before { background: var(--gray-20); box-shadow: inset 0 0 0 3px var(--paper-warm), 0 0 0 1px var(--gray-20); }
+  .pillar-detail { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; height: 100%; align-items: center; }
+  .pillar-detail__evidence { background: var(--paper); border: 1px solid var(--border-soft); border-radius: 14px; padding: 24px; }
+  .pillar-detail__evidence h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-default); margin: 0 0 12px; }
+  .pillar-detail__evidence + .pillar-detail__evidence { margin-top: 16px; }
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 16px; align-items: stretch; margin-top: 24px; }
+  .phase { background: var(--paper); border-radius: 14px; padding: 24px; border: 1px solid var(--border-soft); display: flex; flex-direction: column; }
+  .phase__num { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 66px; line-height: 1; color: var(--green-default); margin-bottom: 8px; letter-spacing: -0.04em; }
+  .phase__weeks { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-60); margin-bottom: 12px; }
+  .phase__title { font-size: 20px; font-weight: 600; margin: 0 0 8px; color: var(--ink); line-height: 1.25; }
+  .phase__body { font-size: 16px; line-height: 1.5; color: var(--gray-60); margin: 0; }
+  .phase__total { background: var(--green-10); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; min-width: 180px; }
+  .stack-today { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 24px; }
+  .stack-block { border-radius: 14px; padding: 20px; border: 1px solid var(--border-soft); background: var(--paper); }
+  .stack-block h4 { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 12px; }
+  .stack-block .row-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--gray-8); font-size: 17px; }
+  .stack-block .row-item:last-child { border-bottom: none; }
+  .stack-block .row-item .label { color: var(--ink); font-weight: 500; }
+  .stack-block .row-item .value { color: var(--gray-60); font-size: 14px; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 16px; background: var(--gray-3); padding: 2px 6px; border-radius: 4px; color: var(--gray-80); }
+  .slide--cover { background: radial-gradient(circle at 90% -10%, rgba(0,136,89,0.04), transparent 50%), var(--paper-warm); padding: 80px; }
+  .slide--cover h1.title { font-size: clamp(56px, 6.5vw, 96px); max-width: 18ch; }
+  .slide--cover .meta { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; }
+  .slide--cover .meta__col .meta__label { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 6px; }
+  .slide--cover .meta__col p { margin: 0; font-size: 18px; color: var(--ink); line-height: 1.4; }
+  .sigil { width: 12px; height: 12px; background: var(--green-default); border-radius: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; }
+  @media print { body { background: white; } .deck { display: block; height: auto; } .slide { display: flex !important; page-break-after: always; box-shadow: none; width: 1280px; height: 720px; max-height: 720px; } .deck__nav { display: none !important; } }
+  .deck__nav { position: fixed; bottom: 24px; right: 24px; display: flex; gap: 8px; background: var(--paper); padding: 8px; border-radius: 999px; box-shadow: 0 6px 24px rgba(18,18,18,0.12); z-index: 100; }
+  .deck__nav button { background: transparent; border: none; width: 36px; height: 36px; border-radius: 999px; cursor: pointer; color: var(--gray-60); transition: background 180ms var(--ease), color 180ms var(--ease); }
+  .deck__nav button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck__nav .counter { font-family: "Quicksand", sans-serif; font-variant-numeric: tabular-nums; font-weight: 600; font-size: 16px; color: var(--ink); padding: 0 12px; display: flex; align-items: center; }
+  .deck-reactions {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(480px, 92vw);
+    background: var(--paper);
+    box-shadow: -8px 0 32px rgba(18,18,18,0.18);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 220ms var(--ease);
+  }
+  .deck-reactions.is-open { transform: translateX(0); }
+  .deck-reactions__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-3);
+    font-family: "Quicksand", sans-serif;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .deck-reactions__head button {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--gray-60);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .deck-reactions__head button:hover { background: var(--gray-3); color: var(--ink); }
+  .deck-reactions__body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  @media print { .deck-reactions, #toggle-comments { display: none !important; } }
+</style>
+
+<style id="deck-crumb-style">
+.deck-crumb {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 136, 89, 0.92);
+  color: #fff;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.deck-crumb a { color: #fff; text-decoration: none; opacity: 0.92; }
+.deck-crumb a:hover { opacity: 1; text-decoration: underline; }
+.deck-crumb .sep { opacity: 0.45; }
+@media print { .deck-crumb { display: none !important; } }
+</style>
+<script>(function(){try{var t=localStorage.getItem("modo-decks-theme");if(t!=="light"&&t!=="dark"&&t!=="auto")t="auto";document.documentElement.setAttribute("data-theme",t)}catch(e){document.documentElement.setAttribute("data-theme","auto")}})();</script>
+<link rel="stylesheet" href="../../assets/deck-theme.css" />
+  <link rel="stylesheet" href="../../assets/deck-bionic.css" />
+  <meta property="og:title" content="Comercios Database · De 200 merchants ruidosos a catalogo canonico" />
+  <meta property="og:description" content="Roadmap V1-V3 para construir el catálogo canónico de comercios MODO. V1 BFF materializado → V2 geo+branches → V3 UCP + agent.json + MCP + 301." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://soyernomodo.github.io/erno-modo/assets/og-default.png" />
+  <link rel="canonical" href="https://soyernomodo.github.io/erno-modo/decks/completo/comercios-database.html" />
+</head>
+<body>
+<nav class="deck-crumb" aria-label="Breadcrumb">
+  <a href="../../" aria-label="Volver a Erno × MODO">← Erno × MODO</a>
+  <span class="sep" aria-hidden="true">/</span>
+  <a href="../">Decks</a>
+</nav>
+
+
+<main class="deck" id="deck">
+
+  <!-- 01 · COVER -->
+  <section class="slide slide--cover active" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>comercios database · v0.1 · COENXT</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Fase 2 · /comercios · Q2-Q4 2026</p>
+      <h1 class="title">De 200 merchants<br /><span style="color: var(--green-default)">ruidosos a catalogo</span> canonico.</h1>
+      <p class="lede">El MVP de /comercios esta en preprod (51k impresiones/mes en la ruta actual de GSC). Falta el motor: el dataset. Propongo las tres versiones para cerrarlo.</p>
+      <p class="muted" style="margin-top: 16px; padding: 10px 14px; background: var(--gray-3); border-radius: 8px; max-width: 70ch;"><span class="sigil"></span><strong>Asume MVP releasado a prod</strong> (decisiones del deck <em>comercios-mvp</em> resueltas: release POC + 301 legacy /comercios → /modo-en-tu-comercio + migracion scope EXA → COENXT).</p>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><p class="meta__label">Audiencia</p><p>Comite mixto · PM · TL · Manager</p></div>
+      <div class="meta__col"><p class="meta__label">Autor</p><p>Hernan De Souza · COENXT board</p></div>
+      <div class="meta__col"><p class="meta__label">Fecha</p><p>2026-05-20 · base: branch feat/comercios-mvp-2026-05-15 (MVP)</p></div>
+    </div>
+  </section>
+
+  <!-- 02 · TL;DR -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>02 · La recomendacion</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">La recomendacion</p>
+      <h1 class="title" style="font-size: clamp(48px, 5.5vw, 82px); max-width: 22ch;">Construir el<br /><span style="color: var(--green-default)">catalogo en 3 versiones</span> trimestrales.</h1>
+      <div class="grid-3" style="margin-top: 40px;">
+        <div class="stat">
+          <span class="stat__label">GSC impresiones /comercios (legacy)</span>
+          <span class="num num--md stat__value">51k</span>
+          <p class="muted">/28 dias · CTR 0.72% · posicion media 2.5 · medido sobre la ruta legacy actual · baseline para validar el lift post-release del MVP</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Gap actual</span>
+          <span class="num num--md stat__value">200 vs 300k</span>
+          <p class="muted">merchants expuestos vs merchants adheridos declarados en la red MODO. 3 ordenes de magnitud.</p>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Esfuerzo para V1</span>
+          <span class="num num--md stat__value">~11 dias</span>
+          <p class="muted">dev · cutover a stores-api.brands · elimina 100% del ruido del composer actual</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 40px; max-width: 80ch;"><strong>Por que ahora</strong>: el MVP /comercios es el chasis correcto. Queries como "modo coto" (215 clicks · 26% CTR), "modo farmacity" (148 · 25%), "modo carrefour" (105 · 19%) demuestran que el usuario nos pide el merchant por nombre y MODO no tiene URL canonica viva para esas busquedas.</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 15%"></i></div>
+      <span class="counter">02 / 13</span>
+    </div>
+  </section>
+
+  <!-- 03 · DIAGNOSTICO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>03 · Diagnostico</span>
+      <span>el estado del catalogo hoy</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Estado actual</p>
+      <h2 class="heading">El composer actual genera entidades como "Bolivia", "Csi" y "Audio".</h2>
+      <p class="body" style="max-width: 70ch; margin-bottom: 24px;">El BFF de promos no es una fuente de catalogo. Genera merchants por regex sobre meta.search_tags. Aun con la denylist N1 que shippeamos, no es sostenible para escalar.</p>
+      <div class="stack-today">
+        <div class="stack-block">
+          <h4>Sintomas observados en GSC (28 dias)</h4>
+          <div class="row-item"><span class="label">/comercios · 51k impresiones (legacy)</span><span class="value"><span class="dot dot--warn"></span> CTR 0.72% · ~10 curados + ~190 ruidosos via regex composer</span></div>
+          <div class="row-item"><span class="label">/promos/changomas-mar26</span><span class="value"><span class="dot dot--bad"></span> 28k impresiones · URL estacional muere por mes</span></div>
+          <div class="row-item"><span class="label">Queries "modo coto" (215 clicks)</span><span class="value"><span class="dot dot--bad"></span> Sin URL canonica viva en /comercios/coto</span></div>
+          <div class="row-item"><span class="label">Entidades en mock.ts</span><span class="value"><span class="dot dot--bad"></span> "Bolivia" · "Csi" · "Audio" · "Navbar"</span></div>
+        </div>
+        <div class="stack-block">
+          <h4>Causa raiz</h4>
+          <div class="row-item"><span class="label">Fuente de datos</span><span class="value">BFF de promos · no es catalogo</span></div>
+          <div class="row-item"><span class="label">extractMerchantTag()</span><span class="value">Regex sobre search_tags · fragil</span></div>
+          <div class="row-item"><span class="label">JSON-LD</span><span class="value">Minimo · sin geo · sin sucursales · sin horarios</span></div>
+          <div class="row-item"><span class="label">Sitemap /comercios</span><span class="value">URLs estacionales · equity fragmentada</span></div>
+          <div class="row-item"><span class="label">LLM ingestion</span><span class="value">Sin llms.txt · sin agent.json · sin ucp.json</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 23%"></i></div>
+      <span class="counter">03 / 13</span>
+    </div>
+  </section>
+
+  <!-- 04 · TIMING / POR QUE AHORA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>04 · Por que ahora</span>
+      <span>oportunidad real · evidencia GSC</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">La oportunidad es real y medible</p>
+      <h2 class="heading">El usuario ya nos busca por merchant. No tenemos la pagina que quiere.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: stretch;">
+        <div class="card">
+          <span class="card__index">Demanda ya existente (GSC · 28d)</span>
+          <h3 class="subheading">Queries con CTR alto y sin URL canonica</h3>
+          <ul class="checks">
+            <li><strong>"modo coto"</strong>: 215 clicks · CTR 26% · posicion 1.1.</li>
+            <li><strong>"modo farmacity"</strong>: 148 clicks · CTR 25% · posicion 1.3.</li>
+            <li><strong>"modo carrefour"</strong>: 105 clicks · CTR 19% · posicion 1.5.</li>
+            <li>Estas queries tienen CTR altisimo porque el usuario YA quiere MODO + ese comercio. Le falta la pagina.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card__index">Equity desperdigada</span>
+          <h3 class="subheading">/promos/changomas-mar26 muere cada mes</h3>
+          <ul class="checks">
+            <li>Query <strong>"changomas"</strong> genera ~73k impresiones/mes en GSC. La URL especifica <strong>/promos/changomas-mar26</strong> captura 28k de esas impresiones y se 404 el mes siguiente.</li>
+            <li>Si ese equity fuera a /comercios/changomas, seria una URL que crece con el tiempo.</li>
+            <li>Plan 301: /promos/[slug]-[mes] → /comercios/[slug] recuperaria ~3000 clicks/mes acumulados.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body" style="margin-top: 32px; padding: 20px 24px; background: var(--green-10); border-radius: 14px; color: var(--green-dark); max-width: none;">
+        <strong>La base ya esta</strong>: el MVP /comercios tiene el chasis correcto (ISR · JSON-LD Service · rutas /comercios/[slug]). El paso siguiente es enchufar stores-api.brands como fuente de verdad y sacar el composer ruidoso.
+      </p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 31%"></i></div>
+      <span class="counter">04 / 13</span>
+    </div>
+  </section>
+
+  <!-- 05 · PILAR 1 · V1 BFF MATERIALIZADO -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>05 · V1</span>
+      <span>BFF materializado · stores-api</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">V1 · Q2 2026</p>
+        <div class="num num--xl num--accent">~11d</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Cutover a stores-api.brands. Elimina 100% del ruido del composer.</h2>
+        <p class="body" style="max-width: 50ch;">Conectar el BFF de /comercios directamente a stores-api.brands (la fuente de verdad de comercios adheridos a la red MODO). Reemplaza el composer regex por un join CUIT-based con fallback fuzzy.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">Sin romper lo shipped</span>
+          <span class="chip">GH Action cron 4 AM UTC</span>
+          <span class="chip">Zod schemas tipados</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que entrega V1</h4>
+          <ul class="checks">
+            <li><strong>stores-api typed client</strong>: Brand · Store · Category · OnlineStore con Zod.</li>
+            <li><strong>Snapshot materializado</strong>: S3 + bundled fallback + LRU cache 5 min.</li>
+            <li><strong>API routes nuevas</strong>: /api/comercios/merchants · /api/comercios/merchant/[slug] · /api/comercios/facets.</li>
+            <li><strong>Cron de refresh</strong>: GitHub Action diario que llama /api/cron/refresh-merchants.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Bloqueador a coordinar</h4>
+          <p class="body" style="margin: 0;">Acceso a stores-api desde modo-landing requiere token + ambiente. El backend owner de stores-api tiene que participar en V1.F0 (audit). Ya lo identifique como bloqueador en la documentacion.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 38%"></i></div>
+      <span class="counter">05 / 13</span>
+    </div>
+  </section>
+
+  <!-- 06 · PILAR 2 · V2 GEO + SCHEMA -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>06 · V2</span>
+      <span>geo + sucursales + JSON-LD denso</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">V2 · Q3 2026</p>
+        <div class="num num--xl num--accent">~10d</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">Sucursales geolocalizadas + JSON-LD LocalBusiness. Habilita "modo cerca de mi".</h2>
+        <p class="body" style="max-width: 50ch;">Pasar del schema Service minimo (que ya cumple con schema.org) a LocalBusiness con geo · branches[] · openingHours · sameAs · paymentAccepted. Esto activa el Knowledge Graph de Google y las citaciones con ubicacion en LLMs.</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">Habilita Knowledge Graph</span>
+          <span class="chip">OpeningHoursSpecification</span>
+          <span class="chip">Sitemap segmentado</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Merchant v2 schema</h4>
+          <ul class="checks">
+            <li><strong>geo</strong>: GeoCoordinates por sucursal · habilita "modo cerca de mi" en Google.</li>
+            <li><strong>branches[]</strong>: Store + LocalBusiness por sucursal · salto de 1 a N entidades por merchant.</li>
+            <li><strong>openingHours</strong>: OpeningHoursSpecification · util para LLMs que responden "horario de X".</li>
+            <li><strong>sameAs</strong>: link a Google Maps · Wikipedia · official site · aumenta trust del Knowledge Graph.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Sitemap segmentado</h4>
+          <p class="body" style="margin: 0;">/comercios-sitemap.xml + /comercios-sucursales-sitemap.xml + IndexNow ping en el revalidate on-demand. Pasa la indexacion de 30-60 dias a 7-14 dias para merchants nuevos.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 46%"></i></div>
+      <span class="counter">06 / 13</span>
+    </div>
+  </section>
+
+  <!-- 07 · PILAR 3 · V3 UCP + MCP + 301 -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>07 · V3</span>
+      <span>UCP · agent.json · MCP · 301</span>
+    </div>
+    <div class="pillar-detail" style="padding-top: 32px;">
+      <div>
+        <p class="eyebrow">V3 · Q4 2026</p>
+        <div class="num num--xl num--accent">~14d</div>
+        <h2 class="heading" style="font-size: 38px; margin-top: 8px;">LLM ingestion completa. Los agentes de IA descubren y citan a MODO.</h2>
+        <p class="body" style="max-width: 50ch;">/.well-known/agent.json + /.well-known/ucp.json + /llms.txt enriquecido + MCP tools nuevas para merchant lookup. ChatGPT · Claude · Perplexity · Gemini pueden responder "que comercios tienen promo con MODO cerca de mi".</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span class="chip chip--green">Agent.json + UCP</span>
+          <span class="chip">MCP search_merchants</span>
+          <span class="chip">301 plan URLs estacionales</span>
+        </div>
+      </div>
+      <div>
+        <div class="pillar-detail__evidence">
+          <h4>Lo que entrega V3</h4>
+          <ul class="checks">
+            <li><strong>/.well-known/agent.json</strong>: discovery file para agentes AI · indica capabilities.</li>
+            <li><strong>/.well-known/ucp.json</strong>: Universal Commerce Protocol manifest.</li>
+            <li><strong>/llms.txt enriquecido</strong>: lista de merchants + rubros + instrucciones para LLMs.</li>
+            <li><strong>MCP tools nuevas</strong>: search_merchants(q, rubro, banco) · get_merchant(slug) · nearby_merchants(lat, lng) sobre el benefits-search-mcp-api existente.</li>
+          </ul>
+        </div>
+        <div class="pillar-detail__evidence" style="background: var(--green-10); border-color: transparent;">
+          <h4 style="color: var(--green-dark);">Plan 301 URLs estacionales</h4>
+          <p class="body" style="margin: 0;">/promos/changomas-mar26 → /comercios/changomas. Recupera el equity de ~3000 clicks/mes acumulados en URLs que hoy mueren cada mes. Requiere coordinacion con promos-hub-site team.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 54%"></i></div>
+      <span class="counter">07 / 13</span>
+    </div>
+  </section>
+
+  <!-- 08 · EL PLAN EN FASES -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>08 · El plan</span>
+      <span>V1 → V2 → V3 por trimestres</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Roadmap propuesto</p>
+      <h2 class="heading">3 versiones serializadas, sin romper lo shipped en cada paso.</h2>
+      <div class="timeline">
+        <div class="phase">
+          <span class="phase__num">V1</span>
+          <span class="phase__weeks">Q2 2026 · ~11 dias dev</span>
+          <h3 class="phase__title">BFF materializado</h3>
+          <p class="phase__body">Cutover a stores-api.brands. Elimina ruido. Snapshot S3 + cron GH Action. APIs tipadas. Tests unitarios del composer.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">V2</span>
+          <span class="phase__weeks">Q3 2026 · ~10 dias dev</span>
+          <h3 class="phase__title">Geo + sucursales</h3>
+          <p class="phase__body">Schema Merchant v2 con branches[] + geo + openingHours. LocalBusiness JSON-LD por sucursal. Sitemap segmentado + IndexNow. Seed top 100 merchants por demanda GSC.</p>
+        </div>
+        <div class="phase">
+          <span class="phase__num">V3</span>
+          <span class="phase__weeks">Q4 2026 · ~14 dias dev</span>
+          <h3 class="phase__title">UCP / MCP / 301</h3>
+          <p class="phase__body">agent.json + ucp.json + llms.txt. MCP tools nuevas en benefits-search-mcp-api. Plan 301 /promos/[slug]-[mes] → /comercios/[slug].</p>
+        </div>
+        <div class="phase__total">
+          <span class="phase__weeks">Total estimado</span>
+          <span class="num num--lg" style="color: var(--green-default); margin: 4px 0;">~35d</span>
+          <span style="font-size: 14px; letter-spacing: 0.08em; color: var(--green-dark); text-transform: uppercase; font-weight: 600;">dev · ~7 sem calendar</span>
+          <span style="font-size: 13px; color: var(--gray-60); margin-top: 8px; line-height: 1.4;">Distribuido Q2-Q4 por coordinacion externa (stores-api owner V1, validacion SEO V2, promos-hub-site V3). No por capacity.</span>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 24px; gap: 20px;">
+        <div class="card" style="background: var(--green-10); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--green-dark); margin: 0 0 8px;">Las 5 mejoras de mayor leverage</h4>
+          <p class="body" style="margin: 0; font-size: 16px; color: var(--green-dark);">1. Cutover stores-api (V1) · 2. Schema Merchant v2 geo (V2) · 3. Sitemap segmentado + IndexNow (V2) · 4. agent.json + ucp.json (V3) · 5. Plan 301 URLs estacionales (V3). Total ~11d de mayor impacto.</p>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent; padding: 16px 20px;">
+          <h4 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dark-gray); margin: 0 0 8px;">Prerrequisito bloqueante de V1</h4>
+          <p class="body" style="margin: 0; font-size: 16px;">Acceso a stores-api desde modo-landing (token + ambiente). Sin ese acceso no se puede arrancar V1. Esto es una coordinacion con el team de backend · no es ingenieria nueva.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 62%"></i></div>
+      <span class="counter">08 / 13</span>
+    </div>
+  </section>
+
+  <!-- 09 · SCOPE IN / OUT -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>09 · Scope</span>
+      <span>que entra y que no</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Scope de este proyecto</p>
+      <h2 class="heading">Extiende el MVP shippeado. No lo reemplaza.</h2>
+      <div class="grid-2" style="margin-top: 32px; align-items: flex-start;">
+        <div class="card">
+          <h3 class="subheading" style="color: var(--green-default);">Entra en este proyecto</h3>
+          <ul class="checks">
+            <li>BFF materializado sobre stores-api.brands (V1)</li>
+            <li>Schema Merchant v2 con geo · branches · openingHours (V2)</li>
+            <li>Sitemap segmentado /comercios-sitemap.xml + IndexNow (V2)</li>
+            <li>Seed top 100 merchants por demanda GSC (V2)</li>
+            <li>/.well-known/agent.json + ucp.json + /llms.txt (V3)</li>
+            <li>MCP tools search_merchants · get_merchant · nearby_merchants (V3)</li>
+            <li>Plan 301 URLs estacionales /promos/ → /comercios/ (V3)</li>
+          </ul>
+        </div>
+        <div class="card" style="background: var(--gray-3); border-color: transparent;">
+          <h3 class="subheading" style="color: var(--dark-gray);">No entra en este proyecto</h3>
+          <ul class="checks checks--neutral">
+            <li>Crear stores-api ni cambiar su modelo de datos (readonly consumer)</li>
+            <li>Admin UI para merchants (es un proyecto separado)</li>
+            <li>Hubs por banco /comercios/banco/[banco] × 25 (queda como gap del MVP · proyecto separado post-V2 cuando ya hay banks normalizados)</li>
+            <li>Integracion con Google Business Profile (post-V3 si hay traccion)</li>
+            <li>Ratings o resenas de usuarios (requiere moderacion · out of scope)</li>
+            <li>Paginas /comercios en promos-hub-site (ese proyecto tiene su propio roadmap)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 69%"></i></div>
+      <span class="counter">09 / 13</span>
+    </div>
+  </section>
+
+  <!-- 10 · VISTA PM -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>10 · Vista PM</span>
+      <span>producto · UX · metricas</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Para el PM</p>
+      <h2 class="heading">Cada version desbloquea metricas de producto nuevas.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead><tr><th style="width: 28%;">Aspecto</th><th>Hoy (MVP)</th><th>Post-V1</th><th>Post-V2/V3</th></tr></thead>
+        <tbody>
+          <tr><td>Merchants expuestos</td><td class="was">~200 · algunos con ruido</td><td class="now" style="font-size: 16px;">1k-5k · stores-api reales</td><td style="color: var(--ink); font-weight: 600; font-size: 16px;">Sucursales + geo por merchant</td></tr>
+          <tr><td>CTR /comercios</td><td class="was">0.72% · 51k impresiones</td><td class="now" style="font-size: 16px;">Merchants reales · mejor match de queries</td><td style="color: var(--ink); font-weight: 600; font-size: 16px;">"modo cerca de mi" activo · Knowledge Graph</td></tr>
+          <tr><td>Queries atendidas</td><td class="was">"modo coto" redirige a lista generica</td><td class="now" style="font-size: 16px;">URL canonica /comercios/coto con datos reales</td><td style="color: var(--ink); font-weight: 600; font-size: 16px;">LLMs citan MODO en respuestas con ubicacion</td></tr>
+          <tr><td>Equidad SEO</td><td class="was">URLs estacionales /promos/[slug]-[mes]</td><td class="now" style="font-size: 16px;">Mismo que hoy · V1 no toca URLs</td><td style="color: var(--ink); font-weight: 600; font-size: 16px;">301 /promos/ → /comercios/ · equity acumulada</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top: 24px;"><span class="sigil"></span>El OKR natural para V1: reducir entidades ruidosas de ~200 a 0. Para V2: indexacion de /comercios/[slug] en menos de 14 dias. Para V3: citaciones de MODO en al menos 2 LLMs para queries "modo cerca de mi".</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 77%"></i></div>
+      <span class="counter">10 / 13</span>
+    </div>
+  </section>
+
+  <!-- 11 · VISTA TL/MANAGER -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>11 · Vista TL · Manager</span>
+      <span>tecnico · riesgo · rollback</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Para el TL y el Manager</p>
+      <h2 class="heading">Cada version es rollback-safe porque no toca las rutas existentes.</h2>
+      <table class="compare" style="margin-top: 24px;">
+        <thead><tr><th style="width: 28%;">Version</th><th>Cambios en produccion</th><th>Riesgo</th><th>Rollback</th></tr></thead>
+        <tbody>
+          <tr><td>V1 · BFF materializado</td><td class="now" style="font-size: 16px;">Nuevo endpoint /api/comercios. Feature flag para cutover</td><td><span class="dot dot--good"></span> Bajo</td><td>Desactivar feature flag en env var</td></tr>
+          <tr><td>V2 · Geo + schema</td><td class="now" style="font-size: 16px;">Schema Merchant v2 en JSON-LD. Sitemap nuevo</td><td><span class="dot dot--warn"></span> Medio · requiere validar Rich Results</td><td>Revertir el PR del schema v2</td></tr>
+          <tr><td>V3 · 301 plan</td><td class="now" style="font-size: 16px;">Redirects en next.config.js de /promos/[slug] a /comercios/[slug]</td><td><span class="dot dot--warn"></span> Coordinacion con promos-hub-site</td><td>Remover las reglas de redirect</td></tr>
+          <tr><td>V3 · agent.json / MCP</td><td class="now" style="font-size: 16px;">Nuevos endpoints en benefits-search-mcp-api</td><td><span class="dot dot--good"></span> Bajo · nuevo servicio sin impacto en produccion</td><td>Apagar el MCP endpoint</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top: 24px;"><span class="sigil"></span>V1 requiere acceso a stores-api. Ese es el unico bloqueador externo del proyecto. Las demas versiones dependen solo del equipo de modo-landing y de promos-hub-site (para V3 301 plan).</p>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 85%"></i></div>
+      <span class="counter">11 / 13</span>
+    </div>
+  </section>
+
+  <!-- 12 · DECISIONES -->
+  <section class="slide" data-slide>
+    <div class="slide__chrome-top">
+      <span>12 · Decisiones</span>
+      <span>lo que necesito del comite</span>
+    </div>
+    <div class="slide__body">
+      <p class="eyebrow">Antes de arrancar</p>
+      <h2 class="heading" style="font-size: clamp(28px, 3vw, 44px); margin-bottom: 8px;">Cuatro decisiones para que V1 arranque en Q2.</h2>
+      <ol class="decisions" style="margin-top: 8px;">
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 19px;">Prerrequisito heredado del MVP: release POC + 301 legacy</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 16px; line-height: 1.45;">V1 monta sobre el chasis del MVP. Hasta que /comercios POC no esté en prod (con 301 legacy a /modo-en-tu-comercio resuelto), no hay sobre qué materializar el BFF. Decisión que vive en el deck <em>comercios-mvp</em>, bloqueante de V1.F0.</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: PM + TL del MVP · Deadline sugerido: 2026-05-23</p>
+        </li>
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 19px;">Owner técnico full-time Fase 2 + apoyo backend (PIDP-1847)</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 16px; line-height: 1.45;">~35 días dev Q2-Q4 necesitan un developer dedicado en modo-landing. El auth contra stores-api depende del ticket en migración PIDP-1847 (backend). Sin owner asignado, el proyecto queda en limbo aunque el backlog esté priorizado.</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: TL + Manager · Action: capacity check sprint actual</p>
+        </li>
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 19px;">Acceso a stores-api desde modo-landing</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 16px; line-height: 1.45;">Token de acceso a stores-api debe crearse y rotarse en SOPS. El backend owner de stores-api tiene que estar en el loop antes de V1.F0 (audit de contratos). Trackeable contra PIDP-1847.</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: TL · backend stores-api owner · Infra/SOPS</p>
+        </li>
+        <li style="padding: 10px 0 10px 48px;">
+          <h3 style="font-size: 19px;">Priorizar V1 backlog Q2 + planificar V3 con promos-hub-site</h3>
+          <p class="body" style="margin: 2px 0 0; font-size: 16px; line-height: 1.45;">Tickets V1 pre-creados en doc 09-jira-backlog.md (COENXT board 4716). PM prioriza para arrancar el sprint de ~11 días. El 301 plan V3 lo coordina PM modo-landing con PM promos-hub-site (no urgente, mejor anclar ahora).</p>
+          <p class="ownership" style="margin-top: 2px;">Owner: PM COENXT · PM promos-hub-site</p>
+        </li>
+      </ol>
+    </div>
+    <div class="slide__chrome-bottom">
+      <span>comercios database · COENXT</span>
+      <div class="progress"><i style="--p: 92%"></i></div>
+      <span class="counter">12 / 13</span>
+    </div>
+  </section>
+
+  <!-- 13 · CIERRE -->
+  <section class="slide slide--cover" data-slide>
+    <div class="slide__chrome-top">
+      <span class="modo-wordmark modo-wordmark--sm">MODO</span>
+      <span>comercios database · COENXT</span>
+    </div>
+    <div class="slide__body" style="justify-content: center;">
+      <p class="eyebrow">Siguiente paso · aguardo su feedback</p>
+      <h1 class="title">Si el PM prioriza V1,<br /><span style="color: var(--green-default)">arrancamos este trimestre</span>.</h1>
+      <p class="lede">Este deck propone, no decide. Necesito feedback de los equipos involucrados antes de abrir los tickets de V1 en el board COENXT.</p>
+      <div class="card" style="max-width: 640px; margin-top: 32px;">
+        <h2 style="font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-60); margin: 0 0 16px;">Equipos que deberian opinar antes de avanzar</h2>
+        <ul class="checks">
+          <li><strong>Backend / stores-api owner</strong>: shape de la API · acceso · token rotation strategy.</li>
+          <li><strong>PM COENXT</strong>: prioridad de V1 en el backlog Q2 vs otras iniciativas activas.</li>
+          <li><strong>SEO / Marketing</strong>: validar el seed de top 100 merchants antes de V2 (que comercios priorizamos).</li>
+          <li><strong>Promos-hub-site team</strong>: planificar el 301 plan · aunque sea para Q4.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <div class="meta__col"><p class="meta__label">Docs</p><p>modo-landing/docs/comercios-database/ · 9 docs + schemas + seeds</p></div>
+      <div class="meta__col"><p class="meta__label">Board</p><p>COENXT · play-sistemico.atlassian.net · sprint backlog pre-cargado</p></div>
+      <div class="meta__col"><p class="meta__label">Branch</p><p>base MVP: feat/comercios-mvp-2026-05-15 · V1/V2/V3 abren branches propias (feat/comercios-db-v1, etc.) al arrancar</p></div>
+    </div>
+  </section>
+
+</div>
+
+<nav class="deck__nav" aria-label="Slide navigation">
+  <button id="prev" aria-label="Anterior" title="← / k">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M10 12L6 8l4-4"/></svg>
+  </button>
+  <span class="counter" id="counter">01 / 13</span>
+  <button id="next" aria-label="Siguiente" title="→ / j / espacio">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="margin: 0 auto; display:block;"><path d="M6 4l4 4-4 4"/></svg>
+  </button>
+  <button id="toggle-comments" aria-label="Reacciones y comentarios" title="Reacciones (c)">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display:block;"><path d="M14 9.5a2 2 0 0 1-2 2H6l-3 3v-9.5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5z"/></svg>
+  </button>
+</nav>
+
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('[data-slide]'));
+  const counter = document.getElementById('counter');
+  const pad = (n) => String(n).padStart(2, '0');
+  let current = 0;
+  function go(i) {
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+    counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    const bottomCounter = slides[current].querySelector('.slide__chrome-bottom .counter');
+    if (bottomCounter) bottomCounter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+    history.replaceState(null, '', `#${current + 1}`);
+  }
+  document.getElementById('prev').addEventListener('click', () => go(current - 1));
+  document.getElementById('next').addEventListener('click', () => go(current + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'j' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'k' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); go(0); }
+    else if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+    else if (e.key === 'p' || e.key === 'P') { window.print(); }
+  });
+  const hash = parseInt(location.hash.replace('#', ''), 10);
+  if (!Number.isNaN(hash) && hash >= 1 && hash <= slides.length) { go(hash - 1); } else { go(0); }
+})();
+</script>
+<aside id="deck-reactions" class="deck-reactions" aria-label="Reacciones y comentarios" hidden>
+  <header class="deck-reactions__head">
+    <strong>Reacciones &amp; comentarios</strong>
+    <button id="close-comments" aria-label="Cerrar" title="Cerrar (Esc / c)">×</button>
+  </header>
+  <div id="giscus-mount" class="deck-reactions__body" data-loaded="0" data-term="comercios-database"></div>
+</aside>
+
+<script>
+(function () {
+  const drawer = document.getElementById('deck-reactions');
+  const mount = document.getElementById('giscus-mount');
+  const toggle = document.getElementById('toggle-comments');
+  const close = document.getElementById('close-comments');
+  if (!drawer || !mount || !toggle) return;
+  function openDrawer() {
+    drawer.hidden = false;
+    drawer.classList.add('is-open');
+    if (mount.dataset.loaded === '0') {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs = {
+        'data-repo': 'SoyErnoModo/erno-modo',
+        'data-repo-id': 'R_kgDOSjBmAw',
+        'data-category': 'Announcements',
+        'data-category-id': 'DIC_kwDOSjBmA84C9erl',
+        'data-mapping': 'specific',
+        'data-term': mount.dataset.term,
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'bottom',
+        'data-theme': 'light',
+        'data-lang': 'es',
+        'data-loading': 'lazy',
+      };
+      Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.appendChild(s);
+      mount.dataset.loaded = '1';
+    }
+  }
+  function closeDrawer() {
+    drawer.classList.remove('is-open');
+    setTimeout(() => { drawer.hidden = true; }, 200);
+  }
+  toggle.addEventListener('click', () => drawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+  close.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'c' || e.key === 'C') { e.preventDefault(); drawer.classList.contains('is-open') ? closeDrawer() : openDrawer(); }
+    else if (e.key === 'Escape' && drawer.classList.contains('is-open')) { closeDrawer(); }
+  });
+})();
+</script>
+
+<script src="../../assets/deck-theme.js" defer></script>
+<script src="../../assets/deck-bionic.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "slug": "storyblok-pages",
+  "title": "Crear páginas Storyblok en modo-landing",
+  "subtitle": "Páginas Storyblok en modo-landing — del setup al deploy alpha, con harness de agentes MODO y 4 gates de calidad",
+  "lessons": [
+    {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
+    {"id":"00","num":"00","title":"Setup de ambiente","eyebrow":"Lección 00 · Harness: onboarding + GH Packages","path":"00-setup-ambiente.md","file":"00-setup-ambiente.md"},
+    {"id":"01","num":"01","title":"Diseño: SDD + design system","eyebrow":"Lección 01 · Harness: sdd-* + design system","path":"01-diseno-sdd-design-system.md","file":"01-diseno-sdd-design-system.md"},
+    {"id":"02","num":"02","title":"Crear la página: story + blok","eyebrow":"Lección 02 · Harness: modo-storyblok","path":"02-crear-pagina-storyblok.md","file":"02-crear-pagina-storyblok.md"},
+    {"id":"03","num":"03","title":"TDD red→green","eyebrow":"Lección 03 · Harness: test-driven-development","path":"03-tdd-red-green.md","file":"03-tdd-red-green.md"},
+    {"id":"04","num":"04","title":"Gates de validación","eyebrow":"Lección 04 · Harness: guardia · security · seo-geo","path":"04-gates-validacion.md","file":"04-gates-validacion.md"},
+    {"id":"05","num":"05","title":"Deploy alpha a playsistemico","eyebrow":"Lección 05 · Harness: modo-frontend-deploy","path":"05-deploy-alpha-playsistemico.md","file":"05-deploy-alpha-playsistemico.md"},
+    {"id":"lab","num":"🧪","title":"Lab: SectionPromoBanner","eyebrow":"Lab integrador · los 4 gates","path":"exercises/README.md"},
+    {"id":"solucion","num":"✅","title":"Solución del lab","eyebrow":"Lab · solución de referencia","path":"solucion.md"},
+    {"id":"gates","num":"⚙","title":"Harness: los 4 gates","eyebrow":"Referencia del Workflow","path":"harness/gates.md"},
+    {"id":"orden","num":"🧭","title":"Orden óptimo del harness","eyebrow":"Referencia · idea→diseño→evaluación→integración","path":"06-orden-harness.md"},
+    {"id":"automatizacion","num":"🤖","title":"Automatización total: vos = QA","eyebrow":"Referencia · skills/agentes por fase","path":"07-automatizacion-qa.md"}
+  ]
+}

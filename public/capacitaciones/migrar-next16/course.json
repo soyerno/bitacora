@@ -1,0 +1,15 @@
+{
+  "slug": "migrar-next16",
+  "title": "Migrar un frontend a Next.js 16 (Pages Router)",
+  "subtitle": "De Vite/SPA o Next viejo a server-rendered",
+  "lessons": [
+    {"id":"intro","num":"·","title":"Introducción","eyebrow":"Capacitación interactiva","path":"README.md"},
+    {"id":"00","num":"00","title":"Assessment","eyebrow":"Lección 00 · Qué tenés y a dónde vas","path":"00-assessment.md","file":"00-assessment.md"},
+    {"id":"01","num":"01","title":"Estrategia","eyebrow":"Lección 01 · Pages Router server-rendered","path":"01-estrategia.md","file":"01-estrategia.md"},
+    {"id":"02","num":"02","title":"Breaking changes","eyebrow":"Lección 02 · 12→16","path":"02-breaking-changes.md","file":"02-breaking-changes.md"},
+    {"id":"03","num":"03","title":"Routing + data","eyebrow":"Lección 03 · SSR/ISR","path":"03-routing-data.md","file":"03-routing-data.md"},
+    {"id":"04","num":"04","title":"Build + test + smoke","eyebrow":"Lección 04 · Contrato verde","path":"04-build-test-smoke.md","file":"04-build-test-smoke.md"},
+    {"id":"05","num":"05","title":"Deploy","eyebrow":"Lección 05 · Alpha","path":"05-deploy.md","file":"05-deploy.md"},
+    {"id":"lab","num":"🧪","title":"Lab: migrar una page","eyebrow":"Lab integrador","path":"exercises/README.md"}
+  ]
+}
