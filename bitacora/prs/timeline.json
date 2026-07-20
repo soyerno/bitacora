@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generated": "2026-06-01",
+    "generated": "2026-07-08",
     "category": "Bitácora · PRs",
     "format": "Timeline append-only de pull requests autoreados. Una línea de qué hace + una línea de qué dolor resuelve por PR. Recurrente a las 09:00 y 16:30 vía LaunchAgent.",
     "author": "Hernán De Souza · Sr AI Engineer",
@@ -17,6 +17,86 @@
     "seeded": "Curado manualmente para 2026-05-27/28. Updates posteriores via cron auto-extraen qué/dolor del body."
   },
   "items": [
+    {
+      "date": "2026-07-08",
+      "number": 1566,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1566",
+      "title": "feat(COENXT-383): headingLevel prop en ui-lib para AEO/GEO",
+      "type": "feat",
+      "state": "CLOSED",
+      "que_hace": "(auto) feat(COENXT-383): headingLevel prop en ui-lib para AEO/GEO",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-06-17",
+      "number": 1544,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1544",
+      "title": "chore(agents): fleet-strategy para landings Storyblok",
+      "type": "chore",
+      "state": "CLOSED",
+      "que_hace": "(auto) chore(agents): fleet-strategy para landings Storyblok",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "chore",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-06-08",
+      "number": 1539,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1539",
+      "title": "feat(seo): redirect legacy help center URLs to new FAQ",
+      "type": "feat",
+      "state": "CLOSED",
+      "que_hace": "(auto) feat(seo): redirect legacy help center URLs to new FAQ",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-06-05",
+      "number": 1529,
+      "repo": "modo-landing",
+      "repo_full": "playsistemico/modo-landing",
+      "url": "https://github.com/playsistemico/modo-landing/pull/1529",
+      "title": "feat(COENXT-369): BFF Storyblok + Navbar/Sidebar de la lib CMS-fed",
+      "type": "feat",
+      "state": "CLOSED",
+      "que_hace": "(auto) feat(COENXT-369): BFF Storyblok + Navbar/Sidebar de la lib CMS-fed",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "feat",
+        "modo-landing"
+      ]
+    },
+    {
+      "date": "2026-06-03",
+      "number": 607,
+      "repo": "promos-hub-site",
+      "repo_full": "playsistemico/promos-hub-site",
+      "url": "https://github.com/playsistemico/promos-hub-site/pull/607",
+      "title": "fix(seo): noindex del origen promoshub.modo.com.ar",
+      "type": "fix",
+      "state": "OPEN-DRAFT",
+      "que_hace": "Solo middleware + su test. No toca rutas, componentes, estilos ni BFF. El cambio es un header condicional por host al final del pipeline del middleware, más el ensanche del matcher para que corra sobre todo documento del origen.",
+      "dolor": "TODO — completar manualmente en timeline.json",
+      "tags": [
+        "fix",
+        "promos-hub-site"
+      ]
+    },
     {
       "date": "2026-06-01",
       "number": 1522,
@@ -41,7 +121,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1521",
       "title": "refactor(COENXT-361): styles → Tailwind 4 · Wave 0+1+2 (TW upgrade + Emotion + 39 SC files)",
       "type": "refactor",
-      "state": "OPEN",
+      "state": "CLOSED",
       "que_hace": "(auto) refactor(COENXT-361): styles → Tailwind 4 · Wave 0+1+2 (TW upgrade + Emotion + 39 SC files)",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -120,7 +200,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1516",
       "title": "chore(cookies): SDD scaffold cookies-auth-httponly [DRAFT]",
       "type": "chore",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Scaffold-only PR · Auth token a cookie HttpOnly. P2 · security hardening (XSS exfil).",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -136,7 +216,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1515",
       "title": "feat(cookies): SDD scaffold cookies-device-id [DRAFT]",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Scaffold-only PR · Cookie __Host-device_id para correlación BFF↔analytics. P3 · analytics.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -151,7 +231,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1514",
       "title": "feat(cookies): SDD scaffold cookies-ab-server-bucketed [DRAFT]",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Scaffold-only PR · A/B bucketing server-side. P1 · LCP/CLS + SEO.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -166,7 +246,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1513",
       "title": "feat(cookies): SDD scaffold cookies-is-sdk-flag [DRAFT]",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Scaffold-only PR · Cookie is_sdk server-side. P1 · WebView UX.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -181,7 +261,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1512",
       "title": "chore(cookies): SDD scaffold cookies-cmp-consent + master plan [DRAFT]",
       "type": "chore",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Scaffold-only PR · CMP first-party + consent gate. P0 · legal blocker.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -196,7 +276,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1511",
       "title": "fix(cookies): SDD scaffold cookies-preview-name-filter [DRAFT]",
       "type": "fix",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Scaffold-only PR · SDD docs para iniciativa cookies-preview-name-filter (FIX defensive hardening).",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -279,7 +359,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1506",
       "title": "feat(COENXT-320): blog hero soporta imagen mobile con fallback al desktop",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Field opcional image_mobile en los 2 content types del blog hero (BlogPost flat + BlogHero block dentro de LandingPage+SectionBlog). Render con <figure><picture> + sources AVIF mobile/desktop + <img> fallback con dims, fetchPriority=high, objectFit/objectPosition del block. Schema Storyblok aplicado vía Management API en space 244835.",
       "dolor": "/blog/[slug] renderea único hero_image desktop-crop a todas las resoluciones — en composiciones distintas para mobile el crop queda mal. AVIF -60% peso + dims explícitos previenen CLS + signal LCP correcto para image crawlers (vs el ambiguo doble-Image que rankea peor SEO/GEO).",
       "tags": [
@@ -379,7 +459,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1497",
       "title": "feat(EXA): logger MODO-core client browser-safe + Datadog Browser Logs",
       "type": "feat",
-      "state": "OPEN",
+      "state": "CLOSED",
       "que_hace": "Logger MODO-core lado cliente (src/utils/logger/) con misma API que @playsistemico/core server (debug/info/warn/trace/error + TraceableError.from()). Obfuscación de keys sensibles. Forwardea a Datadog Browser Logs cuando NEXT_PUBLIC_DD_CLIENT_TOKEN está seteado (env-gated). Wire en _app.js mount.",
       "dolor": "modo-landing no tenía logger estructurado client-side. Regla MODO: todo front = logger MODO-core + Amplitude + analytics baseline. El logger de @playsistemico/core es server-only (pino + async_hooks, no bundlea client). Server-side queda follow-up (arrastra dd-trace nativo al deploy image).",
       "tags": [
@@ -396,7 +476,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1496",
       "title": "perf(EXA): bajar peso de imágenes CMS — quality 75 + AVIF",
       "type": "perf",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "CMSImage.tsx quality 95 → 75; next.config.js formats ['image/avif', 'image/webp'] (antes solo webp). Aplica a todo next/image del sitio.",
       "dolor": "Home = 17.5MB / LCP 13.5s mobile (baseline Unlighthouse 2026-05-21). Todas las rutas fallan target LCP < 2.5s. quality=95 hardcodeado era el desperdicio más directo (95 casi sin pérdida; 75 corta ~40-55% del peso). AVIF -60% vs JPG en browsers modernos.",
       "tags": [
@@ -518,7 +598,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1495",
       "title": "ci(EXA): add bundle-size guard with size-limit",
       "type": "ci",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Agrega guard de bundle-size con size-limit (file-based, mide los chunks de Next en dist/static/chunks). Cierra uno de los 4 gaps del review de modo-landing-web-ui-lib#41.",
       "dolor": "_app pesa 222 kB gzip y se carga en todas las rutas — es el principal lever de los problemas de perf (LCP 8-17s, ~780 kB unused JS cross-rutas de la baseline 2026-05-21). El guard congela ese techo: cualquier regresión bloquea. No baja el número hoy, pero evita que empeore PR-a-PR mientras se trabaja el code-splitting.",
       "tags": [
@@ -548,7 +628,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1493",
       "title": "docs(EXA): plan CI quality harness rollout (4 PR families)",
       "type": "docs",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "Plan para cerrar los 4 gaps detectados en el review de modo-landing-web-ui-lib#41:",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -563,7 +643,7 @@
       "url": "https://github.com/playsistemico/promos-hub-site/pull/594",
       "title": "ci: add bundle-size guard with size-limit",
       "type": "ci",
-      "state": "OPEN",
+      "state": "OPEN-DRAFT",
       "que_hace": "Agrega guard de bundle-size con size-limit (file-based). Next 15 app router, mide los chunks de dist/static/chunks. Cierra uno de los 4 gaps del review de modo-landing-web-ui-lib#41.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
@@ -578,7 +658,7 @@
       "url": "https://github.com/playsistemico/promos-hub-site/pull/592",
       "title": "ci: add pr-audit workflow with critical hard-fail",
       "type": "ci",
-      "state": "OPEN",
+      "state": "OPEN-DRAFT",
       "que_hace": "Promueve pnpm audit --audit-level=critical de warning-only a blocking gate\nMantiene --audit-level=high como warning (no bloquea PRs por vulns aceptables)\nBumpea pnpm action de v8 → v9 (parity con package manager local)",
       "dolor": "Review interno de PR #41 (modo-landing-web-ui-lib) detectó que pr-audit.yml tenía continue-on-error: true en ambos niveles (high + critical). Resultado: el workflow nunca falla, solo loguea. Un CVE critical en una dep puede mergear sin friction.",
       "tags": [
@@ -835,7 +915,7 @@
       "url": "https://github.com/playsistemico/modo-landing/pull/1477",
       "title": "feat(EXA-comercios): MVP /comercios production-ready",
       "type": "feat",
-      "state": "OPEN-DRAFT",
+      "state": "CLOSED",
       "que_hace": "MVP de /comercios listo para producción. Branch validada en preprod, alpha tag a2.414.1-1779036507.0.",
       "dolor": "TODO — completar manualmente en timeline.json",
       "tags": [
