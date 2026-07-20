@@ -1,20 +1,20 @@
-# erno-modo
+# erno-bitacora
 
-**Erno × MODO** — mis contribuciones a modo-landing. Decks HTML, catálogo de RFCs, stack de herramientas en Claude Code y skills custom descargables.
+**Erno × bitacora** — mis contribuciones a bitacora-landing. Decks HTML, catálogo de RFCs, stack de herramientas en Claude Code y skills custom descargables.
 
-El contenido vive en `decks/`, `rfcs/rfcs.json`, `herramientas/` y `skills/`; este README describe **cómo funciona el sistema**, no qué hay (eso se ve en el [landing](https://soyernomodo.github.io/erno-modo/)).
+El contenido vive en `decks/`, `rfcs/rfcs.json`, `herramientas/` y `skills/`; este README describe **cómo funciona el sistema**, no qué hay (eso se ve en el [landing](https://soyernobitacora.github.io/erno-bitacora/)).
 
-- Decks generados con la skill `modo-deck` (Claude Code, vive en `~/.claude/skills/`)
-- Branding: verde MODO #008859, Red Hat Display + Quicksand, layout 16:9
+- Decks generados con la skill `bitacora-deck` (Claude Code, vive en `~/.claude/skills/`)
+- Branding: verde bitacora #008859, Red Hat Display + Quicksand, layout 16:9
 - Navegación por teclado dentro de cada deck (← →, j/k, espacio, Home, End) + export PDF (tecla P)
 - Reacciones y comentarios por deck via Giscus (tecla `c` o botón 💬)
-- Skills custom MODO empaquetadas como ZIPs en `skills/`, regeneradas a diario por el skill `erno-modo-sync-all`
+- Skills custom bitacora empaquetadas como ZIPs en `skills/`, regeneradas a diario por el skill `erno-bitacora-sync-all`
 
 Los decks y RFCs son **propuestas** que buscan feedback, no anuncios de implementación. Cada cierre lista los equipos que deben opinar antes de avanzar.
 
 ## Live
 
-https://soyernomodo.github.io/erno-modo/
+https://soyernobitacora.github.io/erno-bitacora/
 
 4 páginas con header alineado al ancho del contenido y breadcrumbs:
 
@@ -23,7 +23,7 @@ https://soyernomodo.github.io/erno-modo/
 - `/rfcs/` — catálogo de RFCs (tabs por status + chips por área + saga de versiones colapsada)
 - `/herramientas/` — stack en Claude Code (tools agrupadas en 8 categorías + búsqueda + badges `↓ .skill` para descargar)
 
-Theme toggle (auto / claro / oscuro) persiste en `localStorage`. Desde cualquier deck individual hay un pill verde top-left ("← Erno × MODO / Decks") que vuelve al sitio.
+Theme toggle (auto / claro / oscuro) persiste en `localStorage`. Desde cualquier deck individual hay un pill verde top-left ("← Erno × bitacora / Decks") que vuelve al sitio.
 
 ## Navegación
 
@@ -32,15 +32,15 @@ Todas las páginas del sitio comparten el mismo header (wordmark + nav + theme t
 Cada subpágina abre con un breadcrumb de dos niveles:
 
 ```
-Erno × MODO  /  Decks
+Erno × bitacora  /  Decks
 ```
 
 El primer link vuelve a la home (`../`); el segundo está marcado `aria-current="page"`.
 
-Desde cualquier deck individual (`/decks/<estado>/*.html`) hay un pill fijo top-left en verde MODO:
+Desde cualquier deck individual (`/decks/<estado>/*.html`) hay un pill fijo top-left en verde bitacora:
 
 ```
-← Erno × MODO  /  Decks
+← Erno × bitacora  /  Decks
 ```
 
 Inyectado de forma idempotente en los 11 decks. Backdrop-blur sobre fondo translúcido para que funcione en cualquier slide. Se oculta automáticamente en `@media print`.
@@ -51,64 +51,64 @@ Cada página tiene también un `<a class="skip-link">` (oculto hasta `:focus`) p
 
 Entre "Destacados" y "Explorar" hay un widget que muestra mi presencia pública en GitHub. Tres piezas:
 
-1. **Avatar + perfil** — `<img src="https://github.com/SoyErnoModo.png">` (GitHub sirve el avatar de cualquier user en esa URL sin auth). Bajo el avatar: nombre, handle clickeable y bio corta.
-2. **Stats** — fetch a `https://api.github.com/users/SoyErnoModo` sin token (60 req/hora por IP, alcanza). Muestra `public_repos · followers · siguiendo`. Si falla (rate-limit o offline) cae a un link plano al perfil.
-3. **Gráfico de contribuciones último año** — SVG embebido de `https://ghchart.rshah.org/008859/SoyErnoModo`. El primer segmento del path es el color override en hex sin `#`, así el gráfico queda en verde MODO. En dark mode se le aplica `mix-blend-mode: screen` para integrarse al fondo.
+1. **Avatar + perfil** — `<img src="https://github.com/SoyErnobitacora.png">` (GitHub sirve el avatar de cualquier user en esa URL sin auth). Bajo el avatar: nombre, handle clickeable y bio corta.
+2. **Stats** — fetch a `https://api.github.com/users/SoyErnobitacora` sin token (60 req/hora por IP, alcanza). Muestra `public_repos · followers · siguiendo`. Si falla (rate-limit o offline) cae a un link plano al perfil.
+3. **Gráfico de contribuciones último año** — SVG embebido de `https://ghchart.rshah.org/008859/SoyErnobitacora`. El primer segmento del path es el color override en hex sin `#`, así el gráfico queda en verde bitacora. En dark mode se le aplica `mix-blend-mode: screen` para integrarse al fondo.
 
 El widget es resiliente: si `api.github.com` está down, el resto de la página igual carga; si `ghchart.rshah.org` está down, queda el `alt` text del `<img>`.
 
-## Skills descargables (custom MODO)
+## Skills descargables (custom bitacora)
 
 Las herramientas con el badge `↓ .skill` en `/herramientas/` son skills custom que se distribuyen como ZIPs en `skills/`. Cada ZIP contiene una carpeta `<name>.skill/` con `SKILL.md` + assets. Manifest curado en [`skills/skills.json`](skills/skills.json) (consumible por agentes).
 
 Instalar un skill:
 
 ```bash
-curl -L -o /tmp/modo-deck.zip https://soyernomodo.github.io/erno-modo/skills/modo-deck.zip
-unzip /tmp/modo-deck.zip -d ~/.claude/skills/
-mv ~/.claude/skills/modo-deck.skill ~/.claude/skills/modo-deck
+curl -L -o /tmp/bitacora-deck.zip https://soyernobitacora.github.io/erno-bitacora/skills/bitacora-deck.zip
+unzip /tmp/bitacora-deck.zip -d ~/.claude/skills/
+mv ~/.claude/skills/bitacora-deck.skill ~/.claude/skills/bitacora-deck
 ```
 
 (El `mv` es porque Claude Code espera la carpeta sin extensión `.skill`.)
 
-## erno-modo-sync-all
+## erno-bitacora-sync-all
 
-Skill local (`~/.claude/skills/erno-modo-sync-all/`) que mantiene el sitio en sync con el filesystem real:
+Skill local (`~/.claude/skills/erno-bitacora-sync-all/`) que mantiene el sitio en sync con el filesystem real:
 
-1. Re-empaqueta las skills custom MODO si su contenido cambió (hash sha256)
+1. Re-empaqueta las skills custom bitacora si su contenido cambió (hash sha256)
 2. Regenera `skills/skills.json` con tamaños + hashes nuevos
 3. Revalida `decks/decks.json` contra el filesystem (slide counts)
 4. Commitea + pushea solo si hay diffs
 
 **Manual:**
 ```bash
-python3 ~/.claude/skills/erno-modo-sync-all/scripts/sync.py
+python3 ~/.claude/skills/erno-bitacora-sync-all/scripts/sync.py
 # o desde Claude Code:
-/erno-modo-sync-all
+/erno-bitacora-sync-all
 ```
 
 **Cron diario a las 18:00** (LaunchAgent en macOS):
 ```bash
-~/.claude/skills/erno-modo-sync-all/scripts/install-cron.sh
+~/.claude/skills/erno-bitacora-sync-all/scripts/install-cron.sh
 ```
 
-Crea `~/Library/LaunchAgents/com.ernomodo.sync.plist` con `StartCalendarInterval Hour=18`. Logs en `~/.claude/skills/erno-modo-sync-all/sync.{out,err}.log`. Idempotente: si nada cambió, no hay commit.
+Crea `~/Library/LaunchAgents/com.ernobitacora.sync.plist` con `StartCalendarInterval Hour=18`. Logs en `~/.claude/skills/erno-bitacora-sync-all/sync.{out,err}.log`. Idempotente: si nada cambió, no hay commit.
 
 ## Cómo se publica un deck
 
-Con la skill `modo-deck` instalada localmente:
+Con la skill `bitacora-deck` instalada localmente:
 
 1. Generar el HTML con Claude Code (la skill arma el deck respetando branding + snippet de Giscus + back-link pill).
 2. Publicar:
    ```bash
-   ~/.claude/skills/modo-deck/scripts/publish-deck.sh <preview.html> <slug> <draft|rfc|completo>
+   ~/.claude/skills/bitacora-deck/scripts/publish-deck.sh <preview.html> <slug> <draft|rfc|completo>
    ```
    El script rechaza el upload si encuentra `{{PLACEHOLDER}}` sin resolver.
-3. Sumar entrada a `decks/decks.json` (data source del catálogo) y commit + push a `main`. Pages publica en ~30s. El cron de `erno-modo-sync-all` también lo va a recalcular esa noche.
+3. Sumar entrada a `decks/decks.json` (data source del catálogo) y commit + push a `main`. Pages publica en ~30s. El cron de `erno-bitacora-sync-all` también lo va a recalcular esa noche.
 
 Promover entre estados:
 ```bash
-~/.claude/skills/modo-deck/scripts/promote-deck.sh <slug> <from> <to>
+~/.claude/skills/bitacora-deck/scripts/promote-deck.sh <slug> <from> <to>
 ```
 
 ## RFCs
@@ -130,7 +130,7 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 
 **Config (one-time, ya hecha):**
 - Discussions habilitadas en el repo
-- App [giscus](https://github.com/apps/giscus) instalada con acceso a `SoyErnoModo/erno-modo`
+- App [giscus](https://github.com/apps/giscus) instalada con acceso a `SoyErnobitacora/erno-bitacora`
 - Pages source: `main` branch, root (CDN cachea con `max-age=600`)
 
 **Kill switch por deck:** borrar el `<aside id="deck-reactions">`, el `<script>` que lo controla, y el botón `#toggle-comments` del HTML.
@@ -141,7 +141,7 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 .
 ├── index.html               # Home (slim): featured + GH widget + nav a colecciones
 ├── assets/
-│   ├── styles.css           # Tokens + componentes compartidos (Erno × MODO)
+│   ├── styles.css           # Tokens + componentes compartidos (Erno × bitacora)
 │   ├── common.js            # Theme toggle + helpers compartidos
 │   └── collection.js        # Controller search/filter/sort (decks + RFCs)
 ├── decks/
@@ -157,7 +157,7 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 │   └── index.html           # Stack en Claude Code
 ├── skills/
 │   ├── skills.json          # Manifest de skills custom descargables
-│   └── <name>.zip           # Bundle de cada skill custom MODO
+│   └── <name>.zip           # Bundle de cada skill custom bitacora
 ├── openspec/
 │   ├── config.yaml          # Reglas SDD (Spec-Driven Development)
 │   ├── specs/               # Una capability por archivo (Given/When/Then)
@@ -172,12 +172,12 @@ Cada deck tiene un drawer derecho con reacciones (👍 ❤️ 🚀) y comentario
 
 ## Specs + tests
 
-El sitio tiene specs en `openspec/specs/` (formato Given/When/Then, palabras RFC 2119) y un suite Vitest en `tests/specs/` que las valida. 5 capabilities especificadas, 57 tests cubriendo data integrity, DOM contracts y el controller `MODO.createCollection`.
+El sitio tiene specs en `openspec/specs/` (formato Given/When/Then, palabras RFC 2119) y un suite Vitest en `tests/specs/` que las valida. 5 capabilities especificadas, 57 tests cubriendo data integrity, DOM contracts y el controller `bitacora.createCollection`.
 
 ```bash
 pnpm install         # primera vez
 pnpm test            # corre el suite completo (vitest run)
-pnpm test:watch      # modo watch
+pnpm test:watch      # bitacora watch
 ```
 
 Workflow TDD para agregar comportamiento nuevo:
@@ -187,7 +187,7 @@ Workflow TDD para agregar comportamiento nuevo:
 3. **Green** — implementá la mínima cantidad de código para que pase. No refactores en este paso.
 4. **Refactor** — si el código necesita limpieza, hacelo ahora con los tests en verde.
 
-Los manifests (`decks/decks.json`, `rfcs/rfcs.json`, `skills/skills.json`) tienen tests de drift: si renombrás un ZIP, rotás un slug, o cambia el sha256 sin sincronizar el manifest, `pnpm test` lo detecta antes del merge. El cron de `erno-modo-sync-all` regenera los manifests; este suite verifica que el output sea consistente con disco.
+Los manifests (`decks/decks.json`, `rfcs/rfcs.json`, `skills/skills.json`) tienen tests de drift: si renombrás un ZIP, rotás un slug, o cambia el sha256 sin sincronizar el manifest, `pnpm test` lo detecta antes del merge. El cron de `erno-bitacora-sync-all` regenera los manifests; este suite verifica que el output sea consistente con disco.
 
 CI (`.github/workflows/test.yml`) corre el suite en cada PR y push a `main`.
 
@@ -195,7 +195,7 @@ CI (`.github/workflows/test.yml`) corre el suite en cada PR y push a `main`.
 
 - **Deck nuevo**: ver "Cómo se publica un deck" arriba. Después sumá entrada a `decks/decks.json`.
 - **RFC nuevo**: agregar entrada a `rfcs/rfcs.json` (campos: `number`, `slug`, `title`, `summary`, `status`, `area`, `date`, `drive_url` o `repo_url`).
-- **Herramienta nueva**: editar `herramientas/index.html`, sumar un `<div class="tool-item" data-tool>...</div>` en la categoría correspondiente. Si es custom y querés que sea descargable, agregala a la lista `CUSTOM_SKILLS` en `~/.claude/skills/erno-modo-sync-all/scripts/sync.py` y corré el sync.
+- **Herramienta nueva**: editar `herramientas/index.html`, sumar un `<div class="tool-item" data-tool>...</div>` en la categoría correspondiente. Si es custom y querés que sea descargable, agregala a la lista `CUSTOM_SKILLS` en `~/.claude/skills/erno-bitacora-sync-all/scripts/sync.py` y corré el sync.
 
 ## Branding
 
@@ -203,13 +203,13 @@ El wordmark del header es de tres piezas:
 
 - `Erno` — Quicksand 700, ink color (negro o blanco según tema)
 - `×` — Quicksand 500, muted (gris)
-- `MODO` — Quicksand 700, verde #008859 (variable `--accent`)
+- `bitacora` — Quicksand 700, verde #008859 (variable `--accent`)
 
-En decks individuales el back-link pill replica el orden: "← Erno × MODO / Decks", verde MODO sobre fondo blanco translúcido con backdrop-blur.
+En decks individuales el back-link pill replica el orden: "← Erno × bitacora / Decks", verde bitacora sobre fondo blanco translúcido con backdrop-blur.
 
 ## Theme toggle
 
-Cicla por tres estados: `auto` → `claro` → `oscuro` → `auto`. Persiste en `localStorage` con la key `modo-decks-theme` (se conserva la key vieja para no resetear preferencias después del rebrand).
+Cicla por tres estados: `auto` → `claro` → `oscuro` → `auto`. Persiste en `localStorage` con la key `bitacora-decks-theme` (se conserva la key vieja para no resetear preferencias después del rebrand).
 
 Implementación en dos partes para evitar el flash de tema incorrecto:
 
