@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const entries = (await getCollection('bitacora')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Base title="Bitácora">
+	<h1>Bitácora</h1>
+	<p class="muted">Notas de proyectos, hallazgos y problemas resueltos.</p>
+	<ul class="entry-list">
+		{entries.map((entry) => (
+			<li>
+				<a href={`/bitacora/${entry.id}/`}>{entry.data.title}</a>
+				<div class="muted">{entry.data.date.toISOString().slice(0, 10)}</div>
+			</li>
+		))}
+	</ul>
+</Base>
