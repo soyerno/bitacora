@@ -7,6 +7,7 @@ const VISIBLE_NAV: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Bitácora", href: "/bitacora" },
   { label: "Capacitaciones", href: "/capacitaciones" },
+  { label: "Coaching", href: "/coaching" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Herramientas", href: "/herramientas" },
 ];

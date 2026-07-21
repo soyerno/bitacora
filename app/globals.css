@@ -12,6 +12,8 @@
   --accent: #008859;
   --accent-ink: #00471b;
   --accent-light: #e6f4ee;
+  --error: #c2402a;
+  --error-light: #fbeae6;
   --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -26,6 +28,8 @@
   --accent: #2dd68b;
   --accent-ink: #dcf5e7;
   --accent-light: #14271e;
+  --error: #f0705a;
+  --error-light: #2e1a15;
 }
 
 /* Mapeo de tokens → utilidades Tailwind v4 (bg-bg, text-ink, border-border…) */
@@ -39,6 +43,8 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-light: var(--accent-light);
+  --color-error: var(--error);
+  --color-error-light: var(--error-light);
   --font-display: var(--font-quicksand), sans-serif;
   --font-sans: var(--font-red-hat), sans-serif;
 }

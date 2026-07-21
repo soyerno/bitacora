@@ -1,0 +1,239 @@
+import type { Chapter } from "../types";
+
+/**
+ * Capítulo 1 — El observador que sos.
+ * Fundamentos: qué es el coaching ontológico, el modelo
+ * observador–acción–resultados y los enemigos del aprendizaje.
+ */
+export const cap1: Chapter = {
+  slug: "el-observador",
+  title: "El observador que sos",
+  subtitle: "Fundamentos del coaching ontológico",
+  description:
+    "Por qué dos personas ven cosas distintas frente al mismo hecho, qué significa que no vemos las cosas como son sino como somos, y qué tipo de aprendizaje transforma al observador y no solo a la acción.",
+  icon: "👁️",
+  lessons: [
+    {
+      id: "que-es",
+      title: "Qué es el coaching ontológico",
+      description:
+        "La disciplina, su origen y su apuesta: no cambiar lo que hacés, cambiar el observador que sos.",
+      exercises: [
+        {
+          kind: "choice",
+          question:
+            "«Ontología» viene del griego «ontos» (ser). ¿Por qué el coaching ontológico se llama así?",
+          options: [
+            "Porque estudia técnicas de comunicación efectiva",
+            "Porque trabaja sobre la forma de ser de la persona, no solo sobre lo que hace",
+            "Porque se basa en tests de personalidad",
+            "Porque fue creado por un filósofo llamado Ontos",
+          ],
+          correct: 1,
+          explain:
+            "El coaching ontológico no apunta primero a la conducta sino al modo de ser desde el cual esa conducta surge: cómo interpretás el mundo, qué juicios cargás, desde qué emociones actuás. Cambiando el observador, cambian las acciones posibles.",
+        },
+        {
+          kind: "truefalse",
+          statement:
+            "Para el coaching ontológico, el lenguaje solo sirve para describir una realidad que ya existe.",
+          correct: false,
+          explain:
+            "Esa es justamente la idea que esta disciplina desafía. El lenguaje no solo describe: genera realidades. Cuando alguien declara «acepto», «renuncio» o «te perdono», el mundo después de esas palabras es otro. Esta idea —el lenguaje como acción— es la base de todo el programa.",
+        },
+        {
+          kind: "match",
+          prompt: "Uní cada pensador con su aporte a la tradición ontológica.",
+          pairs: [
+            { left: "Rafael Echeverría", right: "Escribió «Ontología del Lenguaje» y sistematizó la disciplina" },
+            { left: "Fernando Flores", right: "Llevó los actos de habla a la coordinación de acciones y al trabajo" },
+            { left: "Humberto Maturana", right: "Biología del conocer: no vemos las cosas como son, sino como somos" },
+            { left: "John Searle y J.L. Austin", right: "Filosofía del lenguaje: hablar es actuar (actos de habla)" },
+          ],
+          explain:
+            "El coaching ontológico es una síntesis: filosofía del lenguaje (Austin, Searle), biología del conocimiento (Maturana) y su articulación práctica (Flores, Echeverría).",
+        },
+        {
+          kind: "choice",
+          question:
+            "Un coach ontológico trabaja con una persona que «no llega a sus resultados». ¿Cuál es la primera pregunta ontológica, antes que ninguna técnica?",
+          options: [
+            "¿Qué herramientas de productividad usás?",
+            "¿Qué observador está siendo esta persona, que estas acciones le parecen las únicas posibles?",
+            "¿Cuántas horas por día trabajás?",
+            "¿Quién tiene la culpa de estos resultados?",
+          ],
+          correct: 1,
+          explain:
+            "Las acciones que tomamos dependen de lo que somos capaces de ver. Si alguien repite acciones que no funcionan, el coaching no le da «mejores acciones»: indaga qué interpretación del mundo hace que esas acciones parezcan las únicas disponibles.",
+        },
+        {
+          kind: "reflect",
+          prompt:
+            "Pensá en un problema que tengas hace tiempo y que ya intentaste resolver varias veces sin éxito. Escribí en una frase cómo lo describís habitualmente.",
+          placeholder: "Ej.: «no me alcanza el tiempo para…», «mi equipo no se compromete…»",
+          insight:
+            "Fijate en tu frase: ¿describe un hecho del mundo o describe tu interpretación? «No me alcanza el tiempo» parece un hecho, pero es una interpretación que oculta decisiones (prioridades, pedidos que no hacés, cosas que no soltás). El primer movimiento del coaching ontológico es ese: sospechar que el problema vive, en parte, en el observador que lo formula.",
+        },
+        {
+          kind: "truefalse",
+          statement:
+            "En coaching ontológico, el coach es quien tiene las respuestas correctas y se las transmite al coachee.",
+          correct: false,
+          explain:
+            "El coach no aconseja ni prescribe: acompaña al coachee a observar sus propias interpretaciones, juicios y emociones para que él mismo encuentre nuevas acciones. Si el coach da respuestas, el observador del coachee queda intacto — y ese era el punto.",
+        },
+      ],
+    },
+    {
+      id: "modelo-oar",
+      title: "Observador, acción, resultados",
+      description:
+        "El modelo OAR: cuando los resultados no alcanzan, podés cambiar la acción… o cambiar el observador.",
+      exercises: [
+        {
+          kind: "choice",
+          question: "Según el modelo OAR, ¿de dónde salen los resultados que obtenemos?",
+          options: [
+            "Directamente de la suerte y el contexto",
+            "De las acciones que tomamos, que a su vez dependen del observador que somos",
+            "De nuestros títulos y conocimientos acumulados",
+            "De lo que los demás deciden por nosotros",
+          ],
+          correct: 1,
+          explain:
+            "Observador → Acción → Resultados. Los resultados vienen de acciones, y las acciones posibles las define el observador: lo que distinguís, lo que interpretás, lo que creés posible. El contexto influye, claro, pero el modelo ilumina la parte que depende de vos.",
+        },
+        {
+          kind: "match",
+          prompt: "Uní cada tipo de aprendizaje con su descripción.",
+          pairs: [
+            { left: "Aprendizaje de primer orden", right: "Cambio la acción para mejorar el resultado; el observador sigue igual" },
+            { left: "Aprendizaje de segundo orden", right: "Cambio el observador que soy: veo distinto y aparecen acciones nuevas" },
+            { left: "Ceguera cognitiva", right: "No sé que no sé: ni siquiera veo que hay algo por aprender" },
+          ],
+          explain:
+            "El coaching ontológico se especializa en el segundo orden. Cuando repetir «más de lo mismo» no alcanza, lo que hay que revisar no es la acción sino la interpretación desde la que actuás.",
+        },
+        {
+          kind: "classify",
+          prompt: "¿Primer orden o segundo orden? Clasificá cada aprendizaje.",
+          categories: ["Primer orden (cambia la acción)", "Segundo orden (cambia el observador)"],
+          items: [
+            { text: "Aprendo un atajo de teclado para escribir más rápido", cat: 0 },
+            { text: "Descubro que trato los desacuerdos como ataques, y por eso evito conversaciones", cat: 1 },
+            { text: "Cambio la agenda de reuniones para que duren 25 minutos", cat: 0 },
+            { text: "Me doy cuenta de que pido ayuda como si fuera una derrota, y dejo de pedirla", cat: 1 },
+            { text: "Practico una presentación tres veces antes de darla", cat: 0 },
+          ],
+          explain:
+            "Los tres primeros mejoran la ejecución sin tocar la mirada. Los de segundo orden revelan una interpretación (desacuerdo=ataque, pedir=derrota) que, al hacerse visible, habilita acciones antes impensables.",
+        },
+        {
+          kind: "truefalse",
+          statement:
+            "Si dos personas presencian la misma reunión, necesariamente observaron lo mismo.",
+          correct: false,
+          explain:
+            "Cada una observa desde sus distinciones, juicios, historia y emociones. Una vio «una discusión productiva», la otra «una falta de respeto». No hay un observador neutro: hay observadores diferentes frente al mismo evento.",
+        },
+        {
+          kind: "choice",
+          question:
+            "Un equipo viene fallando entregas. Ya probaron: más horas, más reuniones de seguimiento, más presión. Nada cambió. Desde el modelo OAR, ¿qué sugiere esto?",
+          options: [
+            "Que necesitan todavía más horas y más presión",
+            "Que el problema es irresoluble",
+            "Que agotaron el primer orden: toca revisar qué observador está siendo el equipo (qué interpretan sobre comprometerse, pedir, decir que no)",
+            "Que hay que cambiar a las personas del equipo",
+          ],
+          correct: 2,
+          explain:
+            "«Más de lo mismo» es la marca del primer orden agotado. La pregunta de segundo orden sería, por ejemplo: ¿qué entiende este equipo por «comprometerse»? ¿Alguien puede decir «no llego» sin castigo? Ahí suele vivir el problema real.",
+        },
+        {
+          kind: "reflect",
+          prompt:
+            "Elegí un resultado tuyo que te gustaría cambiar. ¿Qué acciones repetiste hasta ahora para lograrlo? Anotalas.",
+          placeholder: "Resultado: … / Acciones que ya probé: …",
+          insight:
+            "Ahora la pregunta de segundo orden: ¿qué estás suponiendo —sobre vos, sobre los otros, sobre lo posible— que hace que justo esas acciones te parezcan las razonables? Si tus acciones ya dieron lo que podían dar, el próximo movimiento no es una acción nueva: es una interpretación nueva.",
+        },
+      ],
+    },
+    {
+      id: "enemigos-aprendizaje",
+      title: "Los enemigos del aprendizaje",
+      description:
+        "Declarar «no sé» es el acto fundacional del aprendizaje — y todo lo que solemos poner en el camino.",
+      exercises: [
+        {
+          kind: "choice",
+          question: "Para el coaching ontológico, ¿cuál es la declaración que abre el aprendizaje?",
+          options: [
+            "«Yo ya sé»",
+            "«No sé» — declarar ignorancia es el primer acto del aprendiz",
+            "«Esto es imposible»",
+            "«Siempre fui así»",
+          ],
+          correct: 1,
+          explain:
+            "Sin un «no sé» declarado no hay espacio donde el aprendizaje entre. Parece obvio, pero gran parte de los bloqueos vienen de no poder decirlo: por vergüenza, por identidad («yo soy el que sabe»), por cultura de empresa.",
+        },
+        {
+          kind: "classify",
+          prompt: "¿Facilita o bloquea el aprendizaje? Clasificá cada actitud.",
+          categories: ["Facilita el aprendizaje", "Enemigo del aprendizaje"],
+          items: [
+            { text: "«No sé cómo hacer esto, ¿me mostrás?»", cat: 0 },
+            { text: "«Esto ya lo sé» (antes de escuchar)", cat: 1 },
+            { text: "«A mi edad ya no se puede aprender esto»", cat: 1 },
+            { text: "«Dame la práctica, quiero intentarlo aunque salga mal»", cat: 0 },
+            { text: "«No tengo tiempo para aprender» (todos los meses, hace años)", cat: 1 },
+            { text: "«Quiero aprenderlo ya, sin pasar por ser principiante»", cat: 1 },
+          ],
+          explain:
+            "Los enemigos clásicos: el «ya lo sé», la incapacidad de declarar ignorancia, los juicios de imposibilidad sobre uno mismo, el «no tengo tiempo» crónico y querer resultados sin transitar la torpeza del principiante.",
+        },
+        {
+          kind: "truefalse",
+          statement:
+            "Darse permiso para ser principiante —y por lo tanto torpe— es una condición del aprendizaje profundo.",
+          correct: true,
+          explain:
+            "Todo aprendizaje pasa por una etapa donde lo hacés mal. Quien no tolera verse torpe evita practicar, y sin práctica no hay aprendizaje. La dignidad del principiante es una emoción que el coach ayuda a habilitar.",
+        },
+        {
+          kind: "choice",
+          question:
+            "Una líder senior dice: «no puedo preguntar eso en la reunión, se supone que yo debería saberlo». ¿Qué enemigo del aprendizaje está operando?",
+          options: [
+            "Falta de inteligencia",
+            "La identidad de experta: proteger el «yo sé» le cuesta el acceso al «no sé»",
+            "Falta de interés genuino",
+            "Exceso de humildad",
+          ],
+          correct: 1,
+          explain:
+            "Cuanto más construiste una identidad de «la que sabe», más caro parece declarar ignorancia. El costo real es silencioso: preguntas que no se hacen, aprendizajes que no ocurren. Separar identidad de conocimiento libera el aprendizaje.",
+        },
+        {
+          kind: "reflect",
+          prompt:
+            "¿Qué te gustaría aprender desde hace tiempo y venís postergando? Escribí qué te decís a vos mismo para justificar la postergación.",
+          placeholder: "Quiero aprender… / Me digo que…",
+          insight:
+            "Releé tu justificación y buscale el enemigo: ¿es un «no tengo tiempo» (¿de verdad no hay 20 minutos por semana?), un juicio de incapacidad («no soy de los que…»), o miedo a la torpeza inicial? Nombrar el enemigo específico es el primer paso para desarmarlo — los enemigos del aprendizaje operan mejor cuando no los vemos.",
+        },
+        {
+          kind: "truefalse",
+          statement:
+            "Decir «yo soy así» sobre un comportamiento propio es una descripción neutra sin consecuencias.",
+          correct: false,
+          explain:
+            "«Yo soy así» convierte un comportamiento (modificable) en una esencia (inmodificable). Es una declaración que cierra el aprendizaje: si «soy» impuntual, no hay nada que aprender, solo algo que aceptar. El lenguaje acá no describe: sentencia.",
+        },
+      ],
+    },
+  ],
+};
