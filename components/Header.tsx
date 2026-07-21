@@ -9,6 +9,7 @@ const VISIBLE_NAV: NavItem[] = [
   { label: "Capacitaciones", href: "/capacitaciones" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Herramientas", href: "/herramientas" },
+  { label: "Inversiones", href: "/inversiones" },
 ];
 
 const PUBLICACIONES_NAV: NavItem[] = [
