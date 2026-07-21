@@ -37,7 +37,6 @@
   ],
   "exclude": [
     "node_modules",
-    "apps",
     "public",
     "decks",
     "rd",
