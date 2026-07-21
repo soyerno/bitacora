@@ -12,6 +12,23 @@ export const cap5: Chapter = {
   description:
     "Las emociones no son ruido que interrumpe la razón: son predisposiciones a la acción. Distinguir emoción de estado de ánimo, mapear los cuatro ánimos básicos, aprender a leerlos — y trabajar la culpa y el perdón.",
   icon: "🌊",
+  readings: [
+    {
+      title: "Ontología del Lenguaje",
+      author: "Rafael Echeverría",
+      note: "El capítulo sobre emociones y estados de ánimo: la grilla de facticidad/posibilidad y la reconstrucción lingüística.",
+    },
+    {
+      title: "Coaching: el arte de soplar brasas",
+      author: "Leonardo Wolk",
+      note: "El trabajo emocional en sesión: legitimar, leer y movilizar emociones sin taparlas ni dramatizarlas.",
+    },
+    {
+      title: "La biología del emocionar",
+      author: "Humberto Maturana y Susana Bloch",
+      note: "Emociones como dinámicas corporales que definen dominios de acción — el fundamento biológico de este capítulo.",
+    },
+  ],
   lessons: [
     {
       id: "emocion-vs-animo",
@@ -95,7 +112,7 @@ export const cap5: Chapter = {
           kind: "concept",
           title: "La grilla de los cuatro ánimos",
           body:
-            "Echeverría propone un mapa de dos ejes. Primer eje: ¿esto puede cambiarse? La facticidad es lo que ya no puede cambiar (el pasado, lo perdido, lo que otro decidió); la posibilidad es lo que todavía está abierto. Segundo eje: ¿cómo me paro frente a eso — me cierro o me abro?\n\nDel cruce salen los cuatro estados de ánimo básicos. Frente a la facticidad: el resentimiento (vivo en guerra con lo que no puede cambiar: «no debería haber pasado, alguien me lo debe») o la aceptación/paz (declaro el pasado cerrado y dejo de pagarle renta). Frente a la posibilidad: la resignación (trato lo cambiable como si fuera inmutable: «para qué intentar») o la ambición (veo espacio y voy).\n\nLo liberador de la grilla: los cuatro ánimos son interpretaciones — juicios sobre qué es facticidad y qué es posibilidad. Y los juicios, ya sabés: se examinan, se fundan, se revisan. Los dos grandes ladrones de vida son clasificar mal: pelear contra lo inmodificable y dar por cerrado lo modificable.",
+            "Echeverría propone un mapa de dos ejes. Primer eje: ¿esto puede cambiarse? La facticidad es lo que ya no puede cambiar (el pasado, lo perdido, lo que otro decidió); la posibilidad es lo que todavía está abierto. Segundo eje: ¿cómo me paro frente a eso — me cierro o me abro?\n\nDel cruce salen los cuatro estados de ánimo básicos. Frente a la facticidad: el resentimiento (vivo en guerra con lo que no puede cambiar: «no debería haber pasado, alguien me lo debe») o la aceptación/paz (declaro el pasado cerrado y dejo de pagarle renta). Frente a la posibilidad: la resignación (trato lo cambiable como si fuera inmutable: «para qué intentar») o la ambición (veo espacio y voy).\n\nLo liberador de la grilla: los cuatro ánimos son interpretaciones — juicios sobre qué es facticidad y qué es posibilidad. Y los juicios, ya sabés: se examinan, se fundan, se revisan. Los dos grandes ladrones de vida son clasificar mal: pelear contra lo inmodificable y dar por cerrado lo modificable.\n\nUn dato más sobre el resentimiento: casi siempre esconde conversaciones que no ocurrieron — promesas incumplidas que nadie reclamó, límites que no se declararon, expectativas que nunca se convirtieron en pedidos. Por eso una de sus salidas es lingüística: tener por fin esa conversación pendiente (capítulo 4), o declarar el perdón y cerrar.",
           diagram: "grilla-animos",
           example:
             "«Me reestructuraron el equipo» (facticidad). Resentimiento: seis meses de «fue una injusticia» en cada almuerzo. Aceptación: «pasó y no depende de mí; ¿qué sí depende de mí ahora?» — mismo hecho, dos vidas distintas.",

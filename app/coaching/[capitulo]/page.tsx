@@ -61,6 +61,24 @@ export default async function CapituloPage({
         lessons={lessons}
         allKeys={flatLessonKeys()}
       />
+
+      {chapter.readings.length > 0 && (
+        <section className="mt-10">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
+            Para profundizar 📚
+          </h2>
+          <ul className="grid gap-3">
+            {chapter.readings.map((r) => (
+              <li key={r.title} className="rounded-xl border border-border bg-surface p-4">
+                <p className="font-display font-bold text-ink">
+                  {r.title} <span className="font-sans text-sm font-normal text-muted">— {r.author}</span>
+                </p>
+                <p className="mt-1 text-sm text-muted">{r.note}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </PageShell>
   );
 }

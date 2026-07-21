@@ -14,6 +14,23 @@ export const capValores: Chapter = {
   description:
     "Lo que te importa y lo que creés posible definen tu mundo: mapear tus valores reales (no los declamados), ver el sistema de creencias que te tiene, y un juego de herramientas concreto para transformar las que te quedaron chicas.",
   icon: "🧭",
+  readings: [
+    {
+      title: "Maestría personal",
+      author: "Oscar Anzorena",
+      note: "El camino del desarrollo personal desde la mirada ontológica: valores, modelos mentales y aprendizaje transformacional.",
+    },
+    {
+      title: "Metamanagement (Tomo 1: Principios)",
+      author: "Fredy Kofman",
+      note: "Los capítulos sobre modelos mentales y valores: cómo las creencias filtran lo que vemos y cómo trabajarlas en equipo.",
+    },
+    {
+      title: "La quinta disciplina",
+      author: "Peter Senge",
+      note: "Modelos mentales como disciplina: hacer visibles las creencias que gobiernan decisiones, con herramientas de indagación.",
+    },
+  ],
   lessons: [
     {
       id: "valores",

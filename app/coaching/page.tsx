@@ -37,12 +37,18 @@ export default function CoachingPage() {
         <CoachingStats totalLessons={totalLessons()} />
       </div>
 
-      <div className="mb-8 text-right">
+      <div className="mb-8 flex justify-end gap-4">
+        <Link
+          href="/coaching/glosario"
+          className="text-sm font-medium text-accent hover:underline"
+        >
+          Glosario 📖
+        </Link>
         <Link
           href="/coaching/notas"
           className="text-sm font-medium text-accent hover:underline"
         >
-          Mi cuaderno de notas 📓 →
+          Mi cuaderno 📓
         </Link>
       </div>
 

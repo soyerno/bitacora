@@ -12,6 +12,23 @@ export const cap3: Chapter = {
   description:
     "Los juicios no describen el mundo: te describen a vos. Cómo distinguirlos de los hechos, cómo fundarlos para que sirvan, y qué hacer con los juicios que tenés sobre vos mismo.",
   icon: "⚖️",
+  readings: [
+    {
+      title: "Ontología del Lenguaje",
+      author: "Rafael Echeverría",
+      note: "El capítulo sobre juicios: la distinción con las afirmaciones, la fundamentación y el poder de los juicios sobre la identidad.",
+    },
+    {
+      title: "La quinta disciplina",
+      author: "Peter Senge",
+      note: "La escalera de inferencias (original de Chris Argyris) y los modelos mentales, aplicados a organizaciones que aprenden.",
+    },
+    {
+      title: "Coaching: el arte de soplar brasas",
+      author: "Leonardo Wolk",
+      note: "Cómo se trabajan juicios y columnas izquierdas en sesiones reales de coaching, con transcripciones comentadas.",
+    },
+  ],
   lessons: [
     {
       id: "hechos-interpretacion",

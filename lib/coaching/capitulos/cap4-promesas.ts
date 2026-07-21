@@ -11,6 +11,23 @@ export const cap4: Chapter = {
   description:
     "Casi todo lo que falla en los equipos falla acá: pedidos difusos, promesas que nadie hizo pero todos esperan, reclamos que llegan como reproches. La mecánica fina de comprometerse.",
   icon: "🤝",
+  readings: [
+    {
+      title: "Conversaciones para la acción",
+      author: "Fernando Flores",
+      note: "El ciclo de la promesa y la coordinación de acciones, por quien lo llevó del seminario filosófico a las organizaciones.",
+    },
+    {
+      title: "Ontología del Lenguaje",
+      author: "Rafael Echeverría",
+      note: "Los capítulos sobre pedidos, ofertas y promesas — y el juicio de confiabilidad que se construye cumpliéndolas.",
+    },
+    {
+      title: "Metamanagement (Tomo 2: Aplicaciones)",
+      author: "Fredy Kofman",
+      note: "Pedidos, promesas, reclamos productivos y disculpas efectivas en el día a día de un equipo, paso a paso.",
+    },
+  ],
   lessons: [
     {
       id: "pedidos",

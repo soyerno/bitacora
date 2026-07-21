@@ -12,6 +12,23 @@ export const cap1: Chapter = {
   description:
     "Por qué dos personas ven cosas distintas frente al mismo hecho, qué significa que no vemos las cosas como son sino como somos, y qué tipo de aprendizaje transforma al observador y no solo a la acción.",
   icon: "👁️",
+  readings: [
+    {
+      title: "Ontología del Lenguaje",
+      author: "Rafael Echeverría",
+      note: "El libro fundacional de la disciplina. Para este capítulo: los primeros capítulos, sobre el observador y los postulados básicos.",
+    },
+    {
+      title: "El árbol del conocimiento",
+      author: "Humberto Maturana y Francisco Varela",
+      note: "La base biológica de «no vemos las cosas como son, sino como somos». Lectura más densa, pero funda todo lo demás.",
+    },
+    {
+      title: "Metamanagement (Tomo 1: Principios)",
+      author: "Fredy Kofman",
+      note: "El modelo observador-acción-resultados y el aprendizaje de segundo orden aplicados al trabajo, con casos y ejercicios.",
+    },
+  ],
   lessons: [
     {
       id: "que-es",
@@ -26,6 +43,14 @@ export const cap1: Chapter = {
             "«Ontología» viene del griego ontos (ser) y logos (estudio): la pregunta por lo que somos. El coaching ontológico nace de una síntesis entre la filosofía del lenguaje (Austin, Searle), la biología del conocimiento (Maturana) y su articulación práctica (Fernando Flores y Rafael Echeverría, autor de «Ontología del Lenguaje»).\n\nSu apuesta central: los seres humanos somos seres lingüísticos. No usamos el lenguaje solo para describir el mundo — lo usamos para crearlo. Y la forma en que interpretamos define qué acciones nos resultan posibles.\n\nPor eso esta disciplina no trabaja primero sobre lo que hacés (técnicas, hábitos, tips) sino sobre el modo de ser desde el cual hacés: tus interpretaciones, tus juicios, tus emociones. A ese modo de ser lo llamamos «el observador».",
           example:
             "Dos personas reciben el mismo feedback crítico. Una escucha «me están atacando» y se defiende; la otra escucha «me están regalando información» y pregunta más. Mismo hecho, dos observadores — y dos futuros distintos.",
+        },
+        {
+          kind: "concept",
+          title: "Qué hace (y qué no hace) un coach ontológico",
+          body:
+            "Conviene despejar el malentendido más común antes de empezar: el coach ontológico no es un consejero. No te dice qué hacer (eso es un consultor), no te enseña su experiencia en tu dominio (eso es un mentor), no trata patologías (eso es un terapeuta). Su trabajo es otro: acompañarte a observar tus propias interpretaciones, juicios y emociones para que vos encuentres acciones que hoy no podés ver.\n\n¿Por qué esa restricción? Porque si el coach te da la respuesta, tu observador queda intacto — y ese era el punto. El problema de hoy se resuelve, y el observador que lo generó fabrica uno igual el mes que viene. La transformación solo ocurre cuando el propio coachee ensancha su mirada.\n\nLas herramientas del coach son las de este programa: distinguir hechos de juicios, examinar fundamentos, leer emociones, detectar conversaciones faltantes — y sobre todo, preguntar. Por eso este programa sirve doble: para acompañar a otros, y para autocoachearte.",
+          example:
+            "Coachee: «¿vos qué harías en mi lugar?». Coach: «lo que yo haría importa poco — soy otro observador. Contame: ¿qué opciones estás viendo vos, y cuál descartaste sin examinar?». La pregunta devuelve el problema a su dueño, con la mirada ampliada.",
         },
         {
           kind: "choice",

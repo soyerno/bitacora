@@ -12,6 +12,23 @@ export const cap7: Chapter = {
   description:
     "Cuando la transparencia se rompe aparece el quiebre — y con él, la oportunidad. Qué conversación abrir según el quiebre, y cómo se estructura una conversación de coaching completa.",
   icon: "🌀",
+  readings: [
+    {
+      title: "Ontología del Lenguaje",
+      author: "Rafael Echeverría",
+      note: "Los capítulos sobre quiebres y sobre los distintos tipos de conversaciones — el mapa completo de este capítulo.",
+    },
+    {
+      title: "Coaching: el arte de soplar brasas",
+      author: "Leonardo Wolk",
+      note: "La estructura de la sesión de coaching paso a paso, con transcripciones reales comentadas. El mejor puente a la práctica.",
+    },
+    {
+      title: "Conversaciones para la acción",
+      author: "Fernando Flores",
+      note: "Cómo los quiebres se procesan con conversaciones y compromisos — la mirada organizacional del mismo mapa.",
+    },
+  ],
   lessons: [
     {
       id: "el-quiebre",

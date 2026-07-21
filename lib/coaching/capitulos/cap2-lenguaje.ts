@@ -11,6 +11,23 @@ export const cap2: Chapter = {
   description:
     "Hablar no es solo describir el mundo: es actuar sobre él. La diferencia entre afirmaciones (la palabra sigue al mundo) y declaraciones (el mundo sigue a la palabra), y por qué confundirlas sale caro.",
   icon: "🗣️",
+  readings: [
+    {
+      title: "Ontología del Lenguaje",
+      author: "Rafael Echeverría",
+      note: "Los capítulos sobre actos lingüísticos: afirmaciones, declaraciones y las declaraciones fundamentales de la vida.",
+    },
+    {
+      title: "Cómo hacer cosas con palabras",
+      author: "J. L. Austin",
+      note: "El origen filosófico de todo: las conferencias donde Austin descubre que hablar es actuar. Corto y sorprendentemente legible.",
+    },
+    {
+      title: "Actos de habla",
+      author: "John Searle",
+      note: "La sistematización de la teoría de Austin. Para quien quiera el rigor filosófico detrás del mapa de actos.",
+    },
+  ],
   lessons: [
     {
       id: "lenguaje-accion",

@@ -88,6 +88,14 @@ export interface Lesson {
   exercises: Exercise[];
 }
 
+/** Lectura recomendada para profundizar un capítulo. */
+export interface Reading {
+  title: string;
+  author: string;
+  /** Qué buscar ahí / por qué leerla. */
+  note: string;
+}
+
 export interface Chapter {
   /** Slug único del capítulo, usado en la URL (ej. "el-observador"). */
   slug: string;
@@ -97,6 +105,8 @@ export interface Chapter {
   /** Emoji identificador del capítulo en el mapa del programa. */
   icon: string;
   lessons: Lesson[];
+  /** Bibliografía del capítulo — la fuente de estas distinciones. */
+  readings: Reading[];
 }
 
 /** XP otorgado por ejercicio resuelto y bonus por lección completada. */

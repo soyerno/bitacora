@@ -12,6 +12,23 @@ export const cap6: Chapter = {
   description:
     "Hablamos para ser escuchados, pero el que escucha construye su propia versión. Escuchar = percibir + interpretar, cómo verificar la brecha, y qué dice el cuerpo mientras tanto.",
   icon: "👂",
+  readings: [
+    {
+      title: "Actos de lenguaje. Volumen I: La escucha",
+      author: "Rafael Echeverría",
+      note: "Un libro entero dedicado a la distinción central de este capítulo: escuchar = percibir + interpretar, y cómo cerrar la brecha.",
+    },
+    {
+      title: "Coaching: el arte de soplar brasas",
+      author: "Leonardo Wolk",
+      note: "Escucha activa, indagación y corporalidad aplicadas a la conversación de coaching, con ejemplos de sesión.",
+    },
+    {
+      title: "El observador y su mundo",
+      author: "Rafael Echeverría",
+      note: "Ensayos que profundizan el observador, la escucha y la corporalidad como dominios entrelazados.",
+    },
+  ],
   lessons: [
     {
       id: "oir-vs-escuchar",

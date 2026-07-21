@@ -10,6 +10,7 @@ import {
   totalLessons,
 } from "@/lib/coaching/programa";
 import { nextStreak } from "@/lib/coaching/progress";
+import { GLOSARIO, glossaryByChapter } from "@/lib/coaching/glosario";
 
 describe("programa de coaching — integridad del contenido", () => {
   it("tiene capítulos con slugs únicos y lecciones con ids únicos", () => {
@@ -151,6 +152,33 @@ describe("programa de coaching — integridad del contenido", () => {
     const slugs = PROGRAMA.map((c) => c.slug);
     expect(slugs.indexOf("valores-creencias")).toBe(slugs.indexOf("emociones") + 1);
     expect(slugs.indexOf("valores-creencias")).toBeLessThan(slugs.indexOf("escucha"));
+  });
+
+  it("cada capítulo trae lecturas recomendadas completas", () => {
+    for (const c of PROGRAMA) {
+      expect(c.readings.length, `${c.slug} sin lecturas`).toBeGreaterThanOrEqual(2);
+      for (const r of c.readings) {
+        expect(r.title.length, c.slug).toBeGreaterThan(0);
+        expect(r.author.length, c.slug).toBeGreaterThan(0);
+        expect(r.note.length, `${c.slug}: nota de lectura vacía`).toBeGreaterThan(30);
+      }
+    }
+  });
+
+  it("el glosario cubre todos los capítulos con términos únicos y definidos", () => {
+    const terms = GLOSARIO.map((t) => t.term);
+    expect(new Set(terms).size).toBe(terms.length);
+    expect(GLOSARIO.length).toBeGreaterThanOrEqual(30);
+    const slugs = PROGRAMA.map((c) => c.slug);
+    for (const t of GLOSARIO) {
+      expect(slugs, `término «${t.term}» apunta a capítulo inexistente`).toContain(t.chapter);
+      expect(t.def.length, t.term).toBeGreaterThan(50);
+    }
+    // Todos los capítulos tienen al menos 3 términos en el glosario.
+    for (const group of glossaryByChapter(PROGRAMA)) {
+      expect(group.terms.length, group.chapter.slug).toBeGreaterThanOrEqual(3);
+    }
+    expect(glossaryByChapter(PROGRAMA).length).toBe(PROGRAMA.length);
   });
 
   it("getChapter y getLesson resuelven slugs reales y rechazan inexistentes", () => {
