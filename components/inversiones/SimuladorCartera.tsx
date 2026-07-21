@@ -1,33 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ASSET_CLASSES } from "@/lib/inversiones";
+import { ASSET_CLASSES, nivelRiesgo, proyectar } from "@/lib/inversiones";
 import AsignacionEditor from "./AsignacionEditor";
 import ProyeccionChart, { type Proyeccion } from "./ProyeccionChart";
-
-/** Serie anual de crecimiento compuesto con aportes mensuales. */
-function proyectar(
-  inicial: number,
-  aporteMensual: number,
-  anios: number,
-  retornoAnual: number,
-): number[] {
-  const mensual = (1 + retornoAnual / 100) ** (1 / 12) - 1;
-  const serie = [inicial];
-  let v = inicial;
-  for (let a = 1; a <= anios; a++) {
-    for (let m = 0; m < 12; m++) v = v * (1 + mensual) + aporteMensual;
-    serie.push(Math.max(0, v));
-  }
-  return serie;
-}
-
-function nivelRiesgo(vol: number): string {
-  if (vol < 5) return "bajo";
-  if (vol < 12) return "medio";
-  if (vol < 20) return "alto";
-  return "muy alto";
-}
 
 const fmt = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
 

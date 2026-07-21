@@ -178,6 +178,35 @@ export function perfilPorScore(score: number): PerfilRiesgo {
   return PERFILES[2];
 }
 
+/**
+ * Serie anual de crecimiento compuesto con aportes mensuales.
+ * Índice = año (0..anios); el piso 0 evita valores negativos en el
+ * escenario pesimista.
+ */
+export function proyectar(
+  inicial: number,
+  aporteMensual: number,
+  anios: number,
+  retornoAnual: number,
+): number[] {
+  const mensual = (1 + retornoAnual / 100) ** (1 / 12) - 1;
+  const serie = [inicial];
+  let v = inicial;
+  for (let a = 1; a <= anios; a++) {
+    for (let m = 0; m < 12; m++) v = v * (1 + mensual) + aporteMensual;
+    serie.push(Math.max(0, v));
+  }
+  return serie;
+}
+
+/** Volatilidad ponderada (%) → etiqueta de riesgo. */
+export function nivelRiesgo(vol: number): string {
+  if (vol < 5) return "bajo";
+  if (vol < 12) return "medio";
+  if (vol < 20) return "alto";
+  return "muy alto";
+}
+
 export interface ChecklistGrupo {
   grupo: string;
   items: { id: string; texto: string }[];
