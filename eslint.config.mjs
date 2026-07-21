@@ -5,7 +5,8 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 // Reemplaza al `next lint` removido en Next 16.
 const eslintConfig = defineConfig([
   ...nextVitals,
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  // apps/* son sub-apps standalone con su propio tooling (se lintean solas).
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "apps/**"]),
 ]);
 
 export default eslintConfig;
