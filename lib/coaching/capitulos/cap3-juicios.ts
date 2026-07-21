@@ -14,11 +14,106 @@ export const cap3: Chapter = {
   icon: "⚖️",
   lessons: [
     {
+      id: "hechos-interpretacion",
+      title: "Hechos e interpretación",
+      description:
+        "La escalera de inferencias: de lo que una cámara grabaría a la historia que te contaste — en milisegundos y sin darte cuenta.",
+      exercises: [
+        {
+          kind: "concept",
+          title: "La escalera de inferencias",
+          body:
+            "Entre el mundo y tus conclusiones hay una escalera que subís en milisegundos. Abajo están los hechos: lo que una cámara habría grabado. Sobre eso, seleccionás algunos datos (nadie puede atender a todo), les das una interpretación desde tu historia, y arriba de todo concluís y actuás. El problema no es la escalera — es inevitable y hasta virtuosa. El problema es que vivimos en el último escalón creyendo que es el primero.\n\nY hay un efecto perverso: el loop reflexivo. Tus conclusiones de hoy filtran qué datos seleccionás mañana. Si concluiste «a Marta no le importa el proyecto», vas a notar cada llegada tarde de Marta y te va a pasar inadvertido cada aporte suyo. La conclusión se autoalimenta.\n\nLa habilidad que entrena esta lección: bajar la escalera a voluntad. Ante una conclusión cargada, preguntarte «¿qué es exactamente lo que pasó — y qué le agregué yo?».",
+          diagram: "escalera",
+          example:
+            "Hecho: «le mandé un mensaje ayer 10:00 y no respondió». Escalera arriba: «me está ignorando» → «está enojado conmigo» → «seguro fue por lo del viernes» → le esquivo la mirada en la reunión. La cámara solo grabó un mensaje sin responder.",
+        },
+        {
+          kind: "choice",
+          question: "¿Cuál es la mejor prueba práctica para saber si algo es un hecho?",
+          options: [
+            "Que lo sienta con mucha seguridad",
+            "Que una cámara lo habría grabado, o que cualquier observador con las mismas distinciones podría constatarlo",
+            "Que la mayoría de la gente esté de acuerdo",
+            "Que lo haya dicho alguien con autoridad",
+          ],
+          correct: 1,
+          explain:
+            "El «test de la cámara» es la herramienta más simple: la cámara graba «llegó 9:40», no graba «llegó tarde porque no le importa». La intensidad de una convicción no la convierte en hecho — de hecho, las interpretaciones más peligrosas son las que se sienten más obvias.",
+        },
+        {
+          kind: "classify",
+          prompt: "Test de la cámara: ¿hecho grabable o interpretación agregada?",
+          categories: ["Hecho (la cámara lo graba)", "Interpretación (lo agregué yo)"],
+          items: [
+            { text: "«Cerró la puerta al salir de la reunión»", cat: 0 },
+            { text: "«Dio un portazo porque está furioso conmigo»", cat: 1 },
+            { text: "«No me saludó esta mañana»", cat: 0 },
+            { text: "«Me está haciendo la cruz»", cat: 1 },
+            { text: "«Respondió el mail con una sola línea»", cat: 0 },
+            { text: "«Me respondió cortante: le molestó mi pedido»", cat: 1 },
+          ],
+          explain:
+            "«Cortante», «furioso», «me hace la cruz» — todo eso vive en tu escalera, no en la cinta de la cámara. Puede que tu interpretación sea correcta: el punto no es descartarla sino saber que es tuya, y que abajo hay hechos que otros podrían leer distinto.",
+        },
+        {
+          kind: "match",
+          prompt: "Uní cada escalón de la escalera con el ejemplo que le corresponde.",
+          pairs: [
+            { left: "Hecho observable", right: "«En la demo, el cliente miró el teléfono tres veces»" },
+            { left: "Selección de datos", right: "Me quedo con las miradas al teléfono; no registro que tomó notas" },
+            { left: "Interpretación", right: "«Se aburrió — no le interesa nuestra propuesta»" },
+            { left: "Conclusión y acción", right: "«Cuenta perdida»: no le mando el follow-up" },
+          ],
+          explain:
+            "De tres miradas a un teléfono a una cuenta abandonada, sin escalas. Cada escalón era razonable; la cadena completa, nunca examinada. Quizás el cliente esperaba noticias del colegio de sus hijos — y la propuesta le interesaba.",
+        },
+        {
+          kind: "truefalse",
+          statement:
+            "El objetivo de esta distinción es dejar de interpretar y quedarse solamente con los hechos.",
+          correct: false,
+          explain:
+            "Imposible y además empobrecedor: interpretar es lo que nos permite dar sentido y actuar rápido. El objetivo es otro: saber en qué escalón estás parado. Quien distingue «esto es lo que pasó» de «esto es lo que me conté» puede revisar la historia cuando la historia le sale cara.",
+        },
+        {
+          kind: "choice",
+          question:
+            "En una discusión, el otro te dice: «¡es obvio que lo hizo a propósito!». ¿Cuál es la pregunta que baja la escalera?",
+          options: [
+            "«¿Y vos qué sabés?»",
+            "«¿Qué fue exactamente lo que hizo? Contame como si lo hubiera grabado una cámara»",
+            "«¿Por qué sos tan negativo?»",
+            "«¿Ya le contaste a los demás?»",
+          ],
+          correct: 1,
+          explain:
+            "Pedir la versión-cámara separa el dato de la historia sin desautorizar a nadie: no le decís «estás equivocado», le pedís los hechos. Casi siempre, al enunciarlos, la persona misma nota cuánta interpretación había apilado — y la conversación cambia de tono.",
+        },
+        {
+          kind: "reflect",
+          prompt:
+            "Elegí una conclusión fuerte que hayas sacado hace poco sobre alguien o algo («no le importa», «me quieren afuera», «esto no va a funcionar»). Bajá la escalera por escrito: ¿qué grabó la cámara? ¿qué seleccionaste? ¿qué interpretaste?",
+          placeholder: "Mi conclusión: … / La cámara grabó: … / Yo agregué: …",
+          insight:
+            "Fijate la proporción: casi siempre hay uno o dos hechos abajo y varios pisos de historia arriba. No significa que tu conclusión sea falsa — significa que es una hipótesis, no un dato. Y las hipótesis tienen un privilegio que las certezas no tienen: se pueden verificar, conversar y revisar antes de actuar en base a ellas.",
+        },
+      ],
+    },
+    {
       id: "juicio-vs-hecho",
       title: "El juicio no vive en el mundo",
       description:
         "«Es un desastre» dice menos del otro que de quien lo dice: el juicio habla del observador.",
       exercises: [
+        {
+          kind: "concept",
+          title: "El juicio lleva tu firma",
+          body:
+            "Un juicio es una interpretación que hace un observador: «impuntual», «brillante», «desordenado», «confiable». A diferencia de la afirmación, no se verifica contra el mundo — se funda (o no) en hechos, estándares y propósitos. Por eso no decimos que un juicio es verdadero o falso: decimos que está fundado o infundado.\n\nLa clave incómoda: el juicio dice tanto del juzgado como del que juzga. Cuando decís «este código es un desastre», estás mostrando tus estándares, tu historia y lo que te importa. Otro observador, frente al mismo código, diría «razonable para un MVP». Los hechos son compartibles; el juicio lleva tu firma.\n\nEsto vale también para los juicios que recibís: una crítica es información sobre cómo te ve ese observador desde sus estándares — material para examinar, no un veredicto para tragar ni un ataque para devolver.",
+          example:
+            "«María es impuntual» — firmado: alguien cuyos estándares dicen que 10 minutos importan. En una cultura donde las reuniones empiezan «a eso de las 9», el mismo historial de María no genera el juicio.",
+        },
         {
           kind: "choice",
           question: "«María es impuntual». ¿Qué es esta frase?",
@@ -92,6 +187,14 @@ export const cap3: Chapter = {
       description:
         "Los cinco pasos para que una opinión sea algo más que un prejuicio con buena prensa.",
       exercises: [
+        {
+          kind: "concept",
+          title: "Fundar un juicio: los cinco filtros",
+          body:
+            "Como no podemos vivir sin juicios (orientan cada decisión), la pregunta no es cómo eliminarlos sino cómo tenerlos fundados. Un juicio fundado pasa cinco filtros:\n\n1 · ¿Para qué juzgo? Todo juicio se emite por o para algo — una acción futura que me importa. 2 · ¿En qué dominio? «Impuntual en las dailies» es trabajable; «impuntual en la vida» es una condena. 3 · ¿Contra qué estándares? ¿Y son compartidos, o solo míos? 4 · ¿Con qué hechos? Afirmaciones verificables que lo sostengan. 5 · ¿Busqué fundar el juicio contrario? El filtro anti-sesgo: si solo junté evidencia a favor, no fundé — confirmé.\n\nLa mayoría de nuestros juicios cotidianos no pasa ni el segundo filtro. No es un llamado al escepticismo total: es higiene básica antes de decidir cosas grandes sobre personas.",
+          example:
+            "Infundado: «es mal profesional, se le nota». Fundado: «para demos con clientes no confiaría en él por ahora: en las últimas 3 llegó sin preparar el entorno — aunque en la interna del martes estuvo impecable, lo que me hace acotar el juicio, no generalizarlo».",
+        },
         {
           kind: "match",
           prompt: "Uní cada condición para fundar un juicio con su pregunta clave.",
@@ -170,6 +273,14 @@ export const cap3: Chapter = {
       description:
         "Los juicios que tenés sobre vos mismo funcionan como sentencias: el coaching los trata como lo que son — juicios.",
       exercises: [
+        {
+          kind: "concept",
+          title: "Juicios maestros: el software que no ves",
+          body:
+            "Hay juicios que no tenés — te tienen. «Soy malo para los números», «pedir ayuda es debilidad», «no se puede confiar en la gente», «yo soy así». Los llamamos juicios maestros: opiniones formadas hace años (a veces en la infancia, a veces tras una sola experiencia intensa) que se congelaron como «cómo son las cosas» y desde ahí gobiernan qué intentás, qué evitás y cómo interpretás todo lo que te pasa.\n\nSu poder viene de su invisibilidad: no los vivís como opiniones sino como el paisaje. Y producen su propia confirmación — quien «no sirve para hablar en público» evita practicar, y como no practica, sigue sin servir. El loop de la escalera de inferencias, aplicado a la identidad.\n\nEl trabajo profundo del coaching es este: traer el juicio maestro a la luz y devolverle su estatus de juicio — con dominio, con historia, con fecha de emisión. No para negarlo: para poder revisarlo.",
+          example:
+            "«Soy desorganizado» (sentencia global, sin salida) vs «en la gestión de mis mails me observo desorganizado desde que cambié de rol; en mi código soy meticuloso» (juicio acotado — y de pronto hay algo concreto que aprender).",
+        },
         {
           kind: "choice",
           question:

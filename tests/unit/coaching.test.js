@@ -22,14 +22,46 @@ describe("programa de coaching — integridad del contenido", () => {
     }
   });
 
-  it("cada lección tiene al menos 4 ejercicios y una reflexión", () => {
+  it("cada lección tiene al menos 4 ejercicios, una reflexión y una tarjeta de teoría", () => {
     for (const c of PROGRAMA) {
       for (const l of c.lessons) {
-        expect(l.exercises.length, `${c.slug}/${l.id}`).toBeGreaterThanOrEqual(4);
+        const answerable = l.exercises.filter((e) => e.kind !== "concept");
+        expect(answerable.length, `${c.slug}/${l.id}`).toBeGreaterThanOrEqual(4);
         const reflects = l.exercises.filter((e) => e.kind === "reflect");
         expect(reflects.length, `${c.slug}/${l.id} sin reflexión`).toBeGreaterThanOrEqual(1);
+        const concepts = l.exercises.filter((e) => e.kind === "concept");
+        expect(concepts.length, `${c.slug}/${l.id} sin teoría`).toBeGreaterThanOrEqual(1);
       }
     }
+  });
+
+  it("las tarjetas de teoría tienen título, cuerpo y diagramas válidos", () => {
+    const DIAGRAM_IDS = [
+      "oar",
+      "actos",
+      "escalera",
+      "grilla-animos",
+      "ciclo-promesa",
+      "escucha",
+      "quiebre",
+    ];
+    const used = new Set();
+    for (const c of PROGRAMA) {
+      for (const l of c.lessons) {
+        for (const e of l.exercises) {
+          if (e.kind !== "concept") continue;
+          const where = `${c.slug}/${l.id}`;
+          expect(e.title.length, where).toBeGreaterThan(0);
+          expect(e.body.length, where).toBeGreaterThan(100);
+          if (e.diagram) {
+            expect(DIAGRAM_IDS, `${where}: diagrama desconocido`).toContain(e.diagram);
+            used.add(e.diagram);
+          }
+        }
+      }
+    }
+    // Todos los diagramas del registro se usan en algún capítulo.
+    expect([...used].sort()).toEqual([...DIAGRAM_IDS].sort());
   });
 
   it("los ejercicios choice tienen índice correcto en rango y explicación", () => {
@@ -96,6 +128,15 @@ describe("programa de coaching — integridad del contenido", () => {
 
     // Programa completo: no hay próxima.
     expect(nextLessonKey(keys)).toBeUndefined();
+  });
+
+  it("incluye las lecciones de hechos/interpretación y de culpa/perdón", () => {
+    expect(getLesson("juicios", "hechos-interpretacion")?.lesson.title).toBe(
+      "Hechos e interpretación",
+    );
+    expect(getLesson("emociones", "culpa-perdon")?.lesson.title).toBe(
+      "La culpa y el perdón",
+    );
   });
 
   it("getChapter y getLesson resuelven slugs reales y rechazan inexistentes", () => {

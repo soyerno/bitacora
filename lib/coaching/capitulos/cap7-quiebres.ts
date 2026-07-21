@@ -20,6 +20,15 @@ export const cap7: Chapter = {
         "Transparencia, quiebre y la decisión más importante: qué hacés cuando algo se rompe.",
       exercises: [
         {
+          kind: "concept",
+          title: "Transparencia y quiebre",
+          body:
+            "La mayor parte de la vida transcurre en transparencia: actuás sin deliberar. Manejás sin pensar en manejar, tipeás sin buscar las teclas, saludás sin diseñar el saludo. La deliberación consciente es la excepción, no la regla — y menos mal: sería invivible pensarlo todo.\n\nEl quiebre es la interrupción de ese fluir: el ruido en el motor, el mail inesperado, la oferta que no buscabas. Ojo con la definición: el quiebre no es el hecho — es el juicio de que ese hecho interrumpe lo que me importa. Sin algo en juego no hay quiebre, hay solo un evento. Por eso el mismo hecho es catástrofe para uno y anécdota para otro: cada observador declara sus propios quiebres y su tamaño.\n\nY acá la bifurcación que define tanto: ante el quiebre podés negarlo («no pasa nada»), mudarte a la pregunta por la culpa (semanas de «¿de quién fue?») — o hacerte cargo: declarar el quiebre, identificar qué inquietud tuya afecta y abrir las conversaciones que lo muevan. Los quiebres, además, son la puerta del aprendizaje: solo cuando algo deja de funcionar en automático podés verlo y rediseñarlo.",
+          diagram: "quiebre",
+          example:
+            "Dos personas pierden el mismo trabajo. Una declara «se me terminó la carrera» (quiebre terminal); la otra, «era el empujón que no me animaba a darme» (quiebre-oportunidad). El hecho es idéntico; el quiebre lo escribe cada observador.",
+        },
+        {
           kind: "choice",
           question:
             "Manejás a casa sin pensar en manejar; de pronto, un ruido raro en el motor. Todo tu foco va ahí. En términos ontológicos, ¿qué pasó?",
@@ -86,6 +95,14 @@ export const cap7: Chapter = {
         "Para cada quiebre hay una conversación — y quedarse en la equivocada es la forma más común de no salir.",
       exercises: [
         {
+          kind: "concept",
+          title: "El mapa de las cuatro conversaciones",
+          body:
+            "Frente a un quiebre, Echeverría distingue cuatro conversaciones posibles. La de juicios personales: interpreto, me quejo, asigno culpas — humana e inevitable, procesa la emoción, pero es una sala de espera: nada del mundo cambia ahí. La de coordinación de acciones: pido, ofrezco, prometo — la única que mueve el quiebre directamente. La de posibles acciones: cuando todavía no sé qué pedir, exploro con otros qué se podría hacer. Y la de posibles conversaciones: cuando «con esa persona no se puede hablar», converso sobre cómo hacer posible esa conversación — con un tercero, o con la persona misma («quiero hablarte de algo difícil, ¿cuándo te viene bien?»).\n\nEl diagnóstico exprés de cualquier problema estancado es preguntar: ¿en qué conversación está viviendo? La respuesta habitual: años en la primera. La queja fértil, repetida, compartida — y ni un pedido, ni una oferta, ni un reclamo con destinatario.\n\nLa salida no suele costar más que veinte minutos de la conversación correcta.",
+          example:
+            "Tres meses de retro repitiendo «el otro equipo nunca avisa los cambios de API» (juicios personales). La conversación que faltaba: «les pedimos avisar todo cambio con 48 h en este canal, ¿se comprometen?» (coordinación). Veinte minutos; problema muerto.",
+        },
+        {
           kind: "match",
           prompt: "Uní cada tipo de conversación con lo que hace.",
           pairs: [
@@ -149,6 +166,14 @@ export const cap7: Chapter = {
       description:
         "Todo el programa junto: cómo se estructura una conversación ontológica, para acompañar a otros o para autocoachearte.",
       exercises: [
+        {
+          kind: "concept",
+          title: "La conversación de coaching: el arco completo",
+          body:
+            "Una conversación de coaching no es una charla con consejos: es un arco con cinco momentos. Primero, generar contexto y confianza: acordar tema, permiso y confidencialidad — sin confianza no hay apertura, y sin permiso no hay coaching. Segundo, escuchar el quiebre: el coachee cuenta; el coach indaga hechos, juicios, emociones e inquietudes (todo el arsenal de los capítulos anteriores). Tercero — el corazón —, intervenir en el observador: distinguir hecho de juicio, examinar fundamentos, leer la emoción, desafiar el juicio maestro. Si este momento no ocurre, lo que sigue es decoración. Cuarto, diseñar acciones: del observador ensanchado salen pedidos, declaraciones, conversaciones pendientes. Quinto, cierre: el coachee declara qué se lleva y qué va a hacer, con plazo.\n\nLa tentación permanente del coach es el consejo: «yo veo clarísimo lo que tenés que hacer». Esa claridad es un juicio de su observador — y dictarla resuelve el problema de hoy dejando intacto al observador que lo va a regenerar mañana.\n\nY el uso más frecuente de todo esto no es con un coach profesional: es el autocoaching. Las mismas preguntas, aplicadas a tus propios quiebres. Las reflexiones que escribiste a lo largo del programa fueron exactamente eso.",
+          example:
+            "Coachee: «no me dan los proyectos grandes». Coach (sin aconsejar): «¿qué hechos tenés? ¿qué juicio armaste con eso? ¿está fundado? ¿qué pediste explícitamente alguna vez?» → aparece que nunca hubo pedido, solo espera resentida. La acción sale sola.",
+        },
         {
           kind: "match",
           prompt: "Uní cada momento de una conversación de coaching con lo que ocurre.",

@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Exercise } from "@/lib/coaching/types";
 import { XP_LESSON_BONUS, XP_PER_EXERCISE, lessonKey } from "@/lib/coaching/types";
 import { useCoachingProgress } from "@/lib/coaching/progress";
+import ConceptSlide from "./ConceptSlide";
 import OptionsExercise from "./OptionsExercise";
 import ClassifyExercise from "./ClassifyExercise";
 import MatchExercise from "./MatchExercise";
@@ -39,6 +40,8 @@ export default function LessonPlayer({
 
   const exercise = exercises[idx];
   const isLast = idx === exercises.length - 1;
+  // Las tarjetas de teoría no cuentan para aciertos ni XP: solo lo ejercitado.
+  const answerable = exercises.filter((e) => e.kind !== "concept").length;
 
   function handleAnswered(correct: boolean, explain: string) {
     if (correct) setCorrectCount((c) => c + 1);
@@ -48,8 +51,8 @@ export default function LessonPlayer({
   function handleContinue() {
     if (isLast) {
       const alreadyDone = isDone(chapterSlug, lessonId);
-      setXpEarned(alreadyDone ? 0 : exercises.length * XP_PER_EXERCISE + XP_LESSON_BONUS);
-      completeLesson(chapterSlug, lessonId, exercises.length);
+      setXpEarned(alreadyDone ? 0 : answerable * XP_PER_EXERCISE + XP_LESSON_BONUS);
+      completeLesson(chapterSlug, lessonId, answerable);
       setFinished(true);
     } else {
       setFeedback(null);
@@ -62,7 +65,7 @@ export default function LessonPlayer({
       <LessonComplete
         xpEarned={xpEarned}
         correctCount={correctCount}
-        total={exercises.length}
+        total={answerable}
         chapterHref={chapterHref}
         nextHref={nextHref}
       />
@@ -99,6 +102,9 @@ export default function LessonPlayer({
         </span>
       </div>
 
+      {exercise.kind === "concept" && (
+        <ConceptSlide key={idx} card={exercise} onContinue={handleContinue} />
+      )}
       {exercise.kind === "choice" && (
         <OptionsExercise
           key={idx}

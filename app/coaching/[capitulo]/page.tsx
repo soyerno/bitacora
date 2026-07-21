@@ -37,7 +37,7 @@ export default async function CapituloPage({
     id: l.id,
     title: l.title,
     description: l.description,
-    exerciseCount: l.exercises.length,
+    exerciseCount: l.exercises.filter((e) => e.kind !== "concept").length,
   }));
 
   return (

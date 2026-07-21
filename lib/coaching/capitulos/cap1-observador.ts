@@ -20,6 +20,14 @@ export const cap1: Chapter = {
         "La disciplina, su origen y su apuesta: no cambiar lo que hacés, cambiar el observador que sos.",
       exercises: [
         {
+          kind: "concept",
+          title: "Ontología: la pregunta por el ser",
+          body:
+            "«Ontología» viene del griego ontos (ser) y logos (estudio): la pregunta por lo que somos. El coaching ontológico nace de una síntesis entre la filosofía del lenguaje (Austin, Searle), la biología del conocimiento (Maturana) y su articulación práctica (Fernando Flores y Rafael Echeverría, autor de «Ontología del Lenguaje»).\n\nSu apuesta central: los seres humanos somos seres lingüísticos. No usamos el lenguaje solo para describir el mundo — lo usamos para crearlo. Y la forma en que interpretamos define qué acciones nos resultan posibles.\n\nPor eso esta disciplina no trabaja primero sobre lo que hacés (técnicas, hábitos, tips) sino sobre el modo de ser desde el cual hacés: tus interpretaciones, tus juicios, tus emociones. A ese modo de ser lo llamamos «el observador».",
+          example:
+            "Dos personas reciben el mismo feedback crítico. Una escucha «me están atacando» y se defiende; la otra escucha «me están regalando información» y pregunta más. Mismo hecho, dos observadores — y dos futuros distintos.",
+        },
+        {
           kind: "choice",
           question:
             "«Ontología» viene del griego «ontos» (ser). ¿Por qué el coaching ontológico se llama así?",
@@ -91,6 +99,15 @@ export const cap1: Chapter = {
       description:
         "El modelo OAR: cuando los resultados no alcanzan, podés cambiar la acción… o cambiar el observador.",
       exercises: [
+        {
+          kind: "concept",
+          title: "El modelo OAR: dos loops de aprendizaje",
+          body:
+            "Los resultados que obtenés vienen de las acciones que tomás. Hasta ahí, obvio. Lo que el modelo agrega es el tercer término: las acciones que tomás dependen del observador que sos — lo que distinguís, lo que interpretás, lo que creés posible.\n\nCuando un resultado no te conforma, tenés dos loops disponibles. El de primer orden: cambiar la acción (practicar más, probar otra técnica, ajustar el plan). Funciona muchas veces. Pero cuando venís repitiendo «más de lo mismo» y nada cambia, el loop que falta es el de segundo orden: preguntarte qué interpretación tuya hace que esas acciones te parezcan las únicas disponibles.\n\nEl coaching ontológico vive en el segundo loop.",
+          diagram: "oar",
+          example:
+            "Un líder que no delega prueba apps de productividad (primer orden) sin resultado. El día que descubre su interpretación oculta — «si delego y sale mal, quedo yo como incompetente» — puede por fin delegar (segundo orden).",
+        },
         {
           kind: "choice",
           question: "Según el modelo OAR, ¿de dónde salen los resultados que obtenemos?",
@@ -167,6 +184,14 @@ export const cap1: Chapter = {
       description:
         "Declarar «no sé» es el acto fundacional del aprendizaje — y todo lo que solemos poner en el camino.",
       exercises: [
+        {
+          kind: "concept",
+          title: "Los enemigos del aprendizaje",
+          body:
+            "Aprender exige un movimiento incómodo: declarar «no sé». Sin ese espacio vacío, no hay dónde poner lo nuevo. Y sin permiso para ser principiante — es decir, torpe por un rato — no hay práctica; sin práctica, no hay aprendizaje.\n\nEcheverría cataloga los «enemigos del aprendizaje», actitudes que lo bloquean sin que las notemos: el «ya lo sé» que cierra la escucha antes de empezar; la incapacidad de declarar ignorancia (por vergüenza o por identidad de experto); los juicios de incapacidad sobre uno mismo («a mi edad ya no», «yo no soy de los que…»); el «no tengo tiempo» crónico; y querer resultados inmediatos sin transitar la torpeza inicial.\n\nLo potente de nombrarlos es que dejan de operar en la sombra: un enemigo identificado ya es un enemigo a medio desarmar.",
+          example:
+            "«Yo soy malo para los idiomas» dicho a los 35 años, fundado en una experiencia del secundario. Veinte años de evidencia vieja, tratada como sentencia perpetua — típico juicio de incapacidad haciéndose pasar por dato.",
+        },
         {
           kind: "choice",
           question: "Para el coaching ontológico, ¿cuál es la declaración que abre el aprendizaje?",

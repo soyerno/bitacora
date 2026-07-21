@@ -2,13 +2,34 @@
  * Modelo de datos del programa de Coaching Ontológico (sección /coaching).
  * El contenido vive en lib/coaching/capitulos/*.ts; la UI en components/coaching/.
  *
- * Cinco tipos de ejercicio estilo Duolingo:
+ * Seis tipos de "pantalla" estilo Duolingo:
+ *  - concept    → tarjeta de teoría: explica antes de ejercitar (con diagrama opcional)
  *  - choice     → multiple choice clásico
  *  - truefalse  → afirmación a validar
  *  - classify   → repartir items entre dos categorías (ej. hecho vs juicio)
  *  - match      → unir pares concepto ↔ definición
  *  - reflect    → pregunta abierta para pensar; al enviar se revela el insight
  */
+
+/** Diagramas SVG disponibles para las tarjetas de teoría (ver components/coaching/diagrams). */
+export type DiagramId =
+  | "oar"
+  | "actos"
+  | "escalera"
+  | "grilla-animos"
+  | "ciclo-promesa"
+  | "escucha"
+  | "quiebre";
+
+export interface ConceptCard {
+  kind: "concept";
+  title: string;
+  /** Cuerpo didáctico; los párrafos se separan con "\n\n". */
+  body: string;
+  /** Ejemplo concreto, se muestra destacado bajo el cuerpo. */
+  example?: string;
+  diagram?: DiagramId;
+}
 
 export interface ChoiceExercise {
   kind: "choice";
@@ -50,6 +71,7 @@ export interface ReflectExercise {
 }
 
 export type Exercise =
+  | ConceptCard
   | ChoiceExercise
   | TrueFalseExercise
   | ClassifyExercise

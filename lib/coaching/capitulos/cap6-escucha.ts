@@ -20,6 +20,15 @@ export const cap6: Chapter = {
         "El oír es biológico; el escuchar es interpretativo. Entre lo que dije y lo que entendiste hay una brecha estructural.",
       exercises: [
         {
+          kind: "concept",
+          title: "Escuchar = oír + interpretar",
+          body:
+            "Oír es biología: ondas sonoras, tímpano, señal. Escuchar es otra cosa: a lo oído le agregás sentido — para qué me lo dice, qué implica, qué quiere de mí. Y ese sentido no viene en las palabras: lo pone el oyente, desde su historia, sus juicios y sus inquietudes.\n\nLa consecuencia es incómoda pero liberadora: no existe la transmisión directa de sentido. Entre lo que dije y lo que escuchaste hay una brecha estructural — no un defecto tuyo ni mío, sino la condición de toda conversación. Dos personas oyen la misma frase y escuchan cosas distintas, siempre.\n\nQuien no ve la brecha vive frustrado: «¡pero si fui clarísimo!». Quien la ve, la gestiona: verifica («¿qué te llevás como acordado?»), pregunta, resume. Diez segundos de verificación ahorran días de retrabajo — y años de «yo pensé que…».",
+          diagram: "escucha",
+          example:
+            "El jefe dice «necesito esto pronto». Oyente A escucha «hoy antes de las 18 o hay problema». Oyente B escucha «esta semana estaría bien». Ninguno escuchó lo dicho: «pronto» no tiene fecha — cada uno la puso de su bolsillo.",
+        },
+        {
           kind: "choice",
           question: "Para la ontología del lenguaje, ¿qué es escuchar?",
           options: [
@@ -85,6 +94,14 @@ export const cap6: Chapter = {
       description:
         "El coach escucha con preguntas: indagación que abre al otro en vez de confirmar lo que ya pensabas.",
       exercises: [
+        {
+          kind: "concept",
+          title: "Indagar: preguntar para comprender, no para ganar",
+          body:
+            "La escucha pasiva (callarse mientras el otro habla) no alcanza: podés estar en silencio y aun así escuchar solo tu propio veredicto. La escucha activa se hace con movimientos concretos: verificar («entiendo que lo que te preocupa es el plazo, ¿es así?»), pedir concreción («¿me das un ejemplo?»), reflejar la emoción («te escucho con bronca, ¿la hay?») e indagar por la inquietud de fondo («¿qué está en juego para vos en esto?»).\n\nIndagar es preguntar para comprender el observador del otro — no para confirmar tu hipótesis ni para empujar tu consejo. Su enemiga es la pseudo-pregunta: «¿no te parece que deberías…?» ya trae la respuesta puesta; es una opinión disfrazada, y el otro lo nota siempre.\n\nDetrás de todo hablar hay una inquietud: algo que a la persona le importa y la mueve a hablar. El escuchar profundo no se queda en las palabras — pregunta por eso: ¿de qué te estás ocupando al contarme esto?",
+          example:
+            "«El deploy me da miedo» — respuesta que empuja: «¿no te parece que estás exagerando?». Indagación: «¿qué es lo que más te preocupa que pase?» → aparece la inquietud real: «no quiero volver a ser el que rompió producción». Otra conversación.",
+        },
         {
           kind: "choice",
           question: "¿Qué es indagar, en el sentido ontológico?",
@@ -163,6 +180,14 @@ export const cap6: Chapter = {
       description:
         "Lenguaje, emoción y cuerpo se implican mutuamente: no hay cambio de observador sin cuerpo que lo sostenga.",
       exercises: [
+        {
+          kind: "concept",
+          title: "El observador también es un cuerpo",
+          body:
+            "Lenguaje, emoción y cuerpo forman un sistema: cada emoción tiene su corporalidad (el miedo encoge, el entusiasmo expande), cada postura predispone ciertos ánimos, y ningún cambio de observador se sostiene si el cuerpo sigue ensayando el patrón viejo. No podés sostener entusiasmo desplomado en la silla, ni declarar un límite con voz que pide permiso.\n\nDel trabajo de corporalidad (Newfield y otros) tomamos cuatro disposiciones básicas: resolución (ir hacia: decidir, confrontar), apertura (recibir: escuchar sin defenderse), estabilidad (sostener: mantener la palabra bajo presión) y flexibilidad (adaptar: soltar el plan, jugar con lo inesperado). Nadie vive en una sola; la pregunta útil es cuál tenés sobreentrenada y cuál casi no visitás — ahí está el borde de tu repertorio.\n\nY un dato práctico: el cuerpo llega antes que el discurso. El otro lee tu disposición corporal antes de procesar tu primera frase. Preparar una conversación importante incluye preparar el cuerpo: respiración, postura, tono.",
+          example:
+            "Misma frase — «necesito que hablemos de lo que pasó» — dicha con mandíbula tensa y volumen en alza (el otro escucha ataque) o con respiración baja y cuerpo abierto (el otro escucha invitación). Las palabras eran idénticas.",
+        },
         {
           kind: "choice",
           question:

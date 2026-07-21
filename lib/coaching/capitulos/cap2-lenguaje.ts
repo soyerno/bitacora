@@ -19,6 +19,15 @@ export const cap2: Chapter = {
         "Del lenguaje descriptivo al lenguaje generativo: cuando decir algo cambia lo que hay.",
       exercises: [
         {
+          kind: "concept",
+          title: "Hablar es actuar",
+          body:
+            "Durante siglos pensamos el lenguaje como un espejo: el mundo está ahí, y las palabras lo describen. La filosofía del lenguaje del siglo XX (Austin, Searle) dio vuelta esa idea: hay frases que no describen nada — hacen cosas. «Acepto», «renuncio», «te perdono», «queda inaugurado»: después de dichas, el mundo es otro.\n\nA esas unidades las llamamos actos lingüísticos, y son sorprendentemente pocas: afirmaciones, declaraciones, juicios, y los actos que coordinan acción (pedidos, ofertas, promesas). Todo lo que decís en un día cabe en ese mapa.\n\nAprender a distinguir qué acto estás haciendo — y cuál te está haciendo el otro — es la habilidad base de todo el programa: cada acto compromete algo distinto y se juega con reglas distintas.",
+          diagram: "actos",
+          example:
+            "«Está lloviendo» (afirmación: se verifica mirando). «Declaro el sprint cerrado» (declaración: crea un estado nuevo). «Este sprint fue flojo» (juicio: opinión a fundar). «¿Me pasás el reporte mañana?» (pedido: coordina acción).",
+        },
+        {
           kind: "choice",
           question:
             "Un juez dice «lo declaro inocente». ¿Qué hizo el lenguaje en ese momento?",
@@ -83,6 +92,14 @@ export const cap2: Chapter = {
       description:
         "Afirmaciones verdaderas y falsas, el testigo compartido, y por qué «llegó 20 minutos tarde» no es lo mismo que «es un irresponsable».",
       exercises: [
+        {
+          kind: "concept",
+          title: "Afirmaciones: la palabra sigue al mundo",
+          body:
+            "Una afirmación es una descripción que se compromete con la evidencia: «llovió 30 mm», «el deploy falló a las 3:14», «el informe tiene 12 páginas». Su prueba de fuego: cualquier observador con las mismas distinciones podría verificarla. Si no hay forma posible de constatarla, no es una afirmación — es otra cosa disfrazada.\n\nLas afirmaciones pueden ser verdaderas o falsas (una afirmación falsa sigue siendo una afirmación: se comprometió con la evidencia y perdió). Lo que no pueden ser es opiniones: «el informe es aburrido» no se verifica con ningún instrumento — eso es un juicio, y lo tratamos en el próximo capítulo.\n\n¿Por qué importa tanto la distinción? Porque los conflictos se desactivan de manera muy distinta: sobre afirmaciones se discute con datos; sobre juicios, con fundamentos. Mezclarlos es la receta del diálogo de sordos.",
+          example:
+            "«Juan llegó 9:40 a la reunión de 9:00» → afirmación (el calendario y los presentes la verifican). «Juan es un irresponsable» → juicio montado sobre esa afirmación. La primera se constata; el segundo se debe fundar.",
+        },
         {
           kind: "choice",
           question: "¿Qué hace que una frase sea una afirmación (y no otra cosa)?",
@@ -156,6 +173,14 @@ export const cap2: Chapter = {
       description:
         "Las declaraciones que cambian una vida: sí, no, no sé, perdón, gracias, te quiero — y la autoridad que las hace válidas.",
       exercises: [
+        {
+          kind: "concept",
+          title: "Declaraciones: el mundo sigue a la palabra",
+          body:
+            "En la declaración, la relación palabra-mundo se invierte: no describís lo que hay — generás algo que antes no había. «Lo declaro inocente», «acepto», «renuncio», «este proyecto se llama Atlas». Un instante antes, ese mundo no existía; un instante después, sí.\n\nPor eso las declaraciones no son verdaderas ni falsas: son válidas o inválidas, según la autoridad de quien declara. El juez puede declarar inocencia; el público de la tribuna, no. Y hay un dominio donde tu autoridad es total: tu propia vida. «Basta», «merezco otra cosa», «empiezo de nuevo» — nadie puede hacer esas declaraciones por vos, y nada externo obliga a hacerlas.\n\nEcheverría destaca cinco declaraciones que sostienen una vida: el «no» (funda tu dignidad), el «no sé» (abre el aprendizaje), el «perdón» (libera del pasado), el «gracias» (construye el vínculo) y el «te quiero» (funda la relación). Buena parte del sufrimiento humano vive en alguna de estas cinco, pendiente de ser dicha.",
+          example:
+            "Renunciar a un trabajo: durante meses «no da más» como queja interna (nada cambia). El día que dice «renuncio» ante su jefe — dos palabras, autoridad propia — el mundo es literalmente otro.",
+        },
         {
           kind: "choice",
           question:

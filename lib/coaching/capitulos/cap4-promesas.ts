@@ -19,6 +19,14 @@ export const cap4: Chapter = {
         "Orador, oyente, condiciones de satisfacción y plazo: los pedidos incompletos fabrican los malentendidos.",
       exercises: [
         {
+          kind: "concept",
+          title: "El pedido: la herramienta más subestimada",
+          body:
+            "Casi todo lo que lográs en la vida lo lográs con otros — y la pieza que conecta tu necesidad con la acción de otro es el pedido. Un pedido completo tiene anatomía precisa: un orador que se hace cargo («yo te pido», no «se necesita»), un oyente determinado (una persona con nombre, no «alguien debería»), condiciones de satisfacción observables (¿qué contaría exactamente como cumplido?), un plazo (sin «para cuándo» no hay incumplimiento posible) y un trasfondo compartido (¿entendemos lo mismo por «pronto», por «revisar», por «mejorarlo»?).\n\nCuando falta una pieza, no hay pedido: hay una expresión de deseo flotando en el aire. Y como nadie la aceptó, nadie la incumple — pero vos igual te resentís cuando no ocurre.\n\nDetrás del no-pedir suele haber juicios maestros: «pedir es molestar», «pedir es quedar débil», «deberían darse cuenta solos». El costo es triple: te sobrecargás, resentís, y privás al otro de la chance de ayudarte.",
+          example:
+            "Difuso: «estaría bueno documentar esto». Completo: «Ana, ¿podés escribir el README de este módulo — instalación y los 3 endpoints — para el jueves a las 15?». El primero es un anhelo; el segundo, coordinación.",
+        },
+        {
           kind: "match",
           prompt: "Uní cada elemento de un pedido bien hecho con su pregunta.",
           pairs: [
@@ -98,6 +106,15 @@ export const cap4: Chapter = {
         "Una promesa une dos actos: alguien pide u ofrece, alguien acepta. Después empieza la parte difícil.",
       exercises: [
         {
+          kind: "concept",
+          title: "El ciclo de la promesa",
+          body:
+            "Una promesa nace cuando un pedido (o una oferta) encuentra una aceptación. Sin aceptación explícita no hay promesa — hay una expectativa unilateral, que es la materia prima de la mayoría de los conflictos: «yo pensé que ibas a…» / «yo nunca dije que…».\n\nEl compromiso vive un ciclo de cuatro fases, y las cuatro fallan seguido: en la creación, pedidos difusos; en la negociación, el «sí» automático de quien no chequeó su agenda (frente a un pedido siempre tenés cuatro respuestas honrosas: aceptar, declinar, contraofertar o pedir tiempo para responder); en la realización, desaparecer en silencio cuando el compromiso entra en riesgo; en la evaluación, no cerrar nunca — ni «recibido, gracias» ni reclamo.\n\nLa confianza — tuya, de un equipo, de una marca — no se construye con intenciones: se construye con ciclos de promesa bien cerrados, uno tras otro. Impecabilidad no es infalibilidad; es hacerse cargo en cada fase.",
+          diagram: "ciclo-promesa",
+          example:
+            "El miércoles ves que no llegás con la entrega del viernes. Impecable: avisás el miércoles y renegociás. Fatal: entregás tarde el lunes «pidiendo mil disculpas». El problema de agenda era gratis; el silencio convirtió el problema en desconfianza.",
+        },
+        {
           kind: "choice",
           question: "¿Cuándo nace exactamente una promesa?",
           options: [
@@ -175,6 +192,14 @@ export const cap4: Chapter = {
       description:
         "Cuando una promesa se incumple, hay dos caminos: el reproche que envenena o el reclamo que repara.",
       exercises: [
+        {
+          kind: "concept",
+          title: "Reclamo productivo vs reproche",
+          body:
+            "Cuando una promesa se incumple, tenés tres opciones: tragarte el incumplimiento (y fabricar resentimiento), reprochar («sos un irresponsable» — un juicio a la identidad que invita a la defensa) o reclamar productivamente.\n\nEl reclamo productivo es pura técnica de este programa, en cinco pasos: afirmar el hecho («acordamos X para el viernes; hoy es martes y no lo recibí»), verificar la promesa («¿coincidís en que ese era el acuerdo?»), declarar el daño («me dejó sin insumo para el reporte»), pedir reparación («¿podés mandarlo mañana antes de las 12?») y recomponer a futuro («¿qué acordamos para que no se repita?»). Cero adjetivos sobre la persona; todo sobre la promesa.\n\nReclamar bien es un acto de cuidado del vínculo: el incumplimiento no reclamado no desaparece — se entierra, fermenta y reaparece como juicio silencioso que gobierna la relación desde las sombras.",
+          example:
+            "Reproche: «como siempre, no se puede contar con vos» (generaliza, ataca, escala). Reclamo: «quedamos en revisar esto juntos ayer y no apareciste; me trabó el avance. ¿Podemos hoy a las 15? ¿Y qué hacemos distinto la próxima?» (repara).",
+        },
         {
           kind: "choice",
           question:

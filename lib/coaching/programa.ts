@@ -34,9 +34,15 @@ export function totalLessons(): number {
   return PROGRAMA.reduce((acc, c) => acc + c.lessons.length, 0);
 }
 
+/** Ejercicios respondibles (las tarjetas de teoría no cuentan). */
 export function totalExercises(): number {
   return PROGRAMA.reduce(
-    (acc, c) => acc + c.lessons.reduce((a, l) => a + l.exercises.length, 0),
+    (acc, c) =>
+      acc +
+      c.lessons.reduce(
+        (a, l) => a + l.exercises.filter((e) => e.kind !== "concept").length,
+        0,
+      ),
     0,
   );
 }
