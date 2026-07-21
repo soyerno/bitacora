@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import CoachingStats from "@/components/coaching/CoachingStats";
 import ProgramMap, { type MapChapter } from "@/components/coaching/ProgramMap";
@@ -32,8 +33,17 @@ export default function CoachingPage() {
       meta={`${PROGRAMA.length} capítulos · ${totalLessons()} lecciones · ${totalExercises()} ejercicios · progreso, XP y racha se guardan en tu navegador`}
       maxWidth="max-w-3xl"
     >
-      <div className="mb-8">
+      <div className="mb-4">
         <CoachingStats totalLessons={totalLessons()} />
+      </div>
+
+      <div className="mb-8 text-right">
+        <Link
+          href="/coaching/notas"
+          className="text-sm font-medium text-accent hover:underline"
+        >
+          Mi cuaderno de notas 📓 →
+        </Link>
       </div>
 
       <div className="mb-8 rounded-xl border border-border bg-surface p-4 text-sm text-muted">

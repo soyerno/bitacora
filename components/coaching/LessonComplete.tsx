@@ -1,18 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import LessonNote from "./LessonNote";
 
-/** Pantalla final de lección: XP ganado, aciertos y a dónde seguir. */
+/** Pantalla final de lección: XP ganado, aciertos, nota personal y a dónde seguir. */
 export default function LessonComplete({
   xpEarned,
   correctCount,
   total,
+  noteKey,
   chapterHref,
   nextHref,
 }: {
   xpEarned: number;
   correctCount: number;
   total: number;
+  /** Clave `capitulo/leccion` para la nota personal. */
+  noteKey: string;
   chapterHref: string;
   nextHref: string | null;
 }) {
@@ -40,7 +44,8 @@ export default function LessonComplete({
           </p>
         </div>
       </div>
-      <div className="mt-8 grid gap-2">
+      <LessonNote noteKey={noteKey} />
+      <div className="mt-6 grid gap-2">
         {nextHref && (
           <Link
             href={nextHref}
@@ -54,6 +59,12 @@ export default function LessonComplete({
           className="rounded-xl border border-border bg-surface px-4 py-2.5 font-display font-bold text-ink transition-colors hover:border-accent"
         >
           Volver al capítulo
+        </Link>
+        <Link
+          href="/coaching/notas"
+          className="text-sm font-medium text-accent hover:underline"
+        >
+          Ver mi cuaderno 📓
         </Link>
       </div>
     </div>

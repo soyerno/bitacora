@@ -4,14 +4,16 @@ import { cap2 } from "./capitulos/cap2-lenguaje";
 import { cap3 } from "./capitulos/cap3-juicios";
 import { cap4 } from "./capitulos/cap4-promesas";
 import { cap5 } from "./capitulos/cap5-emociones";
+import { capValores } from "./capitulos/cap-valores";
 import { cap6 } from "./capitulos/cap6-escucha";
 import { cap7 } from "./capitulos/cap7-quiebres";
 
 /**
  * El programa completo, en orden pedagógico: del observador (fundamento) a
- * los actos lingüísticos, y de ahí a emociones, escucha y la práctica.
+ * los actos lingüísticos, de ahí a emociones, valores y creencias (usan
+ * juicios y emociones como insumos), y al final escucha y la práctica.
  */
-export const PROGRAMA: Chapter[] = [cap1, cap2, cap3, cap4, cap5, cap6, cap7];
+export const PROGRAMA: Chapter[] = [cap1, cap2, cap3, cap4, cap5, capValores, cap6, cap7];
 
 export const PROGRAMA_TITLE = "Coaching Ontológico";
 export const PROGRAMA_TAGLINE =

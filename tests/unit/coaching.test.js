@@ -44,6 +44,8 @@ describe("programa de coaching — integridad del contenido", () => {
       "ciclo-promesa",
       "escucha",
       "quiebre",
+      "valores",
+      "loop-creencia",
     ];
     const used = new Set();
     for (const c of PROGRAMA) {
@@ -137,6 +139,18 @@ describe("programa de coaching — integridad del contenido", () => {
     expect(getLesson("emociones", "culpa-perdon")?.lesson.title).toBe(
       "La culpa y el perdón",
     );
+  });
+
+  it("incluye el capítulo de valores y creencias, después de emociones", () => {
+    const chapter = getChapter("valores-creencias");
+    expect(chapter?.lessons.map((l) => l.id)).toEqual([
+      "valores",
+      "sistema-creencias",
+      "transformar-creencias",
+    ]);
+    const slugs = PROGRAMA.map((c) => c.slug);
+    expect(slugs.indexOf("valores-creencias")).toBe(slugs.indexOf("emociones") + 1);
+    expect(slugs.indexOf("valores-creencias")).toBeLessThan(slugs.indexOf("escucha"));
   });
 
   it("getChapter y getLesson resuelven slugs reales y rechazan inexistentes", () => {

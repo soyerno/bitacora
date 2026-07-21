@@ -66,6 +66,7 @@ export default function LessonPlayer({
         xpEarned={xpEarned}
         correctCount={correctCount}
         total={answerable}
+        noteKey={lessonKey(chapterSlug, lessonId)}
         chapterHref={chapterHref}
         nextHref={nextHref}
       />

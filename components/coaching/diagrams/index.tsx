@@ -7,6 +7,8 @@ import DiagramGrilla from "./DiagramGrilla";
 import DiagramCiclo from "./DiagramCiclo";
 import DiagramEscucha from "./DiagramEscucha";
 import DiagramQuiebre from "./DiagramQuiebre";
+import DiagramValores from "./DiagramValores";
+import DiagramLoopCreencia from "./DiagramLoopCreencia";
 
 /** Registro id → componente SVG, para referenciar diagramas desde el contenido. */
 const DIAGRAMS: Record<DiagramId, ComponentType> = {
@@ -17,6 +19,8 @@ const DIAGRAMS: Record<DiagramId, ComponentType> = {
   "ciclo-promesa": DiagramCiclo,
   escucha: DiagramEscucha,
   quiebre: DiagramQuiebre,
+  valores: DiagramValores,
+  "loop-creencia": DiagramLoopCreencia,
 };
 
 export default function Diagram({ id }: { id: DiagramId }) {

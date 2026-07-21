@@ -23,6 +23,8 @@ export interface CoachingProgress {
   done: string[];
   /** Respuestas de ejercicios de reflexión, por clave `capitulo/leccion/idx`. */
   reflections: Record<string, string>;
+  /** Notas libres del usuario sobre lo visto, por clave `capitulo/leccion`. */
+  notes: Record<string, string>;
   streak: { count: number; last: string | null };
 }
 
@@ -30,6 +32,7 @@ const EMPTY: CoachingProgress = {
   xp: 0,
   done: [],
   reflections: {},
+  notes: {},
   streak: { count: 0, last: null },
 };
 
@@ -55,6 +58,10 @@ export function loadProgress(): CoachingProgress {
       reflections:
         parsed.reflections && typeof parsed.reflections === "object"
           ? (parsed.reflections as Record<string, string>)
+          : {},
+      notes:
+        parsed.notes && typeof parsed.notes === "object"
+          ? (parsed.notes as Record<string, string>)
           : {},
       streak:
         parsed.streak && typeof parsed.streak.count === "number"
@@ -153,11 +160,20 @@ export function useCoachingProgress() {
     }));
   }, []);
 
+  const saveNote = useCallback((key: string, text: string) => {
+    mutate((prev) => {
+      const notes = { ...prev.notes };
+      if (text.trim()) notes[key] = text;
+      else delete notes[key]; // nota vaciada → se elimina del cuaderno
+      return { ...prev, notes };
+    });
+  }, []);
+
   const isDone = useCallback(
     (chapterSlug: string, lessonId: string) =>
       progress.done.includes(lessonKey(chapterSlug, lessonId)),
     [progress.done],
   );
 
-  return { progress, ready, completeLesson, saveReflection, isDone };
+  return { progress, ready, completeLesson, saveReflection, saveNote, isDone };
 }

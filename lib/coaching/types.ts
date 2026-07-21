@@ -19,7 +19,9 @@ export type DiagramId =
   | "grilla-animos"
   | "ciclo-promesa"
   | "escucha"
-  | "quiebre";
+  | "quiebre"
+  | "valores"
+  | "loop-creencia";
 
 export interface ConceptCard {
   kind: "concept";
