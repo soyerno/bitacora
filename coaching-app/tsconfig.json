@@ -36,17 +36,6 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "coaching-app",
-    "public",
-    "decks",
-    "rd",
-    "rfcs",
-    "bitacora",
-    "proyectos",
-    "herramientas",
-    "postmans",
-    "openspec",
-    ".claude"
+    "node_modules"
   ]
 }

@@ -5,7 +5,9 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 // Reemplaza al `next lint` removido en Next 16.
 const eslintConfig = defineConfig([
   ...nextVitals,
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  // coaching-app/ es una app independiente (deploy propio en Vercel) con su
+  // propio tooling; el lint/typecheck de la bitácora no la cubre.
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "coaching-app/**"]),
 ]);
 
 export default eslintConfig;
